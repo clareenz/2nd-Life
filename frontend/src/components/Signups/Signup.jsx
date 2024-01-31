@@ -147,7 +147,7 @@ const Signup = () => {
             <div className={`${style.normalFlex} w-full`}>
               <h4>Already have an account?</h4>
               <Link to="/login" className="text-blue-600 pl-2">
-                Login
+                Sign in
               </Link>
             </div>
           </form>
