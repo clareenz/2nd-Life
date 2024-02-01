@@ -17,6 +17,20 @@ module.exports = {
       },
     },
   },
+
+  theme: {
+    extend: {
+      backgroundColor: {
+        'fe8373': '#FE8373',
+        '006665' : '#006665'
+      },
+      textColor: {
+        'fe8373': '#FE8373',
+        '006665' : '#006665'
+      },
+    },
+  },
+  variants: {},
   plugins: [],
 };
 

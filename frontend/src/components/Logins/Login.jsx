@@ -49,7 +49,7 @@ const Login = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 foucs:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -68,7 +68,7 @@ const Login = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 foucs:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   />
                   {visible ? (
                     <AiOutlineEye
@@ -103,7 +103,7 @@ const Login = () => {
                 <div className="text-sm">
                   <a
                     href=".forgot-password"
-                    className="font-medium text-blue-600 hover:text-blue-500"
+                    className="font-medium text-006665 hover:text-fe8373"
                   >
                     Forgot your password?
                   </a>
@@ -112,9 +112,9 @@ const Login = () => {
               <div>
                 <button
                   type="submit"
-                  className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-fe8373 hover:bg-006665"
                 >
-                  Submit
+                  Log in
                 </button>
               </div>
 
@@ -144,7 +144,7 @@ const Login = () => {
 
               <div className={`${styles.normalFlex} w-full`}>
                 <h4>Not have any account?</h4>
-                <Link to="/sign-up" className="text-blue-600 pl-2">
+                <Link to="/sign-up" className="text-006665 hover:text-fe8373 pl-2">
                   Sign Up
                 </Link>
               </div>
