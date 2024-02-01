@@ -1,7 +1,7 @@
 //Login Page
 
 import React from "react";
-import Login from "../components/Login/Login.jsx";
+import Login from "../components/Logins/Login.jsx";
 function LoginPage() {
   return (
     <div className="w-full h-screen bg-gray-50">
