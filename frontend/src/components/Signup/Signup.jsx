@@ -83,13 +83,8 @@ const Signup = () => {
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-<<<<<<< Updated upstream
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6">
-=======
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-18">
             <form className="space-y-6" onSubmit={handleSubmit}>
->>>>>>> Stashed changes
               <div>
                 <label
                   htmlFor="email"
