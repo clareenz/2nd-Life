@@ -12,34 +12,37 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8 login-div">
       {/* Header */}
-      <header
-        className="bg-gray-50 w-full py-2 fixed top-0"
-        style={{ height: "16mm" }}
-      >
-        <div className="wrapper mx-auto flex space-x-14 items-center border-b border-gray-300">
-          <div className="logo ml-14 text-3xl mb-4">2ndLife</div>
-          <nav>
-            <ul className="flex space-x-14">
-              <li>
-                <a href="#" className="nav-link">
-                  shop by Category
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link">
-                  On Sale
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link">
-                  New Arrivals
-                </a>
-              </li>
-            </ul>
-          </nav>
-          {/*end of nav menu*/}
+      <header className="bg-gray-50 w-full py-3 fixed top-0">
+        <div className="wrapper mx-auto flex flex-col sm:flex-row items-center justify-between border-b border-gray-300">
+          {/* Left side with logo and navigation */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-between">
+            <div className="logo mb-2 sm:mb-3 sm:mr-14 text-3xl px-[1in]">
+              2ndLife
+            </div>
+            <nav className="sm:flex space-x-14">
+              <a href="#" className="nav-link py-2">
+                Shop by Category
+              </a>
+              <a href="#" className="nav-link py-2">
+                On Sale
+              </a>
+              <a href="#" className="nav-link py-2">
+                New Arrivals
+              </a>
+            </nav>
+          </div>
+          {/* Right side with search bar */}
+          <div className="flex items-center mt-7 sm:mt-0 px-[1in]">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="px-4 py-1 border border-gray-300 rounded-2xl w-full sm:w-64"
+            />
+            {/* You can add a search button/icon here if needed */}
+          </div>
         </div>
       </header>
+
       {/* Left side with the image */}
       <div className="lg:w-1/8 lg:pr8">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" className="mx-auto" />
