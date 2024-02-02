@@ -3,6 +3,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import style from "../../styles/style";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
+import axios from "axios";
+import {server} from "../../server"
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -11,13 +13,29 @@ const Signup = () => {
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
 
-  const handleSubmit = () => {
-    console.log("ffff");
-  };
-
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+    const newForm = new FormData();
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email);
+    newForm.append("password", password);
+
+    axios
+      .post(`${server}/user/create-user`, newForm, config)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -65,8 +83,13 @@ const Signup = () => {
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+<<<<<<< Updated upstream
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6">
+=======
+          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-18">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+>>>>>>> Stashed changes
               <div>
                 <label
                   htmlFor="email"
