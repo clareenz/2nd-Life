@@ -32,7 +32,7 @@ const Login = () => {
             </nav>
           </div>
           {/* Right side with search bar */}
-          <div className="flex items-center mt-7 sm:mt-0 px-[1in]">
+          <div className="flex items-center mt-7 sm:mt-0 px-[1in] py-2">
             <input
               type="text"
               placeholder="Search..."
