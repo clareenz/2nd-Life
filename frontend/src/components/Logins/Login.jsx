@@ -10,7 +10,7 @@ const Login = () => {
   const [visible, setVisible] = useState("false");
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8 login-div">
       {/* Header */}
       <header
         className="bg-gray-50 w-full py-2 fixed top-0"
@@ -40,24 +40,20 @@ const Login = () => {
           {/*end of nav menu*/}
         </div>
       </header>
-
       {/* Left side with the image */}
-      <div className="lg:w-1/8 lg:pr-8">
+      <div className="lg:w-1/8 lg:pr8">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" className="mx-auto" />
-        {/* Optionally, you can add content or styling here for the image side */}
       </div>
-
       {/* Right side with the login form */}
-      <div className="lg:w-1/2 lg:pl-10 flex flex-col items-center">
-        {" "}
+      <div className="lg:w-1/2">
         {/* Modified line */}
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-950">
+          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
             Log in to 2ndLife
           </h2>
         </div>
-        <div className="div mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="div bg-white py-8 px-8 shadow sm:rounded-lg sm:px-10">
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <div className=" bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6">
               <div>
                 <label
@@ -179,14 +175,12 @@ const Login = () => {
             </form>
           </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
-
-      {/* Add 5 line breaks for separation */}
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </div>
   );
 };
