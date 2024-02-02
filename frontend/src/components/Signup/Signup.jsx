@@ -23,8 +23,33 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8">
       {/* Header */}
-      <header className="bg-black text-white w-full py-2 fixed top-0">
-        <h1 className="text-2xl font-bold">Your Website Name</h1>
+      <header
+        className="bg-gray-50 w-full py-2 fixed top-0"
+        style={{ height: "16mm" }}
+      >
+        <div className="wrapper mx-auto flex space-x-14 items-center border-b border-gray-300">
+          <div className="logo ml-14 text-3xl mb-4">2ndLife</div>
+          <nav>
+            <ul className="flex space-x-14">
+              <li>
+                <a href="#" className="nav-link">
+                  shop by Category
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link">
+                  On Sale
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link">
+                  New Arrivals
+                </a>
+              </li>
+            </ul>
+          </nav>
+          {/*end of nav menu*/}
+        </div>
       </header>
       {/* Left side with the image */}
       <div className="lg:w-1/8 lg:pr-8 flex-shrink-0">
@@ -35,8 +60,8 @@ const Signup = () => {
       {/* Right side with the form */}
       <div className="lg:w-1/2">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Register as a new User
+          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+            Create an account
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -57,7 +82,7 @@ const Signup = () => {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   ></input>
                 </div>
               </div>
@@ -77,7 +102,7 @@ const Signup = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   ></input>
                 </div>
               </div>
@@ -97,7 +122,7 @@ const Signup = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   ></input>
                   {visible ? (
                     <AiOutlineEye
@@ -152,7 +177,7 @@ const Signup = () => {
               <div>
                 <button
                   type="submit"
-                  className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-fe8373 hover:bg-006665"
                 >
                   Submit
                 </button>

@@ -12,8 +12,33 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8">
       {/* Header */}
-      <header className="bg-black text-white w-full py-2 fixed top-0">
-        <h1 className="text-2xl font-bold">Your Website Name</h1>
+      <header
+        className="bg-gray-50 w-full py-2 fixed top-0"
+        style={{ height: "16mm" }}
+      >
+        <div className="wrapper mx-auto flex space-x-14 items-center border-b border-gray-300">
+          <div className="logo ml-14 text-3xl mb-4">2ndLife</div>
+          <nav>
+            <ul className="flex space-x-14">
+              <li>
+                <a href="#" className="nav-link">
+                  shop by Category
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link">
+                  On Sale
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link">
+                  New Arrivals
+                </a>
+              </li>
+            </ul>
+          </nav>
+          {/*end of nav menu*/}
+        </div>
       </header>
 
       {/* Left side with the image */}
@@ -144,7 +169,10 @@ const Login = () => {
 
               <div className={`${styles.normalFlex} w-full`}>
                 <h4>Not have any account?</h4>
-                <Link to="/sign-up" className="text-006665 hover:text-fe8373 pl-2">
+                <Link
+                  to="/sign-up"
+                  className="text-006665 hover:text-fe8373 pl-2"
+                >
                   Sign Up
                 </Link>
               </div>
@@ -152,6 +180,13 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Add 5 line breaks for separation */}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 };

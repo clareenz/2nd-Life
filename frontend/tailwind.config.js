@@ -22,7 +22,8 @@ module.exports = {
     extend: {
       backgroundColor: { //customized colors
         'fe8373': '#FE8373',
-        '006665' : '#006665'
+        '006665' : '#006665',
+        'F0F0F0' : '#F0F0F0',
       },
       textColor: {
         'fe8373': '#FE8373',
