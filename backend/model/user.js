@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema({
     default: "user",
   },
   avatar:{
+    
  },
  createdAt:{
   type: Date,
