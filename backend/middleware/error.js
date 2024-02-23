@@ -11,8 +11,8 @@ module.exports = (err, req, res, next) => {
   }
 
   // Duplicate key error
-  if (err.name === "11000") {
-    const message = `Duplicate key ${Object.keys(err.keyValue)} Entered`;
+  if (err.code === 11000) {
+    const message = `Duplicate key &{Object.keys(err.keyValue)} Entered`;
     err = new ErrorHandler(message, 400);
   }
 
@@ -29,7 +29,7 @@ module.exports = (err, req, res, next) => {
   }
 
   res.status(err.statusCode).json({
-    succes: false,
-    messages: err.message,
+    success: false,
+    message: err.message,
   });
 };
