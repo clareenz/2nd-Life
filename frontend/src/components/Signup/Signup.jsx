@@ -1,13 +1,11 @@
 import { React, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import style from "../../styles/style";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import styles from "../../styles/styles";
+import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from 'react-toastify';
-
-
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +13,6 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
-  const navigate = useNavigate();
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -24,9 +21,10 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    const config = {headers: {"Content-Type":"multipart/form-data"}};
 
     const newForm = new FormData();
+
     newForm.append("file", avatar);
     newForm.append("name", name);
     newForm.append("email", email);
@@ -35,10 +33,14 @@ const Signup = () => {
     axios
       .post(`${server}/user/create-user`, newForm, config)
       .then((res) => {
-        alert(res.message);
+        toast.success(res.data.message);
+        setName("");
+        setEmail("");
+        setPassword("");
+        setAvatar("");
       })
-      .catch((err) => {
-        toast.error(err.response.data.message);
+      .catch((error) => {
+        toast.error(error.response.data.message);
       });
   };
 
@@ -206,7 +208,7 @@ const Signup = () => {
                   Submit
                 </button>
               </div>
-              <div className={`${style.normalFlex} w-full`}>
+              <div className={`${styles.normalFlex} w-full`}>
                 <h4>Already have an account?</h4>
                 <Link to="/login" className="text-blue-600 pl-2">
                   Sign in
