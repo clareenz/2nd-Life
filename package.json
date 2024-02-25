@@ -8,12 +8,14 @@
     "dev": "nodemon backend/server.js",
     "start": "node backend/server.js"
   },
-  "author": "mc",
+  "author": "Shaira, Mc",
   "license": "ISC",
   "dependencies": {
     "@coreui/react": "^4.11.1",
+    "@reduxjs/toolkit": "^2.2.1",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
@@ -23,6 +25,14 @@
     "mongoose": "^8.1.1",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.1.0",
+    "redux": "^5.0.1"
+  },
+  "keywords": [],
+  "devDependencies": {
     "nodemon": "^3.0.3"
-  }
+  },
+  "proxy": "http://localhost:8000"
 }
