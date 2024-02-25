@@ -9,6 +9,7 @@ import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown";
 import NavBar from "./NavBar";
 
+
 const Header = ({ activeHeading }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
