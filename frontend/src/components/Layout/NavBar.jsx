@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { navItems } from '../../static/data';
 import styles from '../../styles/styles';
 
-const Navbar = ({active}) => {
+const NavBar = ({active}) => {
   return (
     <div className={`${styles.normalFlex}`}>
          {
@@ -21,4 +21,4 @@ const Navbar = ({active}) => {
   )
 }
 
-export default Navbar;
+export default NavBar;
