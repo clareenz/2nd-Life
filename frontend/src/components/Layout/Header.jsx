@@ -7,7 +7,7 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown";
-import NavBar from "./NavBar";
+import NavBar from "./Navbar";
 
 
 const Header = ({ activeHeading }) => {
