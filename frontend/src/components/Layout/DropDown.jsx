@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import style from "../../styles/styles";
+import styles from "../../styles/styles";
 
 const DropDown = ({ categoriesData, setDropDown }) => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const DropDown = ({ categoriesData, setDropDown }) => {
         categoriesData.map((i, index) => (
           <div
             key={index}
-            className={`${style.normalFlex}`}
+            className={`${styles.normalFlex}`}
             onClick={() => submitHandle(i)}
           >
             <img
