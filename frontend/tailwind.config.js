@@ -15,11 +15,6 @@ module.exports = {
         "1300px" : "1300px",
         "400px" : "400px"
       },
-    },
-  },
-
-  theme: {
-    extend: {
       backgroundColor: { //customized colors
         'fe8373': '#FE8373',
         '006665' : '#006665',
@@ -34,4 +29,3 @@ module.exports = {
   variants: {},
   plugins: [],
 };
-

@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from "react";
-import styles from "../../styles/styles";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import styles from "../../styles/styles";
 import { categoriesData, productData } from "../../static/data";
-import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiOutlineHeart,
+  AiOutlineSearch,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown";
-import NavBar from "./Navbar";
-
+import Navbar from "./Navbar";
+import { useSelector } from "react-redux";
+import { backend_url } from "../../server";
 
 const Header = ({ activeHeading }) => {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -26,33 +32,24 @@ const Header = ({ activeHeading }) => {
     setSearchData(filteredProducts);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.pageYOffset > 70) {
-        setActive(true);
-      } else {
-        setActive(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 70) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  });
 
   return (
-    <>
+      <>
       <div className={`${styles.section}`}>
-        <div className="flex items-center justify-between">
+        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
           <div>
             <Link to="/">
               <img
                 src="https://shopo.quomodothemes.website/assets/images/logo.svg"
                 alt=""
-              />{" "}
-              {/* website logo here */}
+              />
             </Link>
           </div>
           {/* search box */}
@@ -73,10 +70,11 @@ const Header = ({ activeHeading }) => {
                 {searchData &&
                   searchData.map((i, index) => {
                     const d = i.name;
+
                     const Product_name = d.replace(/\s+/g, "-");
                     return (
-                      <Link to={`/product/${Product_name}`} key={index}>
-                        <div className="w-full flex items-start py-3">
+                      <Link to={`/product/${Product_name}`}>
+                        <div className="w-full flex items-start-py-3">
                           <img
                             src={i.image_Url[0].url}
                             alt=""
@@ -102,8 +100,8 @@ const Header = ({ activeHeading }) => {
       </div>
       <div
         className={`${
-          active === true ? "shadow-sm fixed top-0 left-0 z-0" : null
-        } transition flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}
+          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        } transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}
       >
         <div
           className={`${styles.section} relative ${styles.normalFlex} justify-between`}
@@ -131,8 +129,8 @@ const Header = ({ activeHeading }) => {
             </div>
           </div>
           {/* navitems */}
-          <div className={`&{styles.normalFlex}`}>
-            <NavBar active={activeHeading} />
+          <div className={`${styles.noramlFlex}`}>
+            <Navbar active={activeHeading} />
           </div>
 
           <div className="flex">
@@ -147,7 +145,10 @@ const Header = ({ activeHeading }) => {
 
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
-                <AiOutlineShoppingCart size={30} color="rgb(255 255 255 / 83%)" />
+                <AiOutlineShoppingCart
+                  size={30}
+                  color="rgb(255 255 255 / 83%)"
+                />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
                   1
                 </span>
@@ -156,16 +157,22 @@ const Header = ({ activeHeading }) => {
 
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
-                <Link to = "/login">
-                 <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
-                </Link>
+                {isAuthenticated ? (
+                  <Link to="/profile">
+                    <img src={`${backend_url}${user.avatar}`} className="w-[35px] h-[35px] rounded-full" alt="" />
+                  </Link>
+                ) : (
+                  <Link to="/login">
+                    <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
+                  </Link>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
     </>
-  );
+    )
 };
 
 export default Header;
