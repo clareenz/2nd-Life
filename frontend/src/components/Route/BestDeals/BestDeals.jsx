@@ -13,4 +13,4 @@ const BestDeals = () => {
   )
 }
 
-export default BestDeals
+export default BestDeals;
