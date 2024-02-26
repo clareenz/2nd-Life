@@ -67,11 +67,11 @@ const Login = () => {
           </div>
         </div>
       </header>
-
       {/* Left side with the image */}
       <div className="lg:w-1/8 lg:pr8">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" className="mx-auto" />
       </div>
+      
       {/* Right side with the login form */}
       <div className="lg:w-1/2">
         {/* Modified line */}
@@ -203,11 +203,6 @@ const Login = () => {
             </form>
           </div>
         </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </div>
     </div>
   );
