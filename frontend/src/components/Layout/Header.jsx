@@ -1,3 +1,5 @@
+/* The logo, search bar, become seller button, and the blue header's here */
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
@@ -129,7 +131,7 @@ const Header = ({ activeHeading }) => {
             </div>
           </div>
           {/* navitems */}
-          <div className={`${styles.noramlFlex}`}>
+          <div className={`${styles.normalFlex}`}>
             <Navbar active={activeHeading} />
           </div>
 
