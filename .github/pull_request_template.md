@@ -1,6 +1,6 @@
 ## Describe your changes
 
-## Issue ticket number and link
+## Is there any error? Expound. If none, don't mind this part.
 
 ## Checklist before requesting a review
 - [ ] I have performed a self-review of my code
