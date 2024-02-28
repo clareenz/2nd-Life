@@ -44,24 +44,63 @@ const Header = ({ activeHeading }) => {
 
   return (
     <>
-      <div className={`${styles.section}`}>
-        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
-          <div>
-            <Link to="/">
-              <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
+      <div
+        className={`${
+          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        } transition hidden 800px:flex items-center justify-between border-b border-gray-300 w-full top0 bg-white h-[70px]`} //header sa pinaka taas (yung may cart icon,etc.)
+      >
+        <div>
+          <Link to="/">
+            <img
+              className="mb-3 ml-20"
+              src="/2ndlife%20logo%20word.png" //logo
+              alt=""
+              style={{ width: "180px", height: "auto" }}
+            />
+          </Link>
+        </div>
+
+        <div
+          className={`${styles.section} relative ${styles.normalFlex}`}
+        >
+          {/* categories */}
+          <div onClick={() => setDropDown(!dropDown)}>
+            <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
+              <button
+                className={`h-[85%] w-full items-center pl-10 font-sans text-black font-[500] select-none rounded-t-md`}
+                style={{ backgroundColor: "rgba(0,0,0,0)" }}
+              >
+                Shop by Category
+              </button>
+
+              <IoIosArrowDown
+                size={20}
+                className="absolute right-2 top-4 cursor-pointer"
+                onClick={() => setDropDown(!dropDown)}
+                style={{ color: "black" }}
               />
-            </Link>
+
+              {dropDown ? (
+                <DropDown
+                  categoriesData={categoriesData}
+                  setDropDown={setDropDown}
+                />
+              ) : null}
+            </div>
           </div>
+          {/* navitems */}
+          <div className={`${styles.normalFlex}`}>
+            <Navbar active={activeHeading} />
+          </div>
+
           {/* search box */}
-          <div className="w-[50%] relative">
+          <div className="w-[20%] relative ml-[2in]">
             <input
               type="text"
               placeholder="Search Product..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
+              className="h-[40px] w-full px-5 border-gray-300 border-[2px] rounded-3xl"
             />
             <AiOutlineSearch
               size={30}
@@ -91,55 +130,11 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
 
-          <div className={`${styles.button}`}>
-            <Link to="/seller">
-              <h1 className="text-[#fff] flex items-center">
-                Become Seller <IoIosArrowForward className="ml-1" />
-              </h1>
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div
-        className={`${
-          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        } transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}
-      >
-        <div
-          className={`${styles.section} relative ${styles.normalFlex} justify-between`}
-        >
-          {/* categories */}
-          <div onClick={() => setDropDown(!dropDown)}>
-            <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
-              <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
-              <button
-                className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-[500] select-none rounded-t-md`}
-              >
-                All Categories
-              </button>
-              <IoIosArrowDown
-                size={20}
-                className="absolute right-2 top-4 cursor-pointer"
-                onClick={() => setDropDown(!dropDown)}
-              />
-              {dropDown ? (
-                <DropDown
-                  categoriesData={categoriesData}
-                  setDropDown={setDropDown}
-                />
-              ) : null}
-            </div>
-          </div>
-          {/* navitems */}
-          <div className={`${styles.normalFlex}`}>
-            <Navbar active={activeHeading} />
-          </div>
-
           <div className="flex">
-            <div className={`${styles.normalFlex}`}>
+            <div className={`${styles.normalFlex} ml-5`}>
               <div className="relative cursor-pointer mr-[15px]">
-                <AiOutlineHeart size={30} color="rgb(255 255 255 / 83%)" />
-                <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
+                <AiOutlineHeart size={30} color="83%" />
+                <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                   0
                 </span>
               </div>
@@ -147,34 +142,47 @@ const Header = ({ activeHeading }) => {
 
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
-                <AiOutlineShoppingCart
-                  size={30}
-                  color="rgb(255 255 255 / 83%)"
-                />
-                <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
-                  1
+                <AiOutlineShoppingCart size={30} color="83%" />
+                <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
+                  0
                 </span>
               </div>
             </div>
+
 
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
                 {isAuthenticated ? (
                   <Link to="/profile">
-                    <img src={`${backend_url}${user.avatar}`} className="w-[35px] h-[35px] rounded-full" alt="" />
+                    <img
+                      src={`${backend_url}${user.avatar}`}
+                      className="w-[35px] h-[35px] rounded-full"
+                      alt=""
+                    />
                   </Link>
                 ) : (
                   <Link to="/login">
-                    <CgProfile size={30} color="rgb(255 255 255 / 83%)" />
+                    <CgProfile size={30} color="83%" />
                   </Link>
                 )}
               </div>
             </div>
+             {/* become a seller */}
+            <div className="hidden 800px:h-[25px] ml-[15px] 800px:my-[20px] 800px:flex items-center justify-between">
+                <div className={`${styles.button}`}>
+                  <Link to="/seller">
+                    <h1 className="text-[#fff] flex items-center">
+                      Become Seller <IoIosArrowForward className="ml-1" />
+                    </h1>
+                  </Link>
+                </div>
+              </div>
+              
           </div>
         </div>
       </div>
     </>
-  )
+  );
 };
 
 export default Header;
