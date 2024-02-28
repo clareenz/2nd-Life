@@ -18,8 +18,8 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="bg-[#000] text-white">
-      <div className="md:flex md:justify-between md:items-start sm:px-12 px-4 bg-[#342ac8] py-7">
+    <div className="bg-[#DBDAD8] text-white">
+      <div className="md:flex md:justify-between md:items-start sm:px-12 px-4 bg-black py-7">
         <h1 className="lg:text-4xl text-3xl md:mb-0 mb-6 lg:leading-normal font-semibold md:w-2/5">
           <span className="text-[#56d879]">Subscribe</span> to us to get news,{" "}
           <br />
@@ -30,51 +30,52 @@ const Footer = () => {
             type="text"
             required
             placeholder="Enter your email..."
-            className="text-gray-800
+            className="text-gray-500
                 sm:w-72 w-full sm:mr-5 mr-1 lg:mb-0 mb-4 py-2.5 rounded px-2 focus:outline-none"
           />
-          <button className="bg-[#56d879] hover:bg-teal-500 duration-300 px-5 py-2.5 rounded-md text-white md:w-auto w-full">
+          <button className="bg-[#FF8474] hover:bg-[#006665] duration-300 px-5 py-2.5 rounded-md text-white md:w-auto w-full">
             Submit
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:px-8 px-5 py-16 sm:text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-9 sm:px-8 px-5 py-16 sm:text-center">
         <ul className="px-5 text-center sm:text-start flex sm:block flex-col items-center">
           <img
-            src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-            alt=""
-            style={{ filter: "brightness(0) invert(1)" }}
+            className=""
+            src="/2ndlife%20logo%20word.png"
+            alt="logo2"
+            style={{ width: "140px", height: "auto" }}
           />
           <br />
-          <p>The home and elements needed to create beautiful products.</p>{" "}
+          <p className="text-black">Discover the magic of yesteryears at prices that fit today's budget.</p>{" "}
           {/* put the tagline of our website here */}
           <div className="flex items-center mt-[15px]">
             <AiFillFacebook
               size={25}
-              style={{ marginLeft: "15px", cursor: "pointer" }}
+              style={{ marginLeft: "15px", cursor: "pointer", color: "black"}}
             />
             <AiFillTwitterCircle
               size={25}
-              style={{ marginLeft: "15px", cursor: "pointer" }}
+              style={{ marginLeft: "15px", cursor: "pointer", color: "black" }}
             />
             <AiFillYoutube
               size={25}
-              style={{ marginLeft: "15px", cursor: "pointer" }}
+              style={{ marginLeft: "15px", cursor: "pointer", color: "black" }}
             />
             <AiFillInstagram
               size={25}
-              style={{ marginLeft: "15px", cursor: "pointer" }}
+              style={{ marginLeft: "15px", cursor: "pointer", color: "black" }}
             />
           </div>
         </ul>
 
         <ul className="text-center sm:text-start">
-          <h1 className="mb-1 font-semibold">Company</h1>
+          <h1 className="mb-1 font-semibold text-black">COMPANY</h1>
           {footerProductLinks.map((link) => (
             <li key={link.name}>
               <Link
-                className="text-gray-400 hover:text-teal-400 duration-300
+                className="text-gray-400 hover:text-[#FF8474] duration-300
                     text-sm cursor-pointer leading-6"
                 to={link.link}
               >
@@ -85,11 +86,11 @@ const Footer = () => {
         </ul>
 
         <ul className="text-center sm:text-start">
-          <h1 className="mb-1 font-semibold">Shop</h1>
+          <h1 className="mb-1 font-semibold text-black">SHOP</h1>
           {footercompanyLinks.map((link) => (
             <li key={link.name}>
               <Link
-                className="text-gray-400 hover:text-teal-400 duration-300
+                className="text-gray-400 hover:text-[#FF8474] duration-300
                     text-sm cursor-pointer leading-6"
                 to={link.link}
               >
@@ -100,11 +101,11 @@ const Footer = () => {
         </ul>
 
         <ul className="text-center sm:text-start">
-          <h1 className="mb-1 font-semibold">Support</h1>
+          <h1 className="mb-1 font-semibold text-black">SUPPORT</h1>
           {footerSupportLinks.map((link) => (
             <li key={link.name}>
               <Link
-                className="text-gray-400 hover:text-teal-400 duration-300
+                className="text-gray-400 hover:text-[#FF8474] duration-300
                     text-sm cursor-pointer leading-6"
                 to={link.link}
               >
@@ -116,7 +117,7 @@ const Footer = () => {
       </div>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10
-         text-center pt-2 text-gray-400 text-sm pb-8"
+         text-center pt-2 text-black text-sm pb-8"
       >
         <span>© 2024 NAMS Tech. All rights reserved.</span>
         <span>Terms · Privacy Policy</span>

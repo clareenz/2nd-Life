@@ -52,10 +52,10 @@ const Header = ({ activeHeading }) => {
         <div>
           <Link to="/">
             <img
-              className="mb-3 ml-20"
+              className="ml-20"
               src="/2ndlife%20logo%20word.png" //logo
-              alt=""
-              style={{ width: "180px", height: "auto" }}
+              alt="logo2"
+              style={{ width: "140px", height: "auto" }}
             />
           </Link>
         </div>
