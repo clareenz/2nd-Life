@@ -25,7 +25,7 @@ const Login = () => {
     .then((res) => {
       toast.success("Login Success!");
       navigate("/");
-      window.location.reload();
+      window.location.reload(true);
     })
     .catch((err) => {
       toast.error(err.response.data.message);
@@ -36,23 +36,23 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8 login-div">
+    <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row sm:px-6 lg:px-8 login-div">
       {/* Header */}
-      <header className="bg-gray-50 w-full py-3 fixed top-0">
-        <div className="wrapper mx-auto flex flex-col sm:flex-row items-center justify-between border-b border-gray-300">
+      <header className="fixed top-0 w-full py-3 bg-gray-50">
+        <div className="flex flex-col items-center justify-between mx-auto border-b border-gray-300 wrapper sm:flex-row">
           {/* Left side with logo and navigation */}
-          <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-between">
+          <div className="flex flex-col items-center justify-between sm:flex-row sm:items-stretch">
             <div className="logo mb-2 sm:mb-3 sm:mr-14 text-3xl px-[1in]">
               2ndLife
             </div>
             <nav className="sm:flex space-x-14">
-              <a href="#" className="nav-link py-2">
+              <a href="#" className="py-2 nav-link">
                 Shop by Category
               </a>
-              <a href="#" className="nav-link py-2">
+              <a href="#" className="py-2 nav-link">
                 On Sale
               </a>
-              <a href="#" className="nav-link py-2">
+              <a href="#" className="py-2 nav-link">
                 New Arrivals
               </a>
             </nav>
@@ -62,7 +62,7 @@ const Login = () => {
             <input
               type="text"
               placeholder="Search..."
-              className="px-4 py-1 border border-gray-300 rounded-2xl w-full sm:w-64"
+              className="w-full px-4 py-1 border border-gray-300 rounded-2xl sm:w-64"
             />
             {/* You can add a search button/icon here if needed */}
           </div>
@@ -77,12 +77,12 @@ const Login = () => {
       <div className="lg:w-1/2">
         {/* Modified line */}
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold text-center text-gray-900">
             Log in to 2ndLife
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className=" bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="px-4 py-8 bg-white shadow  sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -99,7 +99,7 @@ const Login = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border-b border-gray-300 shadow-sm appearance-none square-md foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -110,7 +110,7 @@ const Login = () => {
                 >
                   Password
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative mt-1">
                   <input
                     type={visible ? "text" : "password"}
                     name="password"
@@ -118,17 +118,17 @@ const Login = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border-b border-gray-300 shadow-sm appearance-none square-md foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
                   />
                   {visible ? (
                     <AiOutlineEye
-                      className="absolute right-2 top-2 cursor-pointer"
+                      className="absolute cursor-pointer right-2 top-2"
                       size={25}
                       onClick={() => setVisible(false)}
                     />
                   ) : (
                     <AiOutlineEyeInvisible
-                      className="absolute right-2 top-2 cursor-pointer"
+                      className="absolute cursor-pointer right-2 top-2"
                       size={25}
                       onClick={() => setVisible(true)}
                     />
@@ -141,11 +141,11 @@ const Login = () => {
                     type="checkbox"
                     name="remember-me"
                     id="remember-me"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 vorder-gray-300 rounded"
+                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 vorder-gray-300"
                   />
                   <label
                     htmlFor="remeber-me"
-                    className="ml-2 block text-sm text-gray-900"
+                    className="block ml-2 text-sm text-gray-900"
                   >
                     Remember me
                   </label>
@@ -169,12 +169,12 @@ const Login = () => {
               </div>
 
               <div className="flex items-center">
-                <div className="border-t border-gray flex-grow"></div>
+                <div className="flex-grow border-t border-gray"></div>
                 <div className="px-4 text-gray-700">or</div>
-                <div className="border-t border-gray flex-grow"></div>
+                <div className="flex-grow border-t border-gray"></div>
               </div>
 
-              <div className="mt-4 flex space-x-4">
+              <div className="flex mt-4 space-x-4">
                 <button
                   type="button"
                   className="group relative flex-1 h-[40px] flex items-center justify-center py-2 px-4 border border-gray-350 text-sm font-medium rounded-md text-black hover:bg-gray-100"
@@ -196,7 +196,7 @@ const Login = () => {
                 <h4>Not have any account?</h4>
                 <Link
                   to="/sign-up"
-                  className="text-006665 hover:text-fe8373 pl-2"
+                  className="pl-2 text-006665 hover:text-fe8373"
                 >
                   Sign Up
                 </Link>

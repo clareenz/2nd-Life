@@ -16,6 +16,7 @@ import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../server";
+import Cart from "../cart/Cart";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -23,6 +24,8 @@ const Header = ({ activeHeading }) => {
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [openWishlist, setOpenWishlist] = useState(false);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -60,9 +63,7 @@ const Header = ({ activeHeading }) => {
           </Link>
         </div>
 
-        <div
-          className={`${styles.section} relative ${styles.normalFlex}`}
-        >
+        <div className={`${styles.section} relative ${styles.normalFlex}`}>
           {/* categories */}
           <div onClick={() => setDropDown(!dropDown)}>
             <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
@@ -141,14 +142,15 @@ const Header = ({ activeHeading }) => {
             </div>
 
             <div className={`${styles.normalFlex}`}>
-              <div className="relative cursor-pointer mr-[15px]">
+              <div className="relative cursor-pointer mr-[15px]"
+              onClick={()=> setOpenCart(true)}
+              >
                 <AiOutlineShoppingCart size={30} color="83%" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                   0
                 </span>
               </div>
             </div>
-
 
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-[15px]">
@@ -159,6 +161,7 @@ const Header = ({ activeHeading }) => {
                       className="w-[35px] h-[35px] rounded-full"
                       alt=""
                     />
+                    0
                   </Link>
                 ) : (
                   <Link to="/login">
@@ -167,17 +170,23 @@ const Header = ({ activeHeading }) => {
                 )}
               </div>
             </div>
-             {/* become a seller */}
-            <div className="hidden 800px:h-[25px] ml-[15px] 800px:my-[20px] 800px:flex items-center justify-between">
-                <div className={`${styles.button}`}>
-                  <Link to="/seller">
-                    <h1 className="text-[#fff] flex items-center">
-                      Become Seller <IoIosArrowForward className="ml-1" />
-                    </h1>
-                  </Link>
-                </div>
+            {/* become a seller */}
+            <div className="800px:h-[25px] ml-[15px] 800px:my-[20px] 800px:flex items-center justify-between">
+              <div className={`${styles.button}`}>
+                <Link to="/seller">
+                  <h1 className="text-[#fff] flex items-center">
+                    Become Seller <IoIosArrowForward className="ml-1" />
+                  </h1>
+                </Link>
               </div>
-              
+            </div>
+
+            {/*wishlist popup*/}
+            {
+              openCart ? (
+                <Cart setOpenCart = {setOpenCart}/>
+              ): null
+            }
           </div>
         </div>
       </div>
