@@ -17,6 +17,7 @@ import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../server";
 import Cart from "../cart/Cart";
+import Wishlist from "../Wishlist/Wishlist";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -64,6 +65,7 @@ const Header = ({ activeHeading }) => {
         </div>
 
         <div className={`${styles.section} relative ${styles.normalFlex}`}>
+         
           {/* categories */}
           <div onClick={() => setDropDown(!dropDown)}>
             <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
@@ -89,10 +91,12 @@ const Header = ({ activeHeading }) => {
               ) : null}
             </div>
           </div>
+
           {/* navitems */}
           <div className={`${styles.normalFlex}`}>
             <Navbar active={activeHeading} />
           </div>
+          
 
           {/* search box */}
           <div className="w-[20%] relative ml-[2in]">
@@ -131,9 +135,11 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
 
+          {/* heart icon */}
           <div className="flex">
             <div className={`${styles.normalFlex} ml-5`}>
-              <div className="relative cursor-pointer mr-[15px]">
+              <div className="relative cursor-pointer mr-[15px]"
+              onClick={() => setOpenWishlist(true)}>
                 <AiOutlineHeart size={30} color="83%" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                   0
@@ -141,6 +147,7 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
 
+            {/* shopping cart icon */}
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-[15px]"
               onClick={()=> setOpenCart(true)}
@@ -181,12 +188,20 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
 
-            {/*wishlist popup*/}
+            {/*cart popup*/}
             {
               openCart ? (
                 <Cart setOpenCart = {setOpenCart}/>
               ): null
             }
+
+            {/*wishlist popup*/}
+            {
+              openWishlist ? (
+                <Wishlist setOpenWishlist = {setOpenWishlist}/>
+              ): null
+            }
+
           </div>
         </div>
       </div>
