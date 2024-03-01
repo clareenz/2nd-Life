@@ -8,6 +8,7 @@ import {
   AiFillInstagram,
   AiFillTwitterCircle,
   AiFillYoutube,
+  AirFillTelegram,
 } from "react-icons/ai";
 import {
   footerProductLinks,
