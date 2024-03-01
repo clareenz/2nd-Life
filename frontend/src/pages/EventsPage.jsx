@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import Header from "../components/Layout/Header";
+import { Header }  from "../components/Layout/Header";
 import EventCard from "../components/Events/EventCard";
 
 const EventsPage = () => {

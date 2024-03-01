@@ -3,8 +3,8 @@
  */
 
 import React, { useEffect, useState } from "react";
-import Header from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
+import { Header }  from "../components/Layout/Header";
+import {Footer} from "../components/Layout/Footer";
 import ProductDetails from "../components/Products/ProductDetails";
 import { useParams } from "react-router-dom";
 import { productData } from "../static/data";
