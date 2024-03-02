@@ -168,6 +168,7 @@ const Header = ({ activeHeading }) => {
                       className="w-[35px] h-[35px] rounded-full"
                       alt=""
                     />
+                    0
                   </Link>
                 ) : (
                   <Link to="/login">
@@ -208,6 +209,7 @@ const Header = ({ activeHeading }) => {
   );
 };
 
+export default Header;
 const Header2 = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
