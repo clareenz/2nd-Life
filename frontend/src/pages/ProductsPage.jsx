@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import Header from "../components/Layout/Header";
+import { Header }  from "../components/Layout/Header";
 import styles from "../styles/styles";
 import { useSearchParams } from "react-router-dom";
 import { productData } from "../static/data";

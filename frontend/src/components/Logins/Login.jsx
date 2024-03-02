@@ -37,37 +37,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row sm:px-6 lg:px-8 login-div">
-      {/* Header */}
-      <header className="fixed top-0 w-full py-3 bg-gray-50">
-        <div className="flex flex-col items-center justify-between mx-auto border-b border-gray-300 wrapper sm:flex-row">
-          {/* Left side with logo and navigation */}
-          <div className="flex flex-col items-center justify-between sm:flex-row sm:items-stretch">
-            <div className="logo mb-2 sm:mb-3 sm:mr-14 text-3xl px-[1in]">
-              2ndLife
-            </div>
-            <nav className="sm:flex space-x-14">
-              <a href="#" className="py-2 nav-link">
-                Shop by Category
-              </a>
-              <a href="#" className="py-2 nav-link">
-                On Sale
-              </a>
-              <a href="#" className="py-2 nav-link">
-                New Arrivals
-              </a>
-            </nav>
-          </div>
-          {/* Right side with search bar */}
-          <div className="flex items-center mt-7 sm:mt-0 px-[1in] py-2">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full px-4 py-1 border border-gray-300 rounded-2xl sm:w-64"
-            />
-            {/* You can add a search button/icon here if needed */}
-          </div>
-        </div>
-      </header>
+
       {/* Left side with the image */}
       <div className="lg:w-1/8 lg:pr8">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" className="mx-auto" />
