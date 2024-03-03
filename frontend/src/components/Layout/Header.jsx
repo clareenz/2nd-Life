@@ -183,7 +183,7 @@ const Header = ({ activeHeading }) => {
             {/* become a seller */}
             <div className="800px:h-[25px] ml-[15px] 800px:my-[20px] 800px:flex items-center justify-between">
               <div className={`${styles.button}`}>
-                <Link to="/seller">
+                <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
@@ -293,7 +293,7 @@ const Header = ({ activeHeading }) => {
               <Navbar active={activeHeading} />
 
               <div className={`${styles.button} ml-4`}>
-                <Link to="/seller">
+                <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
@@ -486,7 +486,7 @@ const Header2 = ({ activeHeading }) => {
             {/* become a seller */}
             <div className="800px:h-[25px] ml-[15px] 800px:my-[20px] 800px:flex items-center justify-between">
               <div className={`${styles.button}`}>
-                <Link to="/seller">
+                <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
