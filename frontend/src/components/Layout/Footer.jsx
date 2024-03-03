@@ -48,12 +48,14 @@ const Footer = () => {
             style={{ width: "140px", height: "auto" }}
           />
           <br />
-          <p className="text-black">Discover the magic of yesteryears at prices that fit today's budget.</p>{" "}
+          <p className="text-black">
+            Discover the magic of yesteryears at prices that fit today's budget.
+          </p>{" "}
           {/* put the tagline of our website here */}
           <div className="flex items-center mt-[15px]">
             <AiFillFacebook
               size={25}
-              style={{ marginLeft: "15px", cursor: "pointer", color: "black"}}
+              style={{ marginLeft: "15px", cursor: "pointer", color: "black" }}
             />
             <AiFillTwitterCircle
               size={25}
@@ -131,6 +133,8 @@ const Footer = () => {
     </div>
   );
 };
+
+export default Footer;
 
 const Footer2 = () => {
   return (
@@ -164,12 +168,14 @@ const Footer2 = () => {
             style={{ width: "140px", height: "auto" }}
           />
           <br />
-          <p className="text-black">Discover the magic of yesteryears at prices that fit today's budget.</p>{" "}
+          <p className="text-black">
+            Discover the magic of yesteryears at prices that fit today's budget.
+          </p>{" "}
           {/* put the tagline of our website here */}
           <div className="flex items-center mt-[15px]">
             <AiFillFacebook
               size={25}
-              style={{ marginLeft: "15px", cursor: "pointer", color: "black"}}
+              style={{ marginLeft: "15px", cursor: "pointer", color: "black" }}
             />
             <AiFillTwitterCircle
               size={25}
@@ -248,4 +254,4 @@ const Footer2 = () => {
   );
 };
 
-export {Footer, Footer2};
+export { Footer, Footer2 };
