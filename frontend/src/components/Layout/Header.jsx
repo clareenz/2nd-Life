@@ -225,14 +225,19 @@ const Header = ({ activeHeading }) => {
               />
             </Link>
           </div>
+          {/*cart icon*/}
           <div>
-            <div className="relative m-[20px]">
+            <div className="relative cursor-pointer m-[20px]"
+            onClick={() => setOpenCart(true)}
+            >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                 2
               </span>
             </div>
           </div>
+          {/*cart popup*/}
+          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
         </div>
 
         {/* mobile header sidebar */}
@@ -242,17 +247,25 @@ const Header = ({ activeHeading }) => {
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
               <div className="w-full justify-between flex pr-3">
+                
+                {/*wishlist icon*/}
                 <div>
-                  <div className="relative mr-[15px]">
+                  <div className="relative cursor-pointer mr-[15px]"
+                  onClick={() => setOpenWishlist(true)}>
                     <AiOutlineHeart size={27} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                       4
                     </span>
                   </div>
                 </div>
-                <RxCross1
+                {/*wishlist popup*/}
+                {openWishlist ? (
+                  <Wishlist setOpenWishlist={setOpenWishlist} />
+                ) : null}
+
+                <RxCross1 //close button sa sidebar
                   size={25}
-                  className="ml-4 mt-5"
+                  className="ml-4 mt-5 cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
               </div>
@@ -482,24 +495,7 @@ const Header2 = ({ activeHeading }) => {
                 </span>
               </div>
             </div>
-            {/* profile icon */}
-            <div className={`${styles.normalFlex}`}>
-              <div className="relative cursor-pointer mr-[15px]">
-                {isAuthenticated ? (
-                  <Link to="/profile">
-                    <img
-                      src={`${backend_url}${user.avatar}`}
-                      className="w-[35px] h-[35px] rounded-full"
-                      alt=""
-                    />
-                  </Link>
-                ) : (
-                  <Link to="/login">
-                    <CgProfile size={27} color="83%" />
-                  </Link>
-                )}
-              </div>
-            </div>
+
             {/* become a seller */}
             <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between">
               <div className={`${styles.button}`}>
@@ -546,14 +542,19 @@ const Header2 = ({ activeHeading }) => {
               />
             </Link>
           </div>
+          {/*cart icon*/}
           <div>
-            <div className="relative m-[20px]">
+            <div className="relative cursor-pointer m-[20px]"
+            onClick={() => setOpenCart(true)}
+            >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                 2
               </span>
             </div>
           </div>
+          {/*cart popup*/}
+          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
         </div>
 
         {/* mobile header sidebar */}
@@ -563,17 +564,25 @@ const Header2 = ({ activeHeading }) => {
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
               <div className="w-full justify-between flex pr-3">
+                
+                {/*wishlist icon*/}
                 <div>
-                  <div className="relative mr-[15px]">
+                  <div className="relative cursor-pointer mr-[15px]"
+                  onClick={() => setOpenWishlist(true)}>
                     <AiOutlineHeart size={27} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                       4
                     </span>
                   </div>
                 </div>
-                <RxCross1
+                {/*wishlist popup*/}
+                {openWishlist ? (
+                  <Wishlist setOpenWishlist={setOpenWishlist} />
+                ) : null}
+
+                <RxCross1 //close button sa sidebar
                   size={25}
-                  className="ml-4 mt-5"
+                  className="ml-4 mt-5 cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
               </div>
