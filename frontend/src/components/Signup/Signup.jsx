@@ -21,7 +21,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = {headers: {"Content-Type":"multipart/form-data"}};
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     const newForm = new FormData();
 
@@ -46,11 +46,13 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8">
-
       {/* Left side with the image */}
-      <div className="lg:w-1/8 lg:pr-8 flex-shrink-0">
-        <img src="/2ndLife_Logo.png" alt="2ndLife Logo" className="mx-auto" />
-        {/* Optionally, you can add content or styling here for the image side */}
+      <div className="">
+        <img
+          src="/2ndLife_Logo.png"
+          alt="2ndLife Logo"
+          className="mx-auto"
+        />
       </div>
 
       {/* Right side with the form */}
