@@ -61,7 +61,7 @@ const Header = ({ activeHeading }) => {
               className="ml-10"
               src="/2ndlife%20logo%20word.png" //logo
               alt="logo2"
-              style={{ width: "140px", height: "auto" }}
+              style={{ width: "120px", height: "auto" }}
             />
           </Link>
         </div>
@@ -180,7 +180,7 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
             {/* become a seller */}
-            <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between">
+            <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between mr-3">
               <div className={`${styles.button}`}>
                 <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center text-sm">
@@ -395,7 +395,7 @@ const Header2 = ({ activeHeading }) => {
               className="ml-10"
               src="/2ndlife%20logo%20word.png" //logo
               alt="logo2"
-              style={{ width: "140px", height: "auto" }}
+              style={{ width: "120px", height: "auto" }}
             />
           </Link>
         </div>
@@ -497,7 +497,7 @@ const Header2 = ({ activeHeading }) => {
             </div>
 
             {/* become a seller */}
-            <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between">
+            <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between mr-3">
               <div className={`${styles.button}`}>
                 <Link to="/shop-create">
                   <h1 className="text-[#fff] flex items-center text-sm">
