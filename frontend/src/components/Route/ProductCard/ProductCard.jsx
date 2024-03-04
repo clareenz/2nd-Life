@@ -86,44 +86,39 @@ const ProductCard = ({ data }) => {
 
         {/* side options */}
         <div>
-            {click ? (
-              <AiFillHeart
-                size={22}
-                className="cursor-pointer absolute right-2 top-5"
-                onClick={() => setClick(!click)}
-                color={click ? "red" : "#333"}
-                title="Remove from wishlist"
-              />
-            ) : (
-              <AiOutlineHeart
-                size={22}
-                className="cursor-pointer absolute right-2 top-5"
-                onClick={() => setClick(!click)}
-                color={click ? "red" : "#333"}
-                title="Add to Wishlist"
-              />
-            )}
-            <AiOutlineEye
-                size={22}
-                className="cursor-pointer absolute right-2 top-14"
-                onClick={() => setOpen(!open)}
-                color="#333"
-                title="Quick View"
-              />
-              <AiOutlineShoppingCart
-               size={25}
-               className="cursor-pointer absolute right-2 top-24"
-               onClick={() => setOpen(!open)}
-               color="#444"
-               title="Add to Cart"
-               />
-               {
-                open ? (
-                  <ProductDetailsCard setOpen={setOpen} data={data}/>
-                ) : null
-               }
-          </div>
-
+          {click ? (
+            <AiFillHeart
+              size={22}
+              className="cursor-pointer absolute right-2 top-5"
+              onClick={() => setClick(!click)}
+              color={click ? "red" : "#333"}
+              title="Remove from wishlist"
+            />
+          ) : (
+            <AiOutlineHeart
+              size={22}
+              className="cursor-pointer absolute right-2 top-5"
+              onClick={() => setClick(!click)}
+              color={click ? "red" : "#333"}
+              title="Add to Wishlist"
+            />
+          )}
+          <AiOutlineEye
+            size={22}
+            className="cursor-pointer absolute right-2 top-14"
+            onClick={() => setOpen(!open)}
+            color="#333"
+            title="Quick View"
+          />
+          <AiOutlineShoppingCart
+            size={25}
+            className="cursor-pointer absolute right-2 top-24"
+            onClick={() => setOpen(!open)}
+            color="#444"
+            title="Add to Cart"
+          />
+          {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
+        </div>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaFacebook, FaGoogle } from "react-icons/fa"; // Import the appropriate icons
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
 import axios from "axios";
 import { server } from "../../server";
@@ -16,33 +16,36 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post(`${server}/user/login-user`,
-    {
-      email,
-      password,
-    },{withCredentials:true}
-    )
-    .then((res) => {
-      toast.success("Login Success!");
-      navigate("/");
-      window.location.reload(true);
-    })
-    .catch((err) => {
-      toast.error(err.response.data.message);
-    });
-
+    await axios
+      .post(
+        `${server}/user/login-user`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success("Login Success!");
+        navigate("/");
+        window.location.reload(true);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
-
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row sm:px-6 lg:px-8 login-div">
-
       {/* Left side with the image */}
-      <div className="lg:w-1/8 lg:pr8">
-        <img src="/2ndLife_Logo.png" alt="2ndLife Logo" className="mx-auto" />
+      <div className="lg:w-1/8 lg:pr-8">
+        <img
+          src="/2ndLife_Logo.png"
+          alt="2ndLife Logo"
+          className="mx-auto w-full h-auto lg:w-auto lg:h-auto"
+        />
       </div>
-      
+
       {/* Right side with the login form */}
       <div className="lg:w-1/2">
         {/* Modified line */}

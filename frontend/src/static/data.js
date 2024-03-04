@@ -5,7 +5,7 @@ export const navItems = [
     url: "/",
   },
   {
-    title: "Best Store", //wala tayo best selling, best store lang
+    title: "BestStore", //wala tayo best selling, best store lang
     url: "/best-selling",
   },
   {
