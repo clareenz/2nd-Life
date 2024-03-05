@@ -8,17 +8,29 @@ And if possible, edit the fields as well coz they look ugly. Tenkyu Nikkaa
 import React, { useState } from "react";
 import { backend_url } from "../../server";
 import { useSelector } from "react-redux";
-import { AiOutlineArrowRight, AiOutlineCamera, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiOutlineArrowRight,
+  AiOutlineCamera,
+  AiOutlineDelete,
+} from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { DataGrid } from "@material-ui/data-grid";
 import { MdOutlineTrackChanges } from "react-icons/md";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const ProfileContent = ({ active }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] =
+    useState(false);
   const [phoneNumber, setPhoneNumber] = useState();
   const [zipCode, setZipCode] = useState();
   const [address1, setAddress1] = useState("");
@@ -28,12 +40,28 @@ const ProfileContent = ({ active }) => {
     e.preventDefault();
   };
 
+  const togglePasswordVisibility = (passwordType) => {
+    switch (passwordType) {
+      case "currentPassword":
+        setCurrentPasswordVisible(!currentPasswordVisible);
+        break;
+      case "newPassword":
+        setNewPasswordVisible(!newPasswordVisible);
+        break;
+      case "confirmNewPassword":
+        setConfirmNewPasswordVisible(!confirmNewPasswordVisible);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="w-full">
       {/* profile */}
       {active === 1 && (
         <>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-flex">
             <div className="relative">
               <img
                 src={`${backend_url}${user?.avatar}`}
@@ -45,12 +73,13 @@ const ProfileContent = ({ active }) => {
               </div>
             </div>
           </div>
+
           <br />
           <br />
-          <div className="w-full px-5">
+          <div className="w-full px-12">
             <form onSubmit={handleSubmit} aria-required={true}>
               <div className="w-full 800px:flex block pb-3">
-                <div className="w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[500px]">
                   <label className="block pb-2">Full Name</label>
                   <input
                     type="text"
@@ -60,7 +89,7 @@ const ProfileContent = ({ active }) => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                <div className="w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[500px]">
                   <label className="block pb-2">Email Address</label>
                   <input
                     type="text"
@@ -73,7 +102,7 @@ const ProfileContent = ({ active }) => {
               </div>
 
               <div className="w-full 800px:flex block pb-3">
-                <div className="w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[500px]">
                   <label className="block pb-2">Phone Number</label>
                   <input
                     type="number"
@@ -83,7 +112,7 @@ const ProfileContent = ({ active }) => {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </div>
-                <div className="w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[500px]">
                   <label className="block pb-2">Zip Code</label>
                   <input
                     type="number"
@@ -96,7 +125,7 @@ const ProfileContent = ({ active }) => {
               </div>
 
               <div className="w-full 800px:flex block pb-3">
-                <div className="w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[500px]">
                   <label className="block pb-2">Address 1</label>
                   <input
                     type="address"
@@ -106,7 +135,7 @@ const ProfileContent = ({ active }) => {
                     onChange={(e) => setAddress1(e.target.value)}
                   />
                 </div>
-                <div className="w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[500px]">
                   <label className="block pb-2">Address 2</label>
                   <input
                     type="address"
@@ -117,12 +146,101 @@ const ProfileContent = ({ active }) => {
                   />
                 </div>
               </div>
-              <input
-                className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
-                required
-                value="Update"
-                type="submit"
-              />
+
+              {/* Password fields */}
+              <div className="w-full 800px:flex flex-col pb-3">
+                <div className="w-full 800px:w-[500px] relative">
+                  <label className="block pb-2">Current Password</label>
+                  <div className="relative">
+                    <input
+                      type={currentPasswordVisible ? "text" : "password"}
+                      className={`${styles.input} !w-[95%] mb-4 800px:0`}
+                      required
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-4 right-8 transform -translate-y-1/2"
+                      onClick={() =>
+                        togglePasswordVisibility("currentPassword")
+                      }
+                    >
+                      {currentPasswordVisible ? (
+                        <AiOutlineEyeInvisible size={17} />
+                      ) : (
+                        <AiOutlineEye size={17} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-full 800px:w-[500px] relative">
+                  <label className="block pb-2">New Password</label>
+                  <div className="relative">
+                    <input
+                      type={newPasswordVisible ? "text" : "password"}
+                      className={`${styles.input} !w-[95%] mb-4 800px:0`}
+                      required
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-4 right-8 transform -translate-y-1/2"
+                      onClick={() => togglePasswordVisibility("newPassword")}
+                    >
+                      {newPasswordVisible ? (
+                        <AiOutlineEyeInvisible size={17} />
+                      ) : (
+                        <AiOutlineEye size={17} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-full 800px:w-[500px] relative">
+                  <label className="block pb-2">Confirm New Password</label>
+                  <div className="relative">
+                    <input
+                      type={confirmNewPasswordVisible ? "text" : "password"}
+                      className={`${styles.input} !w-[95%] mb-4 800px:0`}
+                      required
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-4 right-8 transform -translate-y-1/2"
+                      onClick={() =>
+                        togglePasswordVisibility("confirmNewPassword")
+                      }
+                    >
+                      {confirmNewPasswordVisible ? (
+                        <AiOutlineEyeInvisible size={17} />
+                      ) : (
+                        <AiOutlineEye size={17} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "center",
+                  height: "20vh",
+                }}
+              >
+                <input
+                  className={`w-[250px] h-[40px] border border-[#006665] text-center text-[#006665] rounded-[15px] cursor-pointer hover:text-[#FF8474] hover:border-[#FF8474]`}
+                  required
+                  value="Update"
+                  type="submit"
+                />
+              </div>
             </form>
           </div>
         </>
@@ -156,8 +274,8 @@ const ProfileContent = ({ active }) => {
         </div>
       )}
 
-       {/* user address */}
-       {active === 7 && (
+      {/* user address */}
+      {active === 7 && (
         <div>
           <Address />
         </div>
@@ -459,7 +577,7 @@ const PaymentMethod = () => {
           <h5 className="pl-6">01/2023</h5>
         </div>
         <div className="min-w-[10%] flex items-center justify-between pl-8">
-            <AiOutlineDelete size={25} className="cursor-pointer"/>
+          <AiOutlineDelete size={25} className="cursor-pointer" />
         </div>
       </div>
     </div>
@@ -473,7 +591,7 @@ const Address = () => {
         <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
           My Addresses
         </h1>
-        <div className={`${styles.button1} !rounded-md`}>
+        <div className={`${styles.button1} !rounded-2xl`}>
           <span className="text-[#fff]">Add New</span>
         </div>
       </div>
@@ -489,10 +607,10 @@ const Address = () => {
           <h6>(+63) 912 345 6789</h6>
         </div>
         <div className="min-w-[10%] flex items-center justify-between pl-8">
-            <AiOutlineDelete size={25} className="cursor-pointer"/>
+          <AiOutlineDelete size={25} className="cursor-pointer" />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 export default ProfileContent;
