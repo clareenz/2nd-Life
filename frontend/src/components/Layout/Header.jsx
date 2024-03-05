@@ -61,7 +61,7 @@ const Header = ({ activeHeading }) => {
               className="ml-10"
               src="/2ndlife%20logo%20word.png" //logo
               alt="logo2"
-              style={{ width: "140px", height: "auto" }}
+              style={{ width: "120px", height: "auto" }}
             />
           </Link>
         </div>
@@ -395,7 +395,7 @@ const Header2 = ({ activeHeading }) => {
               className="ml-10"
               src="/2ndlife%20logo%20word.png" //logo
               alt="logo2"
-              style={{ width: "140px", height: "auto" }}
+              style={{ width: "120px", height: "auto" }}
             />
           </Link>
         </div>
