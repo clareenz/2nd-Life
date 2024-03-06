@@ -63,7 +63,7 @@ shopSchema.pre("save", async function (next) {
     });
   };
 
-  // comapre password
+  // compare password
   shopSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
   };

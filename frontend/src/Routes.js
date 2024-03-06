@@ -10,9 +10,11 @@ import ProductDetailsPage from "../src/pages/ProductDetailsPage";
 import ProfilePage from "../src/pages/ProfilePage";
 import CheckoutPage from "../src/pages/CheckoutPage";
 import PaymentPage from "../src/pages/PaymentPage";
-import OrderSuccessPage from "../src/pages/OrderSuccessPage.jsx";
-import ShopCreatePage from "../src/pages/ShopCreate.jsx";
-import SellerActivationPage from "../src/pages/SellerActivationPage.jsx"
+import OrderSuccessPage from "../src/pages/OrderSuccessPage";
+import ShopCreatePage from "../src/pages/ShopCreate";
+import SellerActivationPage from "../src/pages/SellerActivationPage";
+import ShopLoginPage from "../src/pages/ShopLoginPage";
+
 export{
     LoginPage,
     SignupPage,
@@ -29,4 +31,5 @@ export{
     OrderSuccessPage,
     ShopCreatePage,
     SellerActivationPage,
+    ShopLoginPage,
 };
