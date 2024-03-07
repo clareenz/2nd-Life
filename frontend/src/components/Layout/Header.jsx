@@ -181,9 +181,9 @@ const Header = ({ activeHeading }) => {
             </div>
             {/* become a seller */}
             <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between mr-3">
-              <div className={`${styles.button}`}>
+              <div className={`${styles.button}w-auto h-auto`}>
                 <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center text-sm">
+                  <h1 className="text-[#fff] flex items-center text-sm m-3">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
@@ -498,9 +498,9 @@ const Header2 = ({ activeHeading }) => {
 
             {/* become a seller */}
             <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between mr-3">
-              <div className={`${styles.button}`}>
+              <div className={`${styles.button}w-auto h-auto`}>
                 <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center text-sm">
+                  <h1 className="text-[#fff] flex items-center text-sm m-3">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>

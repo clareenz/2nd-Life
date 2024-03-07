@@ -235,7 +235,7 @@ const ProfileContent = ({ active }) => {
                 }}
               >
                 <input
-                  className={`w-[250px] h-[40px] border border-[#006665] text-center text-[#006665] rounded-[15px] cursor-pointer hover:text-[#FF8474] hover:border-[#FF8474]`}
+                  className={`${styles.button1} w-[190px] text-white text-center text-[#006665]  cursor-pointer`}
                   required
                   value="Update"
                   type="submit"
@@ -544,7 +544,7 @@ const TrackOrder = () => {
       <DataGrid
         rows={row}
         columns={columns}
-        pageSize={10}
+        pageSize={5}
         disableSelectionOnClick
         autoHeight
       />
@@ -556,15 +556,17 @@ const PaymentMethod = () => {
   return (
     <div className="w-full px-5">
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
+        <h1 className="text-[20px] font-[600] text-[#000000ba] pb-2">
           Payment Methods
         </h1>
-        <div className={`${styles.button1} !rounded-md`}>
-          <span className="text-[#fff]">Add New</span>
+        <div
+          className={`${styles.button1} !rounded-md !text-sm w-auto h-auto mx-7`}
+        >
+          <span className="text-[#fff] m-2">Add New</span>
         </div>
       </div>
       <br />
-      <div className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10">
+      <div className="w-full bg-white h-[50px] rounded-[10px] flex items-center px-3 shadow justify-between">
         <div className="flex items-center">
           <img
             src="https://bonik-react.vercel.app/assets/images/payment-methods/Visa.svg"
@@ -577,7 +579,7 @@ const PaymentMethod = () => {
           <h5 className="pl-6">01/2023</h5>
         </div>
         <div className="min-w-[10%] flex items-center justify-between pl-8">
-          <AiOutlineDelete size={25} className="cursor-pointer" />
+          <AiOutlineDelete size={20} className="cursor-pointer text-gray-700 hover:text-red-600" />
         </div>
       </div>
     </div>
@@ -591,14 +593,16 @@ const Address = () => {
         <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
           My Addresses
         </h1>
-        <div className={`${styles.button1} !rounded-2xl`}>
-          <span className="text-[#fff]">Add New</span>
+        <div
+          className={`${styles.button1} !rounded-md !text-sm w-auto h-auto mx-7`}
+        >
+          <span className="text-[#fff] m-2">Add New</span>
         </div>
       </div>
       <br />
-      <div className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10">
+      <div className="w-full bg-white h-[50px] rounded-[10px] flex items-center px-3 shadow justify-between">
         <div className="flex items-center">
-          <h5 className="pl-5 font-[600]">Default</h5>
+          <h5 className="pl-5 font-[600] text-gray-400">Default</h5>
         </div>
         <div className="pl-8 flex items-center">
           <h6> San Agustin 1, Dasmarinas City, Cavite, Philippines</h6>
@@ -607,7 +611,10 @@ const Address = () => {
           <h6>(+63) 912 345 6789</h6>
         </div>
         <div className="min-w-[10%] flex items-center justify-between pl-8">
-          <AiOutlineDelete size={25} className="cursor-pointer" />
+          <AiOutlineDelete
+            size={20}
+            className="cursor-pointer text-gray-700 hover:text-red-600"
+          />
         </div>
       </div>
     </div>

@@ -39,7 +39,7 @@ const Cart = ({ setOpenCart }) => {
         <div>
           <div className="flex justify-end w-full pt-5 pr-5">
             <RxCross1
-              size={25}
+              size={15}
               className="cursor-pointer"
               onClick={() => setOpenCart(false)}
             />
@@ -58,7 +58,7 @@ const Cart = ({ setOpenCart }) => {
           </div>
         </div>
 
-        <div className="px-5 mb-3">
+        <div className="px-20 mb-3">
           {/* checkout button */}
           <Link to="/checkout">
             <div className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}>
