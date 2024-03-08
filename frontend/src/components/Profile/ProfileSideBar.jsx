@@ -3,8 +3,8 @@
  */
 
 import React from "react";
-import { AiOutlineCreditCard, AiOutlineLogout, AiOutlineMessage } from "react-icons/ai";
-import { HiOutlineReceiptRefund, HiOutlineShoppingBag } from "react-icons/hi";
+import { AiOutlineCreditCard, AiOutlineEye, AiOutlineKey, AiOutlineLogout, AiOutlineMessage } from "react-icons/ai";
+import { HiOutlineShoppingBag } from "react-icons/hi";
 import { MdOutlineTrackChanges } from "react-icons/md";
 import { RxPerson } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
@@ -50,9 +50,9 @@ const ProfileSideBar = ({ setActive, active }) => {
         className="flex items-center cursor-pointer w-full mb-8"
         onClick={() => setActive(3)}
       >
-        <HiOutlineReceiptRefund size={20} color={active === 3 ? "006665" : ""} />
+        <AiOutlineKey size={20} color={active === 3 ? "006665" : ""} />
         <span className={`pl-3 ${active === 3 ? "text-[#FE8373]" : ""} 800px:block hidden`}>
-          Refunds
+          Password
         </span>
       </div>
       <div
