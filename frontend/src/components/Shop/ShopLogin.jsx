@@ -31,6 +31,7 @@ const ShopLogin = () => {
       )
       .then((res) => {
         toast.success("Login Success!");
+        navigate("/dashboard")
         window.location.reload(true);
       })
       .catch((err) => {
@@ -45,7 +46,7 @@ const ShopLogin = () => {
         <img
           src="/2ndLife_Logo.png"
           alt="2ndLife Logo"
-          className="mx-auto w-full h-auto lg:w-auto lg:h-auto"
+          className="w-full h-auto mx-auto lg:w-auto lg:h-auto"
         />
       </div>
 
@@ -58,7 +59,7 @@ const ShopLogin = () => {
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="px-4 py-8 bg-white shadow  sm:rounded-lg sm:px-10">
+          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
