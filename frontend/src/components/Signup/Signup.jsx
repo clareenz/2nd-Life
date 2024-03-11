@@ -11,38 +11,47 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); 
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
 
-  const handleFileInputChange = (e) => {
+   // Handle file input change
+   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const newForm = new FormData();
+      // Validate that password and confirm password match
+      if (password !== confirmPassword) {
+        toast.error("Password and confirm password do not match");
+        return;
+      }
 
-    newForm.append("file", avatar);
-    newForm.append("name", name);
-    newForm.append("email", email);
-    newForm.append("password", password);
+   // Create form data object
+   const formData = new FormData();
+   formData.append("file", avatar);
+   formData.append("name", name);
+   formData.append("email", email);
+   formData.append("password", password);
 
-    axios
-      .post(`${server}/user/create-user`, newForm, config)
-      .then((res) => {
-        toast.success(res.data.message);
-        setName("");
-        setEmail("");
-        setPassword("");
-        setAvatar("");
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
-  };
+   // Send POST request to create user
+   try {
+    const response = await axios.post(`${server}/user/create-user`, formData);
+    toast.success(response.data.message);
+    // Reset form fields on success
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setAvatar("");
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row items-center justify-center py-12 sm:px-6 lg:px-8">
@@ -135,6 +144,40 @@ const Signup = () => {
                       onClick={() => setVisible(true)}
                     ></AiOutlineEyeInvisible>
                   )}
+                </div>
+              </div>
+
+               {/* Confirm Password input */}
+               <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </label>
+                <div className="mt-1 relative">
+                  <input
+                    type={visible ? "text" : "password"}
+                    name="confirmPassword"
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
+                  />
+                   {visible ? (
+                    <AiOutlineEye
+                      className="absolute right-2 top-2 cursor-pointer"
+                      size={25}
+                      onClick={() => setVisible(false)}
+                    />
+                    ) : (
+                      <AiOutlineEyeInvisible
+                        className="absolute right-2 top-2 cursor-pointer"
+                        size={25}
+                        onClick={() => setVisible(true)}
+                      />
+                      )}
                 </div>
               </div>
 

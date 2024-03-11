@@ -1,6 +1,7 @@
 import LoginPage from "../src/pages/LoginPage";
 import SignupPage from "../src/pages/SignupPage";
 import ActivationPage from "../src/pages/ActivationPage";
+import ForgotPasswordPage from "../src/pages/ForgotPasswordPage.jsx";
 import HomePage from "../src/pages/HomePage";
 import ProductsPage from "../src/pages/ProductsPage";
 import BestSellingPage from "../src/pages/BestSellingPage.jsx";
@@ -19,6 +20,7 @@ export{
     LoginPage,
     SignupPage,
     ActivationPage,
+    ForgotPasswordPage,
     HomePage,
     ProductsPage,
     BestSellingPage,
