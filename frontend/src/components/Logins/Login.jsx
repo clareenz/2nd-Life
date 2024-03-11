@@ -117,7 +117,7 @@ const Login = () => {
                     className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 vorder-gray-300"
                   />
                   <label
-                    htmlFor="remeber-me"
+                    htmlFor="remember-me"
                     className="block ml-2 text-sm text-gray-900"
                   >
                     Remember me
@@ -125,7 +125,7 @@ const Login = () => {
                 </div>
                 <div className="text-sm">
                   <a
-                    href=".forgot-password"
+                    href="/forgot-password"
                     className="font-medium text-006665 hover:text-fe8373"
                   >
                     Forgot your password?

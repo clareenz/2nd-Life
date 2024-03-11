@@ -11,6 +11,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
 
@@ -22,6 +23,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+    // Validate that password and confirm password match
+    if (password !== confirmPassword) {
+      toast.error("Password and confirm password do not match");
+      return;
+    }
 
     const newForm = new FormData();
 
@@ -37,6 +44,7 @@ const Signup = () => {
         setName("");
         setEmail("");
         setPassword("");
+        setConfirmPassword("");
         setAvatar("");
       })
       .catch((error) => {
@@ -135,6 +143,40 @@ const Signup = () => {
                       onClick={() => setVisible(true)}
                     ></AiOutlineEyeInvisible>
                   )}
+                </div>
+              </div>
+              
+                            {/* Confirm Password input */}
+                            <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </label>
+                <div className="mt-1 relative">
+                  <input
+                    type={visible ? "text" : "password"}
+                    name="confirmPassword"
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2 border-b border-gray-300 square-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
+                  />
+                   {visible ? (
+                    <AiOutlineEye
+                      className="absolute right-2 top-2 cursor-pointer"
+                      size={25}
+                      onClick={() => setVisible(false)}
+                    />
+                    ) : (
+                      <AiOutlineEyeInvisible
+                        className="absolute right-2 top-2 cursor-pointer"
+                        size={25}
+                        onClick={() => setVisible(true)}
+                      />
+                      )}
                 </div>
               </div>
 
