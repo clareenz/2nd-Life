@@ -20,6 +20,11 @@ const Signup = () => {
     setAvatar(file);
   };
 
+  const validatePassword = () => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    return regex.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const config = { headers: { "Content-Type": "multipart/form-data" } };
@@ -30,6 +35,12 @@ const Signup = () => {
       return;
     }
 
+    // Validate password strength
+    if (!validatePassword()) {
+      toast.error("Password must be at least 6 characters and contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.");
+      return;
+    }
+    
     const newForm = new FormData();
 
     newForm.append("file", avatar);
