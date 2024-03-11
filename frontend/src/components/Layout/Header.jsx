@@ -441,11 +441,11 @@ const Header2 = ({ activeHeading }) => {
               placeholder="Search Product..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] px-3 w-full border-gray-300 border-[1px] rounded-3xl "
+              className="h-[30px] px-2 w-full border-gray-300 border-[1px] rounded-3xl text-sm"
             />
             <AiOutlineSearch
-              size={27}
-              className="absolute right-2 top-1.5 cursor-pointer"
+              size={25}
+              className="absolute right-2 top-1 cursor-pointer"
             />
             {searchData && searchData.length !== 0 ? (
               <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-3">

@@ -414,10 +414,7 @@ const Password = () => {
 
   return (
     <div className="w-full">
-      {/* profile */}
-
       <>
-        <br />
         <br />
         <div className="w-full px-12">
           <form onSubmit={handleSubmit} aria-required={true}>
@@ -497,8 +494,8 @@ const Password = () => {
             </div>
 
             {!isFormValid && (
-              <div className="text-red-500 mb-4">
-                Password fields are required when changing the password.
+              <div className="text-gray-300 mb-4">
+                Note: Password fields are required when changing the password.
               </div>
             )}
 
