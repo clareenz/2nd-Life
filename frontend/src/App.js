@@ -19,13 +19,13 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
-} from "./Routes.js";
+} from "../src/routes/Routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { ShopHomePage } from "./ShopRoutes";
 import SellerProtectedRoute from "./SellerProtectedRoute";
 
