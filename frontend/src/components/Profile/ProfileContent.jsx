@@ -88,9 +88,9 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex justify-end p-4">
-        <p className="text-flex text-gray-600 mr-[50px]">
+    <div className="w-full px-5">
+      <div className="flex justify-end p-4 mr-3">
+        <p className="text-flex text-gray-600">
           Welcome! <span style={{ color: "#DB4444" }}>{user && user.name}</span>
         </p>
       </div>
@@ -502,11 +502,11 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="w-full px-12 pt-10">
+    <div className="w-full px-10 pt-6">
       <h1 className="block text-[25px] font-[600] text-[#000000ba] pb-2">
         Change Password
       </h1>
-      <div className="w-full pt-7">
+      <div className="w-full pt-9">
         <form
           aria-required
           onSubmit={passwordChangeHandler}
@@ -704,15 +704,15 @@ const Address = () => {
     <div className="w-full px-5">
       {open && (
         <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center ">
-          <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
+          <div className="w-flex h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
             <div className="flex justify-end w-full p-3">
               <RxCross1
-                size={30}
+                size={17}
                 className="cursor-pointer"
                 onClick={() => setOpen(false)}
               />
             </div>
-            <h1 className="text-center text-[25px] font-Poppins">
+            <h1 className="text-center text-[20px] font-Poppins">
               Add New Address
             </h1>
             <div className="w-full">
@@ -725,7 +725,7 @@ const Address = () => {
                       id=""
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
+                      className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
                         choose your country
@@ -750,7 +750,7 @@ const Address = () => {
                       id=""
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
+                      className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
                         choose your city
@@ -768,32 +768,32 @@ const Address = () => {
                     </select>
                   </div>
 
-                  <div className="w-full pb-2">
+                  <div className="w-[95%] pb-2">
                     <label className="block pb-2">Address 1</label>
                     <input
                       type="address"
-                      className={`${styles.input}`}
+                      className={`${styles.input} focus:border-[#006665]`}
                       required
                       value={address1}
                       onChange={(e) => setAddress1(e.target.value)}
                     />
                   </div>
-                  <div className="w-full pb-2">
+                  <div className="w-[95%] pb-2">
                     <label className="block pb-2">Address 2</label>
                     <input
                       type="address"
-                      className={`${styles.input}`}
+                      className={`${styles.input} focus:border-[#006665]`}
                       required
                       value={address2}
                       onChange={(e) => setAddress2(e.target.value)}
                     />
                   </div>
 
-                  <div className="w-full pb-2">
+                  <div className="w-[95%] pb-2">
                     <label className="block pb-2">Zip Code</label>
                     <input
                       type="number"
-                      className={`${styles.input}`}
+                      className={`${styles.input} focus:border-[#006665]`}
                       required
                       value={zipCode}
                       onChange={(e) => setZipCode(e.target.value)}
@@ -807,7 +807,7 @@ const Address = () => {
                       id=""
                       value={addressType}
                       onChange={(e) => setAddressType(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px]"
+                      className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
                         Choose your Address Type
@@ -825,10 +825,10 @@ const Address = () => {
                     </select>
                   </div>
 
-                  <div className="w-full pb-2 ">
+                  <div className="w-[60%] pb-2 mx-auto text-center round-md">
                     <input
                       type="submit"
-                      className={`${styles.input} mt-5 cursor-pointer`}
+                      className={`${styles.input} mt-5 cursor-pointer text-[#006665] border border-[#006665] hover:border-[#FF8474] hover:text-[#FF8474]`}
                       required
                       readOnly
                     />
@@ -839,22 +839,24 @@ const Address = () => {
           </div>
         </div>
       )}
-      <div className="flex items-center justify-between w-full">
+
+      <div className="flex items-center justify-between w-full pt-3">
         <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
           My Addresses
         </h1>
         <div
-          className={`${styles.button} !rounded-md`}
+          className={`${styles.button2} !rounded-md text-[12px] p-1 w-16 h-7 mr-1`}
           onClick={() => setOpen(true)}
         >
           <span className="text-[#fff]">Add New</span>
         </div>
       </div>
+
       <br />
       {user &&
         user.addresses.map((item, index) => (
           <div
-            className="w-full bg-white h-min 800px:h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-5"
+            className="w-flex bg-white h-min 800px:h-[50px] rounded-[10px] flex items-center px-3 shadow justify-between pr-10 mb-5"
             key={index}
           >
             <div className="flex items-center">
@@ -872,8 +874,8 @@ const Address = () => {
             </div>
             <div className="min-w-[10%] flex items-center justify-between pl-8">
               <AiOutlineDelete
-                size={25}
-                className="cursor-pointer"
+                size={20}
+                className="cursor-pointer hover:text-red-600"
                 onClick={() => handleDelete(item)}
               />
             </div>
@@ -881,8 +883,8 @@ const Address = () => {
         ))}
 
       {user && user.addresses.length === 0 && (
-        <h5 className="text-center pt-8 text-[18px]">
-          You not have any saved address!
+        <h5 className="text-center pt-8 text-[15px] text-gray-500">
+          You do not have any saved addresses!
         </h5>
       )}
     </div>
