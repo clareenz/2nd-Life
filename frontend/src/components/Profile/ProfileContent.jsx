@@ -24,6 +24,7 @@ import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { HiEye, HiEyeOff } from "react-icons/hi"; // Import eye icons from react-icons library
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -33,6 +34,7 @@ const ProfileContent = ({ active }) => {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -66,16 +68,32 @@ const ProfileContent = ({ active }) => {
         withCredentials: true,
       })
       .then((response) => {
-         dispatch(loadUser());
-         toast.success("avatar updated successfully!");
+        dispatch(loadUser());
+        toast.success("avatar updated successfully!");
       })
       .catch((error) => {
         toast.error(error);
       });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleCancel = () => {
+    // Reset form fields to their initial state
+    setName("");
+    setEmail("");
+    setPhoneNumber("");
+  };
+
   return (
     <div className="w-full">
+      <div className="flex justify-end p-4">
+        <p className="text-flex text-gray-600 mr-[50px]">
+          Welcome! <span style={{ color: "#DB4444" }}>{user && user.name}</span>
+        </p>
+      </div>
       {/* profile */}
       {active === 1 && (
         <>
@@ -101,14 +119,14 @@ const ProfileContent = ({ active }) => {
           </div>
           <br />
           <br />
-          <div className="w-full px-5">
+          <div className="w-full px-12">
             <form onSubmit={handleSubmit} aria-required={true}>
               <div className="block w-full pb-3 800px:flex">
                 <div className=" w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Full Name</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -118,7 +136,7 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Email Address</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -131,30 +149,90 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Phone Number</label>
                   <input
                     type="number"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
                     required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </div>
 
-                <div className=" w-[100%] 800px:w-[50%]">
+                <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Enter your password</label>
-                  <input
-                    type="password"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="absolute top-4 right-8 transform -translate-y-1/2"
+                      onClick={() => togglePasswordVisibility("showPassword")}
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible size={17} />
+                      ) : (
+                        <AiOutlineEye size={17} />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
-              <input
-                className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
-                required
-                value="Update"
-                type="submit"
-              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "center",
+                  height: "20vh",
+                }}
+              >
+                <button //cancel button
+                  style={{
+                    width: "150px",
+                    height: "50px",
+                    margin: "3px 0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "25px",
+                    cursor: "pointer",
+                    color: "#006665",
+                    backgroundColor: "transparent", // Set initial background color to transparent
+                    //  border: "2px solid #fe8373", // Set the border color
+                    transition: "background-color 0.3s ease, color 0.3s ease", // Add a smooth transition effect for background color and text color
+                  }}
+                  onClick={handleCancel}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = "#006665"; // Change background color on hover
+                    e.currentTarget.style.color = "#ffffff"; // Change text color on hover
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent"; // Reset background color on mouse out
+                    e.currentTarget.style.color = "#006665"; // Reset text color on mouse out
+                  }}
+                >
+                  Cancel
+                </button>
+
+                {/* Save Changes Button */}
+                <input
+                  className={`${styles.button2} w-[190px] text-white text-center text-[#006665]  cursor-pointer`}
+                  required
+                  value="Save Changes"
+                  type="submit"
+                  onClick={handleSubmit}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = "#FF8474"; // Change background color on hover
+                    e.currentTarget.style.color = "#ffffff"; // Change text color on hover
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent"; // Reset background color on mouse out
+                    e.currentTarget.style.color = "#006665";
+                  }}
+                />
+              </div>
             </form>
           </div>
         </>
@@ -164,13 +242,6 @@ const ProfileContent = ({ active }) => {
       {active === 2 && (
         <div>
           <AllOrders />
-        </div>
-      )}
-
-      {/* Refund */}
-      {active === 3 && (
-        <div>
-          <Password />
         </div>
       )}
 
@@ -275,7 +346,7 @@ const AllOrders = () => {
       });
     });
 
-    const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   return (
     <div className="pt-12 pl-8">
@@ -286,231 +357,6 @@ const AllOrders = () => {
         disableSelectionOnClick
         autoHeight
       />
-    </div>
-  );
-};
-
-const Password = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] =
-    useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Check if the form is valid
-    const isPasswordFieldsEmpty =
-      !currentPassword && !newPassword && !confirmNewPassword;
-
-    // Check if the current password matches the default
-    const isCurrentPasswordCorrect = currentPassword === DEFAULT_PASSWORD; // Replace DEFAULT_PASSWORD with your actual default password
-
-    // Check if the new password and confirm new password match
-    const doPasswordsMatch = newPassword === confirmNewPassword;
-
-    // Update the form validity based on the checks
-    setIsFormValid(
-      !isPasswordFieldsEmpty && isCurrentPasswordCorrect && doPasswordsMatch
-    );
-
-    // Show warning messages if needed
-    if (!isCurrentPasswordCorrect) {
-      // Display a warning for incorrect current password
-      setCurrentPasswordWarning("Current password is incorrect.");
-    } else {
-      setCurrentPasswordWarning(""); // Clear the warning if current password is correct
-    }
-
-    if (!doPasswordsMatch) {
-      // Display a warning for mismatched new and confirm passwords
-      setPasswordMatchWarning(
-        "New password and confirm password do not match."
-      );
-    } else {
-      setPasswordMatchWarning(""); // Clear the warning if passwords match
-    }
-  };
-
-  const handleCancel = () => {
-    // Reset form fields to their initial state
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmNewPassword("");
-  };
-
-  const togglePasswordVisibility = (passwordType) => {
-    switch (passwordType) {
-      case "currentPassword":
-        setCurrentPasswordVisible(!currentPasswordVisible);
-        break;
-      case "newPassword":
-        setNewPasswordVisible(!newPasswordVisible);
-        break;
-      case "confirmNewPassword":
-        setConfirmNewPasswordVisible(!confirmNewPasswordVisible);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const [isFormValid, setIsFormValid] = useState(true);
-  const [currentPasswordWarning, setCurrentPasswordWarning] = useState("");
-  const [passwordMatchWarning, setPasswordMatchWarning] = useState("");
-  const DEFAULT_PASSWORD = "your_actual_default_password";
-
-  return (
-    <div className="w-full">
-      <>
-        <br />
-        <div className="w-full px-12">
-          <form onSubmit={handleSubmit} aria-required={true}>
-            {/* Current Password */}
-            <div className="w-full 800px:w-[500px] relative">
-              <label className="block pb-2">Current Password</label>
-              <div className="relative">
-                <input
-                  type={currentPasswordVisible ? "text" : "password"}
-                  className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  required={newPassword !== "" || confirmNewPassword !== ""}
-                />
-                <button
-                  type="button"
-                  className="absolute transform -translate-y-1/2 top-4 right-8"
-                  onClick={() => togglePasswordVisibility("currentPassword")}
-                >
-                  {currentPasswordVisible ? (
-                    <AiOutlineEyeInvisible size={17} />
-                  ) : (
-                    <AiOutlineEye size={17} />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* New Password */}
-            <div className="w-full 800px:w-[500px] relative">
-              <label className="block pb-2">New Password</label>
-              <div className="relative">
-                <input
-                  type={newPasswordVisible ? "text" : "password"}
-                  className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required={currentPassword !== ""}
-                />
-                <button
-                  type="button"
-                  className="absolute transform -translate-y-1/2 top-4 right-8"
-                  onClick={() => togglePasswordVisibility("newPassword")}
-                >
-                  {newPasswordVisible ? (
-                    <AiOutlineEyeInvisible size={17} />
-                  ) : (
-                    <AiOutlineEye size={17} />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Confirm New Password */}
-            <div className="w-full 800px:w-[500px] relative">
-              <label className="block pb-2">Confirm New Password</label>
-              <div className="relative">
-                <input
-                  type={confirmNewPasswordVisible ? "text" : "password"}
-                  className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  required={currentPassword !== "" && newPassword !== ""}
-                />
-                <button
-                  type="button"
-                  className="absolute transform -translate-y-1/2 top-4 right-8"
-                  onClick={() => togglePasswordVisibility("confirmNewPassword")}
-                >
-                  {confirmNewPasswordVisible ? (
-                    <AiOutlineEyeInvisible size={17} />
-                  ) : (
-                    <AiOutlineEye size={17} />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {!isFormValid && (
-              <div className="mb-4 text-gray-300">
-                Note: Password fields are required when changing the password.
-              </div>
-            )}
-
-            {/* Warning for mismatched new and confirm passwords */}
-            {passwordMatchWarning && (
-              <div className="mb-4 text-red-500">{passwordMatchWarning}</div>
-            )}
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "right",
-                alignItems: "center",
-                height: "20vh",
-              }}
-            >
-              <button //cancel button
-                style={{
-                  width: "150px",
-                  height: "50px",
-                  margin: "3px 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "25px",
-                  cursor: "pointer",
-                  color: "#006665",
-                  backgroundColor: "transparent", // Set initial background color to transparent
-                  //  border: "2px solid #fe8373", // Set the border color
-                  transition: "background-color 0.3s ease, color 0.3s ease", // Add a smooth transition effect for background color and text color
-                }}
-                onClick={handleCancel}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#006665"; // Change background color on hover
-                  e.currentTarget.style.color = "#ffffff"; // Change text color on hover
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent"; // Reset background color on mouse out
-                  e.currentTarget.style.color = "#006665"; // Reset text color on mouse out
-                }}
-              >
-                Cancel
-              </button>
-
-              {/* Save Changes Button */}
-              <input
-                className={`${styles.button2} w-[190px] text-white text-center text-[#006665]  cursor-pointer`}
-                required
-                value="Save Changes"
-                type="submit"
-                onClick={handleSubmit}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#FF8474"; // Change background color on hover
-                  e.currentTarget.style.color = "#ffffff"; // Change text color on hover
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent"; // Reset background color on mouse out
-                  e.currentTarget.style.color = "#006665";
-                }}
-              />
-            </div>
-          </form>
-        </div>
-      </>
     </div>
   );
 };
@@ -603,11 +449,30 @@ const TrackOrder = () => {
   );
 };
 
-
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
+  const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
   const [newPassword, setNewPassword] = useState("");
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordVisible, setConfirmNewPasswordVisible] =
+    useState(false);
+
+  const togglePasswordVisibility = (field) => {
+    switch (field) {
+      case "oldPassword":
+        setOldPasswordVisible(!oldPasswordVisible);
+        break;
+      case "newPassword":
+        setNewPasswordVisible(!newPasswordVisible);
+        break;
+      case "confirmPassword":
+        setConfirmNewPasswordVisible(!confirmPasswordVisible);
+        break;
+      default:
+        break;
+    }
+  };
 
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
@@ -628,51 +493,151 @@ const ChangePassword = () => {
         toast.error(error.response.data.message);
       });
   };
+
+  const handleCancel = () => {
+    // Reset form fields to their initial state
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  };
+
   return (
-    <div className="w-full px-5">
-      <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
+    <div className="w-full px-12 pt-10">
+      <h1 className="block text-[25px] font-[600] text-[#000000ba] pb-2">
         Change Password
       </h1>
-      <div className="w-full">
+      <div className="w-full pt-7">
         <form
           aria-required
           onSubmit={passwordChangeHandler}
-          className="flex flex-col items-center"
+          className="flex flex-col"
         >
-          <div className=" w-[100%] 800px:w-[50%] mt-5">
-            <label className="block pb-2">Enter your old password</label>
-            <input
-              type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-            />
+          {/* Current Password Input */}
+          <div className="w-full 800px:w-[500px] relative">
+            <label className="block pb-2">Current Password</label>
+            <div className="relative">
+              <input
+                type={oldPasswordVisible ? "text" : "password"}
+                className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                required={newPassword !== "" || confirmPassword !== ""}
+              />
+              <button
+                type="button"
+                className="absolute top-4 right-8 transform -translate-y-1/2"
+                onClick={() => togglePasswordVisibility("oldPassword")}
+              >
+                {oldPasswordVisible ? (
+                  <AiOutlineEyeInvisible size={17} />
+                ) : (
+                  <AiOutlineEye size={17} />
+                )}
+              </button>
+            </div>
           </div>
-          <div className=" w-[100%] 800px:w-[50%] mt-2">
-            <label className="block pb-2">Enter your new password</label>
-            <input
-              type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
+
+          {/* New Password Input */}
+          <div className="w-full 800px:w-[500px] relative">
+            <label className="block pb-2">New Password</label>
+            <div className="relative">
+              <input
+                type={newPasswordVisible ? "text" : "password"}
+                className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required={oldPassword !== ""}
+              />
+              <button
+                type="button"
+                className="absolute top-4 right-8 transform -translate-y-1/2"
+                onClick={() => togglePasswordVisibility("newPassword")}
+              >
+                {newPasswordVisible ? (
+                  <AiOutlineEyeInvisible size={17} />
+                ) : (
+                  <AiOutlineEye size={17} />
+                )}
+              </button>
+            </div>
           </div>
-          <div className=" w-[100%] 800px:w-[50%] mt-2">
-            <label className="block pb-2">Enter your confirm password</label>
+
+          {/* Confirm New Password Input */}
+          <div className="w-full 800px:w-[500px] relative">
+            <label className="block pb-2">Confirm New Password</label>
+            <div className="relative">
+              <input
+                type={confirmPasswordVisible ? "text" : "password"}
+                className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required={oldPassword !== "" && newPassword !== ""}
+              />
+              <button
+                type="button"
+                className="absolute top-4 right-8 transform -translate-y-1/2"
+                onClick={() => togglePasswordVisibility("confirmPassword")}
+              >
+                {confirmPasswordVisible ? (
+                  <AiOutlineEyeInvisible size={17} />
+                ) : (
+                  <AiOutlineEye size={17} />
+                )}
+              </button>
+            </div>
+          </div>
+          {/* Buttons for Cancel and Save Changes */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "right",
+              alignItems: "center",
+              height: "20vh",
+            }}
+          >
+            {/* Cancel Button */}
+            <button
+              style={{
+                width: "150px",
+                height: "50px",
+                margin: "3px 0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "25px",
+                cursor: "pointer",
+                color: "#006665",
+                backgroundColor: "transparent",
+                transition: "background-color 0.3s ease, color 0.3s ease",
+              }}
+              onClick={handleCancel}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = "#006665";
+                e.currentTarget.style.color = "#ffffff";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "#006665";
+              }}
+            >
+              Cancel
+            </button>
+
+            {/* Save Changes Button */}
             <input
-              type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.button2} w-[190px] text-white text-center text-[#006665]  cursor-pointer`}
               required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <input
-              className={`w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
-              required
-              value="Update"
+              value="Save Changes"
               type="submit"
+              onClick={passwordChangeHandler}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = "#FF8474";
+                e.currentTarget.style.color = "#ffffff";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "#006665";
+              }}
             />
           </div>
         </form>
