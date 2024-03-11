@@ -12,8 +12,7 @@ const ForgotPassword = () => {
 
     // Send POST request to forgot password endpoint
     try {
-      const response = await axios.post(`${server}/forgot-password`, { email });
-      toast.success(response.data.message);
+      const response = await axios.post(`${server}/forgot-password`, email);
       setEmail(""); // Clear email field after successful submission
     } catch (error) {
       toast.error(error.response.data.message);

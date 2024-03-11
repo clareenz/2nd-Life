@@ -26,9 +26,13 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 // import routes
 const user = require("./controller/user");
 const shop = require("./controller/shop");
+const forgotPassword = require("./controller/forgotPassword");
+const resetPassword = require("./controller/resetPassword");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
+app.use("/api/v2/forgot-password", forgotPassword);
+app.use("/api/v2/reset-password", resetPassword);
 
 // its for ErrorHandling
 app.use(ErrorHandler);
