@@ -99,20 +99,20 @@ const Header = ({ activeHeading }) => {
           </div>
 
           {/* search box */}
-          <div className="w-[20%] relative ml-[1in]">
+          <div className="w-[15%] relative ml-[1in]">
             <input
               type="text"
               placeholder="Search Product..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] px-3 w-full border-gray-300 border-[1px] rounded-3xl "
+              className="h-[30px] px-2 w-full border-gray-300 border-[1px] rounded-3xl text-sm"
             />
             <AiOutlineSearch
-              size={27}
-              className="absolute right-2 top-1.5 cursor-pointer"
+              size={20}
+              className="absolute right-2 top-1 cursor-pointer"
             />
             {searchData && searchData.length !== 0 ? (
-              <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-3">
+              <div className="absolute min-h-[20vh] bg-slate-50 shadow-sm-2 z-[9] p-1">
                 {searchData &&
                   searchData.map((i, index) => {
                     const d = i.name;
@@ -120,13 +120,13 @@ const Header = ({ activeHeading }) => {
                     const Product_name = d.replace(/\s+/g, "-");
                     return (
                       <Link to={`/product/${Product_name}`}>
-                        <div className="flex w-full items-start-py-3">
+                        <div className="flex w-full items-start p-1">
                           <img
                             src={i.image_Url[0].url}
                             alt=""
-                            className="w-[40px] h-[40px] mr-[10px]"
+                            className="w-[30px] h-[30px] mr-[5px]"
                           />
-                          <h1>{i.name}</h1>
+                          <h1 className="text-xs">{i.name}</h1>
                         </div>
                       </Link>
                     );
@@ -181,9 +181,9 @@ const Header = ({ activeHeading }) => {
             </div>
             {/* become a seller */}
             <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between mr-3">
-              <div className={`${styles.button}`}>
+              <div className={`${styles.button}w-auto h-auto`}>
                 <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center text-sm">
+                  <h1 className="text-[#fff] flex items-center text-sm m-3">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
@@ -227,8 +227,9 @@ const Header = ({ activeHeading }) => {
           </div>
           {/*cart icon*/}
           <div>
-            <div className="relative cursor-pointer m-[20px]"
-            onClick={() => setOpenCart(true)}
+            <div
+              className="relative cursor-pointer m-[20px]"
+              onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
@@ -247,11 +248,12 @@ const Header = ({ activeHeading }) => {
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
               <div className="w-full justify-between flex pr-3">
-                
                 {/*wishlist icon*/}
                 <div>
-                  <div className="relative cursor-pointer mr-[15px]"
-                  onClick={() => setOpenWishlist(true)}>
+                  <div
+                    className="relative cursor-pointer mr-[15px]"
+                    onClick={() => setOpenWishlist(true)}
+                  >
                     <AiOutlineHeart size={27} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                       4
@@ -439,11 +441,11 @@ const Header2 = ({ activeHeading }) => {
               placeholder="Search Product..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] px-3 w-full border-gray-300 border-[1px] rounded-3xl "
+              className="h-[30px] px-2 w-full border-gray-300 border-[1px] rounded-3xl text-sm"
             />
             <AiOutlineSearch
-              size={27}
-              className="absolute right-2 top-1.5 cursor-pointer"
+              size={25}
+              className="absolute right-2 top-1 cursor-pointer"
             />
             {searchData && searchData.length !== 0 ? (
               <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-3">
@@ -498,9 +500,9 @@ const Header2 = ({ activeHeading }) => {
 
             {/* become a seller */}
             <div className="800px:h-[25px] 800px:my-[20px] 800px:flex items-center justify-between mr-3">
-              <div className={`${styles.button}`}>
+              <div className={`${styles.button}w-auto h-auto`}>
                 <Link to="/shop-create">
-                  <h1 className="text-[#fff] flex items-center text-sm">
+                  <h1 className="text-[#fff] flex items-center text-sm m-3">
                     Become Seller <IoIosArrowForward className="ml-1" />
                   </h1>
                 </Link>
@@ -544,8 +546,9 @@ const Header2 = ({ activeHeading }) => {
           </div>
           {/*cart icon*/}
           <div>
-            <div className="relative cursor-pointer m-[20px]"
-            onClick={() => setOpenCart(true)}
+            <div
+              className="relative cursor-pointer m-[20px]"
+              onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
@@ -564,11 +567,12 @@ const Header2 = ({ activeHeading }) => {
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
               <div className="w-full justify-between flex pr-3">
-                
                 {/*wishlist icon*/}
                 <div>
-                  <div className="relative cursor-pointer mr-[15px]"
-                  onClick={() => setOpenWishlist(true)}>
+                  <div
+                    className="relative cursor-pointer mr-[15px]"
+                    onClick={() => setOpenWishlist(true)}
+                  >
                     <AiOutlineHeart size={27} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
                       4

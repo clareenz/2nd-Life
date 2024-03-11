@@ -9,6 +9,7 @@ const styles = {
     active_indicator:"absolute bottom-[-27%] left-0 h-[3px] w-full bg-[crimson]",
     button: 'w-[150px] bg-006665 hover:bg-fe8373 h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer',
     button1: 'w-[150px] bg-fe8373 hover:bg-006665 h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer',
+    button2: 'w-[150px] bg-fe8373 hover:bg-006665 h-[50px] my-3 flex items-center justify-center rounded-full cursor-pointer',
     cart_button: "px-[20px] h-[38px] rounded-[20px] bg-[#f63b60] flex items-center justify-center cursor-pointer",
     cart_button_text:"text-[#fff] text-[16px] font-[600]",
     input:"w-full border p-1 rounded-[5px]",
