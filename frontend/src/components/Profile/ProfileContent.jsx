@@ -11,7 +11,7 @@ import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button, useMediaQuery } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { MdOutlineTrackChanges, MdTrackChanges } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import {
@@ -35,6 +35,7 @@ const ProfileContent = ({ active }) => {
   const [avatar, setAvatar] = useState(null);
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [displayName, setDisplayName] = useState(name)
 
   useEffect(() => {
     if (error) {
@@ -50,6 +51,7 @@ const ProfileContent = ({ active }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateUserInformation(name, email, phoneNumber, password));
+    setDisplayName(name);
   };
 
   const handleImage = async (e) => {
@@ -90,8 +92,8 @@ const ProfileContent = ({ active }) => {
   return (
     <div className="w-full px-5">
       <div className="flex justify-end p-4 mr-3">
-        <p className="text-flex text-gray-600">
-          Welcome! <span style={{ color: "#DB4444" }}>{user && user.name}</span>
+        <p className="text-gray-600 text-flex">
+          Welcome! <span style={{ color: "#DB4444" }}>{displayName}</span>
         </p>
       </div>
       {/* profile */}
@@ -168,7 +170,7 @@ const ProfileContent = ({ active }) => {
                     />
                     <button
                       type="button"
-                      className="absolute top-4 right-8 transform -translate-y-1/2"
+                      className="absolute transform -translate-y-1/2 top-4 right-8"
                       onClick={() => togglePasswordVisibility("showPassword")}
                     >
                       {showPassword ? (
@@ -525,7 +527,7 @@ const ChangePassword = () => {
               />
               <button
                 type="button"
-                className="absolute top-4 right-8 transform -translate-y-1/2"
+                className="absolute transform -translate-y-1/2 top-4 right-8"
                 onClick={() => togglePasswordVisibility("oldPassword")}
               >
                 {oldPasswordVisible ? (
@@ -550,7 +552,7 @@ const ChangePassword = () => {
               />
               <button
                 type="button"
-                className="absolute top-4 right-8 transform -translate-y-1/2"
+                className="absolute transform -translate-y-1/2 top-4 right-8"
                 onClick={() => togglePasswordVisibility("newPassword")}
               >
                 {newPasswordVisible ? (
@@ -575,7 +577,7 @@ const ChangePassword = () => {
               />
               <button
                 type="button"
-                className="absolute top-4 right-8 transform -translate-y-1/2"
+                className="absolute transform -translate-y-1/2 top-4 right-8"
                 onClick={() => togglePasswordVisibility("confirmPassword")}
               >
                 {confirmPasswordVisible ? (
