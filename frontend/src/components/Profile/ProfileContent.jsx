@@ -848,7 +848,7 @@ const Address = () => {
           My Addresses
         </h1>
         <div
-          className={`${styles.button2} !rounded-md text-[12px] p-1 w-16 h-7 mr-1`}
+          className={`${styles.button2} !rounded-md text-[12px] p-1 w-[60px] h-auto mr-1`}
           onClick={() => setOpen(true)}
         >
           <span className="text-[#fff]">Add New</span>
