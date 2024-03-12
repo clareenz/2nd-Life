@@ -209,7 +209,7 @@ const ProfileContent = ({ active }) => {
                     e.currentTarget.style.color = "#ffffff"; // Change text color on hover
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent"; // Reset background color on mouse out
+                    e.currentTarget.style.backgroundColor = "transparent "; // Reset background color on mouse out
                     e.currentTarget.style.color = "#006665"; // Reset text color on mouse out
                   }}
                 >

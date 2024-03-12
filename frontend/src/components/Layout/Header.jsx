@@ -266,7 +266,7 @@ const Header = ({ activeHeading }) => {
                 ) : null}
 
                 <RxCross1 //close button sa sidebar
-                  size={25}
+                  size={17}
                   className="ml-4 mt-5 cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
@@ -331,18 +331,22 @@ const Header = ({ activeHeading }) => {
                   </>
                 ) : (
                   <>
-                    <Link
-                      to="/login"
-                      className="text-[18px] pr-[10px] text-[#000000b7]"
+                    <button
+                      className="text-[15px] pr-[10px] text-[#000000b7] bg-transparent hover:bg-[#FF8474] text-[#006665] hover:text-white py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-md transition-all duration-300 ease-in-out mr-4"
+                      onClick={() => {
+                        window.location.href = "/login";
+                      }}
                     >
-                      Login /
-                    </Link>
-                    <Link
-                      to="/sign-up"
-                      className="text-[18px] text-[#000000b7]"
+                      Login
+                    </button>
+                    <button
+                      className="text-[15px] text-[#000000b7] bg-transparent hover:bg-[#FF8474] text-[#006665] hover:text-white py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-md transition-all duration-300 ease-in-out"
+                      onClick={() => {
+                        window.location.href = "/sign-up";
+                      }}
                     >
                       Sign Up
-                    </Link>
+                    </button>
                   </>
                 )}
               </div>
@@ -585,7 +589,7 @@ const Header2 = ({ activeHeading }) => {
                 ) : null}
 
                 <RxCross1 //close button sa sidebar
-                  size={25}
+                  size={18}
                   className="ml-4 mt-5 cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
@@ -650,18 +654,22 @@ const Header2 = ({ activeHeading }) => {
                   </>
                 ) : (
                   <>
-                    <Link
-                      to="/login"
-                      className="text-[18px] pr-[10px] text-[#000000b7]"
+                    <button
+                      className="text-[15px] pr-[10px] text-[#000000b7] bg-transparent hover:bg-[#FF8474] text-[#006665] hover:text-white py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-md transition-all duration-300 ease-in-out mr-4"
+                      onClick={() => {
+                        window.location.href = "/login";
+                      }}
                     >
-                      Login /
-                    </Link>
-                    <Link
-                      to="/sign-up"
-                      className="text-[18px] text-[#000000b7]"
+                      Login
+                    </button>
+                    <button
+                      className="text-[15px] text-[#000000b7] bg-transparent hover:bg-[#FF8474] text-[#006665] hover:text-white py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-md transition-all duration-300 ease-in-out"
+                      onClick={() => {
+                        window.location.href = "/sign-up";
+                      }}
                     >
                       Sign Up
-                    </Link>
+                    </button>
                   </>
                 )}
               </div>

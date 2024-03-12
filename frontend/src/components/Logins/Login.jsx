@@ -72,7 +72,7 @@ const Login = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full px-3 py-2 placeholder-gray-400 border-b border-gray-300 shadow-sm appearance-none square-md foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border-b border-gray-300 shadow-sm appearance-none square-md foucs:outline-none focus:ring-[#006665] focus:border-gray-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -91,30 +91,30 @@ const Login = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full px-3 py-2 placeholder-gray-400 border-b border-gray-300 shadow-sm appearance-none square-md foucs:outline-none focus:ring-blue-500 focus:border-gray-500 sm:text-sm"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border-b border-gray-300 shadow-sm appearance-none square-md foucs:outline-none focus:ring-[#006665] focus:border-gray-500 sm:text-sm"
                   />
                   {visible ? (
                     <AiOutlineEye
                       className="absolute cursor-pointer right-2 top-2"
-                      size={25}
+                      size={20}
                       onClick={() => setVisible(false)}
                     />
                   ) : (
                     <AiOutlineEyeInvisible
                       className="absolute cursor-pointer right-2 top-2"
-                      size={25}
+                      size={20}
                       onClick={() => setVisible(true)}
                     />
                   )}
                 </div>
               </div>
               <div className={`${styles.normalFlex} justify-between`}>
-                <div className={`${styles.normalFlex}`}>
+                <div className={`${styles.normalFlex} focus:ring-[#006665]`}>
                   <input
                     type="checkbox"
                     name="remember-me"
                     id="remember-me"
-                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 vorder-gray-300"
+                    className="w-4 h-4 text-[#006665] rounded focus:ring-[#006665] border-gray-300"
                   />
                   <label
                     htmlFor="remember-me"
