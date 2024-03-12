@@ -479,6 +479,7 @@ const ChangePassword = () => {
 
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
+    toast.success("Changed Successfully!");
 
     await axios
       .put(
