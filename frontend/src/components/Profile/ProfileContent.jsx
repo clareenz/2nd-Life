@@ -24,7 +24,6 @@ import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { HiEye, HiEyeOff } from "react-icons/hi"; // Import eye icons from react-icons library
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -53,6 +52,7 @@ const ProfileContent = ({ active }) => {
     dispatch(updateUserInformation(name, email, phoneNumber, password));
     setDisplayName(name);
     window.location.reload(true);
+    toast.success("Changed Successfully!");
   };
 
   const handleImage = async (e) => {
