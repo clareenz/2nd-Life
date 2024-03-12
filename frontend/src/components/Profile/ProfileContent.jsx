@@ -52,6 +52,7 @@ const ProfileContent = ({ active }) => {
     e.preventDefault();
     dispatch(updateUserInformation(name, email, phoneNumber, password));
     setDisplayName(name);
+    window.location.reload(true);
   };
 
   const handleImage = async (e) => {
