@@ -144,13 +144,13 @@ const Signup = () => {
                   {visible ? (
                     <AiOutlineEye
                       className="absolute right-2 top-2 cursor-pointer"
-                      size={25}
+                      size={20}
                       onClick={() => setVisible(false)}
                     ></AiOutlineEye>
                   ) : (
                     <AiOutlineEyeInvisible
                       className="absolute right-2 top-2 cursor-pointer"
-                      size={25}
+                      size={20}
                       onClick={() => setVisible(true)}
                     ></AiOutlineEyeInvisible>
                   )}
@@ -178,13 +178,13 @@ const Signup = () => {
                    {visible ? (
                     <AiOutlineEye
                       className="absolute right-2 top-2 cursor-pointer"
-                      size={25}
+                      size={20}
                       onClick={() => setVisible(false)}
                     />
                     ) : (
                       <AiOutlineEyeInvisible
                         className="absolute right-2 top-2 cursor-pointer"
-                        size={25}
+                        size={20}
                         onClick={() => setVisible(true)}
                       />
                       )}
@@ -210,9 +210,9 @@ const Signup = () => {
                   </span>
                   <label
                     htmlFor="file-input"
-                    className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg bg-white hover:bg-gray-50"
+                    className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg bg-white hover:bg-gray-100"
                   >
-                    <span>Upload a file</span>
+                    <span>Upload a photo</span>
                     <input
                       type="file"
                       name="avatar"
@@ -235,7 +235,7 @@ const Signup = () => {
               </div>
               <div className={`${styles.normalFlex} w-full`}>
                 <h4>Already have an account?</h4>
-                <Link to="/login" className="text-006665 pl-2">
+                <Link to="/login" className="text-006665 pl-2 hover:text-[#FF8474]">
                   Sign in
                 </Link>
               </div>
