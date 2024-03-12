@@ -7,7 +7,10 @@ const connectDatabase = () => {
       useUnifiedTopology: true,
     })
     .then((data) => {
-      console.log(`mongoDB connected with server: ${data.connection.host}`);
+      console.log(`MongoDB connected with server: ${data.connection.host}`);
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error.message);
     });
 };
 
