@@ -32,8 +32,9 @@ const Header = ({ activeHeading }) => {
   const [dropDown, setDropDown] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
+  const [open, setOpen] = useState(false); //sidebar sa desktop
+  const [open1, setOpen1] = useState(false); //sidebar sa mobile
+
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -93,7 +94,7 @@ const Header = ({ activeHeading }) => {
           </Link>
         </div>
 
-        <div className={`relative ${styles.normalFlex}`}>
+        <div className={`relative ${styles.normalFlex1}`}>
           {/* categories */}
           <div
             onClick={() => setDropDown(!dropDown)}
@@ -238,7 +239,7 @@ const Header = ({ activeHeading }) => {
 
           {/* menu content*/}
           {open1 && (
-            <div className="justify-center fixed top-[60px] right-5 w-auto h-[50%] bg-white z-30 rounded-lg">
+            <div className="justify-center fixed top-[60px] right-5 w-auto h-[50%] bg-white z-30 rounded-2xl">
               <br />
               <div className="flex justify-center">
                 {isAuthenticated ? (
