@@ -14,12 +14,14 @@ import { backend_url } from "../../../server";
 const DashboardHeader = () => {
   const { seller } = useSelector((state) => state.seller);
   return (
-    <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
+    <div className="w-full h-[70px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
         <Link to="/dashboard">
           <img
-            src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-            alt=""
+            className="ml-[50px]"
+            src="/2ndlife%20logo%20word.png" //logo
+            alt="logo2"
+            style={{ width: "120px", height: "auto" }}
           />
         </Link>
       </div>
@@ -28,39 +30,39 @@ const DashboardHeader = () => {
           <Link to="/dashboard/cupouns" className="hidden 800px:block">
             <AiOutlineGift
               color="#555"
-              size={30}
-              className="mx-5 cursor-pointer"
+              size={25}
+              className="mx-3 cursor-pointer"
             />
           </Link>
           <Link to="/dashboard-events" className="hidden 800px:block">
             <MdOutlineLocalOffer
               color="#555"
-              size={30}
-              className="mx-5 cursor-pointer"
+              size={25}
+              className="mx-3 cursor-pointer"
             />
           </Link>
           <Link to="/dashboard-products" className="hidden 800px:block">
             <FiShoppingBag
               color="#555"
-              size={30}
-              className="mx-5 cursor-pointer"
+              size={25}
+              className="mx-3 cursor-pointer"
             />
           </Link>
           <Link to="/dashboard-orders" className="hidden 800px:block">
-            <FiPackage color="#555" size={30} className="mx-5 cursor-pointer" />
+            <FiPackage color="#555" size={25} className="mx-3 cursor-pointer" />
           </Link>
           <Link to="/dashboard-messages" className="hidden 800px:block">
             <BiMessageSquareDetail
               color="#555"
-              size={30}
-              className="mx-5 cursor-pointer"
+              size={25}
+              className="mx-3 cursor-pointer"
             />
           </Link>
           <Link to={`/shop/${seller._id}`}>
             <img
               src={`${backend_url}${seller.avatar}`}
               alt=""
-              className="w-[50px] h-[50px] rounded-full object-cover"
+              className="w-[34px] h-[35px] rounded-full object-cover"
             />
           </Link>
         </div>
@@ -69,4 +71,4 @@ const DashboardHeader = () => {
   );
 };
 
-export default DashboardHeader; 
+export default DashboardHeader;

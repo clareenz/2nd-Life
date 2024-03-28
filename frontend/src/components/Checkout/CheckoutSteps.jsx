@@ -1,20 +1,27 @@
 import React from "react";
 import styles from "../../styles/styles";
+import {
+  MdOutlineLocalShipping,
+  MdOutlinePayment,
+  MdOutlineDoneAll,
+} from "react-icons/md";
 
 const CheckoutSteps = ({ active }) => {
   console.log(active);
   return (
     <div className="w-full flex justify-center">
-      <div className="w-[90%] 800px:w-[50%] flex items-center flex-wrap">
+      <div className="w-[90%] 800px:w-[50%] flex items-center flex-wrap justify-center">
         <div className={`${styles.normalFlex}`}>
           <div className={`${styles.cart_button}`}>
-            <span className={`${styles.cart_button_text}`}>1.Shipping</span>
+            <span className={`${styles.cart_button_text}`}>
+              <MdOutlineLocalShipping size={17} className="mx-5" />
+            </span>
           </div>
           <div
             className={`${
               active > 1
-                ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
+                ? "w-[30px] 800px:w-[70px] h-[3px] !bg-[#006665]"
+                : "w-[30px] 800px:w-[70px] h-[3px] !bg-[#C2DCDB]"
             }`}
           />
         </div>
@@ -24,17 +31,17 @@ const CheckoutSteps = ({ active }) => {
             className={`${
               active > 1
                 ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-[#FDE1E6]`
+                : `${styles.cart_button} !bg-[#C2DCDB]`
             }`}
           >
             <span
               className={`${
                 active > 1
                   ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-[#f63b60]`
+                  : `${styles.cart_button_text} !text-[#006665]`
               }`}
             >
-              2.Payment
+              <MdOutlinePayment size={17} className="mx-5" />
             </span>
           </div>
         </div>
@@ -43,25 +50,25 @@ const CheckoutSteps = ({ active }) => {
           <div
             className={`${
               active > 3
-                ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
+              ? "w-[30px] 800px:w-[70px] h-[3px] !bg-[#006665]"
+              : "w-[30px] 800px:w-[70px] h-[3px] !bg-[#C2DCDB]"
             }`}
           />
           <div
             className={`${
               active > 2
                 ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-[#FDE1E6]`
+                : `${styles.cart_button} !bg-[#C2DCDB]`
             }`}
           >
             <span
               className={`${
                 active > 2
                   ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-[#f63b60]`
+                  : `${styles.cart_button_text} !text-[#006665]`
               }`}
             >
-              3.Success
+            <MdOutlineDoneAll size={17} className="mx-5"/>
             </span>
           </div>
         </div>

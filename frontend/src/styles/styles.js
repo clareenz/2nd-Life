@@ -12,7 +12,7 @@ const styles = {
     button2: 'w-[150px] bg-fe8373 hover:bg-006665 h-[50px] my-3 flex items-center justify-center rounded-full cursor-pointer',
     button3: 'w-[50%] bg-gray-100 hover:bg-gray-200 h-auto my-3 flex items-center justify-center border rounded-3xl shadow-sm cursor-pointer',
     button4: 'text-[15px] text-[#000000b7] bg-transparent hover:bg-[#FF8474] text-[#006665] hover:text-white py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-3xl transition-all duration-200 ease-in-out mb-4 justify-center',
-    cart_button: "px-[20px] h-[38px] rounded-[20px] bg-[#f63b60] flex items-center justify-center cursor-pointer",
+    cart_button: "items-center text-[15px] text-[#000000b7] bg-006665 hover:bg-[#FF8474] text-white hover:text-white py-2 hover:border-[#FF8474] rounded-3xl transition-all duration-200 ease-in-out mb-2 text-center",
     cart_button_text:"text-[#fff] text-[16px] font-[600]",
     input:"w-full border p-1 rounded-3xl",
     activeStatus:"w-[10px] h-[10px] rounded-full absolute top-0 right-1 bg-[#40d132]",

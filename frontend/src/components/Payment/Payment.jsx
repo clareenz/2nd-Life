@@ -176,7 +176,7 @@ const CartData = () => {
           required
         />
         <input
-          className={`w-full h-[40px] border border-[#f63b60] text-center text-[#f63b60] rounded-[3px] mt-8 cursor-pointer`}
+          className={`${styles.button4} mt-8 w-full`}
           required
           value="Apply code"
           type="submit"
