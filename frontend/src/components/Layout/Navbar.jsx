@@ -5,7 +5,7 @@ import styles from "../../styles/styles";
 
 const Navbar = ({ active }) => {
   return (
-    <div className={`block 800px:${styles.normalFlex}`}>
+    <div className={`block 800px:${styles.normalFlex} lg:mr-80`}>
       {navItems &&
         navItems.map((i, index) => (
           <div className="flex">
@@ -15,7 +15,7 @@ const Navbar = ({ active }) => {
                 active === index + 1
                   ? "text-[#fe8373]"
                   : "text-black 800px:text-black"
-              } pb-[30px] 800px:pb-0 font-[500] text-sm px-6 cursor-pointer }`}
+              } pb-[30px] 800px:pb-0 font-[500] text-sm px-4 cursor-pointer}`}
             >
               {i.title}
             </Link>

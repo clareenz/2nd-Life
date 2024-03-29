@@ -11,6 +11,7 @@ import {
   AiOutlineStar,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
 
@@ -27,7 +28,7 @@ const ProductCard = ({ data }) => {
         <div className="flex justify-end"></div>
         <Link to={`/product/${product_name}`}>
           <img
-            src={data.image_Url[0].url}
+            src={`${backend_url}${data.images && data.images[0]}`}
             alt=""
             className="w-full h-[170px] object-contain"
           />
@@ -72,10 +73,10 @@ const ProductCard = ({ data }) => {
           <div className="py-2 flex items-center justify-between">
             <div className="flex">
               <h5 className={`${styles.productDiscountPrice}`}>
-                ₱{data.price === 0 ? data.price : data.discount_price}
+                ₱{data.originalPrice === 0 ? data.originalPrice : data.originalPrice}
               </h5>
               <h4 className={`${styles.price}`}>
-                {data.price ? "₱" + data.price : null}
+                {data.originalPrice ? "₱" + data.originalPrice : null}
               </h4>
             </div>
             <span className="font-[400] text-[17px] text-[#68d284]">

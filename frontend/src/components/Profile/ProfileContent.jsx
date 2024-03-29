@@ -91,7 +91,7 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full px-5">
+    <div className="w-full">
       <div className="flex justify-end p-4 mr-3">
         <p className="text-gray-600 text-flex">
           Welcome! <span style={{ color: "#DB4444" }}>{displayName}</span>
@@ -100,7 +100,7 @@ const ProfileContent = ({ active }) => {
       {/* profile */}
       {active === 1 && (
         <>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-evenly w-auto">
             <div className="relative">
               <img
                 src={`${backend_url}${user?.avatar}`}
@@ -221,7 +221,7 @@ const ProfileContent = ({ active }) => {
 
                 {/* Save Changes Button */}
                 <input
-                  className={`${styles.button2} w-[190px] text-white text-center text-[#006665]  cursor-pointer`}
+                  className={`${styles.button2} w-[150px] text-white text-center text-[#006665]  cursor-pointer`}
                   required
                   value="Save Changes"
                   type="submit"
@@ -479,7 +479,6 @@ const ChangePassword = () => {
 
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
-    toast.success("Changed Successfully!");
 
     await axios
       .put(
@@ -629,7 +628,7 @@ const ChangePassword = () => {
 
             {/* Save Changes Button */}
             <input
-              className={`${styles.button2} w-[190px] text-white text-center text-[#006665]  cursor-pointer`}
+              className={`${styles.button2} w-[150px] text-white text-center text-[#006665]  cursor-pointer`}
               required
               value="Save Changes"
               type="submit"

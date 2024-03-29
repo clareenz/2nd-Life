@@ -11,7 +11,7 @@ const Checkout = () => {
   };
   return (
     <div className="w-full flex flex-col items-center py-8">
-      <div className="w-[90%] 1000px:w-[70%] block 800px:flex">
+      <div className="w-[90%] 1000px:w-[80%] block 800px:flex">
         <div className="w-full 800px:w-[65%]">
           <ShippingInfo />
         </div>
@@ -20,7 +20,7 @@ const Checkout = () => {
         </div>
       </div>
       <div
-        className={`${styles.button} w-[150px] 800px:w-[280px] mt-10`}
+        className={`${styles.button1} w-[150px] 800px:w-[280px] mt-10`}
         onClick={paymentSubmit}
       >
         <h5 className="text-white">Go to Payment</h5>
@@ -87,7 +87,7 @@ const ShippingInfo = () => {
             </select>
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">Country</label>
+            <label className="block pb-2">Province</label>
             <select className="w-[95%] border h-[40px] rounded-[5px]">
               <option className="block pb-2" value="">
                 Choose your City
@@ -104,7 +104,7 @@ const ShippingInfo = () => {
 
         <div className="w-full flex pb-3">
           <div className="w-[50%]">
-            <label className="block pb-2">Address1</label>
+            <label className="block pb-2">House number/street</label>
             <input
               type="address"
               required
@@ -112,7 +112,7 @@ const ShippingInfo = () => {
             />
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">Address2</label>
+            <label className="block pb-2">Barangay/City/Municipality</label>
             <input type="address" required className={`${styles.input}`} />
           </div>
         </div>
@@ -150,7 +150,7 @@ const CartData = () => {
           required
         />
         <input
-          className={`w-full h-[40px] border border-[#f63b60] text-center text-[#f63b60] rounded-[3px] mt-8 cursor-pointer`}
+          className={`${styles.button4} mt-8 w-full`}
           required
           value="Apply code"
           type="submit"

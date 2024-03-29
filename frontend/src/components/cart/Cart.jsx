@@ -45,7 +45,7 @@ const Cart = ({ setOpenCart }) => {
             />
           </div>
           {/*Item length*/}
-          <div className={`${styles.normalFlex} p-4`}>
+          <div className={`${styles.normalFlex} p-2`}>
             <IoBagHandleOutline size={25} />
             <h5 className="pl-2 text-[20px] font-[500]">3 items</h5>
           </div>
@@ -61,8 +61,8 @@ const Cart = ({ setOpenCart }) => {
         <div className="px-20 mb-3">
           {/* checkout button */}
           <Link to="/checkout">
-            <div className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}>
-                <h1 className="text=[#fff] text-[18px] font-[600]">
+            <div className={`${styles.cart_button}`}>
+                <h1 className="text=[#fff] text-[18px]">
                   Checkout Now (₱100000000)</h1>
             </div>
           </Link>

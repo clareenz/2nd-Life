@@ -1,9 +1,21 @@
-import React from 'react'
+import React from "react";
+import Lottie from "react-lottie";
+import animationData from "../../Assests/animations/Animation - 1711620413759.json";
 
 const Loader = () => {
+  const defaultOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   return (
-    <div>Loader</div>
-  )
-}
+    <div className="w-full h-screen flex items-center justify-center">
+      <Lottie options={defaultOptions} width={300} height={300} />
+    </div>
+  );
+};
 
-export default Loader
+export default Loader;
