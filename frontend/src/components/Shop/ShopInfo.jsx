@@ -10,6 +10,7 @@ import { FaAddressCard, FaPhone } from "react-icons/fa6";
 import { BiSolidPackage } from "react-icons/bi";
 import { MdRateReview } from "react-icons/md";
 import { GiArrowCursor } from "react-icons/gi";
+import { Link } from 'react-router-dom';
 
 const ShopInfo = ({ isOwner }) => {
   const [data, setData] = useState({});
