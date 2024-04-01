@@ -16,24 +16,24 @@ const ShopProfileData = ({ isOwner }) => {
 
   const [active, setActive] = useState(1);
 
-  return (
+  return ( //shop info right
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <div className="w-full flex">
           <div className="flex items-center" onClick={() => setActive(1)}>
             <h5
-              className={`font-[600] text-[20px] ${
-                active === 1 ? "text-red-500" : "text-[#333]"
-              } cursor-pointer pr-[20px]`}
+              className={`font-[600] text-[18px] ${
+                active === 1 ? "text-[#FF8474]" : "text-[#333]"
+              } cursor-pointer pr-[30px]`}
             >
               Shop Products
             </h5>
           </div>
           <div className="flex items-center" onClick={() => setActive(2)}>
             <h5
-              className={`font-[600] text-[20px] ${
-                active === 2 ? "text-red-500" : "text-[#333]"
-              } cursor-pointer pr-[20px]`}
+              className={`font-[600] text-[18px] ${
+                active === 2 ? "text-[#FF8474]" : "text-[#333]"
+              } cursor-pointer pr-[30px]`}
             >
               Running Events
             </h5>
@@ -41,9 +41,9 @@ const ShopProfileData = ({ isOwner }) => {
 
           <div className="flex items-center" onClick={() => setActive(3)}>
             <h5
-              className={`font-[600] text-[20px] ${
-                active === 3 ? "text-red-500" : "text-[#333]"
-              } cursor-pointer pr-[20px]`}
+              className={`font-[600] text-[18px] ${
+                active === 3 ? "text-[#FF8474]" : "text-[#333]"
+              } cursor-pointer pr-[30px]`}
             >
               Shop Reviews
             </h5>
@@ -53,7 +53,7 @@ const ShopProfileData = ({ isOwner }) => {
           {isOwner && (
             <div>
               <Link to="/dashboard">
-                <div className={`${styles.button} !rounded-[4px] h-[42px]`}>
+                <div className={`${styles.button} !rounded-3xl text-[14px]`}>
                   <span className="text-[#fff]">Go Dashboard</span>
                 </div>
               </Link>

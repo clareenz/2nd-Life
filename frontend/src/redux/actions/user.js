@@ -78,7 +78,8 @@ export const updateUserInformation =
 
 // update user address
 export const updatUserAddress =
-  (country, city, address1, address2,zipCode, addressType) => async (dispatch) => {
+  (country, city, address1, address2, zipCode, addressType) =>
+  async (dispatch) => {
     try {
       dispatch({
         type: "updateUserAddressRequest",
@@ -121,7 +122,7 @@ export const deleteUserAddress = (id) => async (dispatch) => {
 
     const { data } = await axios.delete(
       `${server}/user/delete-user-address/${id}`,
-       { withCredentials: true,}
+      { withCredentials: true }
     );
 
     dispatch({

@@ -47,13 +47,19 @@ const ProfileContent = ({ active }) => {
     }
   }, [error, successMessage]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateUserInformation(name, email, phoneNumber, password));
-    setDisplayName(name);
-    window.location.reload(true);
-    toast.success("Changed Successfully!");
-  };
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // Check if the password field is empty
+  if (!password) {
+    toast.error("Please input your password to update your information.");
+    return;
+  }
+
+  dispatch(updateUserInformation(name, email, phoneNumber, password));
+  setDisplayName(name);
+  toast.success("Changed Successfully!");
+};
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
@@ -130,7 +136,7 @@ const ProfileContent = ({ active }) => {
                   <input
                     type="text"
                     className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
-                    required
+                   // required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -140,7 +146,7 @@ const ProfileContent = ({ active }) => {
                   <input
                     type="text"
                     className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
-                    required
+                    //required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -153,7 +159,7 @@ const ProfileContent = ({ active }) => {
                   <input
                     type="number"
                     className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
-                    required
+                    //required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
