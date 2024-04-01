@@ -1,6 +1,5 @@
-import { Button } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect } from "react";
+import { Button, Table } from "antd"; // Import Ant Design components
 import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -24,99 +23,57 @@ const AllProducts = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
+    { title: "Product Id", dataIndex: "id", key: "id", width: 150, align: "center" },
+    { title: "Name", dataIndex: "name", key: "name", width: 180, align: "center",},
+    { title: "Price", dataIndex: "price", key: "price", width: 100, align: "center" },
+    { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
+    { title: "Sold out", dataIndex: "sold", key: "sold", width: 130, align: "center" },
     {
-      field: "name",
-      headerName: "Name",
-      minWidth: 180,
-      flex: 1.4,
+      title: "Preview",
+      key: "Preview",
+      width: 100,
+      align: "center",
+      render: (text, record) => (
+        <Link to={`/product/${record.name}`}>
+          <Button>
+            <AiOutlineEye size={20} />
+          </Button>
+        </Link>
+      ),
     },
     {
-      field: "price",
-      headerName: "Price",
-      minWidth: 100,
-      flex: 0.6,
-    },
-    {
-      field: "Stock",
-      headerName: "Stock",
-      type: "number",
-      minWidth: 80,
-      flex: 0.5,
-    },
-
-    {
-      field: "sold",
-      headerName: "Sold out",
-      type: "number",
-      minWidth: 130,
-      flex: 0.6,
-    },
-    {
-      field: "Preview",
-      flex: 0.8,
-      minWidth: 100,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        const d = params.row.name;
-        const product_name = d.replace(/\s+/g, "-");
-        return (
-          <>
-            <Link to={`/product/${product_name}`}>
-              <Button>
-                <AiOutlineEye size={20} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-    },
-    {
-      field: "Delete",
-      flex: 0.8,
-      minWidth: 120,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Button onClick={() => handleDelete(params.id)}>
-              <AiOutlineDelete size={20} />
-            </Button>
-          </>
-        );
-      },
+      title: "Delete",
+      key: "Delete",
+      width: 120,
+      align: "center",
+      render: (text, record) => (
+        <Button onClick={() => handleDelete(record.id)}>
+          <AiOutlineDelete size={20} />
+        </Button>
+      ),
     },
   ];
 
-  const row = [];
-
-  products &&
-    products.forEach((item) => {
-      row.push({
-        id: item._id,
-        name: item.name,
-        price: "US$ " + item.discountPrice,
-        Stock: item.stock,
-        sold: 10,
-      });
-    });
+  // Check if products array is defined before mapping over it
+  const data = products ? products.map((item) => ({
+    id: item._id,
+    name: item.name,
+    price: "US$ " + item.discountPrice,
+    stock: item.stock,
+    sold: 10,
+  })) : [];
 
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white">
-          <DataGrid
-            rows={row}
+        <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-xl shadow-md">
+          <Table
             columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
+            dataSource={data}
+            pagination={{ pageSize: 10 }}
+            scroll={{ x: "100%" }} // Enable horizontal scrolling
           />
         </div>
       )}

@@ -59,8 +59,6 @@ const ShopSettings = () => {
     })
   };
 
-
-
   return (
     <div className="w-full min-h-screen flex flex-col items-center">
       <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5">

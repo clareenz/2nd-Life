@@ -9,6 +9,8 @@ import { HiOutlineReceiptRefund } from "react-icons/hi";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { RiDashboardLine } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
+import { BiShoppingBag } from "react-icons/bi";
+import { FaCartShopping } from "react-icons/fa6";
 
 const { SubMenu } = Menu;
 
@@ -62,7 +64,7 @@ const DashboardSideBar = () => {
   return (
     <div
       style={{ height: "100vh", position: "fixed" }}
-      className="w-[60px] 800px:w-[250px]"
+      className="w-[60px] 800px:w-[250px] z-10"
     >
       <Menu
         mode="inline"
@@ -77,10 +79,10 @@ const DashboardSideBar = () => {
           <Link to="/dashboard-orders">All Orders</Link>
         </Menu.Item>
         <SubMenu key="sub1" icon={<FiPackage />} title="Products">
-          <Menu.Item key="3">
+          <Menu.Item key="3" icon={<FaCartShopping  />}>
             <Link to="/dashboard-products">All products</Link>
           </Menu.Item>
-          <Menu.Item key="4">
+          <Menu.Item key="4"icon={<BiShoppingBag  />}>
             <Link to="/dashboard-create-product">Add products</Link>
           </Menu.Item>
         </SubMenu>
