@@ -107,7 +107,6 @@ const ProductCard = ({ data }) => {
         </div>
 
         {/* Buy Now button */}
-        
         {hovered && (
           <div
             className={`${styles.button5} flex items-center justify-center`}
