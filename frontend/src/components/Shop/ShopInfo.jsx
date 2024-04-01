@@ -1,17 +1,27 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getAllProductsShop } from "../../redux/actions/product";
 import { backend_url, server } from "../../server";
+import { Typography, Divider, Button, Avatar, Spin } from "antd";
+import {
+  EnvironmentOutlined,
+  PhoneOutlined,
+  ShoppingCartOutlined,
+  StarOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
+import axios from "axios";
 import styles from "../../styles/styles";
-import Loader from "../Layout/Loader";
+
+const { Title, Text } = Typography;
 
 const ShopInfo = ({ isOwner }) => {
+  //right side
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
+
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -34,66 +44,83 @@ const ShopInfo = ({ isOwner }) => {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div>
-          <div className="w-full py-5">
-            <div className="w-full flex item-center justify-center">
-              <img
-                src={`${backend_url}${data.avatar}`}
-                alt=""
-                className="w-[150px] h-[150px] object-cover rounded-full"
-              />
-            </div>
-            <h3 className="text-center py-2 text-[20px]">{data.name}</h3>
-            <p className="text-[16px] text-[#000000a6] p-[10px] flex items-center">
-              {data.description}
-            </p>
-          </div>
-          <div className="p-3">
-            <h5 className="font-[600]">Address</h5>
-            <h4 className="text-[#000000a6]">{data.address}</h4>
-          </div>
-          <div className="p-3">
-            <h5 className="font-[600]">Phone Number</h5>
-            <h4 className="text-[#000000a6]">{data.phoneNumber}</h4>
-          </div>
-          <div className="p-3">
-            <h5 className="font-[600]">Total Products</h5>
-            <h4 className="text-[#000000a6]">10</h4>
-          </div>
-          <div className="p-3">
-            <h5 className="font-[600]">Shop Ratings</h5>
-            <h4 className="text-[#000000b0]">4/5</h4>
-          </div>
-          <div className="p-3">
-            <h5 className="font-[600]">Joined On</h5>
-            <h4 className="text-[#000000b0]">
-              {data?.createdAt?.slice(0, 10)}
-            </h4>
-          </div>
-          {isOwner && (
-            <div className="py-3 px-4">
-              <Link to="/settings">
-                <div
-                  className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
-                >
-                  <span className="text-white">Edit Shop</span>
-                </div>
-              </Link>
-              <div
-                className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
-                onClick={logoutHandler}
-              >
-                <span className="text-white">Log Out</span>
-              </div>
-            </div>
-          )}
+    <Spin spinning={isLoading}>
+      <div>
+        <div className="text-center">
+          <Avatar
+            src={`${backend_url}${data.avatar}`}
+            size={150}
+            className="mt-10"
+          />
+          <Title level={3}>{data.name}</Title>
+          <Text>{data.description}</Text>
         </div>
-      )}
-    </>
+        <Divider />
+        <div className="px-3 py-2">
+          <div className="flex items-center">
+            <EnvironmentOutlined />
+            <Title level={5} className="ml-2 mb-0">
+              Address
+            </Title>
+          </div>
+          <Text className="ml-6">{data.address}</Text>
+        </div>
+        <div className="px-3 py-2">
+          <div className="flex items-center">
+            <PhoneOutlined />
+            <Title level={5} className="ml-2 mb-0">
+              Phone Number
+            </Title>
+          </div>
+          <Text className="ml-6">{data.phoneNumber}</Text>
+        </div>
+        <div className="px-3 py-2">
+          <div className="flex items-center">
+            <ShoppingCartOutlined />
+            <Title level={5} className="ml-2 mb-0">
+              Total Products
+            </Title>
+          </div>
+          <Text className="ml-6">10</Text>
+        </div>
+        <div className="px-3 py-2">
+          <div className="flex items-center">
+            <StarOutlined />
+            <Title level={5} className="ml-2 mb-0">
+              Shop Ratings
+            </Title>
+          </div>
+          <Text className="ml-6">4/5</Text>
+        </div>
+        <div className="px-3 py-2">
+          <div className="flex items-center">
+            <CalendarOutlined />
+            <Title level={5} className="ml-2 mb-0">
+              Joined On
+            </Title>
+          </div>
+          <Text className="ml-6">{data?.createdAt?.slice(0, 10)}</Text>
+        </div>
+        {isOwner && (
+          <div className="py-3 px-4">
+            <Link to="/settings">
+              <div
+                type="primary"
+                className={`${styles.button6} w-full mb-2 rounded-3xl text-white bg-[#006665] hover:bg-[#61AFAC] transition-all`}
+              >
+                Edit Shop
+              </div>
+            </Link>
+            <div
+              className={`${styles.button6} w-full mb-2 rounded-3xl hover:text-[#006665] hover:border-[#006665] border-[#61AFAC] text-[#61AFAC]`}
+              onClick={logoutHandler}
+            >
+              Log Out
+            </div>
+          </div>
+        )}
+      </div>
+    </Spin>
   );
 };
 

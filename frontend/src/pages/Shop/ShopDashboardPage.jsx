@@ -3,7 +3,7 @@ import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
 import DashboardSideBar from "../../components/Shop/Layout/DashboardSideBar";
 
 const ShopDashboardPage = () => {
-  return (
+  return ( //container sa left side
         <div>
           <DashboardHeader />
           <div className="flex items-center justify-between w-full">
