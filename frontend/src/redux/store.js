@@ -4,6 +4,7 @@ import { sellerReducer } from "./reducers/seller";
 import { productReducer } from "./reducers/product";
 import { eventReducer } from "./reducers/event";
 
+
 const Store = configureStore({
   reducer: {
     user: userReducer,
