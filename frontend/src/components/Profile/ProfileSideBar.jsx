@@ -4,8 +4,6 @@
 
 import React from "react";
 import {
-  AiOutlineCreditCard,
-  AiOutlineEye,
   AiOutlineKey,
   AiOutlineLogout,
   AiOutlineMessage,
