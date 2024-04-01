@@ -60,6 +60,10 @@ const CreateProduct = () => {
     dispatch(createProduct(newForm));
   };
 
+  const handleCancel = () => {
+    navigate("/dashboard-products");
+  };
+
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
       <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
@@ -201,6 +205,14 @@ const CreateProduct = () => {
               value="Create"
               className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
+            {/* Cancel button */}
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-gray-300 text-gray-700"
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </form>

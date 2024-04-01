@@ -13,6 +13,7 @@ import { backend_url } from "../../../server";
 
 const DashboardHeader = () => {
   const { seller } = useSelector((state) => state.seller);
+
   return (
     <div className="w-full h-[70px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
@@ -27,42 +28,46 @@ const DashboardHeader = () => {
       </div>
       <div className="flex items-center">
         <div className="flex items-center mr-4">
-          <Link to="/dashboard/cupouns" className="hidden 800px:block">
+          <Link to="/dashboard-coupouns" className="hidden 800px:block">
             <AiOutlineGift
-              color="#555"
-              size={25}
-              className="mx-3 cursor-pointer"
+              color="black"
+              size={23}
+              className="mx-2 cursor-pointer"
             />
           </Link>
           <Link to="/dashboard-events" className="hidden 800px:block">
             <MdOutlineLocalOffer
-              color="#555"
-              size={25}
-              className="mx-3 cursor-pointer"
+              color="black"
+              size={23}
+              className="mx-2 cursor-pointer"
             />
           </Link>
           <Link to="/dashboard-products" className="hidden 800px:block">
-            <FiShoppingBag
-              color="#555"
-              size={25}
-              className="mx-3 cursor-pointer"
+            <FiPackage
+              color="black"
+              size={23}
+              className="mx-2 cursor-pointer"
             />
           </Link>
           <Link to="/dashboard-orders" className="hidden 800px:block">
-            <FiPackage color="#555" size={25} className="mx-3 cursor-pointer" />
+            <FiShoppingBag
+                color="black"
+                size={23}
+                className="mx-2 cursor-pointer"
+              />
           </Link>
           <Link to="/dashboard-messages" className="hidden 800px:block">
             <BiMessageSquareDetail
-              color="#555"
-              size={25}
-              className="mx-3 cursor-pointer"
+              color="black"
+              size={23}
+              className="mx-2 cursor-pointer"
             />
           </Link>
           <Link to={`/shop/${seller._id}`}>
             <img
               src={`${backend_url}${seller.avatar}`}
               alt=""
-              className="w-[34px] h-[35px] rounded-full object-cover"
+              className="ml-5 w-[34px] h-[35px] rounded-full object-cover"
             />
           </Link>
         </div>

@@ -111,6 +111,12 @@ const AllProducts = () => {
         <Loader />
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+            <h1>All Products</h1>
+            <Link to="/dashboard-create-product">
+              <Button variant="contained" color="primary">Add Product</Button>
+            </Link>
+          </div>
           <DataGrid
             rows={row}
             columns={columns}

@@ -11,21 +11,21 @@ const Hero = () => {
           "url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)",
       }}
     >
-      <div className={`${styles.section} w-[90%] 800px:w-[60%]`}>
+      <div className={`${styles.section3} w-[90%] 800px:w-[60%]`}>
         <h1
           className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#3d3a3a] font-[600] capitalize`}
         >
-          Vintage vibes, <br/> modern value
+          Vintage vibes, <br/>modern value
         </h1>
-        <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#000000ba]">
-       Pokemon Go
-        </p>
-        <Link to = "/products" className="inline-block">
-            <div className={`${styles.button1} mt-5`} style={{ borderRadius: '100px' }}>
-                <span className="text-[#fff] font-[Poppins] text-[18px]">
-                    Shop Now!
-                </span>
-            </div>
+        <Link to="/products" className="inline-block">
+          <div
+            className={`${styles.button1} mt-5`}
+            style={{ borderRadius: "100px" }}
+          >
+            <span className="text-[#fff] font-[Poppins] text-[18px]">
+              Shop Now!
+            </span>
+          </div>
         </Link>
       </div>
     </div>

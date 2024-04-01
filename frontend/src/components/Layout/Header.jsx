@@ -11,6 +11,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlineMenu,
   AiOutlineBook,
+  AiOutlineLogout,
 } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
@@ -22,11 +23,15 @@ import { backend_url } from "../../server";
 import Cart from "../cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { server } from "../../server";
+import { toast } from "react-toastify";
 
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  const {allProducts} = useSelector((state) => state.products);
+  const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -35,15 +40,30 @@ const Header = ({ activeHeading }) => {
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false); //sidebar sa desktop
   const [open1, setOpen1] = useState(false); //sidebar sa mobile
+  const navigate = useNavigate();
 
+  const logoutHandler = () => {
+    axios
+      .get(`${server}/user/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        window.location.reload(true);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
+  };
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
 
-    const filteredProducts =  allProducts && allProducts.filter((product) =>
-      product.name.toLowerCase().includes(term.toLowerCase())
-    );
+    const filteredProducts =
+      allProducts &&
+      allProducts.filter((product) =>
+        product.name.toLowerCase().includes(term.toLowerCase())
+      );
     setSearchData(filteredProducts);
   };
 
@@ -259,15 +279,26 @@ const Header = ({ activeHeading }) => {
                         <span></span>
                         <span className="text-red-500">{user.name}!</span>
                       </div>
-                      <br/>
+                      <br />
                       <div className="flex justify-center px-6">
                         <div className={`${styles.button4} flex w-full`}>
                           <Link to="/profile">
                             <h1 className=" flex items-center">
-                              <AiOutlineBook size={19} className="mx-1" /> Manage
-                              your account
+                              <AiOutlineBook size={19} className="mx-1" />{" "}
+                              Manage your account
                             </h1>
                           </Link>
+                        </div>
+                      </div>
+                      {/*logout button*/}
+                      <div className="flex justify-center px-6 cursor-pointer">
+                        <div
+                          className={`${styles.button4} flex w-full`}
+                          onClick={() => logoutHandler()}
+                        >
+                          {" "}
+                          <AiOutlineLogout size={19} className="mx-1" />{" "}
+                          <span>Log Out</span>
                         </div>
                       </div>
                     </div>
