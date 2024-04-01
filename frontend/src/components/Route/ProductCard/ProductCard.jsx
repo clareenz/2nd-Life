@@ -14,34 +14,23 @@ import { Link } from "react-router-dom";
 import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
-import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const navigate = useNavigate();
 
   const d = data.name;
   const product_name = d.replace(/\s+/g, "-");
 
-  const buyNow = () => {
-    navigate("/checkout");
-  };
-
   return (
     <>
-      <div
-        className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
+      <div className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
         <Link to={`/product/${product_name}`}>
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt=""
-            className="w-[90%] h-[170px] object-contain"
+            className="w-full h-[170px] object-contain"
           />
         </Link>
         <Link to="/">
@@ -52,21 +41,50 @@ const ProductCard = ({ data }) => {
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>
 
+          {/* the star ratings here are for items, need to edit it out */}
+          <div className="flex">
+            <AiFillStar
+              className="mr-2 cursor-pointer"
+              size={20}
+              color="#F6BA00"
+            />
+            <AiFillStar
+              className="mr-2 cursor-pointer"
+              size={20}
+              color="#F6BA00"
+            />
+            <AiFillStar
+              className="mr-2 cursor-pointer"
+              size={20}
+              color="#F6BA00"
+            />
+            <AiFillStar
+              className="mr-2 cursor-pointer"
+              size={20}
+              color="#F6BA00"
+            />
+            <AiOutlineStar
+              className="mr-2 cursor-pointer"
+              size={20}
+              color="#F6BA00"
+            />
+          </div>
+
           <div className="py-2 flex items-center justify-between">
             <div className="flex">
               <h5 className={`${styles.productDiscountPrice}`}>
                 ₱
                 {data.originalPrice === 0
-                  ? data.originalPrice
-                  : data.originalPrice}
+                  ? data.discountPrice
+                  : data.discountPrice}
               </h5>
               <h4 className={`${styles.price}`}>
                 {data.originalPrice ? "₱" + data.originalPrice : null}
               </h4>
             </div>
-            {/*  <span className="font-[400] text-[17px] text-[#68d284]">
-              {data.total_sell} sold //number of item sold to pero di naman natin need.
-            </span> */}
+            <span className="font-[400] text-[17px] text-[#68d284]">
+              {data.total_sell} sold
+            </span>
           </div>
         </Link>
 
@@ -97,7 +115,7 @@ const ProductCard = ({ data }) => {
             title="Quick View"
           />
           <AiOutlineShoppingCart
-            size={22}
+            size={25}
             className="cursor-pointer absolute right-2 top-24"
             onClick={() => setOpen(!open)}
             color="#444"
@@ -105,17 +123,6 @@ const ProductCard = ({ data }) => {
           />
           {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
         </div>
-
-        {/* Buy Now button */}
-        
-        {hovered && (
-          <div
-            className={`${styles.button5} flex items-center justify-center`}
-            onClick={buyNow}
-          >
-            <span>Buy Now</span>
-          </div>
-        )}
       </div>
     </>
   );
