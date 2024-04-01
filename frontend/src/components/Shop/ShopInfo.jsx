@@ -98,7 +98,23 @@ const ShopInfo = ({ isOwner }) => {
               {data?.createdAt?.slice(0, 10)}
             </h4>
           </div>
-
+          {isOwner && (
+            <div className="py-3 px-4">
+              <Link to="/settings">
+                <div
+                  className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
+                >
+                  <span className="text-white">Edit Shop</span>
+                </div>
+              </Link>
+              <div
+                className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
+                onClick={logoutHandler}
+              >
+                <span className="text-white">Log Out</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
