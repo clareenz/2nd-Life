@@ -28,6 +28,7 @@ import {
   ShopAllCoupouns,
   ShopPreviewPage,
   ShopSettingsPage,
+  ShopPasswordPage
 } from "./routes/ShopRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -149,6 +150,14 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopSettingsPage />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/shop-password"
+          element={
+            <SellerProtectedRoute>
+              <ShopPasswordPage />
             </SellerProtectedRoute>
           }
         />

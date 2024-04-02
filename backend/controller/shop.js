@@ -238,12 +238,20 @@ router.put(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { name, description, address, phoneNumber, zipCode } = req.body;
+      const { name, description, address, phoneNumber, zipCode, password } = req.body;
 
-      const shop = await Shop.findOne(req.seller._id);
+      const shop = await Shop.findOne(req.seller._id).select("+password");
 
       if (!shop) {
-        return next(new ErrorHandler("User not found", 400));
+        return next(new ErrorHandler("Shop not found", 400));
+      }
+
+      const isPasswordValid = await shop.comparePassword(password);
+
+      if (!isPasswordValid) {
+        return next(
+          new ErrorHandler("Please provide the correct information", 400)
+        );
       }
 
       shop.name = name;
@@ -264,4 +272,39 @@ router.put(
   })
 );
 
+
+// update shop password
+router.put(
+  "/update-shop-password",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const shop = await Shop.findById(req.seller._id).select("+password");
+
+      const isPasswordMatched = await shop.comparePassword(
+        req.body.oldPassword
+      );
+
+      if (!isPasswordMatched) {
+        return next(new ErrorHandler("Old password is incorrect!", 400));
+      }
+
+      if (req.body.newPassword !== req.body.confirmPassword) {
+        return next(
+          new ErrorHandler("Password doesn't matched with each other!", 400)
+        );
+      }
+      shop.password = req.body.newPassword;
+
+      await shop.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Shop Password updated successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 module.exports = router;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { backend_url, server } from "../../server";
-import { AiOutlineCamera } from "react-icons/ai";
+import { AiOutlineCamera, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles";
 import axios from "axios";
 import { loadSeller } from "../../redux/actions/user";
@@ -17,6 +17,14 @@ const ShopSettings = () => {
   const [address, setAddress] = useState(seller && seller.address);
   const [phoneNumber, setPhoneNumber] = useState(seller && seller.phoneNumber);
   const [zipCode, setZipcode] = useState(seller && seller.zipCode);
+
+
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const dispatch = useDispatch();
 
@@ -57,6 +65,7 @@ const ShopSettings = () => {
           zipCode,
           phoneNumber,
           description,
+          password
         },
         { withCredentials: true }
       )
@@ -188,6 +197,30 @@ const ShopSettings = () => {
               className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
               required
             />
+          </div>
+
+          <div className="w-[100%] 800px:w-[50%]">
+            <label className="block pb-2">Enter your password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute transform -translate-y-1/2 top-4 right-8"
+                onClick={() => togglePasswordVisibility("showPassword")}
+              >
+                {showPassword ? (
+                  <AiOutlineEyeInvisible size={17} />
+                ) : (
+                  <AiOutlineEye size={17} />
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
