@@ -110,4 +110,44 @@ router.get(
   })
 );
 
+//update shop of product
+router.put(
+  "/update-shop-products",
+  async (req, res, next) => {
+    try {
+
+      const { sellerId } = req.body;
+      
+      //Update the shop with the retrieved products
+      const updatedShop = await Shop.findById(sellerId);
+
+      if (!updatedShop) {
+        return res.status(404).json({
+          success: false,
+          message: "Shop not found",
+        });
+      }
+
+      // Find all products associated with the provided shop ID
+      const products = await Product.updateMany({ shopId: sellerId }, { $set: { shop: updatedShop } });
+
+      if (!products) {
+        return res.status(404).json({
+          success: false,
+          message: "No products found for the provided shop ID",
+        });
+      }
+
+      // Return the updated shop
+      return res.status(200).json({
+        success: true,
+        message: "Shop updated successfully with products",
+        products,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
 module.exports = router;
