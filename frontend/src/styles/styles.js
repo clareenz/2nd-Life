@@ -2,7 +2,7 @@ const styles = {
     custom_container: "w-11/12 hidden sm:block",
     heading: 'text-[21px] text-center md:text-start font-[600] font-Roboto pb-[20px]',
     section:'w-auto mx-10',
-    section2:'w-auto mx-20',
+    section2:'w-auto mx-0',
     section3:'w-auto mx-20',
     productTitle: 'text-[25px] font-[600] font-Roboto text-[#333]',
     productDiscountPrice:"font-bold text-[18px] text-[#333] font-Roboto",

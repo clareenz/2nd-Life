@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url, server } from "../../server";
+import { Form, Input, Button } from "antd";
 import { AiOutlineCamera } from "react-icons/ai";
+import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import axios from "axios";
 import { loadSeller } from "../../redux/actions/user";
@@ -9,12 +10,9 @@ import { toast } from "react-toastify";
 
 const ShopSettings = () => {
   const { seller } = useSelector((state) => state.seller);
-  const [avatar,setAvatar] = useState();
-  const [name,setName] = useState(seller && seller.name);
-  const [description,setDescription] = useState(seller && seller.description ? seller.description : "");
-  const [address,setAddress] = useState(seller && seller.address);
-  const [phoneNumber,setPhoneNumber] = useState(seller && seller.phoneNumber);
-  const [zipCode,setZipcode] = useState(seller && seller.zipCode);
+  const [avatar, setAvatar] = useState();
+  const [form] = Form.useForm();
+  const [oldPassword, setOldPassword] = useState("");
 
 
   const dispatch = useDispatch();
@@ -25,38 +23,51 @@ const ShopSettings = () => {
     setAvatar(file);
 
     const formData = new FormData();
-
     formData.append("image", e.target.files[0]);
 
-    await axios.put(`${server}/shop/update-shop-avatar`, formData,{
+    try {
+      await axios.put(`${server}/shop/update-shop-avatar`, formData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
-    }).then((res) => {
-        dispatch(loadSeller());
-        toast.success("Avatar updated successfully!")
-    }).catch((error) => {
-        toast.error(error.response.data.message);
-    })
-
+      });
+      dispatch(loadSeller());
+      toast.success("Avatar updated successfully!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
-  const updateHandler = async (e) => {
+  const onFinish = async (values) => {
+
+    try {
+      await axios.put(`${server}/shop/update-seller-info`, values, {
+        withCredentials: true,
+      });
+      dispatch(loadSeller());
+      toast.success("Shop info updated successfully!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const passwordChangeHandler = async (e) => {
     e.preventDefault();
 
-    await axios.put(`${server}/shop/update-seller-info`, {
-        name,
-        address,
-        zipCode,
-        phoneNumber,
-        description,
-    }, {withCredentials: true}).then((res) => {
-        toast.success("Shop info updated succesfully!");
-        dispatch(loadSeller());
-    }).catch((error)=> {
+    await axios
+      .put(
+        `${server}/user/update-shop-password`,
+        { oldPassword },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.success);
+        setOldPassword("");
+      })
+      .catch((error) => {
         toast.error(error.response.data.message);
-    })
+      });
   };
 
   return (
@@ -66,7 +77,9 @@ const ShopSettings = () => {
           <div className="relative">
             <img
               src={
-                avatar ? URL.createObjectURL(avatar) : `${backend_url}/${seller.avatar}`
+                avatar
+                  ? URL.createObjectURL(avatar)
+                  : `${backend_url}/${seller.avatar}`
               }
               alt=""
               className="w-[200px] h-[200px] rounded-full cursor-pointer"
@@ -84,94 +97,76 @@ const ShopSettings = () => {
             </div>
           </div>
         </div>
-
-        {/* shop info */}
-        <form
-          aria-aria-required={true}
-          className="flex flex-col items-center"
-          onSubmit={updateHandler}
+        <Form
+          form={form}
+          onFinish={onFinish}
+          layout="vertical"
+          initialValues={{
+            name: seller.name,
+            description: seller.description || "",
+            address: seller.address,
+            phoneNumber: seller.phoneNumber,
+            zipCode: seller.zipCode,
+          }}
         >
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Name</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${seller.name}`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop description</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${
-                seller?.description
-                  ? seller.description
-                  : "Enter your shop description"
-              }`}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Address</label>
-            </div>
-            <input
-              type="name"
-              placeholder={seller?.address}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
+          <Form.Item
+            label="Shop Name"
+            name="name"
+            rules={[{ required: false, message: "Please enter shop name" }]}
+          >
+            <Input />
+          </Form.Item>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Phone Number</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.phoneNumber}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
+          <Form.Item label="Shop Description" name="description">
+            <Input.TextArea />
+          </Form.Item>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Zip Code</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.zipCode}
-              value={zipCode}
-              onChange={(e) => setZipcode(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
+          <Form.Item
+            label="Shop Address"
+            name="address"
+            rules={[{ required: false, message: "Please enter shop address" }]}
+          >
+            <Input />
+          </Form.Item>
 
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <input
-              type="submit"
-              value="Update Shop"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-              readOnly
-            />
-          </div>
-        </form>
+          <Form.Item
+            label="Shop Phone Number"
+            name="phoneNumber"
+            rules={[
+              { required: false, message: "Please enter phone number" },
+              {
+                pattern: /^\d+$/,
+                message: "Please enter only digits",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Shop Zip Code"
+            name="zipCode"
+            rules={[{ required: false, message: "Please enter zip code" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            rules={[{ required: false, message: "Please enter your password" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="bg-blue-600">
+              Update Shop
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { message } from "antd";
 
 const ShopCreate = () => {
   const [email, setEmail] = useState("");
@@ -88,13 +89,13 @@ const ShopCreate = () => {
 
     // Validate that password and confirm password match
     if (password !== confirmPassword) {
-      toast.error("Password and confirm password do not match");
+      message.error("Password and confirm password do not match");
       return;
     }
 
     // Validate password strength
     if (!validatePassword()) {
-      toast.error(
+      message.error(
         "Password must be at least 6 characters and contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character."
       );
       return;
@@ -113,7 +114,7 @@ const ShopCreate = () => {
     axios
       .post(`${server}/shop/create-shop`, newForm, config)
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
         setName("");
         setEmail("");
         setPassword("");
@@ -123,7 +124,7 @@ const ShopCreate = () => {
         setPhoneNumber();
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 

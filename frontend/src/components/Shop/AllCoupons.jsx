@@ -7,6 +7,7 @@ import Loader from "../Layout/Loader";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { message } from "antd";
 
 const { Option } = Select;
 
@@ -43,11 +44,11 @@ const AllCoupons = () => {
     axios
       .delete(`${server}/coupon/delete-coupon/${id}`, { withCredentials: true })
       .then((res) => {
-        toast.success("Coupon code deleted successfully!");
+        message.success("Coupon code deleted successfully!");
         setCoupons(coupons.filter((coupon) => coupon._id !== id)); // Update state after deletion
       })
       .catch((error) => {
-        toast.error("Failed to delete coupon code!");
+        message.error("Failed to delete coupon code!");
       });
   };
 
@@ -68,12 +69,12 @@ const AllCoupons = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Coupon code created successfully!");
+        message.success("Coupon code created successfully!");
         setOpen(false);
         window.location.reload();
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 

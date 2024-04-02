@@ -24,6 +24,7 @@ import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { message } from "antd";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -38,11 +39,11 @@ const ProfileContent = ({ active }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      message.error(error);
       dispatch({ type: "clearErrors" });
     }
     if (successMessage) {
-      toast.success(successMessage);
+      message.success(successMessage);
       dispatch({ type: "clearMessages" });
     }
   }, [error, successMessage]);
@@ -52,13 +53,14 @@ const handleSubmit = (e) => {
 
   // Check if the password field is empty
   if (!password) {
-    toast.error("Please input your password to update your information.");
+    message.error("Please input your password to update your information.");
     return;
   }
 
   dispatch(updateUserInformation(name, email, phoneNumber, password));
   setDisplayName(name);
-  toast.success("Changed Successfully!");
+  message.success("Changed Successfully!");
+  window.location.reload();
 };
 
   const handleImage = async (e) => {
@@ -78,10 +80,10 @@ const handleSubmit = (e) => {
       })
       .then((response) => {
         dispatch(loadUser());
-        toast.success("avatar updated successfully!");
+        message.success("avatar updated successfully!");
       })
       .catch((error) => {
-        toast.error(error);
+        message.error(error);
       });
   };
 
@@ -493,13 +495,13 @@ const ChangePassword = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success(res.data.success);
+        message.success(res.data.success);
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 
@@ -682,7 +684,7 @@ const Address = () => {
     e.preventDefault();
 
     if (addressType === "" || country === "" || city === "") {
-      toast.error("Please fill all the fields!");
+      message.error("Please fill all the fields!");
     } else {
       dispatch(
         updatUserAddress(

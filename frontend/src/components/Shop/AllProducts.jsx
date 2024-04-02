@@ -23,11 +23,41 @@ const AllProducts = () => {
   };
 
   const columns = [
-    { title: "Product Id", dataIndex: "id", key: "id", width: 150, align: "center" },
-    { title: "Name", dataIndex: "name", key: "name", width: 180, align: "center",},
-    { title: "Price", dataIndex: "price", key: "price", width: 100, align: "center" },
-    { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
-    { title: "Sold out", dataIndex: "sold", key: "sold", width: 130, align: "center" },
+    {
+      title: "Product Id",
+      dataIndex: "id",
+      key: "id",
+      width: 150,
+      align: "center",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 180,
+      align: "center",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      width: 100,
+      align: "center",
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      width: 80,
+      align: "center",
+    },
+    {
+      title: "Sold out",
+      dataIndex: "sold",
+      key: "sold",
+      width: 130,
+      align: "center",
+    },
     {
       title: "Preview",
       key: "Preview",
@@ -35,9 +65,7 @@ const AllProducts = () => {
       align: "center",
       render: (text, record) => (
         <Link to={`/product/${record.name}`}>
-          <Button>
-            <AiOutlineEye size={20} />
-          </Button>
+          <Button icon={<AiOutlineEye />} size="small" />
         </Link>
       ),
     },
@@ -55,13 +83,15 @@ const AllProducts = () => {
   ];
 
   // Check if products array is defined before mapping over it
-  const data = products ? products.map((item) => ({
-    id: item._id,
-    name: item.name,
-    price: "US$ " + item.discountPrice,
-    stock: item.stock,
-    sold: 10,
-  })) : [];
+  const data = products
+    ? products.map((item) => ({
+        id: item._id,
+        name: item.name,
+        price: "Php " + item.discountPrice,
+        stock: item.stock,
+        sold: 10,
+      }))
+    : [];
 
   return (
     <>
@@ -73,7 +103,7 @@ const AllProducts = () => {
             columns={columns}
             dataSource={data}
             pagination={{ pageSize: 10 }}
-            scroll={{ x: "100%" }} // Enable horizontal scrolling
+            style={{ scrollbarWidth: "none", overflowY: "auto" }}
           />
         </div>
       )}

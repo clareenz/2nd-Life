@@ -56,6 +56,9 @@ const DashboardSideBar = () => {
       case "/settings":
         setActiveKey("12");
         break;
+      case "/settings":
+        setActiveKey("13");
+        break;
       default:
         setActiveKey("1");
     }
@@ -64,13 +67,13 @@ const DashboardSideBar = () => {
   return (
     <div
       style={{ height: "100vh", position: "fixed" }}
-      className="w-[60px] 800px:w-[250px] z-10"
+      className="w-[60px] 800px:w-[250px] z-10 submenu-container"
     >
       <Menu
         mode="inline"
         selectedKeys={[activeKey.toString()]}
         theme="light"
-        style={{ height: "100vh" }}
+        style={{ maxHeight: "calc(100vh - 80px)", overflowY: "auto", scrollbarWidth: "none", }}
       >
         <Menu.Item key="1" icon={<RiDashboardLine />}>
           <Link to="/dashboard">Dashboard</Link>
@@ -79,10 +82,10 @@ const DashboardSideBar = () => {
           <Link to="/dashboard-orders">All Orders</Link>
         </Menu.Item>
         <SubMenu key="sub1" icon={<FiPackage />} title="Products">
-          <Menu.Item key="3" icon={<FaCartShopping  />}>
+          <Menu.Item key="3" icon={<FaCartShopping />}>
             <Link to="/dashboard-products">All products</Link>
           </Menu.Item>
-          <Menu.Item key="4"icon={<BiShoppingBag  />}>
+          <Menu.Item key="4" icon={<BiShoppingBag />}>
             <Link to="/dashboard-create-product">Add products</Link>
           </Menu.Item>
         </SubMenu>
@@ -103,16 +106,17 @@ const DashboardSideBar = () => {
         <Menu.Item key="9" icon={<AiOutlineGift />}>
           <Link to="/dashboard-coupouns">Discount Codes</Link>
         </Menu.Item>
-        <Menu.Item key="10" icon={<HiOutlineReceiptRefund />}>
+        <Menu.Item key="11" icon={<HiOutlineReceiptRefund />}>
           <Link to="/dashboard-refunds">Refunds</Link>
         </Menu.Item>
-        <Menu.Item
-          key="11"
-          icon={<CiSettings />}
-          style={{ marginTop: "270px" }}
-        >
-          <Link to="/settings">Settings</Link>
-        </Menu.Item>
+        <SubMenu key="sub3" icon={<CiSettings/>} title="Settings" style={{ marginTop: "270px" }} >
+          <Menu.Item key="12">
+            <Link to="/settings">Shop</Link>
+          </Menu.Item>
+          <Menu.Item key="13">
+            <Link to="/settings">Password</Link>
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </div>
   );
