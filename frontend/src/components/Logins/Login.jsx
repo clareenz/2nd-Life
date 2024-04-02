@@ -6,6 +6,7 @@ import styles from "../../styles/styles";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { message } from "antd";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -53,12 +54,12 @@ const Login = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Login Success!");
+        message.success("Login Success!");
         navigate("/");
         window.location.reload(true);
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        message.error(err.response.data.message);
       });
   };
 

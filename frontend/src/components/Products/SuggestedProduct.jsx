@@ -21,7 +21,7 @@ const SuggestedProduct = ({ data }) => {
   return (
     <div>
       {data ? (
-        <div className={`p-4 ${styles.section} ${styles.heading}`}>
+        <div className={`p-4 ${styles.section3} ${styles.heading}`}>
           <div className="flex items-center mb-4">
             <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
               {/* Small box */}

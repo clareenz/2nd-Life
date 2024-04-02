@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { toast } from "react-toastify";
 import { createevent } from "../../redux/actions/event";
+import { Form, Input, Select, Button, DatePicker, message, Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
+const { Option } = Select;
+const { TextArea } = Input;
 
 const CreateEvent = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -12,65 +16,59 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [form] = Form.useForm();
   const [images, setImages] = useState([]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [tags, setTags] = useState("");
-  const [originalPrice, setOriginalPrice] = useState();
-  const [discountPrice, setDiscountPrice] = useState();
-  const [stock, setStock] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const handleStartDateChange = (e) => {
-    const startDate = new Date(e.target.value);
-    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
-    setStartDate(startDate);
-    setEndDate(null);
-    document.getElementById("end-date").min = minEndDate
-      .toISOString()
-      .slice(0, 10);
-  };
-
-  const handleEndDateChange = (e) => {
-    const endDate = new Date(e.target.value);
-    setEndDate(endDate);
-  };
-
-  const today = new Date().toISOString().slice(0, 10);
-
-  const minEndDate = startDate
-    ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .slice(0, 10)
-    : "";
-
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      message.error(error);
     }
     if (success) {
-      toast.success("Event created successfully!");
+      message.success("Event created successfully!");
       navigate("/dashboard-events");
       window.location.reload();
     }
   }, [dispatch, error, success]);
 
-  const handleImageChange = (e) => {
-    e.preventDefault();
-
-    let files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
+  const handleStartDateChange = (dateString) => {
+    const startDate = new Date(dateString);
+    if (!isNaN(startDate)) {
+      const minEndDate = new Date(
+        startDate.getTime() + 3 * 24 * 60 * 60 * 1000
+      );
+      setStartDate(startDate);
+      setEndDate(null);
+      const endDateInput = document.getElementById("end-date");
+      if (endDateInput) {
+        endDateInput.min = minEndDate.toISOString().slice(0, 10);
+      }
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleEndDateChange = (date, dateString) => {
+    setEndDate(dateString);
+  };
+
+  const handleImageChange = ({ fileList }) => {
+    setImages(fileList);
+  };
+
+  const onFinish = (values) => {
+    const {
+      name,
+      description,
+      category,
+      tags,
+      originalPrice,
+      discountPrice,
+      stock,
+    } = values;
 
     const newForm = new FormData();
-
     images.forEach((image) => {
-      newForm.append("images", image);
+      newForm.append("images", image.originFileObj);
     });
     newForm.append("name", name);
     newForm.append("description", description);
@@ -80,187 +78,175 @@ const CreateEvent = () => {
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
-    newForm.append("start_Date", startDate.toISOString());
-    newForm.append("Finish_Date", endDate.toISOString());
+    newForm.append("start_Date", startDate);
+    newForm.append("Finish_Date", endDate);
     dispatch(createevent(newForm));
   };
 
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
+    <div
+      className="w-[90%] 800px:w-[50%] bg-white shadow h-[88.5vh] mt-2 rounded-lg p-6 absolute"
+      style={{ scrollbarWidth: "none", overflowY: "auto" }}
+    >
       <h5 className="text-[30px] font-Poppins text-center">Create Event</h5>
-      {/* create event form */}
-      <form onSubmit={handleSubmit}>
-        <br />
-        <div>
-          <label className="pb-2">
-            Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
+      <Form
+        form={form}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        className=""
+      >
+        <div className="input-wrapper">
+          <label htmlFor="name">Name:</label>
+          <Form.Item
             name="name"
-            value={name}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your event product name..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Description <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            cols="30"
-            required
-            rows="8"
-            type="text"
-            name="description"
-            value={description}
-            className="mt-2 appearance-none block w-full pt-2 px-3 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter your event product description..."
-          ></textarea>
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px]"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            rules={[
+              { required: true, message: "Please enter event product name" },
+            ]}
           >
-            <option value="Choose a category">Choose a category</option>
-            {categoriesData &&
-              categoriesData.map((i) => (
-                <option value={i.title} key={i.title}>
-                  {i.title}
-                </option>
-              ))}
-          </select>
+            <Input placeholder="Enter your event product name..." />
+          </Form.Item>
         </div>
-        <br />
-        <div>
-          <label className="pb-2">Tags</label>
-          <input
-            type="text"
-            name="tags"
-            value={tags}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setTags(e.target.value)}
-            placeholder="Enter your event product tags..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">Original Price</label>
-          <input
-            type="number"
-            name="price"
-            value={originalPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setOriginalPrice(e.target.value)}
-            placeholder="Enter your event product price..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Price (With Discount) <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={discountPrice}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setDiscountPrice(e.target.value)}
-            placeholder="Enter your event product price with discount..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Product Stock <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={stock}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setStock(e.target.value)}
-            placeholder="Enter your event product stock..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Event Start Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            name="price"
-            id="start-date"
-            value={startDate ? startDate.toISOString().slice(0, 10) : ""}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={handleStartDateChange}
-            min={today}
-            placeholder="Enter your event product stock..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Event End Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            name="price"
-            id="end-date"
-            value={endDate ? endDate.toISOString().slice(0, 10) : ""}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={handleEndDateChange}
-            min={minEndDate}
-            placeholder="Enter your event product stock..."
-          />
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Upload Images <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="file"
-            name=""
-            id="upload"
-            className="hidden"
-            multiple
-            onChange={handleImageChange}
-          />
-          <div className="w-full flex items-center flex-wrap">
-            <label htmlFor="upload">
-              <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
-            </label>
-            {images &&
-              images.map((i) => (
-                <img
-                  src={URL.createObjectURL(i)}
-                  key={i}
-                  alt=""
-                  className="h-[120px] w-[120px] object-cover m-2"
-                />
-              ))}
-          </div>
-          <br />
-          <div>
-            <input
-              type="submit"
-              value="Create"
-              className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        <div className="input-wrapper">
+          <label htmlFor="name">Description:</label>
+          <Form.Item
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "Please enter event product description",
+              },
+            ]}
+          >
+            <TextArea
+              rows={4}
+              placeholder="Enter your event product description..."
             />
-          </div>
+          </Form.Item>
         </div>
-      </form>
+
+        <div className="input-wrapper">
+          <label htmlFor="category">Category:</label>
+          <Form.Item
+            name="category"
+            rules={[
+              { required: true, message: "Please select product category!" },
+            ]}
+          >
+            <Select id="category" placeholder="Choose a category">
+              {categoriesData.map((category) => (
+                <Option key={category.title} value={category.title}>
+                  {category.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </div>
+
+        <div className="input-wrapper">
+          <label htmlFor="tags">Tags:</label>
+          <Form.Item name="tags">
+            <Input id="tags" placeholder="Enter your product tags..." />
+          </Form.Item>
+        </div>
+
+        <div className="input-wrapper">
+          <label htmlFor="originalPrice">Original Price:</label>
+          <Form.Item name="originalPrice">
+            <Input id="originalPrice" type="number" placeholder="Enter your product price..." />
+          </Form.Item>
+        </div>
+
+        <div className="input-wrapper">
+          <label htmlFor="discountPrice">Price (With Discount):</label>
+          <Form.Item
+            name="discountPrice"
+            rules={[{ required: true, message: "Please input product price with discount!" }]}
+          >
+            <Input id="discountPrice" type="number" placeholder="Enter your product price with discount..." />
+          </Form.Item>
+        </div>
+        
+        <div className="input-wrapper">
+          <label htmlFor="stock">Product Stock:</label>
+          <Form.Item
+            name="stock"
+            rules={[{ required: true, message: "Please input product stock!" }]}
+          >
+            <Input id="stock" type="number" placeholder="Enter your product stock..." />
+          </Form.Item>
+        </div>
+        
+        <Form.Item
+          label="Event Start Date"
+          name="startDate"
+          rules={[
+            { required: true, message: "Please select event start date" },
+          ]}
+        >
+          <DatePicker
+            onChange={(date, dateString) => handleStartDateChange(dateString)}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Event End Date"
+          name="endDate"
+          rules={[{ required: true, message: "Please select event end date" }]}
+        >
+          <DatePicker
+            id="end-date"
+            onChange={(date, dateString) =>
+              handleEndDateChange(date, dateString)
+            }
+          />
+        </Form.Item>
+
+        <div className="input-wrapper">
+          <label htmlFor="images">Upload Images:</label>
+          <Form.Item
+            name="images"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+          >
+            <Upload
+              beforeUpload={() => false}
+              listType="picture-card"
+              fileList={images}
+              onChange={handleImageChange}
+            >
+              {images.length >= 5 ? null : (
+                <div>
+                  <PlusOutlined />
+                  <div style={{ marginTop: 8 }}>Upload</div>
+                </div>
+              )}
+            </Upload>
+          </Form.Item>
+        </div>
+        <br />
+        <div className="justify-evenly space-x-2">
+          <Button
+            onClick={() => form.resetFields()}
+            style={{ marginLeft: "8px" }}
+          >
+            Reset
+          </Button>
+          <Button type="primary" htmlType="submit" className="bg-blue-500">
+            Create
+          </Button>
+        </div>
+      </Form>
     </div>
   );
 };

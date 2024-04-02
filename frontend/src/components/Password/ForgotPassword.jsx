@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { message } from "antd";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -13,10 +14,10 @@ const ForgotPassword = () => {
     // Send POST request to forgot password endpoint
     try {
       const response = await axios.post(`${server}/forgot-password`, { email });
-      toast.success(response.data.message);
+      message.success(response.data.message);
       setEmail(""); // Clear email field after successful submission
     } catch (error) {
-      toast.error(error.response.data.message);
+      message.error(error.response.data.message);
     }
   };
 
