@@ -238,12 +238,20 @@ router.put(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { name, description, address, phoneNumber, zipCode } = req.body;
+      const { name, description, address, phoneNumber, zipCode, password } = req.body;
 
-      const shop = await Shop.findOne(req.seller._id);
+      const shop = await Shop.findOne(req.seller._id).select("+password");
 
       if (!shop) {
         return next(new ErrorHandler("User not found", 400));
+      }
+
+      const isPasswordValid = await shop.comparePassword(password);
+
+      if (!isPasswordValid) {
+        return next(
+          new ErrorHandler("Please provide the correct information", 400)
+        );
       }
 
       shop.name = name;
