@@ -13,8 +13,15 @@ const ShopSettings = () => {
   const [avatar, setAvatar] = useState();
   const [form] = Form.useForm();
   const [oldPassword, setOldPassword] = useState("");
+  const [name, setName] = useState(seller && seller.name);
+  const [description, setDescription] = useState(
+    seller && seller.description ? seller.description : ""
+  );
+  const [address, setAddress] = useState(seller && seller.address);
+  const [phoneNumber, setPhoneNumber] = useState(seller && seller.phoneNumber);
+  const [zipCode, setZipcode] = useState(seller && seller.zipCode);
 
-
+ 
   const dispatch = useDispatch();
 
   const handleImage = async (e) => {
@@ -23,57 +30,69 @@ const ShopSettings = () => {
     setAvatar(file);
 
     const formData = new FormData();
+
     formData.append("image", e.target.files[0]);
 
-    try {
-      await axios.put(`${server}/shop/update-shop-avatar`, formData, {
+    await axios
+      .put(`${server}/shop/update-shop-avatar`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
-      });
-      dispatch(loadSeller());
-      toast.success("Avatar updated successfully!");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-
-  const onFinish = async (values) => {
-
-    try {
-      await axios.put(`${server}/shop/update-seller-info`, values, {
-        withCredentials: true,
-      });
-      dispatch(loadSeller());
-      toast.success("Shop info updated successfully!");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-
-  const passwordChangeHandler = async (e) => {
-    e.preventDefault();
-
-    await axios
-      .put(
-        `${server}/user/update-shop-password`,
-        { oldPassword },
-        { withCredentials: true }
-      )
+      })
       .then((res) => {
-        toast.success(res.data.success);
-        setOldPassword("");
+        dispatch(loadSeller());
+        toast.success("Avatar updated successfully!");
       })
       .catch((error) => {
         toast.error(error.response.data.message);
       });
   };
 
+  const updateHandler = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .put(
+        `${server}/shop/update-seller-info`,
+        {
+          name,
+          address,
+          zipCode,
+          phoneNumber,
+          description,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success("Shop info updated succesfully!");
+        dispatch(loadSeller());
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+
+    // Define the shop ID for which you want to update products
+    const sellerId = seller._id;
+
+    // Make a GET request to the endpoint to update shop products
+    await axios
+      .put(`${server}/product/update-shop-products`, {
+        sellerId,
+      })
+      .then((response) => {
+        console.log(
+          "Shop updated successfully with products:",
+          response.data.product
+        );
+      })
+      .catch((error) => {});
+  };
+
   return (
-    <div className="w-full min-h-screen flex flex-col items-center">
+    <div className="flex flex-col items-center w-full min-h-screen">
       <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5">
-        <div className="w-full flex items-center justify-center">
+        <div className="flex items-center justify-center w-full">
           <div className="relative">
             <img
               src={
