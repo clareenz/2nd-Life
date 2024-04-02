@@ -11,22 +11,17 @@ const ShopSettings = () => {
   const { seller } = useSelector((state) => state.seller);
   const [avatar, setAvatar] = useState();
   const [name, setName] = useState(seller && seller.name);
-  const [description, setDescription] = useState(
-    seller && seller.description ? seller.description : ""
-  );
+  const [description, setDescription] = useState(seller && seller.description ? seller.description : "");
   const [address, setAddress] = useState(seller && seller.address);
   const [phoneNumber, setPhoneNumber] = useState(seller && seller.phoneNumber);
   const [zipCode, setZipcode] = useState(seller && seller.zipCode);
-
-
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const dispatch = useDispatch();
 
   const handleImage = async (e) => {
     e.preventDefault();
@@ -34,30 +29,27 @@ const ShopSettings = () => {
     setAvatar(file);
 
     const formData = new FormData();
-
     formData.append("image", e.target.files[0]);
 
-    await axios
-      .put(`${server}/shop/update-shop-avatar`, formData, {
+    try {
+      const res = await axios.put(`${server}/shop/update-shop-avatar`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
-      })
-      .then((res) => {
-        dispatch(loadSeller());
-        toast.success("Avatar updated successfully!");
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
       });
+      dispatch(loadSeller());
+      toast.success("Avatar updated successfully!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   const updateHandler = async (e) => {
     e.preventDefault();
 
-    await axios
-      .put(
+    try {
+      await axios.put(
         `${server}/shop/update-seller-info`,
         {
           name,
@@ -65,40 +57,27 @@ const ShopSettings = () => {
           zipCode,
           phoneNumber,
           description,
-          password
+          password,
         },
         { withCredentials: true }
-      )
-      .then((res) => {
-        toast.success("Shop info updated succesfully!");
-        dispatch(loadSeller());
-      })
-      .catch((error) => {
-        toast.error(error.response.data.message);
-      });
-
-    // Define the shop ID for which you want to update products
-    const sellerId = seller._id;
-
-    // Make a GET request to the endpoint to update shop products
-    await axios
-      .put(`${server}/product/update-shop-products`, {
+      );
+      toast.success("Shop info updated successfully!");
+      dispatch(loadSeller());
+  
+      const sellerId = seller._id;
+      await axios.put(`${server}/product/update-shop-products`, {
         sellerId,
-      })
-      .then((response) => {
-        console.log(
-          "Shop updated successfully with products:",
-          response.data.product
-        );
-      })
-      .catch((error) => {});
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
-
+  
   return (
     <div className="flex flex-col items-center w-full min-h-screen">
-      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5">
+      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5 shadow-sm bg-white p-6 h-[80vh] rounded-2xl">
         <div className="flex items-center justify-center w-full">
-          <div className="relative">
+          <div className="relative ">
             <img
               src={
                 avatar
@@ -121,114 +100,115 @@ const ShopSettings = () => {
             </div>
           </div>
         </div>
-
+        <br/>
         {/* shop info */}
         <form
           aria-aria-required={true}
           className="flex flex-col items-center"
           onSubmit={updateHandler}
         >
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Name</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${seller.name}`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop description</label>
-            </div>
-            <input
-              type="name"
-              placeholder={`${
-                seller?.description
-                  ? seller.description
-                  : "Enter your shop description"
-              }`}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-            />
-          </div>
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Address</label>
-            </div>
-            <input
-              type="name"
-              placeholder={seller?.address}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Phone Number</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.phoneNumber}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
-            <div className="w-full pl-[3%]">
-              <label className="block pb-2">Shop Zip Code</label>
-            </div>
-            <input
-              type="number"
-              placeholder={seller?.zipCode}
-              value={zipCode}
-              onChange={(e) => setZipcode(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
-            />
-          </div>
-
-          <div className="w-[100%] 800px:w-[50%]">
-            <label className="block pb-2">Enter your password</label>
-            <div className="relative">
+          <div className="flex w-full justify-between">
+            <div className="w-[48%]">
+              <div className="w-full pl-[3%]">
+                <label className="block pb-2">Shop Name</label>
+              </div>
               <input
-                type={showPassword ? "text" : "password"}
-                className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
+                type="name"
+                placeholder={`${seller.name}`}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={`${styles.input} !w-[95%] mb-4`}
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
               />
-              <button
-                type="button"
-                className="absolute transform -translate-y-1/2 top-4 right-8"
-                onClick={() => togglePasswordVisibility("showPassword")}
-              >
-                {showPassword ? (
-                  <AiOutlineEyeInvisible size={17} />
-                ) : (
-                  <AiOutlineEye size={17} />
-                )}
-              </button>
+            </div>
+            <div className="w-[48%]">
+              <div className="w-full pl-[3%]">
+                <label className="block pb-2">Shop description</label>
+              </div>
+              <input
+                type="name"
+                placeholder={`${
+                  seller?.description
+                    ? seller.description
+                    : "Enter your shop description"
+                }`}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={`${styles.input} !w-[95%] mb-4`}
+              />
             </div>
           </div>
-
-          <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
+          <div className="flex w-full justify-between">
+            <div className="w-[48%]">
+              <div className="w-full pl-[3%]">
+                <label className="block pb-2">Shop Address</label>
+              </div>
+              <input
+                type="name"
+                placeholder={seller?.address}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className={`${styles.input} !w-[95%] mb-4`}
+                required
+              />
+            </div>
+            <div className="w-[48%]">
+              <div className="w-full pl-[3%]">
+                <label className="block pb-2">Shop Phone Number</label>
+              </div>
+              <input
+                type="number"
+                placeholder={seller?.phoneNumber}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className={`${styles.input} !w-[95%] mb-4`}
+                required
+              />
+            </div>
+          </div>
+          <div className="flex w-full justify-between">
+            <div className="w-[48%]">
+              <div className="w-full pl-[3%]">
+                <label className="block pb-2">Shop Zip Code</label>
+              </div>
+              <input
+                type="number"
+                placeholder={seller?.zipCode}
+                value={zipCode}
+                onChange={(e) => setZipcode(e.target.value)}
+                className={`${styles.input} !w-[95%] mb-4`}
+                required
+              />
+            </div>
+            <div className="w-[48%]">
+              <label className="block pb-2">Enter your password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className={`${styles.input} !w-[95%] mb-1 shadow-sm`}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="absolute transform -translate-y-1/2 top-4 right-8"
+                  onClick={() => togglePasswordVisibility("showPassword")}
+                >
+                  {showPassword ? (
+                    <AiOutlineEyeInvisible size={17} />
+                  ) : (
+                    <AiOutlineEye size={17} />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="w-[100%] mt-5">
             <input
               type="submit"
               value="Update Shop"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
-              required
+              className={`${styles.button6} w-[50%] mb-2 rounded-3xl hover:text-[#006665] hover:border-[#006665] border-[#61AFAC] text-[#61AFAC] flex justify-center`}
               readOnly
             />
           </div>
