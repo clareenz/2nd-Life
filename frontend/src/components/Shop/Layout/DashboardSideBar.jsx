@@ -114,7 +114,7 @@ const DashboardSideBar = () => {
             <Link to="/settings">Shop</Link>
           </Menu.Item>
           <Menu.Item key="13">
-            <Link to="/settings">Password</Link>
+            <Link to="/shop-password">Password</Link>
           </Menu.Item>
         </SubMenu>
       </Menu>
