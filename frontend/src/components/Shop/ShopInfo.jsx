@@ -16,7 +16,7 @@ import styles from "../../styles/styles";
 const { Title, Text } = Typography;
 
 const ShopInfo = ({ isOwner }) => {
-  //right side
+  //left side
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -106,13 +106,13 @@ const ShopInfo = ({ isOwner }) => {
             <Link to="/settings">
               <div
                 type="primary"
-                className={`${styles.button6} w-full mb-2 rounded-3xl text-white bg-[#006665] hover:bg-[#61AFAC] transition-all`}
+                className={`${styles.button6} w-full mb-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
               >
                 Edit Shop
               </div>
             </Link>
             <div
-              className={`${styles.button6} w-full mb-2 rounded-3xl hover:text-[#006665] hover:border-[#006665] border-[#61AFAC] text-[#61AFAC]`}
+              className={`${styles.button6} w-full mb-2 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]`}
               onClick={logoutHandler}
             >
               Log Out

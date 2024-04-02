@@ -103,7 +103,7 @@ const AllProducts = () => {
             columns={columns}
             dataSource={data}
             pagination={{ pageSize: 10 }}
-            style={{ scrollbarWidth: "none", overflowY: "auto" }}
+            style={{ scrollbarWidth: "none", overflowX: "auto" }}
           />
         </div>
       )}
