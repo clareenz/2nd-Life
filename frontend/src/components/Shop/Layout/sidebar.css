@@ -1,0 +1,9 @@
+
+ .ant-menu-submenu-selected.ant-menu-submenu-selected > .ant-menu-submenu-title{
+  color: #FF8474 !important;
+  background-color: #FFEAE8 !important;
+}
+
+.ant-menu-submenu-selected.ant-menu-submenu-selected:hover > .ant-menu-submenu-title {
+    background-color: #FFEAE8 !important;
+  }

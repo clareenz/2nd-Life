@@ -5,6 +5,7 @@ import { Tabs, Typography, Button } from "antd";
 import { getAllProductsShop } from "../../redux/actions/product";
 import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
+import './color.css';
 
 const { TabPane } = Tabs;
 const { Title } = Typography;
@@ -24,7 +25,7 @@ const ShopProfileData = ({ isOwner }) => {
     setActiveTab(key);
   };
 
-  return (
+  return ( //right side
     <div className="w-full mt-4">
       <Tabs activeKey={activeTab} onChange={handleTabChange}>
         <TabPane tab="Shop Products" key="products">
@@ -52,7 +53,7 @@ const ShopProfileData = ({ isOwner }) => {
       {isOwner && (
         <div className="absolute top-0 right-0 mt-1 mr-3">
           <Link to="/dashboard">
-            <div  className={`${styles.button6} text-white bg-[#006665] rounded-3xl text-[14px] hover:bg-[#61AFAC]`}>
+            <div  className={`${styles.button6} text-white bg-[#006665] rounded-3xl text-[14px] hover:bg-[#077773]`}>
               Go Dashboard
             </div>
           </Link>

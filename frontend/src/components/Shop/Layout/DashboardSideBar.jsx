@@ -11,6 +11,9 @@ import { RiDashboardLine } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
 import { BiShoppingBag } from "react-icons/bi";
 import { FaCartShopping } from "react-icons/fa6";
+import './sidebar.css';
+
+
 
 const { SubMenu } = Menu;
 
@@ -56,7 +59,7 @@ const DashboardSideBar = () => {
       case "/settings":
         setActiveKey("12");
         break;
-      case "/settings":
+      case "/shop-password":
         setActiveKey("13");
         break;
       default:
@@ -73,47 +76,148 @@ const DashboardSideBar = () => {
         mode="inline"
         selectedKeys={[activeKey.toString()]}
         theme="light"
-        style={{ maxHeight: "calc(100vh - 80px)", overflowY: "auto", scrollbarWidth: "none", }}
+        style={{
+          maxHeight: "calc(100vh - 80px)",
+          overflowY: "auto",
+          scrollbarWidth: "none",
+        }}
       >
-        <Menu.Item key="1" icon={<RiDashboardLine />}>
+        <Menu.Item
+          key="1"
+          style={
+            activeKey === "1"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
+          icon={<RiDashboardLine />}
+        >
           <Link to="/dashboard">Dashboard</Link>
         </Menu.Item>
-        <Menu.Item key="2" icon={<FiShoppingBag />}>
+        <Menu.Item
+          key="2"
+          style={
+            activeKey === "2"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
+          icon={<FiShoppingBag />}
+        >
           <Link to="/dashboard-orders">All Orders</Link>
         </Menu.Item>
-        <SubMenu key="sub1" icon={<FiPackage />} title="Products">
-          <Menu.Item key="3" icon={<FaCartShopping />}>
+
+        <SubMenu
+          key="sub1"
+          icon={<FiPackage />}
+          title="Products"
+        >
+          <Menu.Item
+            key="3"
+            style={
+              activeKey === "3"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+            icon={<FaCartShopping />}
+          >
             <Link to="/dashboard-products">All products</Link>
           </Menu.Item>
-          <Menu.Item key="4" icon={<BiShoppingBag />}>
+          <Menu.Item
+            key="4"
+            style={
+              activeKey === "4"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+            icon={<BiShoppingBag />}
+          >
             <Link to="/dashboard-create-product">Add products</Link>
           </Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" icon={<MdOutlineLocalOffer />} title="Events">
-          <Menu.Item key="5">
+          <Menu.Item
+            key="5"
+            style={
+              activeKey === "5"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+          >
             <Link to="/dashboard-events">All Events</Link>
           </Menu.Item>
-          <Menu.Item key="6">
+          <Menu.Item
+            key="6"
+            style={
+              activeKey === "6"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+          >
             <Link to="/dashboard-create-event">Create Events</Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item key="7" icon={<GrMoney />}>
+        <Menu.Item
+          key="7"
+          style={
+            activeKey === "7"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
+          icon={<GrMoney />}
+        >
           <Link to="/dashboard-withdraw-money">Withdraw Money</Link>
         </Menu.Item>
-        <Menu.Item key="8" icon={<BiMessageSquareDetail />}>
+        <Menu.Item
+          key="8"
+          style={
+            activeKey === "8"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
+          icon={<BiMessageSquareDetail />}
+        >
           <Link to="/dashboard-messages">Shop Inbox</Link>
         </Menu.Item>
-        <Menu.Item key="9" icon={<AiOutlineGift />}>
+        <Menu.Item
+          key="9"
+          style={
+            activeKey === "9"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
+          icon={<AiOutlineGift />}
+        >
           <Link to="/dashboard-coupouns">Discount Codes</Link>
         </Menu.Item>
-        <Menu.Item key="11" icon={<HiOutlineReceiptRefund />}>
+        <Menu.Item
+          key="10"
+          icon={<HiOutlineReceiptRefund />}
+        >
           <Link to="/dashboard-refunds">Refunds</Link>
         </Menu.Item>
-        <SubMenu key="sub3" icon={<CiSettings/>} title="Settings" style={{ marginTop: "270px" }} >
-          <Menu.Item key="12">
+        <SubMenu
+          key="sub3"
+          icon={<CiSettings />}
+          title="Settings"
+          style={{ marginTop: "270px" }}
+        >
+          <Menu.Item
+            key="12"
+            style={
+              activeKey === "12"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+          >
             <Link to="/settings">Shop</Link>
           </Menu.Item>
-          <Menu.Item key="13">
+          <Menu.Item
+            key="13"
+            style={
+              activeKey === "13"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+          >
             <Link to="/shop-password">Password</Link>
           </Menu.Item>
         </SubMenu>

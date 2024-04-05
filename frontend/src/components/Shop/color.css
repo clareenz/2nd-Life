@@ -1,0 +1,17 @@
+/* Change the text color of the active tab */
+.ant-tabs.ant-tabs-top .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #FF8474 !important; /* Change the text color */
+}
+
+/* Change the color of the line below the active tab */
+.ant-tabs-ink-bar {
+    background-color: #FF8474 !important; /* Change the background color */
+}
+
+/* Change the hover color of the tabs */
+.ant-tabs.ant-tabs-top .ant-tabs-nav .ant-tabs-tab:hover .ant-tabs-tab-btn {
+    color: #FF8474 !important; /* Change the text color */
+}
+
+
+

@@ -16,7 +16,6 @@ import { TbAddressBook } from "react-icons/tb";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
-import { message } from "antd";
 
 const ProfileSideBar = ({ setActive, active }) => {
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const ProfileSideBar = ({ setActive, active }) => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
-        message.success(res.data.message);
+        toast.success(res.data.message);
         window.location.reload(true);
         navigate("/login");
       })
