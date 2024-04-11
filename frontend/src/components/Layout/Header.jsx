@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { cart } = useSelector((state) => state.cart);
   const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
@@ -224,7 +225,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} color="83%" />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+                {cart && cart.length}
               </span>
             </div>
           </div>
@@ -387,12 +388,12 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+              {cart && cart.length}
               </span>
             </div>
           </div>
           {/*cart popup*/}
-          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
+          {openCart ? <cart setOpenCart={setOpenCart} /> : null}
         </div>
 
         {/* mobile header sidebar */}
@@ -527,6 +528,7 @@ export default Header;
 
 const Header2 = ({ activeHeading }) => {
   //login signup header
+  const { cart } = useSelector((state) => state.cart);
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
@@ -704,7 +706,7 @@ const Header2 = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} color="83%" />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+              {cart && cart.length}
               </span>
             </div>
           </div>
@@ -799,7 +801,7 @@ const Header2 = ({ activeHeading }) => {
           )}
 
           {/*cart popup*/}
-          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
+          {openCart ? <cart setOpenCart={setOpenCart} /> : null}
 
           {/*wishlist popup*/}
           {openWishlist ? <Wishlist setOpenWishlist={setOpenWishlist} /> : null}
@@ -838,12 +840,12 @@ const Header2 = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+              {cart && cart.length}
               </span>
             </div>
           </div>
           {/*cart popup*/}
-          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
+          {openCart ? <cart setOpenCart={setOpenCart} /> : null}
         </div>
 
         {/* mobile header sidebar */}

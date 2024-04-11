@@ -8,30 +8,12 @@ import { IoBagHandleOutline } from "react-icons/io5";
 import { HiOutlineMinus, HiPlus } from "react-icons/hi";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { backend_url } from "../../server";
 
 const Cart = ({ setOpenCart }) => {
-  const cartData = [
-    {
-      name: "Iphone 14 pro max 256 gb ssd and 5 gb ramasdad",
-      description: "best iphone in the kilide",
-      price: 10000000,
-    },
-    {
-      name: "Iphone 14 pro max 256 gb ssd and 5 gb ramasdad",
-      description: "best iphone in the kilide",
-      price: 543,
-    },
-    {
-      name: "Iphone 14 pro max 256 gb ssd and 5 gb ramasdad",
-      description: "best iphone in the kilide",
-      price: 234234,
-    },
-    {
-      name: "Iphone 14 pro max 256 gb ssd and 5 gb ramasdad",
-      description: "best iphone in the kilide",
-      price: 10000000,
-    },
-  ];
+
+  const { Cart } = useSelector((state) => state.Cart);
 
   return (
     <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
@@ -43,6 +25,7 @@ const Cart = ({ setOpenCart }) => {
               className="cursor-pointer"
               onClick={() => setOpenCart(false)}
             />
+
           </div>
           {/*Item length*/}
           <div className={`${styles.normalFlex} p-2`}>
@@ -53,8 +36,8 @@ const Cart = ({ setOpenCart }) => {
           {/* cart Single Items */}
           <br />
           <div className="w-full border-t">
-            {cartData &&
-              cartData.map((i, index) => <CartSingle key={index} data={i} />)}
+            {Cart &&
+              Cart.map((i, index) => <CartSingle key={index} data={i} />)}
           </div>
         </div>
 
@@ -73,8 +56,18 @@ const Cart = ({ setOpenCart }) => {
 };
 
 const CartSingle = ({ data }) => {
-  const [value, setValue] = useState(1);
-  const totalPrice = data.price * value;
+  const [value, setValue] = useState(data.qty);
+  const totalPrice = data.discountPrice * value;
+
+  const increment = (data) => {
+    setValue(value + 1);
+    const updateCartData = {...data, qty: value + 1}
+  }
+
+  const decrement = (data) => {
+    setValue(value === 1 ? 1 : value - 1);
+    const updateCartData = {...data, qty: value === 1 ? 1 : value - 1}
+  }
 
   return (
     <div className="p-4 border-b">
@@ -82,11 +75,11 @@ const CartSingle = ({ data }) => {
         <div>
           <div
             className={`bg-[#e44343] border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.normalFlex} justify-center cursor-pointer`}
-            onClick={() => setValue(value + 1)}
+            onClick={() => increment(data)}
           >
               <HiPlus size={18} color="#fff" />
           </div>
-          <span className="pl-[10px]">{value}</span>
+          <span className="pl-[10px]">{data.qty}</span>
           <div
             className="bg-[#a7abb14f] rounded-full w-[25px] h-[25px] flex items-center justify-center cursor-pointer"
             onClick={() => setValue(value === 1 ? 1 : value - 1)}
@@ -94,12 +87,12 @@ const CartSingle = ({ data }) => {
             <HiOutlineMinus size={16} color="#7d879c" />
           </div>
         </div>
-        <img src="https://bonik-react.vercel.app/assets/images/products/Fashion/Clothes/1.SilverHighNeckSweater.png" alt=""
-        className="w-[80px] h-[80px] ml-2"
+        <img src={`${backend_url}${data?.images[0]}`} alt=""
+        className="w-[130px] h-min ml-2 mr-2 rounded-[5px]"
         />
          <div className="pl-[5px]">
             <h1>{data.name}</h1>
-            <h4 className="font-[400] text-[15px] text-[#00000082]">₱{data.price} * {value}</h4>
+            <h4 className="font-[400] text-[15px] text-[#00000082]">₱{data.discountPrice} * {value}</h4>
             <h4 className="font-[600] text-[17px] pt-[3px] text-[#d02222] font-Roboto">
               ₱{totalPrice}
             </h4>
