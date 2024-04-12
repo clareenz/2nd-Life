@@ -1,6 +1,7 @@
 /* The products detail page
  *  start time: 45:20 (2nd vid)
  */
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
@@ -13,18 +14,32 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { backend_url } from "../../server";
 import styles from "../../styles/styles";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
+import { addToCart } from "../../redux/actions/cart";
+import { message } from "antd";
+
 
 const ProductDetails = ({ data }) => {
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
+  const { products } = useSelector((state) => state.products);
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
-  const navigate = useNavigate();
-
-  const { products } = useSelector((state) => state.products);
+  const navigate = useNavigate(); 
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getAllProductsShop(data && data.shop._id));
-  }, [dispatch, data]);
+    dispatch(getAllProductsShop(data && data?.shop._id));
+    if (wishlist && wishlist.find((i) => i._id === data?._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [ data, wishlist]);
 
   const incrementCount = () => {
     setCount(count + 1);
@@ -36,9 +51,36 @@ const ProductDetails = ({ data }) => {
     }
   };
 
+  const removeFromWishlistHandler = (data) => {
+    setClick(!click);
+    dispatch(removeFromWishlist(data));
+  };
+
+  const addToWishlistHandler = (data) => {
+    setClick(!click);
+    dispatch(addToWishlist(data));
+  };
+
+  const addToCartHandler = (id) => {
+    const isItemExists = cart && cart.find((i) => i._id === id);
+    if (isItemExists) {
+      message.error("Item already in cart!");
+    } else {
+      if (data.stock < 1) {
+        message.error("Product stock limited!");
+      } else {
+        const cartData = { ...data, qty: count };
+        dispatch(addToCart(cartData));
+        message.success("Item added to cart successfully!");
+      }
+    }
+  };
+
+
   const handleMessageSubmit = () => {
     navigate("/inbox?conversation=507ebjver884ehfdjeriv84"); // example pa. dynamically next ime
   };
+
 
   return (
     <div className="bg-white">
@@ -110,7 +152,7 @@ const ProductDetails = ({ data }) => {
                       <AiFillHeart
                         size={30}
                         className="cursor-pointer"
-                        onClick={() => setClick(!click)}
+                        onClick={() => removeFromWishlistHandler(data)}
                         color={click ? "red" : "#333"}
                         title="Remove from wishlist"
                       />
@@ -118,7 +160,7 @@ const ProductDetails = ({ data }) => {
                       <AiOutlineHeart
                         size={30}
                         className="cursor-pointer"
-                        onClick={() => setClick(!click)}
+                        onClick={() => addToWishlistHandler(data)}
                         color={click ? "red" : "#333"}
                         title="Add to wishlist"
                       />
@@ -127,17 +169,20 @@ const ProductDetails = ({ data }) => {
                 </div>
                 <div
                   className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
+                  onClick={() => addToCartHandler(data._id)}
                 >
                   <span className="flex items-center text-white">
                     Add to cart <AiOutlineShoppingCart className="ml-1" />
                   </span>
                 </div>
                 <div className="flex items-center pt-8">
+                  <Link to = {`/shop/preview/${data?.shop._id}`}>
                   <img
                     src={`${backend_url}${data?.shop?.avatar}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full mr-2"
                   />
+                  </Link>
                   <div className="pr-8">
                     <h3 className={`${styles.shop_name} pb-1 pt-1`}>
                       {data.shop.name}
