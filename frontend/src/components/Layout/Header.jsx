@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { wishlist } = useSelector((state) => state.wishlist); 
   const { cart } = useSelector((state) => state.cart);
   const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
@@ -212,7 +213,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineHeart size={27} color="83%" />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                0
+                {wishlist && wishlist.length}
               </span>
             </div>
           </div>
@@ -393,7 +394,7 @@ const Header = ({ activeHeading }) => {
             </div>
           </div>
           {/*cart popup*/}
-          {openCart ? <cart setOpenCart={setOpenCart} /> : null}
+          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
         </div>
 
         {/* mobile header sidebar */}
@@ -801,7 +802,7 @@ const Header2 = ({ activeHeading }) => {
           )}
 
           {/*cart popup*/}
-          {openCart ? <cart setOpenCart={setOpenCart} /> : null}
+          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
 
           {/*wishlist popup*/}
           {openWishlist ? <Wishlist setOpenWishlist={setOpenWishlist} /> : null}
@@ -845,7 +846,7 @@ const Header2 = ({ activeHeading }) => {
             </div>
           </div>
           {/*cart popup*/}
-          {openCart ? <cart setOpenCart={setOpenCart} /> : null}
+          {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
         </div>
 
         {/* mobile header sidebar */}
