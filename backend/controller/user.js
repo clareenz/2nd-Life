@@ -313,7 +313,7 @@ router.put(
       user.password = req.body.newPassword;
 
       await user.save();
-
+  
       res.status(200).json({
         success: true,
         message: "Password updated successfully!",
