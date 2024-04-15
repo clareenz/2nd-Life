@@ -22,7 +22,6 @@ const CreateEvent = () => {
   const [endDate, setEndDate] = useState(null);
   const [isResetHovered, setIsResetHovered] = useState(false);
   const [isCreateHovered, setIsCreateHovered] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     if (error) {
