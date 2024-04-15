@@ -106,7 +106,7 @@ const handleSubmit = (e) => {
       {/* profile */}
       {active === 1 && (
         <>
-          <div className="flex justify-evenly w-auto">
+          <div className="flex w-auto justify-evenly">
             <div className="relative">
               <img
                 src={`${backend_url}${user?.avatar}`}
