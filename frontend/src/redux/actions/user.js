@@ -77,7 +77,7 @@ export const updateUserInformation =
   };
 
 // update user address
-export const updatUserAddress =
+export const updateUserAddress =
   (country, city, address1, address2,zipCode, addressType) => async (dispatch) => {
     try {
       dispatch({

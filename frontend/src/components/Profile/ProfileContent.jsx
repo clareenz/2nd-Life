@@ -17,7 +17,7 @@ import { RxCross1 } from "react-icons/rx";
 import {
   deleteUserAddress,
   loadUser,
-  updatUserAddress,
+  updateUserAddress,
   updateUserInformation,
 } from "../../redux/actions/user";
 import { Country, State } from "country-state-city";
@@ -685,7 +685,7 @@ const Address = () => {
       toast.error("Please fill all the fields!");
     } else {
       dispatch(
-        updatUserAddress(
+        updateUserAddress(
           country,
           city,
           address1,
