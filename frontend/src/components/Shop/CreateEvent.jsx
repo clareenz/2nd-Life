@@ -305,6 +305,7 @@ const CreateEvent = () => {
 
         <div className="justify-evenly space-x-2">
           <Button
+          className="rounded-2xl"
             onClick={() => form.resetFields()}
             style={{
               marginLeft: "8px",
@@ -318,6 +319,7 @@ const CreateEvent = () => {
             Reset
           </Button>
           <Button
+          className="rounded-2xl"
             type="primary"
             htmlType="submit"
             style={{

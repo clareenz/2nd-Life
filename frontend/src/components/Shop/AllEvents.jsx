@@ -31,8 +31,8 @@ const AllEvents = () => {
       key: "preview",
       width: 100,
       align: "center",
-      render: (_, record) => (
-        <Link to={`/product/${record.name.replace(/\s+/g, "-")}`}>
+      render: (text, record) => (
+        <Link to={`/events/`}>
           <Button  icon={<AiOutlineEye />} size="small" />
         </Link>
       ),
