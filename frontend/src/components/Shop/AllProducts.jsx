@@ -64,7 +64,7 @@ const AllProducts = () => {
       width: 100,
       align: "center",
       render: (text, record) => (
-        <Link to={`/product/${record.name}`}>
+        <Link to={`/product/${record.id}`}>
           <Button icon={<AiOutlineEye />} size="small" />
         </Link>
       ),
