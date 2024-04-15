@@ -63,7 +63,8 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
+    <div
+      className="w-[90%] 800px:w-[50%] bg-white  shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
       style={{ scrollbarWidth: "none", overflowY: "auto" }}
     >
       <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
@@ -74,35 +75,53 @@ const CreateProduct = () => {
         className=""
       >
         <div className="input-wrapper">
-          <label htmlFor="name"><span className="text-red-500">*</span>Name:</label>
+          <label htmlFor="name">
+            <span className="text-red-500">*</span>Name:
+          </label>
           <Form.Item
             name="name"
             rules={[{ required: true, message: "Please input product name" }]}
           >
-            <Input id="name" placeholder="Enter your product name..."
-            className="custom-input rounded-2xl"/>
-            
+            <Input
+              id="name"
+              placeholder="Enter your product name..."
+              className="custom-input rounded-2xl"
+            />
           </Form.Item>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="description"><span className="text-red-500">*</span>Description:</label>
+          <label htmlFor="description">
+            <span className="text-red-500">*</span>Description:
+          </label>
           <Form.Item
             name="description"
-            rules={[{ required: true, message: "Please input product description" }]}
+            rules={[
+              { required: true, message: "Please input product description" },
+            ]}
           >
-            <Input.TextArea id="description" rows={8} placeholder="Enter your product description..."
-            className="custom-input rounded-2xl"/>
+            <Input.TextArea
+              id="description"
+              rows={8}
+              placeholder="Enter your product description..."
+              className="custom-input rounded-2xl"
+            />
           </Form.Item>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="category"><span className="text-red-500">*</span>Category:</label>
+          <label htmlFor="category">
+            <span className="text-red-500">*</span>Category:
+          </label>
           <Form.Item
             name="category"
-            rules={[{ required: true, message: "Please select product category" }]}
+            rules={[
+              { required: true, message: "Please select product category" },
+            ]}
           >
             <Select
-            className="custom-select"
-            id="category" placeholder="Choose a category">
+              className="custom-select"
+              id="category"
+              placeholder="Choose a category"
+            >
               {categoriesData.map((category) => (
                 <Option key={category.title} value={category.title}>
                   {category.title}
@@ -114,39 +133,75 @@ const CreateProduct = () => {
         <div className="input-wrapper">
           <label htmlFor="tags">Tags:</label>
           <Form.Item name="tags">
-            <Input id="tags" placeholder="Enter your product tags..."
-            className="custom-input rounded-2xl"/>
+            <Input
+              id="tags"
+              placeholder="Enter your product tags..."
+              className="custom-input rounded-2xl"
+            />
           </Form.Item>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="originalPrice">Original Price:</label>
-          <Form.Item name="originalPrice">
-            <Input id="originalPrice" type="number" placeholder="Enter your product price..."
-            className="custom-input rounded-2xl"/>
+          <label htmlFor="originalPrice">
+            <span className="text-red-500">*</span>Original Price:
+          </label>
+          <Form.Item
+            name="originalPrice"
+            rules={[
+              {
+                required: true,
+                message: "Please input product Original price",
+              },
+            ]}
+          >
+            <Input
+              id="originalPrice"
+              type="number"
+              placeholder="Enter your product price..."
+              className="custom-input rounded-2xl"
+            />
           </Form.Item>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="discountPrice"><span className="text-red-500">*</span>Price (With Discount):</label>
+          <label htmlFor="discountPrice">
+            <span className="text-red-500">*</span>Price (With Discount):
+          </label>
           <Form.Item
             name="discountPrice"
-            rules={[{ required: true, message: "Please input product price with discount" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input product price with discount",
+              },
+            ]}
           >
-            <Input id="discountPrice" type="number" placeholder="Enter your product price with discount..."
-            className="custom-input rounded-2xl"/>
+            <Input
+              id="discountPrice"
+              type="number"
+              placeholder="Enter your product price with discount..."
+              className="custom-input rounded-2xl"
+            />
           </Form.Item>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="stock"><span className="text-red-500">*</span>Product Stock:</label>
+          <label htmlFor="stock">
+            <span className="text-red-500">*</span>Product Stock:
+          </label>
           <Form.Item
             name="stock"
             rules={[{ required: true, message: "Please input product stock" }]}
           >
-            <Input id="stock" type="number" placeholder="Enter your product stock..."
-            className="custom-input rounded-2xl"/>
+            <Input
+              id="stock"
+              type="number"
+              placeholder="Enter your product stock..."
+              className="custom-input rounded-2xl"
+            />
           </Form.Item>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="images"><span className="text-red-500">*</span>Upload Images:</label>
+          <label htmlFor="images">
+            <span className="text-red-500">*</span>Upload Images:
+          </label>
           <Form.Item
             name="images"
             valuePropName="fileList"
@@ -169,7 +224,7 @@ const CreateProduct = () => {
         </div>
         <div className="justify-evenly space-x-2">
           <Button
-          className="rounded-2xl"
+            className="rounded-2xl"
             onClick={() => form.resetFields()}
             style={{
               marginLeft: "8px",
@@ -183,7 +238,7 @@ const CreateProduct = () => {
             Reset
           </Button>
           <Button
-          className="rounded-2xl"
+            className="rounded-2xl"
             type="primary"
             htmlType="submit"
             style={{

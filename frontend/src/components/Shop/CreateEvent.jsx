@@ -115,7 +115,7 @@ const CreateEvent = () => {
           <Form.Item
             name="name"
             rules={[
-              { required: true, message: "Please enter event product name"},
+              { required: true, message: "Please enter event product name" },
             ]}
           >
             <Input
@@ -183,7 +183,15 @@ const CreateEvent = () => {
 
         <div className="input-wrapper">
           <label htmlFor="Original Price">Original Price:</label>
-          <Form.Item name="originalPrice">
+          <Form.Item
+            name="originalPrice"
+            rules={[
+              {
+                required: true,
+                message: "Please input product price with discount",
+              },
+            ]}
+          >
             <Input
               id="originalPrice"
               type="number"
@@ -245,8 +253,7 @@ const CreateEvent = () => {
             <DatePicker
               onChange={(date, dateString) => handleStartDateChange(dateString)}
               className="custom-date-picker rounded-2xl "
-              style={{
-              }}
+              style={{}}
             />
           </Form.Item>
         </div>
@@ -304,7 +311,7 @@ const CreateEvent = () => {
 
         <div className="justify-evenly space-x-2">
           <Button
-          className="rounded-2xl"
+            className="rounded-2xl"
             onClick={() => form.resetFields()}
             style={{
               marginLeft: "8px",
@@ -318,7 +325,7 @@ const CreateEvent = () => {
             Reset
           </Button>
           <Button
-          className="rounded-2xl"
+            className="rounded-2xl"
             type="primary"
             htmlType="submit"
             style={{

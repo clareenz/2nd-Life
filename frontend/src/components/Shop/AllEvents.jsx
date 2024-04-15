@@ -21,11 +21,41 @@ const AllEvents = () => {
   };
 
   const columns = [
-    { title: "Product Id", dataIndex: "id", key: "id", width: 150, align: "center" },
-    { title: "Name", dataIndex: "name", key: "name", width: 180, align: "center" },
-    { title: "Price", dataIndex: "price", key: "price", width: 100, align: "center" },
-    { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
-    { title: "Sold out", dataIndex: "sold", key: "sold", width: 130, align: "center" },
+    {
+      title: "Product Id",
+      dataIndex: "id",
+      key: "id",
+      width: 150,
+      align: "center",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 180,
+      align: "center",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      width: 100,
+      align: "center",
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      width: 80,
+      align: "center",
+    },
+    {
+      title: "Sold out",
+      dataIndex: "sold",
+      key: "sold",
+      width: 130,
+      align: "center",
+    },
     {
       title: "Preview",
       key: "preview",
@@ -33,28 +63,32 @@ const AllEvents = () => {
       align: "center",
       render: (text, record) => (
         <Link to={`/events/`}>
-          <Button  icon={<AiOutlineEye />} size="small" />
+          <Button icon={<AiOutlineEye />} size={15} />
         </Link>
       ),
     },
     {
       title: "Delete",
-      key: "delete",
+      key: "Delete",
       width: 120,
       align: "center",
-      render: (_, record) => (
-        <Button type="danger" icon={<AiOutlineDelete />} size="small" onClick={() => handleDelete(record.id)} />
+      render: (text, record) => (
+        <Button onClick={() => handleDelete(record.id)}>
+          <AiOutlineDelete size={15} />
+        </Button>
       ),
     },
   ];
 
-  const data = events ? events.map((item) => ({
-    id: item._id,
-    name: item.name,
-    price: `Php ${item.discountPrice}`,
-    stock: item.stock,
-    sold: 10,
-  })) : [];
+  const data = events
+    ? events.map((item) => ({
+        id: item._id,
+        name: item.name,
+        price: `Php ${item.discountPrice}`,
+        stock: item.stock,
+        sold: 10,
+      }))
+    : [];
 
   return (
     <>
@@ -66,7 +100,7 @@ const AllEvents = () => {
             columns={columns}
             dataSource={data}
             pagination={{ pageSize: 10 }}
-            style={{scrollbarWidth: "none", overflowY: "auto"}}
+            style={{ scrollbarWidth: "none", overflowY: "auto" }}
           />
         </div>
       )}

@@ -65,7 +65,7 @@ const AllProducts = () => {
       align: "center",
       render: (text, record) => (
         <Link to={`/product/${record.id}`}>
-          <Button icon={<AiOutlineEye />} size="small" />
+          <Button icon={<AiOutlineEye />} size={15} />
         </Link>
       ),
     },
@@ -76,7 +76,7 @@ const AllProducts = () => {
       align: "center",
       render: (text, record) => (
         <Button onClick={() => handleDelete(record.id)}>
-          <AiOutlineDelete size={20} />
+          <AiOutlineDelete size={15} />
         </Button>
       ),
     },
