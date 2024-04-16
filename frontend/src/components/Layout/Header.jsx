@@ -31,6 +31,8 @@ import { toast } from "react-toastify";
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { wishlist } = useSelector((state) => state.wishlist); 
+  const { cart } = useSelector((state) => state.cart);
   const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
@@ -182,11 +184,8 @@ const Header = ({ activeHeading }) => {
             <div className="absolute min-h-[20vh] bg-slate-50 shadow-sm-2 z-[9] p-1">
               {searchData &&
                 searchData.map((i, index) => {
-                  const d = i.name;
-
-                  const Product_name = d.replace(/\s+/g, "-");
                   return (
-                    <Link to={`/product/${Product_name}`}>
+                    <Link to={`/product/${i._id}`}>
                       <div className="flex w-full items-start p-1">
                         <img
                           src={`${backend_url}${i.images[0]}`}
@@ -211,7 +210,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineHeart size={27} color="83%" />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                0
+                {wishlist && wishlist.length}
               </span>
             </div>
           </div>
@@ -224,7 +223,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} color="83%" />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+                {cart && cart.length}
               </span>
             </div>
           </div>
@@ -387,7 +386,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+              {cart && cart.length}
               </span>
             </div>
           </div>
@@ -527,6 +526,7 @@ export default Header;
 
 const Header2 = ({ activeHeading }) => {
   //login signup header
+  const { cart } = useSelector((state) => state.cart);
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
@@ -704,7 +704,7 @@ const Header2 = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} color="83%" />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+              {cart && cart.length}
               </span>
             </div>
           </div>
@@ -838,7 +838,7 @@ const Header2 = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                2
+              {cart && cart.length}
               </span>
             </div>
           </div>
