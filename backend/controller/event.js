@@ -123,7 +123,7 @@ router.put(
 
       // Update the event fields
       event.name = name;
-      event.price = price;
+      event.discountPrice = price;
       event.stock = stock;
 
       // Save the updated event

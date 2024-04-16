@@ -57,9 +57,9 @@ const AllEvents = () => {
       key: "Preview",
       width: 100,
       align: "center",
-      render: (_, record) => (
-        <Link to={`/product/${record.name.replace(/\s+/g, "-")}`}>
-          <Button  icon={<AiOutlineEye />} size="small" />
+      render: (text, record) => (
+        <Link to={`/events/`}>
+          <Button  icon={<AiOutlineEye />} size={15} />
         </Link>
       ),
     },
@@ -70,7 +70,7 @@ const AllEvents = () => {
       align: "center",
       render: (text, record) => (
         <Button onClick={() => handleEdit(record)}>
-          <AiOutlineEdit size={20} />
+          <AiOutlineEdit size={15} />
         </Button>
       ),
     },
@@ -79,8 +79,10 @@ const AllEvents = () => {
       key: "Delete",
       width: 120,
       align: "center",
-      render: (_, record) => (
-        <Button type="danger" icon={<AiOutlineDelete />} size="small" onClick={() => handleDelete(record.id)} />
+      render: (text, record) => (
+        <Button onClick={() => handleDelete(record.id)}>
+          <AiOutlineDelete size={15} />
+        </Button>
       ),
     },
   ];
@@ -110,22 +112,46 @@ const AllEvents = () => {
             visible={editModalVisible}
             onOk={handleEditModalOk}
             onCancel={handleEditModalCancel}
+            okText="Save Changes"
+            cancelText="Cancel"
+            okButtonProps={{
+              className: "custom-ok-button-class rounded-2xl",
+            }}
+            cancelButtonProps={{
+              className: "custom-cancel-button-class rounded-2xl",
+            }}
           >
-            <Input
-              value={editedEventName}
-              onChange={(e) => setEditedEventName(e.target.value)}
-              placeholder="Event Name"
-            />
-            <InputNumber
-              value={editedEventPrice}
-              onChange={(value) => setEditedEventPrice(value)}
-              placeholder="Event Price"
-            />
-            <InputNumber
-              value={editedEventStock}
-              onChange={(value) => setEditedEventStock(value)}
-              placeholder="Event Stock"
-            />
+            <div>
+              <label htmlFor="productName">Product Name</label>
+              <Input
+                value={editedEventName}
+                onChange={(e) => setEditedEventName(e.target.value)}
+                placeholder="Product Name"
+                className="custom-input rounded-2xl"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Price">Price</label>
+              <Input
+                type="number"
+                value={editedEventPrice}
+                onChange={(e) => setEditedEventPrice(e.target.value)}
+                placeholder="Product Price"
+                style={{ width: "100%" }} // Adjust the width of the input number
+                className="custom-input rounded-2xl"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Stock">Stock</label>
+              <Input
+                type="number"
+                value={editedEventStock}
+                onChange={(e) => setEditedEventStock(e.target.value)}
+                placeholder="Product Stock"
+                style={{ width: "100%" }} // Adjust the width of the input number
+                className="custom-input rounded-2xl"
+              />
+            </div>
           </Modal>
         </div>
       )}

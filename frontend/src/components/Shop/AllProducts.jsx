@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Button, Table, Modal, Input, InputNumber } from "antd"; // Import Ant Design components
-import { AiOutlineDelete, AiOutlineEye, AiOutlineEdit } from "react-icons/ai";
+import { Button, Input, InputNumber, Modal, Table } from "antd"; // Import Ant Design components
+import React, { useEffect, useState } from "react";
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllProductsShop, deleteProduct, updateProduct } from "../../redux/actions/product";
+import {
+  deleteProduct,
+  getAllProductsShop,
+  updateProduct,
+} from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 
 const AllProducts = () => {
@@ -25,13 +29,18 @@ const AllProducts = () => {
   const handleEdit = (record) => {
     setEditedProduct({ ...record, productId: record.id });
     setEditedProductName(record.name);
-    setEditedProductPrice(record.price);
+    setEditedProductPrice(record.discountPrice);
     setEditedProductStock(record.stock);
     setEditModalVisible(true);
   };
 
   const handleEditModalOk = async () => {
-    const updatedProduct = { ...editedProduct, name: editedProductName, price: editedProductPrice, stock: editedProductStock };
+    const updatedProduct = {
+      ...editedProduct,
+      name: editedProductName,
+      price: editedProductPrice,
+      stock: editedProductStock,
+    };
     await dispatch(updateProduct(updatedProduct.productId, updatedProduct)); // Wait for the update operation to complete
     setEditModalVisible(false);
     // Fetch the updated product list again after the update operation is completed
@@ -100,7 +109,7 @@ const AllProducts = () => {
       align: "center",
       render: (text, record) => (
         <Button onClick={() => handleEdit(record)}>
-          <AiOutlineEdit size={20} />
+          <AiOutlineEdit size={15} />
         </Button>
       ),
     },
@@ -145,28 +154,51 @@ const AllProducts = () => {
             visible={editModalVisible}
             onOk={handleEditModalOk}
             onCancel={handleEditModalCancel}
+            okText="Save Changes"
+            cancelText="Cancel"
+            okButtonProps={{
+              className: "custom-ok-button-class rounded-2xl",
+            }}
+            cancelButtonProps={{
+              className: "custom-cancel-button-class rounded-2xl",
+            }}
           >
-            <Input
-              value={editedProductName}
-              onChange={(e) => setEditedProductName(e.target.value)}
-              placeholder="Product Name"
-            />
-            <InputNumber
-              value={editedProductPrice}
-              onChange={(value) => setEditedProductPrice(value)}
-              placeholder="Product Price"
-            />
-            <InputNumber
-              value={editedProductStock}
-              onChange={(value) => setEditedProductStock(value)}
-              placeholder="Product Stock"
-            />
+            <div>
+              <label htmlFor="productName">Product Name</label>
+              <Input
+                value={editedProductName}
+                onChange={(e) => setEditedProductName(e.target.value)}
+                placeholder="Product Name"
+                className="custom-input rounded-2xl"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Price">Price</label>
+              <Input
+                type="number"
+                value={editedProductPrice}
+                onChange={(e) => setEditedProductPrice(e.target.value)}
+                placeholder="Product Price"
+                style={{ width: "100%" }} // Adjust the width of the input number
+                className="custom-input rounded-2xl"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Stock">Stock</label>
+              <Input
+                type="number"
+                value={editedProductStock}
+                onChange={(e) => setEditedProductStock(e.target.value)}
+                placeholder="Product Stock"
+                style={{ width: "100%" }} // Adjust the width of the input number
+                className="custom-input rounded-2xl"
+              />
+            </div>
           </Modal>
         </div>
       )}
     </>
   );
 };
-
 
 export default AllProducts;
