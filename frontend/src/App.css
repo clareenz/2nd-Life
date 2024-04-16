@@ -98,3 +98,23 @@ input,select{
   border-color: #006665 !important; /* Example focus border color */
 }
 
+
+.custom-ok-button-class {
+  background-color: #006665 !important; /* Override default browser styles */
+  color: #fff !important; /* Change text color if needed */
+  border-color: transparent !important; /* Set border color to transparent */
+}
+.custom-ok-button-class:hover {
+  background-color: #077773 !important; /* Change to your desired color on hover */
+  border-color: #006665 !important; /* Change border color if needed */
+}
+.custom-cancel-button-class {
+  background-color: transparent !important; /* Override default browser styles */
+  color: none;
+}
+.custom-cancel-button-class:hover {
+  border-color: #006665 !important; /* Change border color if needed */
+  color:#006665 !important;
+}
+
+

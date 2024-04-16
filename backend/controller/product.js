@@ -167,7 +167,7 @@ router.put(
 
       // Update the product fields
       product.name = name;
-      product.price = price;
+      product.discountPrice = price;
       product.stock = stock;
 
       // Save the updated product
