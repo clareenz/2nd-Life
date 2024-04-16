@@ -114,32 +114,32 @@ const ShopSettings = () => {
           <Row gutter={[14, 4]}>
             <Col span={12}>
               <Form.Item label="Shop Name" name="name" rules={[{ required: true, message: "Please enter shop name" }]}>
-                <Input className={`${styles.input} px-4`} />
+                <Input className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Description" name="description">
-                <Input className={`${styles.input} px-4`} />
+                <Input className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Shop Address" name="address" rules={[{ required: true, message: "Please enter shop address" }]}>
-                <Input className={`${styles.input} px-4`} />
+                <Input className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Phone Number" name="phoneNumber" rules={[{ required: true, message: "Please enter phone number" }]}>
-                <Input type="number" className={`${styles.input} px-4`} />
+                <Input type="number" className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Zip Code" name="zipCode" rules={[{ required: true, message: "Please enter zip code" }]}>
-                <Input type="number" className={`${styles.input} px-4`} />
+                <Input type="number" className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Password" name="password">
-                <Input.Password className={`${styles.input} px-4`} />
+                <Input.Password className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={24}>

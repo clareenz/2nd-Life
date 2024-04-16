@@ -22,7 +22,7 @@ const AllCoupons = () => {
   const [value, setValue] = useState(null);
   const { seller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.products);
-
+  const [isCreateHovered, setIsCreateHovered] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -79,14 +79,26 @@ const AllCoupons = () => {
   };
 
   const columns = [
-    { title: "Id", dataIndex: "id", key: "id", maxWidth: 100, align: 'center', },
-    { title: "Coupon Code", dataIndex: "name", key: "name", maxWidth: 100 , align: 'center',},
-    { title: "Value", dataIndex: "price", key: "price", minWidth: 100,  align: 'center', },
+    { title: "Id", dataIndex: "id", key: "id", maxWidth: 100, align: "center" },
+    {
+      title: "Coupon Code",
+      dataIndex: "name",
+      key: "name",
+      maxWidth: 100,
+      align: "center",
+    },
+    {
+      title: "Value",
+      dataIndex: "price",
+      key: "price",
+      minWidth: 100,
+      align: "center",
+    },
     {
       title: "",
       key: "action",
       minWidth: 100,
-      align: 'center',
+      align: "center",
       render: (text, record) => (
         <Button onClick={() => handleDelete(record.id)}>
           <AiOutlineDelete size={15} />
@@ -114,7 +126,7 @@ const AllCoupons = () => {
               className={`${styles.button6} m-5 bg-[#FF8474] text-white hover:bg-[#FC9A8E]`}
               onClick={() => setOpen(true)}
             >
-            <span className=" p-1 text-sm">Create Coupon Code</span>
+              <span className=" p-1 text-sm">Create Coupon Code</span>
             </div>
           </div>
           <div style={{ overflowX: "auto" }}>
@@ -133,7 +145,7 @@ const AllCoupons = () => {
             <form onSubmit={handleSubmit} aria-required={true}>
               <div className="mb-3">
                 <label>
-                  Name <span className="text-red-500">*</span>
+                  <span className="text-red-500">*</span>Name
                 </label>
                 <Input
                   type="text"
@@ -142,11 +154,12 @@ const AllCoupons = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your coupon code name..."
+                  className="custom-input rounded-2xl"
                 />
               </div>
               <div className="mb-3">
                 <label>
-                  Discount Percentage <span className="text-red-500">*</span>
+                  <span className="text-red-500">*</span> Discount Percentage
                 </label>
                 <Input
                   type="text"
@@ -155,6 +168,7 @@ const AllCoupons = () => {
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   placeholder="Enter your coupon code value..."
+                  className="custom-input rounded-2xl"
                 />
               </div>
               <div className="mb-3">
@@ -165,6 +179,7 @@ const AllCoupons = () => {
                   value={minAmount}
                   onChange={(e) => setMinAmount(e.target.value)}
                   placeholder="Enter your coupon code min amount..."
+                  className="custom-input rounded-2xl"
                 />
               </div>
               <div className="mb-3">
@@ -175,12 +190,13 @@ const AllCoupons = () => {
                   value={maxAmount}
                   onChange={(e) => setMaxAmount(e.target.value)}
                   placeholder="Enter your coupon code max amount..."
+                  className="custom-input rounded-2xl"
                 />
               </div>
               <div className="mb-3">
                 <label>Selected Product</label>
                 <Select
-                  className="w-full"
+                  className="custom-select rounded-2xl w-full"
                   value={selectedProducts}
                   onChange={(value) => setSelectedProducts(value)}
                   placeholder="Choose a selected product"
@@ -193,7 +209,18 @@ const AllCoupons = () => {
                     ))}
                 </Select>
               </div>
-              <Button type="primary" htmlType="submit">
+              <Button
+                className="rounded-2xl"
+                type="primary"
+                htmlType="submit"
+                style={{
+                  backgroundColor: isCreateHovered ? "#077773" : "#006665",
+                  borderColor: isCreateHovered ? "#077773" : "#006665",
+                  transition: "background-color 0.3s, border-color 0.3s",
+                }}
+                onMouseEnter={() => setIsCreateHovered(true)}
+                onMouseLeave={() => setIsCreateHovered(false)}
+              >
                 Create
               </Button>
             </form>
