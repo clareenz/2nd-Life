@@ -13,7 +13,7 @@ const ENDPOINT = "http://localhost:4000/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const UserInbox = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user, isLoading } = useSelector((state) => state.user);
   const [conversations, setConversations] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [currentChat, setCurrentChat] = useState();
@@ -44,14 +44,14 @@ const UserInbox = () => {
   useEffect(() => {
     const getConversation = async () => {
       try {
-        const resonse = await axios.get(
+        const response = await axios.get(
           `${server}/conversation/get-all-conversation-user/${user?._id}`,
           {
             withCredentials: true,
           }
         );
 
-        setConversations(resonse.data.conversations);
+        setConversations(response.data.conversations);
       } catch (error) {
         // console.log(error);
       }
@@ -101,11 +101,11 @@ const UserInbox = () => {
       conversationId: currentChat._id,
     };
     const receiverId = currentChat.members.find(
-      (member) => member !== user?._id
+      (member) => member !== user._id
     );
 
     socketId.emit("sendMessage", {
-      senderId: user?._id,
+      senderId: user._id,
       receiverId,
       text: newMessage,
     });
@@ -122,6 +122,42 @@ const UserInbox = () => {
             console.log(error);
           });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // create new image message
+  const sendImageHandler = async (imageData) => {
+    const formData = new FormData();
+    formData.append("image", imageData);
+
+    const message = {
+      sender: user._id,
+      image: imageData,
+      conversationId: currentChat._id,
+    };
+    const receiverId = currentChat.members.find(
+      (member) => member !== user._id
+    );
+
+    socketId.emit("sendMessage", {
+      senderId: user._id,
+      receiverId,
+      images: imageData,
+    });
+
+    try {
+      await axios
+        .post(`${server}/message/create-new-message`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          setMessages([...messages, res.data.message]);
+          updateLastMessage();
+        });
     } catch (error) {
       console.log(error);
     }
@@ -147,7 +183,7 @@ const UserInbox = () => {
   };
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
@@ -183,6 +219,7 @@ const UserInbox = () => {
           newMessage={newMessage}
           setNewMessage={setNewMessage}
           sendMessageHandler={sendMessageHandler}
+          sendImageHandler={sendImageHandler}
           messages={messages}
           sellerId={user._id}
           userData={userData}
@@ -194,6 +231,7 @@ const UserInbox = () => {
   );
 };
 
+
 const MessageList = ({
   data,
   index,
@@ -204,6 +242,7 @@ const MessageList = ({
   userData,
   online,
   setActiveStatus,
+  isLoading,
 }) => {
   const [active, setActive] = useState(0);
   const [user, setUser] = useState([]);
@@ -254,9 +293,9 @@ const MessageList = ({
         )}
       </div>
       <div className="pl-3">
-        <h1 className="text-[18px]">{userData?.name}</h1>
+        <h1 className="text-[18px]">{user?.name}</h1>
         <p className="text-[16px] text-[#000c]">
-          {data?.lastMessageId !== userData?._id
+          {!isLoading && data?.lastMessageId !== userData?._id
             ? "You:"
             : userData?.name.split(" ")[0] + ": "}{" "}
           {data?.lastMessage}
@@ -309,13 +348,6 @@ const SellerInbox = ({
               }`}
               ref={scrollRef}
             >
-              {item.sender !== sellerId && (
-                <img
-                  src={`${backend_url}${userData?.avatar}`}
-                  className="w-[40px] h-[40px] rounded-full mr-3"
-                  alt=""
-                />
-              )}
               <div>
                 <div
                   className={`w-max p-2 rounded ${
