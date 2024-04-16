@@ -106,4 +106,38 @@ router.delete(
   })
 );
 
+// Update event
+router.put(
+  "/update-event/:id",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const eventId = req.params.id;
+      const { name, price, stock } = req.body; // Assuming these are the fields you want to update
+
+      // Validate if the event exists
+      const event = await Event.findById(eventId);
+      if (!event) {
+        return next(new ErrorHandler("Event not found with this id!", 404));
+      }
+
+      // Update the event fields
+      event.name = name;
+      event.price = price;
+      event.stock = stock;
+
+      // Save the updated event
+      await event.save();
+
+      res.status(200).json({
+        success: true,
+        event,
+        message: "Event updated successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
 module.exports = router;

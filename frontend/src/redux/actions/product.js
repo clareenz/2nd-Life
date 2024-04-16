@@ -94,3 +94,30 @@ export const getAllProducts = () => async (dispatch) => {
     });
   }
 };
+
+// updateProduct
+export const updateProduct = (id, updatedProductData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "updateProductRequest",
+    });
+
+    const { data } = await axios.put(
+      `${server}/product/update-product/${id}`,
+      updatedProductData,
+      {
+        withCredentials: true, // Assuming you need authentication
+      }
+    );
+
+    dispatch({
+      type: "updateProductSuccess",
+      payload: data.product,
+    });
+  } catch (error) {
+    dispatch({
+      type: "updateProductFailed",
+      payload: error.response.data.message,
+    });
+  }
+};

@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-import { Button, Table } from "antd"; // Import Ant Design components
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import React, { useState, useEffect } from "react";
+import { Button, Table, Modal, Input, InputNumber } from "antd"; // Import Ant Design components
+import { AiOutlineDelete, AiOutlineEye, AiOutlineEdit } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllProductsShop } from "../../redux/actions/product";
-import { deleteProduct } from "../../redux/actions/product";
+import { getAllProductsShop, deleteProduct, updateProduct } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 
 const AllProducts = () => {
@@ -15,11 +14,36 @@ const AllProducts = () => {
 
   useEffect(() => {
     dispatch(getAllProductsShop(seller._id));
-  }, [dispatch]);
+  }, [dispatch, seller._id]);
+
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editedProduct, setEditedProduct] = useState(null);
+  const [editedProductName, setEditedProductName] = useState("");
+  const [editedProductPrice, setEditedProductPrice] = useState(0);
+  const [editedProductStock, setEditedProductStock] = useState(0);
+
+  const handleEdit = (record) => {
+    setEditedProduct({ ...record, productId: record.id });
+    setEditedProductName(record.name);
+    setEditedProductPrice(record.price);
+    setEditedProductStock(record.stock);
+    setEditModalVisible(true);
+  };
+
+  const handleEditModalOk = async () => {
+    const updatedProduct = { ...editedProduct, name: editedProductName, price: editedProductPrice, stock: editedProductStock };
+    await dispatch(updateProduct(updatedProduct.productId, updatedProduct)); // Wait for the update operation to complete
+    setEditModalVisible(false);
+    // Fetch the updated product list again after the update operation is completed
+    dispatch(getAllProductsShop(seller._id));
+  };
+
+  const handleEditModalCancel = () => {
+    setEditModalVisible(false);
+  };
 
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
-    window.location.reload();
   };
 
   const columns = [
@@ -70,6 +94,17 @@ const AllProducts = () => {
       ),
     },
     {
+      title: "Edit",
+      key: "Edit",
+      width: 120,
+      align: "center",
+      render: (text, record) => (
+        <Button onClick={() => handleEdit(record)}>
+          <AiOutlineEdit size={20} />
+        </Button>
+      ),
+    },
+    {
       title: "Delete",
       key: "Delete",
       width: 120,
@@ -105,10 +140,33 @@ const AllProducts = () => {
             pagination={{ pageSize: 10 }}
             style={{ scrollbarWidth: "none", overflowX: "auto" }}
           />
+          <Modal
+            title="Edit Product"
+            visible={editModalVisible}
+            onOk={handleEditModalOk}
+            onCancel={handleEditModalCancel}
+          >
+            <Input
+              value={editedProductName}
+              onChange={(e) => setEditedProductName(e.target.value)}
+              placeholder="Product Name"
+            />
+            <InputNumber
+              value={editedProductPrice}
+              onChange={(value) => setEditedProductPrice(value)}
+              placeholder="Product Price"
+            />
+            <InputNumber
+              value={editedProductStock}
+              onChange={(value) => setEditedProductStock(value)}
+              placeholder="Product Stock"
+            />
+          </Modal>
         </div>
       )}
     </>
   );
 };
+
 
 export default AllProducts;

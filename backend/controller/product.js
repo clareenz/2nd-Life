@@ -150,4 +150,39 @@ router.put(
   }
 );
 
+// Update product
+router.put(
+  "/update-product/:id",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+      const { name, price, stock } = req.body; // Assuming these are the fields you want to update
+
+      // Validate if the product exists
+      const product = await Product.findById(productId);
+      if (!product) {
+        return next(new ErrorHandler("Product not found with this id!", 404));
+      }
+
+      // Update the product fields
+      product.name = name;
+      product.price = price;
+      product.stock = stock;
+
+      // Save the updated product
+      await product.save();
+
+      res.status(200).json({
+        success: true,
+        product,
+        message: "Product updated successfully!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
+
 module.exports = router;
