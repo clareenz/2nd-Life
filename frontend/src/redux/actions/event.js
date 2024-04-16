@@ -92,3 +92,30 @@ export const getAllEvents = () => async (dispatch) => {
     });
   }
 };
+
+// updateEvent
+export const updateEvent = (id, updatedEventData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "updateEventRequest",
+    });
+
+    const { data } = await axios.put(
+      `${server}/event/update-event/${id}`,
+      updatedEventData,
+      {
+        withCredentials: true, // Assuming you need authentication
+      }
+    );
+
+    dispatch({
+      type: "updateEventSuccess",
+      payload: data.event,
+    });
+  } catch (error) {
+    dispatch({
+      type: "updateEventFailed",
+      payload: error.response.data.message,
+    });
+  }
+};
