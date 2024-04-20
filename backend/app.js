@@ -16,7 +16,7 @@ app.use(
 app.use("/", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
-//config
+// config
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
     path: "backend/config/.env",

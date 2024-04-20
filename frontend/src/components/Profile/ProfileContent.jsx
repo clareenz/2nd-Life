@@ -493,10 +493,11 @@ const ChangePassword = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success(res.data.success);
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
+        toast.success(res.data.success);
+
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -659,7 +660,7 @@ const Address = () => {
   const [open, setOpen] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState();
+  const [zipCode, setZipCode] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [addressType, setAddressType] = useState("");
@@ -699,7 +700,7 @@ const Address = () => {
       setCity("");
       setAddress1("");
       setAddress2("");
-      setZipCode(null);
+      setZipCode("");
       setAddressType("");
     }
   };
@@ -805,7 +806,7 @@ const Address = () => {
                       className={`${styles.input} focus:border-[#006665]`}
                       required
                       value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value)}
+                      onChange={(e) => setZipCode(e.target.value || "")}
                     />
                   </div>
 

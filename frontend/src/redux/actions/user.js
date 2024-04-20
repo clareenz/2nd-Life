@@ -48,7 +48,7 @@ export const updateUserInformation =
   (name, email, phoneNumber, password) => async (dispatch) => {
     try {
       dispatch({
-        type: "updateUserInfoRequest",
+        type: "UpdateUserInfoRequest",
       });
 
       const { data } = await axios.put(
@@ -65,12 +65,12 @@ export const updateUserInformation =
       );
 
       dispatch({
-        type: "updateUserInfoSuccess",
+        type: "UpdateUserInfoSuccess",
         payload: data.user,
       });
     } catch (error) {
       dispatch({
-        type: "updateUserInfoFailed",
+        type: "UpdateUserInfoFailed",
         payload: error.response.data.message,
       });
     }
@@ -81,7 +81,7 @@ export const updateUserAddress =
   (country, city, address1, address2,zipCode, addressType) => async (dispatch) => {
     try {
       dispatch({
-        type: "updateUserAddressRequest",
+        type: "UpdateUserAddressRequest",
       });
 
       const { data } = await axios.put(
@@ -98,15 +98,15 @@ export const updateUserAddress =
       );
 
       dispatch({
-        type: "updateUserAddressSuccess",
+        type: "UpdateUserAddressSuccess",
         payload: {
-          successMessage: "User address updated succesfully!",
+          successMessage: "User address updated successfully!",
           user: data.user,
         },
       });
     } catch (error) {
       dispatch({
-        type: "updateUserAddressFailed",
+        type: "UpdateUserAddressFailed",
         payload: error.response.data.message,
       });
     }
@@ -116,7 +116,7 @@ export const updateUserAddress =
 export const deleteUserAddress = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: "deleteUserAddressRequest",
+      type: "DeleteUserAddressRequest",
     });
 
     const { data } = await axios.delete(
@@ -125,7 +125,7 @@ export const deleteUserAddress = (id) => async (dispatch) => {
     );
 
     dispatch({
-      type: "deleteUserAddressSuccess",
+      type: "DeleteUserAddressSuccess",
       payload: {
         successMessage: "User deleted successfully!",
         user: data.user,
@@ -133,7 +133,7 @@ export const deleteUserAddress = (id) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({
-      type: "deleteUserAddressFailed",
+      type: "DeleteUserAddressFailed",
       payload: error.response.data.message,
     });
   }
