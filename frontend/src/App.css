@@ -31,3 +31,90 @@ input,select{
   top: -9%;
   cursor: pointer;
 }
+
+.custom-input {
+  /* Define the default border color */
+  border-color: none; /* or any other default color */
+
+  /* Define the default box shadow */
+  box-shadow: none; /* or any other default shadow */
+
+  /* Define the default label color */
+  color: none; /* or any other default color */
+}
+
+/* Customize the focus color and box shadow when input is focused */
+.custom-input:focus-within,
+.custom-input:hover {
+  border-color: #006665; /* Change this color to the desired color */
+  box-shadow: none; /* Change this shadow to the desired style */
+}
+
+
+/* Remove default styles from the date picker */
+.ant-picker {
+  box-shadow: none !important; /* Remove default box shadow */ 
+}
+
+/* Apply hover color to the date picker */
+.ant-picker:hover,
+.ant-picker:focus-within {
+  border-color: #006665; /* Example hover background color */
+}
+
+
+/* Remove default styles from the select dropdown */
+.ant-select-selector {
+  box-shadow: none !important; /* Remove default box shadow */
+}
+
+/* Apply custom styles to the select dropdown */
+.custom-select .ant-select-selector {
+  border-radius: 100px; /* Example border radius */
+  padding: 8px 12px; /* Example padding */
+  font-size: 16px; /* Example font size */
+  color: #333; /* Example text color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: border-color 0.3s; /* Smooth transition */
+}
+
+/* Apply hover color to the select dropdown */
+.custom-select:hover .ant-select-selector,
+.custom-select:focus-within .ant-select-selector {
+  border-color: #006665 !important; /* Example hover background color */
+}
+
+
+/* Remove default styles from the Ant Design Upload component */
+.ant-upload {
+  border-color: transparent !important; /* Remove default border color */
+}
+
+/* Apply hover color to the Ant Design Upload component */
+.ant-upload:hover {
+  border-color: #006665 !important; /* Example hover border color */
+}
+.ant-upload:focus-visible {
+  border-color: #006665 !important; /* Example focus border color */
+}
+
+
+.custom-ok-button-class {
+  background-color: #006665 !important; /* Override default browser styles */
+  color: #fff !important; /* Change text color if needed */
+  border-color: transparent !important; /* Set border color to transparent */
+}
+.custom-ok-button-class:hover {
+  background-color: #077773 !important; /* Change to your desired color on hover */
+  border-color: #006665 !important; /* Change border color if needed */
+}
+.custom-cancel-button-class {
+  background-color: transparent !important; /* Override default browser styles */
+  color: none;
+}
+.custom-cancel-button-class:hover {
+  border-color: #006665 !important; /* Change border color if needed */
+  color:#006665 !important;
+}
+
+

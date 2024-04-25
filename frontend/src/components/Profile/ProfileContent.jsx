@@ -24,6 +24,7 @@ import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { message } from "antd";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -483,8 +484,19 @@ const ChangePassword = () => {
     }
   };
 
+  const validatePassword = () => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|])[A-Za-z\d@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|]{6,}$/;
+    return regex.test(newPassword);
+  };
+
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
+
+    if (!validatePassword()) {
+      message.error("Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, one number, and one special character");
+      return;
+    }
 
     await axios
       .put(

@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
-import { Button, Table } from "antd"; // Import Ant Design components
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import { Button, Input, InputNumber, Modal, Table } from "antd"; // Import Ant Design components
+import React, { useEffect, useState } from "react";
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllProductsShop } from "../../redux/actions/product";
-import { deleteProduct } from "../../redux/actions/product";
+import {
+  deleteProduct,
+  getAllProductsShop,
+  updateProduct,
+} from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 
 const AllProducts = () => {
@@ -15,11 +18,41 @@ const AllProducts = () => {
 
   useEffect(() => {
     dispatch(getAllProductsShop(seller._id));
-  }, [dispatch]);
+  }, [dispatch, seller._id]);
+
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editedProduct, setEditedProduct] = useState(null);
+  const [editedProductName, setEditedProductName] = useState("");
+  const [editedProductPrice, setEditedProductPrice] = useState(0);
+  const [editedProductStock, setEditedProductStock] = useState(0);
+
+  const handleEdit = (record) => {
+    setEditedProduct({ ...record, productId: record.id });
+    setEditedProductName(record.name);
+    setEditedProductPrice(record.discountPrice);
+    setEditedProductStock(record.stock);
+    setEditModalVisible(true);
+  };
+
+  const handleEditModalOk = async () => {
+    const updatedProduct = {
+      ...editedProduct,
+      name: editedProductName,
+      price: editedProductPrice,
+      stock: editedProductStock,
+    };
+    await dispatch(updateProduct(updatedProduct.productId, updatedProduct)); // Wait for the update operation to complete
+    setEditModalVisible(false);
+    // Fetch the updated product list again after the update operation is completed
+    dispatch(getAllProductsShop(seller._id));
+  };
+
+  const handleEditModalCancel = () => {
+    setEditModalVisible(false);
+  };
 
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
-    window.location.reload();
   };
 
   const columns = [
@@ -64,9 +97,20 @@ const AllProducts = () => {
       width: 100,
       align: "center",
       render: (text, record) => (
-        <Link to={`/product/${record.name}`}>
-          <Button icon={<AiOutlineEye />} size="small" />
+        <Link to={`/product/${record.id}`}>
+          <Button icon={<AiOutlineEye />} size={15} />
         </Link>
+      ),
+    },
+    {
+      title: "Edit",
+      key: "Edit",
+      width: 120,
+      align: "center",
+      render: (text, record) => (
+        <Button onClick={() => handleEdit(record)}>
+          <AiOutlineEdit size={15} />
+        </Button>
       ),
     },
     {
@@ -76,7 +120,7 @@ const AllProducts = () => {
       align: "center",
       render: (text, record) => (
         <Button onClick={() => handleDelete(record.id)}>
-          <AiOutlineDelete size={20} />
+          <AiOutlineDelete size={15} />
         </Button>
       ),
     },
@@ -105,6 +149,52 @@ const AllProducts = () => {
             pagination={{ pageSize: 10 }}
             style={{ scrollbarWidth: "none", overflowX: "auto" }}
           />
+          <Modal
+            title="Edit Product"
+            visible={editModalVisible}
+            onOk={handleEditModalOk}
+            onCancel={handleEditModalCancel}
+            okText="Save Changes"
+            cancelText="Cancel"
+            okButtonProps={{
+              className: "custom-ok-button-class rounded-2xl",
+            }}
+            cancelButtonProps={{
+              className: "custom-cancel-button-class rounded-2xl",
+            }}
+          >
+            <div>
+              <label htmlFor="productName">Product Name</label>
+              <Input
+                value={editedProductName}
+                onChange={(e) => setEditedProductName(e.target.value)}
+                placeholder="Product Name"
+                className="custom-input rounded-2xl"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Price">Price</label>
+              <Input
+                type="number"
+                value={editedProductPrice}
+                onChange={(e) => setEditedProductPrice(e.target.value)}
+                placeholder="Product Price"
+                style={{ width: "100%" }} // Adjust the width of the input number
+                className="custom-input rounded-2xl"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="Stock">Stock</label>
+              <Input
+                type="number"
+                value={editedProductStock}
+                onChange={(e) => setEditedProductStock(e.target.value)}
+                placeholder="Product Stock"
+                style={{ width: "100%" }} // Adjust the width of the input number
+                className="custom-input rounded-2xl"
+              />
+            </div>
+          </Modal>
         </div>
       )}
     </>

@@ -38,8 +38,19 @@ const ShopPassword = () => {
     }
   };
 
+  const validatePassword = () => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|])[A-Za-z\d@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|]{6,}$/;
+    return regex.test(newPassword);
+  };
+
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
+
+    if (!validatePassword()) {
+      message.error("Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, one number, and one special character");
+      return;
+    }
 
     await axios
       .put(

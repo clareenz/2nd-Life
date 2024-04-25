@@ -18,6 +18,7 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
+  UserInbox,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -28,7 +29,8 @@ import {
   ShopAllCoupouns,
   ShopPreviewPage,
   ShopSettingsPage,
-  ShopPasswordPage
+  ShopPasswordPage,
+  ShopInboxPage,
 } from "./routes/ShopRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -134,6 +136,22 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopAllEvents />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInbox />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoute>
+              <ShopInboxPage />
             </SellerProtectedRoute>
           }
         />
