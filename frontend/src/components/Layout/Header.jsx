@@ -1,37 +1,34 @@
 /* The logo, search bar, become seller button, and the blue header's here */
 
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import styles from "../../styles/styles";
-import { categoriesData, productData } from "../../static/data";
+import { Modal } from "antd";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   AiOutlineHeart,
+  AiOutlineMenu,
   AiOutlineSearch,
   AiOutlineShop,
-  AiOutlineShoppingCart,
-  AiOutlineMenu,
-  AiOutlineBook,
-  AiOutlineLogout,
+  AiOutlineShoppingCart
 } from "react-icons/ai";
-import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
+import { BiMenuAltLeft } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
+import { IoIosArrowDown } from "react-icons/io";
+import { RxCross1 } from "react-icons/rx";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { backend_url, server } from "../../server";
+import { categoriesData, productData } from "../../static/data";
+import styles from "../../styles/styles";
+import Wishlist from "../Wishlist/Wishlist";
+import Cart from "../cart/Cart";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
-import { useSelector } from "react-redux";
-import { backend_url } from "../../server";
-import Cart from "../cart/Cart";
-import Wishlist from "../Wishlist/Wishlist";
-import { RxCross1 } from "react-icons/rx";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { server } from "../../server";
-import { toast } from "react-toastify";
 
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
-  const { wishlist } = useSelector((state) => state.wishlist); 
+  const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const { allProducts } = useSelector((state) => state.products);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,6 +40,11 @@ const Header = ({ activeHeading }) => {
   const [open, setOpen] = useState(false); //sidebar sa desktop
   const [open1, setOpen1] = useState(false); //sidebar sa mobile
   const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const logoutHandler = () => {
     axios
@@ -209,7 +211,7 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpenWishlist(true)}
             >
               <AiOutlineHeart size={27} color="83%" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
+              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3.5 h-3.5 top right p-0 m-0 text-black font-mono text-[10.5px] leading-tight text-center">
                 {wishlist && wishlist.length}
               </span>
             </div>
@@ -222,7 +224,7 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={27} color="83%" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
+              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3.5 h-3.5 top right p-0 m-0 text-black font-mono text-[10.5px] leading-tight text-center">
                 {cart && cart.length}
               </span>
             </div>
@@ -247,19 +249,25 @@ const Header = ({ activeHeading }) => {
             </div>
           </div>
 
-          {/* menu */}
+          {/*menu*/}
           <div className="mr-1">
-            <AiOutlineMenu
-              size={27}
-              className=""
-              onClick={() => setOpen1(true)}
-            />
+            <AiOutlineMenu size={27} className="" onClick={toggleModal} />
           </div>
-          {open1 && <div className="fixed inset-0 bg-[#0000005f] z-20" />}
 
-          {/* menu content*/}
-          {open1 && (
-            <div className="justify-center fixed top-[60px] right-5 w-auto h-[50%] bg-white z-30 rounded-2xl">
+          <Modal
+            visible={modalVisible}
+            onCancel={toggleModal}
+            footer={null}
+            style={{
+              position: "fixed",
+              top: "7%",
+              right: "2%",
+              transform: "translate(0, 0)",
+              margin: 0,
+            }}
+            className="small-modal"
+          >
+            <div className="justify-center bg-white rounded-3xl">
               <br />
               <div className="flex justify-center">
                 {isAuthenticated ? (
@@ -279,72 +287,87 @@ const Header = ({ activeHeading }) => {
                         <span className="text-red-500">{user.name}!</span>
                       </div>
                       <br />
-                      <div className="flex justify-center px-6">
-                        <div className={`${styles.button4} flex w-full`}>
-                          <Link to="/profile">
-                            <h1 className=" flex items-center">
-                              <AiOutlineBook size={19} className="mx-1" />{" "}
-                              Manage your account
-                            </h1>
-                          </Link>
-                        </div>
+                      <div className="flex justify-center">
+                        <button
+                          className={`border rounded-3xl px-[80px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={() => {
+                            window.location.href = "/profile";
+                          }}
+                        >
+                          <h1 className="flex items-center">
+                            Manage your account
+                          </h1>
+                        </button>
                       </div>
                       {/*logout button*/}
-                      <div className="flex justify-center px-6 cursor-pointer">
-                        <div
-                          className={`${styles.button4} flex w-full`}
-                          onClick={() => logoutHandler()}
+                      <div className="flex justify-center mt-2">
+                        <button
+                          className={`border rounded-3xl px-[122px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={logoutHandler}
                         >
-                          {" "}
-                          <AiOutlineLogout size={19} className="mx-1" />{" "}
-                          <span>Log Out</span>
-                        </div>
+                          <h1 className="flex items-center">Log Out</h1>
+                        </button>
+                      </div>
+                      {/* become a seller button */}
+                      <div className="flex justify-center mt-2 mb-6">
+                        <button
+                          className={`border rounded-3xl px-[98px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={() => {
+                            window.location.href = "/shop-create";
+                          }}
+                        >
+                          <h1 className="">Become a Seller</h1>
+                        </button>
                       </div>
                     </div>
                   </>
                 ) : (
                   //if di naka login, eto makita sa menu
-                  <div className="flex flex-col w-full px-6 mb-2">
+                  <div className="flex flex-col w-full mb-2">
                     <br />
                     <br />
-                    <button
-                      className={`${styles.button4}`}
-                      onClick={() => {
-                        window.location.href = "/login";
-                      }}
-                    >
-                      Login
-                    </button>
-                    <button
-                      className={`${styles.button4}`}
-                      onClick={() => {
-                        window.location.href = "/sign-up";
-                      }}
-                    >
-                      Sign Up
-                    </button>
+                    <div className="flex justify-center px-6">
+                      <button
+                        className={`border rounded-3xl px-[127px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/login";
+                        }}
+                      >
+                        Login
+                      </button>
+                    </div>
+                    <div className="flex justify-center px-6 mt-2 mb-2">
+                      <button
+                        className={`border rounded-3xl px-[120px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/sign-up";
+                        }}
+                      >
+                        <h1 className="">Sign up</h1>
+                      </button>
+                    </div>
                     {/* ----or----- */}
-                    <div className="flex items-center">
+                    <div className="flex items-center mb-2">
                       <div className="flex-grow border-t border-gray"></div>
                       <div className="px-4 text-gray-700">or</div>
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
+                    {/* become a seller button */}
+                    <div className=" flex justify-center mb-6">
+                      <button
+                        className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/shop-create";
+                        }}
+                      >
+                        <h1 className="">Become a Seller</h1>
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
-              {/* become a seller button */}
-              <div className="flex justify-center px-6">
-                <div className={`${styles.button4} flex w-full`}>
-                  <Link to="/shop-create">
-                    <h1 className="flex items-center">
-                      <AiOutlineShop size={19} className="mx-1" /> Become a
-                      Seller
-                    </h1>
-                  </Link>
-                </div>
-              </div>
             </div>
-          )}
+          </Modal>
 
           {/*cart popup*/}
           {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
@@ -386,7 +409,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-              {cart && cart.length}
+                {cart && cart.length}
               </span>
             </div>
           </div>
@@ -536,6 +559,25 @@ const Header2 = ({ activeHeading }) => {
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const logoutHandler = () => {
+    axios
+      .get(`${server}/user/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        window.location.reload(true);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
+  };
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -690,7 +732,7 @@ const Header2 = ({ activeHeading }) => {
               onClick={() => setOpenWishlist(true)}
             >
               <AiOutlineHeart size={27} color="83%" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
+              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3.5 h-3.5 top right p-0 m-0 text-black font-mono text-[10.5px] leading-tight text-center">
                 0
               </span>
             </div>
@@ -703,25 +745,31 @@ const Header2 = ({ activeHeading }) => {
               onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={27} color="83%" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-              {cart && cart.length}
+              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3.5 h-3.5 top right p-0 m-0 text-black font-mono text-[10.5px] leading-tight text-center">
+                {cart && cart.length}
               </span>
             </div>
           </div>
 
-          {/* menu */}
+          {/*menu*/}
           <div className="mr-1">
-            <AiOutlineMenu
-              size={27}
-              className=""
-              onClick={() => setOpen1(true)}
-            />
+            <AiOutlineMenu size={27} className="" onClick={toggleModal} />
           </div>
-          {open1 && <div className="fixed inset-0 bg-[#0000005f] z-20" />}
 
-          {/* menu content*/}
-          {open1 && (
-            <div className="justify-center fixed top-[60px] right-5 w-auto h-[50%] bg-white z-30 rounded-lg">
+          <Modal
+            visible={modalVisible}
+            onCancel={toggleModal}
+            footer={null}
+            style={{
+              position: "fixed",
+              top: "7%",
+              right: "2%",
+              transform: "translate(0, 0)",
+              margin: 0,
+            }}
+            className="small-modal"
+          >
+            <div className="justify-center bg-white rounded-3xl">
               <br />
               <div className="flex justify-center">
                 {isAuthenticated ? (
@@ -729,74 +777,99 @@ const Header2 = ({ activeHeading }) => {
                     <div>
                       <Link to="/profile">
                         <img
-                          src={`${backend_url}${user.avatar}`}
+                          src={`${backend_url}${user.avatar} `}
                           alt=""
-                          className="ml-9 w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] m-6"
+                          className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
                       </Link>
-                      <br />
-                      <div className="flex-grow border-t border-gray"></div>
+
                       <div className="flex justify-center">
                         <p className="text-gray-600 text-flex mx-1"> Hi,</p>
                         <span></span>
                         <span className="text-red-500">{user.name}!</span>
                       </div>
-                      <div
-                        className={`${styles.button2} h-7 bg-transparent border border-gray-400 hover:border-blue-500 hover:bg-transparent `}
-                      >
-                        <Link to="/profile">
-                          <h1 className="text-black flex items-center text-xs hover:text-blue-500">
-                            <AiOutlineBook size={17} className="" /> Manage your
-                            account
+                      <br />
+                      <div className="flex justify-center">
+                        <button
+                          className={`border rounded-3xl px-[80px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={() => {
+                            window.location.href = "/profile";
+                          }}
+                        >
+                          <h1 className="flex items-center">
+                            Manage your account
                           </h1>
-                        </Link>
+                        </button>
+                      </div>
+                      {/*logout button*/}
+                      <div className="flex justify-center mt-2">
+                        <button
+                          className={`border rounded-3xl px-[122px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={logoutHandler}
+                        >
+                          <h1 className="flex items-center">Log Out</h1>
+                        </button>
+                      </div>
+                      {/* become a seller button */}
+                      <div className="flex justify-center mt-2 mb-6">
+                        <button
+                          className={`border rounded-3xl px-[98px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={() => {
+                            window.location.href = "/shop-create";
+                          }}
+                        >
+                          <h1 className="">Become a Seller</h1>
+                        </button>
                       </div>
                     </div>
                   </>
                 ) : (
                   //if di naka login, eto makita sa menu
-                  <div className="flex flex-col w-full px-6 mb-2">
+                  <div className="flex flex-col w-full mb-2">
                     <br />
                     <br />
-                    <button
-                      className={`${styles.button4}`}
-                      onClick={() => {
-                        window.location.href = "/login";
-                      }}
-                    >
-                      Login
-                    </button>
-                    <button
-                      className={`${styles.button4}`}
-                      onClick={() => {
-                        window.location.href = "/sign-up";
-                      }}
-                    >
-                      Sign Up
-                    </button>
+                    <div className="flex justify-center px-6">
+                      <button
+                        className={`border rounded-3xl px-[127px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/login";
+                        }}
+                      >
+                        Login
+                      </button>
+                    </div>
+                    <div className="flex justify-center px-6 mt-2 mb-2">
+                      <button
+                        className={`border rounded-3xl px-[120px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/sign-up";
+                        }}
+                      >
+                        <h1 className="">Sign up</h1>
+                      </button>
+                    </div>
+                    {/* ----or----- */}
+                    <div className="flex items-center mb-2">
+                      <div className="flex-grow border-t border-gray"></div>
+                      <div className="px-4 text-gray-700">or</div>
+                      <div className="flex-grow border-t border-gray"></div>
+                    </div>
+                    {/* become a seller button */}
+                    <div className=" flex justify-center mb-6">
+                      <button
+                        className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/shop-create";
+                        }}
+                      >
+                        <h1 className="">Become a Seller</h1>
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
-              {/* ----or----- */}
-              <div className="flex items-center">
-                <div className="flex-grow border-t border-gray"></div>
-                <div className="px-4 text-gray-700">or</div>
-                <div className="flex-grow border-t border-gray"></div>
-              </div>
-              <br />
-              {/* become a seller button */}
-              <div className="flex justify-center px-6">
-                <div className={`${styles.button4} flex w-full`}>
-                  <Link to="/shop-create">
-                    <h1 className="flex items-center">
-                      <AiOutlineShop size={19} className="mx-1" /> Become a
-                      Seller
-                    </h1>
-                  </Link>
-                </div>
-              </div>
             </div>
-          )}
+          </Modal>
 
           {/*cart popup*/}
           {openCart ? <Cart setOpenCart={setOpenCart} /> : null}
@@ -838,7 +911,7 @@ const Header2 = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={27} />
               <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-              {cart && cart.length}
+                {cart && cart.length}
               </span>
             </div>
           </div>
@@ -974,3 +1047,4 @@ const Header2 = ({ activeHeading }) => {
 };
 
 export { Header, Header2 };
+
