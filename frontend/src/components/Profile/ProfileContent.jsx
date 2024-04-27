@@ -671,10 +671,10 @@ const ChangePassword = () => {
 const Address = () => {
   const [open, setOpen] = useState(false);
   const [country, setCountry] = useState("");
+  const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
+  const [address, setAddress] = useState("");
   const [addressType, setAddressType] = useState("");
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -694,24 +694,24 @@ const Address = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (addressType === "" || country === "" || city === "") {
+    if (addressType === "" || country === "" || province === "" || city === "") {
       toast.error("Please fill all the fields!");
     } else {
       dispatch(
         updateUserAddress(
           country,
+          province,
           city,
-          address1,
-          address2,
+          address,
           zipCode,
           addressType
         )
       );
       setOpen(false);
       setCountry("");
+      setProvince("");
       setCity("");
-      setAddress1("");
-      setAddress2("");
+      setAddress("");
       setZipCode("");
       setAddressType("");
     }
@@ -750,7 +750,7 @@ const Address = () => {
                       className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
-                        choose your country
+                        Choose your country
                       </option>
                       {Country &&
                         Country.getAllCountries().map((item) => (
@@ -766,16 +766,16 @@ const Address = () => {
                   </div>
 
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Choose your City</label>
+                    <label className="block pb-2">Choose your Province</label>
                     <select
                       name=""
                       id=""
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
+                      value={province}
+                      onChange={(e) => setProvince(e.target.value)}
                       className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
-                        choose your city
+                        Choose your Province 
                       </option>
                       {State &&
                         State.getStatesOfCountry(country).map((item) => (
@@ -791,23 +791,24 @@ const Address = () => {
                   </div>
 
                   <div className="w-[95%] pb-2">
-                    <label className="block pb-2">Address 1</label>
+                    <label className="block pb-2">City</label>
                     <input
-                      type="address"
+                      type=""
                       className={`${styles.input} focus:border-[#006665]`}
                       required
-                      value={address1}
-                      onChange={(e) => setAddress1(e.target.value)}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
                     />
                   </div>
+                        
                   <div className="w-[95%] pb-2">
-                    <label className="block pb-2">Address 2</label>
+                    <label className="block pb-2">Address</label>
                     <input
                       type="address"
                       className={`${styles.input} focus:border-[#006665]`}
                       required
-                      value={address2}
-                      onChange={(e) => setAddress2(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                     />
                   </div>
 

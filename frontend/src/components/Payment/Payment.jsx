@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
 
 const Payment = () => {
+  const [orderData, setOrderData] = useState([]);
+
+  useEffect(() => {
+    const orderData = JSON.parse(localStorage.getItem("latestOrder"));
+    setOrderData(orderData);
+  }, []);
+
   return (
     <div className="w-full flex flex-col items-center py-8">
       <div className="w-[90%] 1000px:w-[70%] block 800px:flex">
@@ -10,7 +17,7 @@ const Payment = () => {
           <PaymentInfo />
         </div>
         <div className="w-full 800px:w-[35%] 800px:mt-0 mt-8">
-          <CartData />
+          <CartData orderData={orderData} />
         </div>
       </div>
     </div>
@@ -149,30 +156,30 @@ const PaymentInfo = () => {
     </div>
   );
 };
-const CartData = () => {
+const CartData = ({ orderData }) => {
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">$2610.00</h5>
+        <h5 className="text-[18px] font-[600]">Php{orderData?.subTotalPrice}</h5>
       </div>
       <br />
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">-</h5>
+        <h5 className="text-[18px] font-[600]">Php{orderData?.shipping}</h5>
       </div>
       <br />
       <div className="flex justify-between border-b pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
-        <h5 className="text-[18px] font-[600]">-</h5>
+        <h5 className="text-[18px] font-[600]">Php{orderData?.discountPrice}</h5>
       </div>
-      <h5 className="text-[18px] font-[600] text-end pt-3">$2610.00</h5>
+      <h5 className="text-[18px] font-[600] text-end pt-3">Php{orderData?.totalPrice}</h5>
       <br />
       <form>
         <input
           type="text"
           className={`${styles.input} h-[40px] pl-2`}
-          placeholder="Coupoun code"
+          placeholder="Coupon code"
           required
         />
         <input
