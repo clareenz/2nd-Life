@@ -33,9 +33,9 @@ const ProfileContent = ({ active }) => {
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [displayName, setDisplayName] = useState(name)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {

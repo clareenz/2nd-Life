@@ -20,6 +20,7 @@ import {
 import { addToCart } from "../../redux/actions/cart";
 import { message } from "antd";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
@@ -28,9 +29,9 @@ const ProductDetails = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.user);
-
   const { products } = useSelector((state) => state.products);
-  const dispatch = useDispatch();
+  const { wishlist } = useSelector((state) => state.wishlist);
+
   
   useEffect(() => {
     dispatch(getAllProductsShop(data && data?.shop._id));
@@ -74,9 +75,6 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  const handleMessageSubmit = () => {
-    navigate("/inbox?conversation=507ebjver884ehfdjeriv84"); // example pa. dynamically next ime
-  };
 
   return (
     <div className="bg-white">
