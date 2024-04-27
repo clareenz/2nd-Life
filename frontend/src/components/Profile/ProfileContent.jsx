@@ -17,7 +17,7 @@ import { RxCross1 } from "react-icons/rx";
 import {
   deleteUserAddress,
   loadUser,
-  updatUserAddress,
+  updateUserAddress,
   updateUserInformation,
 } from "../../redux/actions/user";
 import { Country, State } from "country-state-city";
@@ -33,9 +33,9 @@ const ProfileContent = ({ active }) => {
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [displayName, setDisplayName] = useState(name)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
@@ -107,7 +107,7 @@ const handleSubmit = (e) => {
       {/* profile */}
       {active === 1 && (
         <>
-          <div className="flex justify-evenly w-auto">
+          <div className="flex w-auto justify-evenly">
             <div className="relative">
               <img
                 src={`${backend_url}${user?.avatar}`}
@@ -505,10 +505,11 @@ const ChangePassword = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success(res.data.success);
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
+        toast.success(res.data.success);
+
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -671,7 +672,7 @@ const Address = () => {
   const [open, setOpen] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState();
+  const [zipCode, setZipCode] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [addressType, setAddressType] = useState("");
@@ -697,7 +698,7 @@ const Address = () => {
       toast.error("Please fill all the fields!");
     } else {
       dispatch(
-        updatUserAddress(
+        updateUserAddress(
           country,
           city,
           address1,
@@ -711,7 +712,7 @@ const Address = () => {
       setCity("");
       setAddress1("");
       setAddress2("");
-      setZipCode(null);
+      setZipCode("");
       setAddressType("");
     }
   };
@@ -817,7 +818,7 @@ const Address = () => {
                       className={`${styles.input} focus:border-[#006665]`}
                       required
                       value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value)}
+                      onChange={(e) => setZipCode(e.target.value || "")}
                     />
                   </div>
 

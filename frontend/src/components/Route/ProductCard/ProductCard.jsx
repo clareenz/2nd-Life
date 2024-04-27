@@ -84,7 +84,7 @@ const ProductCard = ({ data }) => {
             className="w-[90%] h-[170px] object-contain"
           />
         </Link>
-        <Link to="/">
+        <Link to = {`/shop/preview/${data?.shop._id}`}>
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
         </Link>
         <Link to={`/product/${data._id}`}>
@@ -92,7 +92,7 @@ const ProductCard = ({ data }) => {
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>
 
-          <div className="py-2 flex items-center justify-between">
+          <div className="flex items-center justify-between py-2">
             <div className="flex">
               <h5 className={`${styles.productDiscountPrice}`}>
                 ₱
@@ -115,7 +115,7 @@ const ProductCard = ({ data }) => {
           {click ? (
             <AiFillHeart
               size={22}
-              className="cursor-pointer absolute right-2 top-5"
+              className="absolute cursor-pointer right-2 top-5"
               onClick={() => removeFromWishlistHandler(data)}
               color={click ? "red" : "#333"}
               title="Remove from wishlist"
@@ -123,7 +123,7 @@ const ProductCard = ({ data }) => {
           ) : (
             <AiOutlineHeart
               size={22}
-              className="cursor-pointer absolute right-2 top-5"
+              className="absolute cursor-pointer right-2 top-5"
               onClick={() => addToWishlistHandler(data)}
               color={click ? "red" : "#333"}
               title="Add to Wishlist"
@@ -131,14 +131,14 @@ const ProductCard = ({ data }) => {
           )}
           <AiOutlineEye
             size={22}
-            className="cursor-pointer absolute right-2 top-14"
+            className="absolute cursor-pointer right-2 top-14"
             onClick={() => setOpen(!open)}
             color="#333"
             title="Quick View"
           />
           <AiOutlineShoppingCart
             size={22}
-            className="cursor-pointer absolute right-2 top-24"
+            className="absolute cursor-pointer right-2 top-24"
             onClick={() => addToCartHandler(data._id)}
             color="#444"
             title="Add to Cart"

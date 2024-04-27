@@ -4,8 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 const Shop = require("../model/shop");
 
-
-exports.isAuthenticated = catchAsyncErrors(async(req, res, next) => {
+exports.isAuthenticated = catchAsyncErrors(async(req,res,next) => {
     const {token} = req.cookies;
 
     if(!token){
@@ -22,7 +21,6 @@ exports.isAuthenticated = catchAsyncErrors(async(req, res, next) => {
 
 exports.isSeller = catchAsyncErrors(async(req,res,next) => {
     const {seller_token} = req.cookies;
-
     if(!seller_token){
         return next(new ErrorHandler("Please login to continue", 401));
     }
@@ -33,4 +31,3 @@ exports.isSeller = catchAsyncErrors(async(req,res,next) => {
 
     next();
 });
-
