@@ -12,10 +12,10 @@ const Checkout = () => {
   const { user } = useSelector((state) => state.user);
   const { cart } = useSelector((state) => state.cart);
   const [country, setCountry] = useState("");
+  const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
   const [userInfo, setUserInfo] = useState(false);
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
+  const [address, setAddress] = useState("");
   const [zipCode, setZipCode] = useState(null);
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
@@ -28,19 +28,19 @@ const Checkout = () => {
 
   const paymentSubmit = () => {
     if (
-      address1 === "" ||
-      address2 === "" ||
+      address === "" ||
       zipCode === null ||
       country === "" ||
+      province === "" ||
       city === ""
     ) {
       toast.error("Please choose your delivery address!");
     } else {
       const shippingAddress = {
-        address1,
-        address2,
+        address,
         zipCode,
         country,
+        province,
         city,
       };
 
@@ -100,13 +100,13 @@ const Checkout = () => {
     });
   };
 
-  const discountPercentenge = couponCodeData ? discountPrice : "";
+  const discountPercentage = couponCodeData ? discountPrice : "";
 
   const totalPrice = couponCodeData
-    ? (subTotalPrice + shipping - discountPercentenge).toFixed(2)
+    ? (subTotalPrice + shipping - discountPercentage).toFixed(2)
     : (subTotalPrice + shipping).toFixed(2);
 
-  console.log(discountPercentenge);
+  console.log(discountPercentage);
   return (
     <div className="flex flex-col items-center w-full py-8">
       <div className="w-[90%] 1000px:w-[80%] block 800px:flex">
@@ -115,14 +115,14 @@ const Checkout = () => {
             user={user}
             country={country}
             setCountry={setCountry}
+            province={province}
+            setProvince={setProvince}
             city={city}
             setCity={setCity}
             userInfo={userInfo}
             setUserInfo={setUserInfo}
-            address1={address1}
-            setAddress1={setAddress1}
-            address2={address2}
-            setAddress2={setAddress2}
+            address={address}
+            setAddress={setAddress}
             zipCode={zipCode}
             setZipCode={setZipCode}
           />
@@ -135,7 +135,7 @@ const Checkout = () => {
             subTotalPrice={subTotalPrice}
             couponCode={couponCode}
             setCouponCode={setCouponCode}
-            discountPercentenge={discountPercentenge}
+            discountPercentage={discountPercentage}
           />
         </div>
       </div>
@@ -153,14 +153,14 @@ const ShippingInfo = ({
   user,
   country,
   setCountry,
+  province,
+  setProvince,
   city,
   setCity,
   userInfo,
   setUserInfo,
-  address1,
-  setAddress1,
-  address2,
-  setAddress2,
+  address,
+  setAddress,
   zipCode,
   setZipCode,
 }) => {
@@ -232,14 +232,14 @@ const ShippingInfo = ({
             </select>
           </div>
           <div className="w-[50%]">
-            <label className="block pb-2">City</label>
+            <label className="block pb-2">Province</label>
             <select
               className="w-[95%] border h-[40px] rounded-[5px]"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              value={province}
+              onChange={(e) => setProvince(e.target.value)}
             >
               <option className="block pb-2" value="">
-                Choose your City
+                Choose your Province
               </option>
               {State &&
                 State.getStatesOfCountry(country).map((item) => (
@@ -252,24 +252,26 @@ const ShippingInfo = ({
         </div>
 
         <div className="flex w-full pb-3">
+          
           <div className="w-[50%]">
-            <label className="block pb-2">House number/street</label>
+            <label className="block pb-2">City/Municipality</label>
             <input
-              type="address"
-              required
-              value={address1}
-              onChange={(e) => setAddress1(e.target.value)}
-              className={`${styles.input} !w-[95%]`}
-            />
-          </div>
-          <div className="w-[50%]">
-            <label className="block pb-2">Barangay/City/Municipality</label>
-            <input
-              type="address"
-              value={address2}
-              onChange={(e) => setAddress2(e.target.value)}
+              type="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
               required
               className={`${styles.input}`}
+            />
+          </div>
+
+          <div className="w-[50%]">
+            <label className="block pb-2">Barangay/Street/House Number</label>
+            <input
+              type="address"
+              required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className={`${styles.input} !w-[95%]`}
             />
           </div>
         </div>
@@ -280,7 +282,7 @@ const ShippingInfo = ({
         className="text-[18px] cursor-pointer inline-block"
         onClick={() => setUserInfo(!userInfo)}
       >
-        Choose From saved address
+        Choose From Saved Address
       </h5>
       {userInfo && (
         <div>
@@ -292,8 +294,8 @@ const ShippingInfo = ({
                   className="mr-3"
                   value={item.addressType}
                   onClick={() =>
-                    setAddress1(item.address1) ||
-                    setAddress2(item.address2) ||
+                    setAddress(item.address) ||
+                    setProvince(item.province) ||
                     setZipCode(item.zipCode) ||
                     setCountry(item.country) ||
                     setCity(item.city)
@@ -315,7 +317,7 @@ const CartData = ({
   subTotalPrice,
   couponCode,
   setCouponCode,
-  discountPercentenge,
+  discountPercentage,
 }) => {
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
@@ -332,7 +334,7 @@ const CartData = ({
       <div className="flex justify-between pb-3 border-b">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
         <h5 className="text-[18px] font-[600]">
-          - {discountPercentenge ? "$" + discountPercentenge.toString() : null}
+          - {discountPercentage ? "$" + discountPercentage.toString() : null}
         </h5>
       </div>
       <h5 className="text-[18px] font-[600] text-end pt-3">${totalPrice}</h5>
