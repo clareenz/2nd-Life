@@ -17,7 +17,7 @@ import { RxCross1 } from "react-icons/rx";
 import {
   deleteUserAddress,
   loadUser,
-  updatUserAddress,
+  updateUserAddress,
   updateUserInformation,
 } from "../../redux/actions/user";
 import { Country, State } from "country-state-city";
@@ -33,9 +33,9 @@ const ProfileContent = ({ active }) => {
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [displayName, setDisplayName] = useState(name)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (error) {
@@ -107,7 +107,7 @@ const handleSubmit = (e) => {
       {/* profile */}
       {active === 1 && (
         <>
-          <div className="flex justify-evenly w-auto">
+          <div className="flex w-auto justify-evenly">
             <div className="relative">
               <img
                 src={`${backend_url}${user?.avatar}`}
@@ -505,10 +505,11 @@ const ChangePassword = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success(res.data.success);
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
+        toast.success(res.data.success);
+
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -670,10 +671,10 @@ const ChangePassword = () => {
 const Address = () => {
   const [open, setOpen] = useState(false);
   const [country, setCountry] = useState("");
+  const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState();
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [address, setAddress] = useState("");
   const [addressType, setAddressType] = useState("");
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -693,25 +694,25 @@ const Address = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (addressType === "" || country === "" || city === "") {
+    if (addressType === "" || country === "" || province === "" || city === "") {
       toast.error("Please fill all the fields!");
     } else {
       dispatch(
-        updatUserAddress(
+        updateUserAddress(
           country,
+          province,
           city,
-          address1,
-          address2,
+          address,
           zipCode,
           addressType
         )
       );
       setOpen(false);
       setCountry("");
+      setProvince("");
       setCity("");
-      setAddress1("");
-      setAddress2("");
-      setZipCode(null);
+      setAddress("");
+      setZipCode("");
       setAddressType("");
     }
   };
@@ -749,7 +750,7 @@ const Address = () => {
                       className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
-                        choose your country
+                        Choose your country
                       </option>
                       {Country &&
                         Country.getAllCountries().map((item) => (
@@ -765,16 +766,16 @@ const Address = () => {
                   </div>
 
                   <div className="w-full pb-2">
-                    <label className="block pb-2">Choose your City</label>
+                    <label className="block pb-2">Choose your Province</label>
                     <select
                       name=""
                       id=""
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
+                      value={province}
+                      onChange={(e) => setProvince(e.target.value)}
                       className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
-                        choose your city
+                        Choose your Province 
                       </option>
                       {State &&
                         State.getStatesOfCountry(country).map((item) => (
@@ -790,23 +791,24 @@ const Address = () => {
                   </div>
 
                   <div className="w-[95%] pb-2">
-                    <label className="block pb-2">Address 1</label>
+                    <label className="block pb-2">City</label>
                     <input
-                      type="address"
+                      type=""
                       className={`${styles.input} focus:border-[#006665]`}
                       required
-                      value={address1}
-                      onChange={(e) => setAddress1(e.target.value)}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
                     />
                   </div>
+                        
                   <div className="w-[95%] pb-2">
-                    <label className="block pb-2">Address 2</label>
+                    <label className="block pb-2">Address</label>
                     <input
                       type="address"
                       className={`${styles.input} focus:border-[#006665]`}
                       required
-                      value={address2}
-                      onChange={(e) => setAddress2(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                     />
                   </div>
 
@@ -817,7 +819,7 @@ const Address = () => {
                       className={`${styles.input} focus:border-[#006665]`}
                       required
                       value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value)}
+                      onChange={(e) => setZipCode(e.target.value || "")}
                     />
                   </div>
 
