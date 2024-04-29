@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import Header from "../components/Layout/Header";
 import Loader from "../components/Layout/Loader";
 import styles from "../styles/styles";
-import {SellerCard, SellerCard2} from "../components/Route/ProductCard/SellerCard";
+import {
+  SellerCard,
+  SellerCard2,
+} from "../components/Route/ProductCard/SellerCard";
 
 const BestSellingPage = () => {
   const [sellerData, setSellerData] = useState([]);
@@ -37,7 +40,13 @@ const BestSellingPage = () => {
       ) : (
         <div>
           <Header activeHeading={2} />
-          <div className="flex justify-end mt-4 mr-9 mb-3">
+          <div className="flex justify-end mt-4 mr-9 mb-8">
+            <div className="flex items-center mb-4 absolute left-10">
+              <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
+                {/* Small box */}
+              </div>
+              <h1 className="ml-2 text-[#FE8373] font-bold">Stores</h1>
+            </div>
             {/* Buttons to toggle view */}
             <button
               className={`mr-2 text-[13px] ${

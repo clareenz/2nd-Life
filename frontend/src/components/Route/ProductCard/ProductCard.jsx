@@ -84,15 +84,25 @@ const ProductCard = ({ data }) => {
             className="w-[90%] h-[170px] object-contain"
           />
         </Link>
-        <Link to = {`/shop/preview/${data?.shop._id}`}>
-          <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
-        </Link>
+        <div className="mt-2 flex flex-row justify-between">
+          <div>
+            <Link
+              to={`/shop/preview/${data?.shop._id}`}
+              className={`${styles.shop_name} text-[12px]`}
+            >
+              {data.shop.name}
+            </Link>
+          </div>
+          <div>
+            <h5 className="text-[12px] mt-1">({data.shop.ratings}) Ratings</h5>
+          </div>
+        </div>
         <Link to={`/product/${data._id}`}>
-          <h4 className="pb-3 font-[500]">
+          <h4 className="pb-3 font-[500] mt-3">
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>
 
-          <div className="flex items-center justify-between py-2">
+          <div className="flex items-center justify-between py-2 mt-9">
             <div className="flex">
               <h5 className={`${styles.productDiscountPrice}`}>
                 ₱
@@ -107,6 +117,15 @@ const ProductCard = ({ data }) => {
             {/*  <span className="font-[400] text-[17px] text-[#68d284]">
               {data.total_sell} sold //number of item sold to pero di naman natin need.
             </span> */}
+            <div>
+              {/* Buy Now button */}
+              <div
+                className={`${styles.button5} flex items-center justify-center rounded-3xl`}
+                onClick={buyNow}
+              >
+                <span className="text-[12px]" >Buy Now</span>
+              </div>
+            </div>
           </div>
         </Link>
 
@@ -117,7 +136,7 @@ const ProductCard = ({ data }) => {
               size={22}
               className="absolute cursor-pointer right-2 top-5"
               onClick={() => removeFromWishlistHandler(data)}
-              color={click ? "red" : "#333"}
+              color={click ? "#FF8474" : "#333"}
               title="Remove from wishlist"
             />
           ) : (
@@ -125,7 +144,7 @@ const ProductCard = ({ data }) => {
               size={22}
               className="absolute cursor-pointer right-2 top-5"
               onClick={() => addToWishlistHandler(data)}
-              color={click ? "red" : "#333"}
+              color={click ? "#FF8474" : "#333"}
               title="Add to Wishlist"
             />
           )}
@@ -145,17 +164,6 @@ const ProductCard = ({ data }) => {
           />
           {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
         </div>
-
-        {/* Buy Now button */}
-
-        {hovered && (
-          <div
-            className={`${styles.button5} flex items-center justify-center`}
-            onClick={buyNow}
-          >
-            <span>Buy Now</span>
-          </div>
-        )}
       </div>
     </>
   );

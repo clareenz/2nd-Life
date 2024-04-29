@@ -36,10 +36,16 @@ const ProductsPage = () => {
       ) : (
         <div>
           <Header activeHeading={3} />
+          <div className="flex items-center mb-4 absolute left-10 mt-[16px]">
+              <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
+                {/* Small box */}
+              </div>
+              <h1 className="ml-2 text-[#FE8373] font-bold">Products</h1>
+            </div>
           <br />
           <br />
           <div className={`${styles.section}`}>
-            <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
+            <div className=" mt-[25px] grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
               {data &&
                 data.map((i, index) => <ProductCard data={i} key={index} />)}
             </div>
