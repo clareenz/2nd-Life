@@ -11,7 +11,6 @@ import {
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
@@ -21,7 +20,6 @@ import {
 } from "../../redux/actions/wishlist";
 import { addToCart } from "../../redux/actions/cart";
 import { message } from "antd";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 const ProductDetails = ({ data }) => {  const [count, setCount] = useState(1);
