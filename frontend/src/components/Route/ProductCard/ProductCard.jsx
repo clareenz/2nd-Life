@@ -101,32 +101,6 @@ const ProductCard = ({ data }) => {
           <h4 className="pb-3 font-[500] mt-3">
             {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
           </h4>
-
-          <div className="flex items-center justify-between py-2 mt-9">
-            <div className="flex">
-              <h5 className={`${styles.productDiscountPrice}`}>
-                ₱
-                {data.originalPrice === 0
-                  ? data.originalPrice
-                  : data.originalPrice}
-              </h5>
-              <h4 className={`${styles.price}`}>
-                {data.originalPrice ? "₱" + data.originalPrice : null}
-              </h4>
-            </div>
-            {/*  <span className="font-[400] text-[17px] text-[#68d284]">
-              {data.total_sell} sold //number of item sold to pero di naman natin need.
-            </span> */}
-            <div>
-              {/* Buy Now button */}
-              <div
-                className={`${styles.button5} flex items-center justify-center rounded-3xl`}
-                onClick={buyNow}
-              >
-                <span className="text-[12px]" >Buy Now</span>
-              </div>
-            </div>
-          </div>
         </Link>
 
         {/* side options */}
@@ -164,6 +138,32 @@ const ProductCard = ({ data }) => {
           />
           {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
         </div>
+
+        <div className="flex items-center justify-between py-2 mt-9">
+            <div className="flex">
+              <h5 className={`${styles.productDiscountPrice}`}>
+                ₱
+                {data.originalPrice === 0
+                  ? data.originalPrice
+                  : data.originalPrice}
+              </h5>
+              <h4 className={`${styles.price}`}>
+                {data.originalPrice ? "₱" + data.originalPrice : null}
+              </h4>
+            </div>
+            {/*  <span className="font-[400] text-[17px] text-[#68d284]">
+              {data.total_sell} sold //number of item sold to pero di naman natin need.
+            </span> */}
+            <div>
+              {/* Buy Now button */}
+              <div
+                className={`${styles.button5} flex items-center justify-center rounded-3xl`}
+                onClick={buyNow}
+              >
+                <span className="text-[12px]" >Buy Now</span>
+              </div>
+            </div>
+          </div>
       </div>
     </>
   );
