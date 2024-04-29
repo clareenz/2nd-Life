@@ -6,7 +6,7 @@ export const navItems = [
   },
   {
     title: "Stores", //wala tayo best selling, best store lang
-    url: "/best-selling",
+    url: "/stores",
   },
   {
     title: "Products",
