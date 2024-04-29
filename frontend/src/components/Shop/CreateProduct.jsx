@@ -63,6 +63,7 @@ const CreateProduct = () => {
   };
 
   return (
+    
     <div
       className="w-[90%] 800px:w-[50%] bg-white  shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
       style={{ scrollbarWidth: "none", overflowY: "auto" }}
