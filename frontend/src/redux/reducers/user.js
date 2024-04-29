@@ -24,6 +24,7 @@ export const userReducer = createReducer(initialState, (builder) => {
             state.error = action.payload;
             state.isAuthenticated = false;
         })
+        // update user information
         .addCase(`UpdateUserInfoRequest`, (state) => {
             state.loading = true;
         })
@@ -35,6 +36,7 @@ export const userReducer = createReducer(initialState, (builder) => {
             state.loading = false;
             state.error = action.payload;
         })
+        // update user address
         .addCase(`UpdateUserAddressRequest`, (state) => {
             state.addressLoading = true;
         })
@@ -47,6 +49,7 @@ export const userReducer = createReducer(initialState, (builder) => {
             state.addressLoading = false;
             state.error = action.payload;
         })
+         // delete user address
         .addCase(`DeleteUserAddressRequest`, (state) => {
             state.addressLoading = true;
         })
@@ -59,10 +62,10 @@ export const userReducer = createReducer(initialState, (builder) => {
             state.addressLoading = false;
             state.error = action.payload;
         })
-        .addCase(`ClearErrors`, (state) => {
+        .addCase(`clearErrors`, (state) => {
             state.error = null;
         })
-        .addCase(`ClearMessages`, (state) => {
+        .addCase(`clearMessages`, (state) => {
             state.successMessage = null;
         });
 });
