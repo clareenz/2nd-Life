@@ -1,6 +1,7 @@
 /* The products detail page
  *  start time: 45:20 (2nd vid)
  */
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
@@ -19,7 +20,6 @@ import {
 } from "../../redux/actions/wishlist";
 import { addToCart } from "../../redux/actions/cart";
 import { message } from "antd";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 const ProductDetails = ({ data }) => {  const [count, setCount] = useState(1);
