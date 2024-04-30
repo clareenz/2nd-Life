@@ -45,7 +45,7 @@ const BestSellingPage = () => {
               <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                 {/* Small box */}
               </div>
-              <h1 className="ml-2 text-[#FE8373] font-bold">Stores</h1>
+              <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Stores</h1>
             </div>
             {/* Buttons to toggle view */}
             <button

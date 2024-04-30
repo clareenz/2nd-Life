@@ -123,6 +123,39 @@ input,select{
   height: 200px !important;
 }
 
+/* EventContainer.css */
+
+.event-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the minmax value as needed */
+  gap: 20px;
+}
+
+.event-card {
+  width: 100%;
+}
+
+.event-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.event-image {
+  width: 300px; /* Adjust as needed */
+  height: 300px; /* Adjust as needed */
+}
+
+.event-details {
+  width: 100%;
+}
+
+.event-no-events {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
 
 

@@ -70,8 +70,6 @@ const ProductCard = ({ data }) => {
     <>
       <div
         className="w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
       >
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
