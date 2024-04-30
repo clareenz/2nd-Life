@@ -175,7 +175,7 @@ const ProductDetails = ({ data }) => {
                     {data.stock > 1 ? (
                       <>
                         <div>
-                          <button onClick={() => increment(data)}>
+                          <button onClick={() => decrement(data)}>
                             <CiSquareMinus size={30} />
                           </button>
                         </div>
