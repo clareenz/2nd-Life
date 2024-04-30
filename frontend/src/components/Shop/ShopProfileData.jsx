@@ -1,10 +1,10 @@
+import { Tabs, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { Tabs, Typography, Button } from "antd";
 import { getAllProductsShop } from "../../redux/actions/product";
 import styles from "../../styles/styles";
-import ProductCard from "../Route/ProductCard/ProductCard";
+import { ProductCard, ProductCard2 } from "../Route/ProductCard/ProductCard";
 import './color.css';
 
 const { TabPane } = Tabs;
@@ -30,10 +30,22 @@ const ShopProfileData = ({ isOwner }) => {
       <Tabs activeKey={activeTab} onChange={handleTabChange}>
         <TabPane tab="Shop Products" key="products">
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+            
+            {isOwner ? (
+              <>
             {products &&
               products.map((product, index) => (
-                <ProductCard data={product} key={index} isShop={true} />
+                <ProductCard2 data={product} key={index} isShop={true}   />
               ))}
+              </>
+            ):(
+              <>
+              {products &&
+              products.map((product, index) => (
+                <ProductCard data={product} key={index} isShop={true}   />
+              ))}
+              </>
+            )}
           </div>
           {products && products.length === 0 && (
             <h5 className="w-full text-center py-5 text-[18px]">

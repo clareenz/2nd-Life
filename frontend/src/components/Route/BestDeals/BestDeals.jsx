@@ -3,8 +3,7 @@ start:  */
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "../../../styles/styles";
-import ProductCard from "../ProductCard/ProductCard";
-
+import { ProductCard, ProductCard2 } from "../ProductCard/ProductCard";
 const BestDeals = () => {
   const [data, setData] = useState([]);
   const {allProducts} = useSelector((state) => state.products);

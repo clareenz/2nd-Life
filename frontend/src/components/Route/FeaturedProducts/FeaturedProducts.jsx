@@ -4,8 +4,7 @@ start time: 6:12:00 (first vid)
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "../../../styles/styles";
-import ProductCard from "../ProductCard/ProductCard";
-
+import { ProductCard, ProductCard2 } from "../ProductCard/ProductCard";
 const FeaturedProducts = () => {
   const {allProducts} = useSelector((state) => state.products);
 

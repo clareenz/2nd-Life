@@ -73,7 +73,7 @@ const Cart = ({ setOpenCart }) => {
             </div>
 
             <div className="px-5 mb-3 mt-6 flex flex-row justify-between">
-            <div>Total: ₱{totalPrice}</div>
+              <div>Total: ₱{totalPrice}</div>
               {/* checkout buttons */}
               <Link to="/checkout">
                 <div className={`${styles.cart_button}`}>
@@ -118,23 +118,32 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
     <div className="border-b p-4">
       <div className="flex flex-row justify-between">
         <div className="flex items-center">
-          {data.stock > 1 && (
+          {data.stock > 1 ? (
             <>
-              <div
-                className={`${styles.noramlFlex} justify-center cursor-pointer`}
-                onClick={() => increment(data)}
-              >
+              <div onClick={() => decrement(data)}>
+                <CiSquareMinus size={15} color="black" />
+              </div>
+              <div className="px-[10px]">{value}</div>
+              <div onClick={() => increment(data)}>
                 <CiSquarePlus size={15} color="black" />
               </div>
-              <span className="px-[10px]">{value}</span>
-              <div
-                className={`${styles.noramlFlex} justify-center cursor-pointer`}
-                onClick={() => decrement(data)}
-              >
-                <CiSquareMinus size={15} color="black" />
+            </>
+          ) : (
+            <>
+              <div className="text-gray-400 mt-1.5">
+                <button disabled>
+                <CiSquareMinus size={15} />
+                </button>
+              </div>
+              <div className="px-[10px]">{value}</div>
+              <div className="text-gray-400 mt-1.5">
+              <button disabled>
+                <CiSquarePlus size={15} />
+                </button>
               </div>
             </>
           )}
+
           <img
             src={`${backend_url}${data?.images[0]}`}
             alt=""
@@ -143,7 +152,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
           <div className="pl-[5px]">
             <h1>{data.name}</h1>
             <h4 className="font-[400] text-[12px] text-[#00000082]">
-            ₱{data.discountPrice} * {value}
+              ₱{data.discountPrice} * {value}
             </h4>
             <h4 className="font-[600] text-[12px] pt-[3px] text-[#d02222] font-Roboto">
               ₱{totalPrice}

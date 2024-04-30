@@ -2,12 +2,15 @@
 start: 5:44:53(first vid) */
 /**
  * * Use to Display the Product Details when Clicked
- * 
+ *
  */
 
 import React, { useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
+import Paragraph from "antd/es/typography/Paragraph";
 import styles from "../../../styles/styles";
+import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
+
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -15,30 +18,73 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { backend_url } from "../../../server";
+import { backend_url, server } from "../../../server";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../redux/actions/cart";
 import { message } from "antd";
-import { addToWishlist, removeFromWishlist } from "../../../redux/actions/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../../redux/actions/wishlist";
+import { IoBagHandleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
-  const [select, setSelect] = useState(false);
+  const [value, setValue] = useState(data?.qty || 1);
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
-  const handleMessageSubmit = () => {};
 
-  const decrementCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
+  const buyNow = () => {
+    navigate("/checkout");
+  };
+
+  const handleMessageSubmit = async () => {
+    if (isAuthenticated) {
+      const groupTitle = data._id + user._id;
+      const userId = user._id;
+      const sellerId = data.shop._id;
+      await axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    } else {
+      toast.error("Please login to create a conversation");
     }
   };
 
-  const incrementCount = () => {
-    setCount(count + 1);
+  const decrement = (data) => {
+    if (value === 1) {
+      // Minimum quantity reached, do nothing or show a message
+      return;
+    }
+    setValue(value - 1);
+    const updateData = { ...data, qty: value - 1 };
+    quantityChangeHandler(updateData);
+  };
+
+  const increment = (data) => {
+    if (data.stock < value + 1) {
+      message.error("Product stock limited!");
+    } else {
+      setValue(value + 1);
+      const updateData = { ...data, qty: value + 1 };
+      quantityChangeHandler(updateData);
+    }
   };
 
   const addToCartHandler = (id) => {
@@ -46,10 +92,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     if (isItemExists) {
       message.error("Item already in cart!");
     } else {
-      if (data.stock < count) {
+      if (data.stock < value) {
         message.error("Product stock limited!");
       } else {
-        const cartData = { ...data, qty: count };
+        const cartData = { ...data, qty: value };
         dispatch(addToCart(cartData));
         message.success("Item added to cart successfully!");
       }
@@ -74,11 +120,15 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     dispatch(addToWishlist(data));
   };
 
+  const quantityChangeHandler = (data) => {
+    dispatch(addToCart(data));
+  };
+
   return (
     <div className="bg-[#fff]">
       {data ? (
         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
-          <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
+          <div className="w-[90%] 800px:w-[60%] h-[90vh]  800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
             <RxCross1
               size={30}
               className="absolute z-50 right-3 top-3"
@@ -90,64 +140,88 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 <img
                   src={`${backend_url}${data.images && data.images[0]}`}
                   alt=""
+                  style={{ width: '300px', height: '300px' }} //recommended size. ilagay to sa add product na size requirement para sure na di ma stretch and picture pag upload sa container
                 />
-                <div className="flex">
-                  <img
-                    src={`${backend_url}${data?.shop?.avatar}`}
-                    alt=""
-                    className="w-[50px] h-[50px] rounded-full mr-2"
-                  />
+                <div className="flex flex-row mt-[70px]">
                   <div>
-                    <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
-                    <h5 className="pb-3 text-[15px]">
+                    <Link to={`/shop/preview/${data?.shop._id}`}>
+                      <img
+                        src={`${backend_url}${data?.shop?.avatar}`}
+                        alt=""
+                        className="w-[50px] h-[50px] rounded-full mr-2"
+                      />
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      to={`/shop/preview/${data.shop._id}`}
+                      className={`${styles.shop_name}`}
+                    >
+                      {data.shop.name}
+                    </Link>
+                    <h5 className="text-[13px] mt-1">
                       ({data.shop.ratings}) Ratings
                     </h5>
                   </div>
                 </div>
                 <div
-                  className={`${styles.button} bg-[#000] mt-4 rounded-[4px] h-11`}
+                  className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                   onClick={handleMessageSubmit}
                 >
-                  <span className="text-[#fff] flex items-center">
-                    Send Message <AiOutlineMessage className="ml-1" />
-                  </span>
+                  <span className="text-white text-[13px] mr-1">Message</span>
+                  <AiOutlineMessage className="text-white" />
                 </div>
-                <h5 className="text-[16px] text-[red] mt-5">
-                  ({data.total_sell}) Sold out
-                </h5>
               </div>
 
               <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
                 <h1 className={`${styles.productTitle} text-[20px]`}>
                   {data.name}
                 </h1>
-                <p>{data.description}</p>
-
+                <Paragraph style={{ wordWrap: "break-word" }}>
+                  {data.description}
+                </Paragraph>
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
-                    {data.discountPrice}$
+                    ₱{data.discountPrice}
                   </h4>
-                  <h3 className={`${styles.price}`}>
-                    {data.originalPrice ? data.originalPrice + "$" : null}
+                  <h3 className={`${styles.price1}`}>
+                    {data.originalPrice ? "₱" + data.originalPrice : null}
                   </h3>
                 </div>
                 <div className="flex items-center justify-between pr-3 mt-12">
-                  <div>
-                    <button
-                      className="px-4 py-2 font-bold text-white transition duration-300 ease-in-out rounded-l shadow-lg bg-gradient-to-r from-teal-400 to-teal-500 hover:opacity-75"
-                      onClick={decrementCount}
-                    >
-                      -
-                    </button>
-                    <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
-                      {count}
-                    </span>
-                    <button
-                      className="px-4 py-2 font-bold text-white transition duration-300 ease-in-out rounded-l shadow-lg bg-gradient-to-r from-teal-400 to-teal-500 hover:opacity-75"
-                      onClick={incrementCount}
-                    >
-                      +
-                    </button>
+                  <div className="flex flex-row">
+                    {data.stock > 1 ? (
+                      <>
+                        <div>
+                          <button onClick={() => increment(data)}>
+                            <CiSquareMinus size={30} />
+                          </button>
+                        </div>
+                        <div className="px-4 mt-0.5">{value}</div>
+                        <div>
+                          <button
+                            className="justify-center"
+                            onClick={() => increment(data)}
+                          >
+                            <CiSquarePlus size={30} />
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-gray-400 flex flex-row">
+                        <div>
+                          <button disabled>
+                            <CiSquareMinus size={30} />
+                          </button>
+                        </div>
+                        <div className="px-4 mt-0.5">{value}</div>
+                        <div>
+                          <button disabled className="justify-center">
+                            <CiSquarePlus size={30} />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -156,7 +230,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                         size={30}
                         className="cursor-pointer"
                         onClick={() => removeFromWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
+                        color={click ? "#FF8474" : "#333"}
                         title="Remove from wishlist"
                       />
                     ) : (
@@ -164,19 +238,30 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                         size={30}
                         className="cursor-pointer"
                         onClick={() => addToWishlistHandler(data)}
-                        color={click ? "red" : "#333"}
-                        title="Add to Wishlist"
+                        color={click ? "#FF8474" : "#333"}
+                        title="Add to wishlist"
                       />
                     )}
                   </div>
                 </div>
-                <div
-                  className={`${styles.button} mt-6 rounded-[4px] h-11 flex items-center`}
-                  onClick={() => addToCartHandler(data._id)}
-                >
-                  <span className="text-[#fff] flex items-center">
-                    Add to cart <AiOutlineShoppingCart className="ml-1" />
-                  </span>
+                <div className="flex flex-row justify-center">
+                  <div
+                    className={`${styles.button6} !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                    onClick={() => addToCartHandler(data._id)}
+                  >
+                    <span className="flex items-center text-white">
+                      Add to cart <AiOutlineShoppingCart className="ml-1" />
+                    </span>
+                  </div>
+                  {/* Buy Now button */}
+                  <div
+                    className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                    onClick={buyNow}
+                  >
+                    <span className="flex items-center text-white">
+                      Buy Now <IoBagHandleOutline className="ml-1" />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
