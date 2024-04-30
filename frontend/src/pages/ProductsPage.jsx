@@ -9,7 +9,7 @@ import Footer from "../components/Layout/Footer";
 import styles from "../styles/styles";
 import { useSearchParams } from "react-router-dom";
 import Loader from "../components/Layout/Loader";
-import ProductCard from "../components/Route/ProductCard/ProductCard";
+import { ProductCard, ProductCard2 } from "../components/Route/ProductCard/ProductCard";
 
 const ProductsPage = () => {
   const [searchParams] = useSearchParams();
@@ -61,4 +61,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;  
+export default ProductsPage;

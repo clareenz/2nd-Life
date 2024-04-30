@@ -41,7 +41,7 @@ export const SellerCard = ({ data }) => {
 
   return (
     <>
-      <div className="w-full h-[150px] bg-white rounded-lg shadow-sm px-3 relative cursor-pointer">
+      <div className="w-full h-[150px] bg-white rounded-lg shadow px-3 relative cursor-pointer">
         <div className="flex items-center pt-1">
           <div className="p-3">
             <Link to={`/shop/preview/${data.shop._id}`}>
@@ -109,7 +109,7 @@ export const SellerCard2 = ({ data }) => {
 
   return (
     <>
-      <div className="w-full h-[100px] bg-white rounded-lg shadow-sm px-3 pb-2 relative cursor-pointer">
+      <div className="w-full h-[100px] bg-white rounded-lg shadow px-3 pb-2 relative cursor-pointer">
         <div className="flex items-center justify-between h-full">
           <div className="p-3">
             <div className="flex flex-row">

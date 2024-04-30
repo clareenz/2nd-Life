@@ -12,6 +12,9 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import styles from "../../styles/styles";
+import { message } from "antd";
+import { AiOutlineMessage } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -19,6 +22,8 @@ const ShopInfo = ({ isOwner }) => {
   //left side
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -43,6 +48,27 @@ const ShopInfo = ({ isOwner }) => {
     window.location.reload();
   };
 
+  const handleMessageSubmit = async () => {
+    if (isAuthenticated) {
+      const groupTitle = data._id + user._id;
+      const userId = user._id;
+      const sellerId = data.shop._id;
+      await axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          message.error(error.response.data.message);
+        });
+    } else {
+      message.error("Please login to create a conversation");
+    }
+  };
   return (
     <Spin spinning={isLoading}>
       <div>
@@ -55,6 +81,17 @@ const ShopInfo = ({ isOwner }) => {
           <Title level={3}>{data.name}</Title>
           <Text>{data.description}</Text>
         </div>
+        {!isOwner && (
+          <div className=" justify-center px-20">
+            <div
+              className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+              onClick={handleMessageSubmit}
+            >
+              <span className="text-white text-[13px] mr-1">Message</span>
+              <AiOutlineMessage className="text-white" />
+            </div>
+          </div>
+        )}
         <Divider />
         <div className="px-3 py-2">
           <div className="flex items-center">
