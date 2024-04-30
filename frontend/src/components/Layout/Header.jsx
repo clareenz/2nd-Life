@@ -183,24 +183,36 @@ const Header = ({ activeHeading }) => {
             className="absolute right-4 top-1.5 cursor-pointer"
           />
           {searchData && searchData.length !== 0 ? (
-            <div className="absolute min-h-[20vh] bg-slate-50 shadow-sm-2 z-[9] p-1">
-              {searchData &&
-                searchData.map((i, index) => {
-                  return (
-                    <Link to={`/product/${i._id}`}>
-                      <div className="flex w-full items-start p-1">
-                        <img
-                          src={`${backend_url}${i.images[0]}`}
-                          alt=""
-                          className="w-[30px] h-[30px] mr-[5px]"
-                        />
-                        <h1 className="text-xs">{i.name}</h1>
-                      </div>
-                    </Link>
-                  );
-                })}
-            </div>
-          ) : null}
+  <div className="absolute min-h-[20vh] bg-slate-50 shadow-sm-2 z-[9] p-1">
+    {searchData.map((product, index) => (
+      <Link to={`/product/${product._id}`} key={index}>
+        <div className="flex w-full items-start p-1">
+          <img
+            src={`${backend_url}${product.images[0]}`}
+            alt=""
+            className="w-[30px] h-[30px] mr-[5px]"
+          />
+          <div>
+            <h1 className="text-xs mb-1">{product.name}</h1>
+            {/* Check if 'seller' object exists before accessing 'name' property */}
+            {product.seller && product.seller.name && (
+              <p className="text-xs mb-1">Seller: {product.seller.name}</p>
+            )}
+            {/* Check if 'seller' object exists and has 'shopName' property */}
+            {product.seller && product.seller.shopName && (
+              <p className="text-xs mb-1">Shop: {product.seller.shopName}</p>
+            )}
+            <p className="text-xs">Category: {product.category}</p>
+          </div>
+        </div>
+      </Link>
+    ))}
+  </div>
+) : null}
+
+
+
+
         </div>
 
         {/* heart icon */}
