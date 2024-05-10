@@ -71,6 +71,10 @@ const Header = ({ activeHeading }) => {
     setSearchData(filteredProducts);
   };
 
+  const handleSearchButton = (term) => {
+    navigate(`/search-results/${term}`);
+  };
+
   window.addEventListener("scroll", () => {
     if (window.scrollY > 70) {
       setActive(true);
@@ -170,7 +174,7 @@ const Header = ({ activeHeading }) => {
         </div>
 
         {/* search box */}
-        <div className="w-auto relative">
+        <div className="relative w-auto">
           <input
             type="text"
             placeholder="Search Product..."
@@ -181,26 +185,27 @@ const Header = ({ activeHeading }) => {
           <AiOutlineSearch
             size={17}
             className="absolute right-4 top-1.5 cursor-pointer"
+            onClick={() => handleSearchButton(searchTerm)}
           />
           {searchData && searchData.length !== 0 ? (
   <div className="absolute min-h-[20vh] bg-slate-50 shadow-sm-2 z-[9] p-1">
     {searchData.map((product, index) => (
       <Link to={`/product/${product._id}`} key={index}>
-        <div className="flex w-full items-start p-1">
+        <div className="flex items-start w-full p-1">
           <img
             src={`${backend_url}${product.images[0]}`}
             alt=""
             className="w-[30px] h-[30px] mr-[5px]"
           />
           <div>
-            <h1 className="text-xs mb-1">{product.name}</h1>
+            <h1 className="mb-1 text-xs">{product.name}</h1>
             {/* Check if 'seller' object exists before accessing 'name' property */}
             {product.seller && product.seller.name && (
-              <p className="text-xs mb-1">Seller: {product.seller.name}</p>
+              <p className="mb-1 text-xs">Seller: {product.seller.name}</p>
             )}
             {/* Check if 'seller' object exists and has 'shopName' property */}
             {product.seller && product.seller.shopName && (
-              <p className="text-xs mb-1">Shop: {product.seller.shopName}</p>
+              <p className="mb-1 text-xs">Shop: {product.seller.shopName}</p>
             )}
             <p className="text-xs">Category: {product.category}</p>
           </div>
@@ -294,7 +299,7 @@ const Header = ({ activeHeading }) => {
                       </Link>
 
                       <div className="flex justify-center">
-                        <p className="text-gray-600 text-flex mx-1"> Hi,</p>
+                        <p className="mx-1 text-gray-600 text-flex"> Hi,</p>
                         <span></span>
                         <span className="text-red-500">{user.name}!</span>
                       </div>
@@ -365,7 +370,7 @@ const Header = ({ activeHeading }) => {
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
                     {/* become a seller button */}
-                    <div className=" flex justify-center mb-6">
+                    <div className="flex justify-center mb-6 ">
                       <button
                         className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
                         onClick={() => {
@@ -395,7 +400,7 @@ const Header = ({ activeHeading }) => {
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         } w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden border-b border-gray-300`}
       >
-        <div className="w-full flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           <div>
             <BiMenuAltLeft
               size={35}
@@ -435,7 +440,7 @@ const Header = ({ activeHeading }) => {
             className={` fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
-              <div className="w-full justify-between flex pr-3">
+              <div className="flex justify-between w-full pr-3">
                 {/*wishlist icon*/}
                 <div>
                   <div
@@ -455,7 +460,7 @@ const Header = ({ activeHeading }) => {
 
                 <RxCross1 //close button sa sidebar
                   size={17}
-                  className="ml-4 mt-5 cursor-pointer"
+                  className="mt-5 ml-4 cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
               </div>
@@ -494,7 +499,7 @@ const Header = ({ activeHeading }) => {
 
               <Navbar active={activeHeading} />
               <br />
-              <div className="flex w-full justify-center">
+              <div className="flex justify-center w-full">
                 {isAuthenticated ? (
                   <>
                     <div>
@@ -558,6 +563,7 @@ const Header = ({ activeHeading }) => {
 };
 
 export default Header;
+
 
 const Header2 = ({ activeHeading }) => {
   //login signup header
@@ -700,7 +706,7 @@ const Header2 = ({ activeHeading }) => {
         </div>
 
         {/* search box */}
-        <div className="w-auto relative">
+        <div className="relative w-auto">
           <input
             type="text"
             placeholder="Search Product..."
@@ -721,7 +727,7 @@ const Header2 = ({ activeHeading }) => {
                   const Product_name = d.replace(/\s+/g, "-");
                   return (
                     <Link to={`/product/${Product_name}`}>
-                      <div className="flex w-full items-start p-1">
+                      <div className="flex items-start w-full p-1">
                         <img
                           src={i.image_Url[0].url}
                           alt=""
@@ -796,7 +802,7 @@ const Header2 = ({ activeHeading }) => {
                       </Link>
 
                       <div className="flex justify-center">
-                        <p className="text-gray-600 text-flex mx-1"> Hi,</p>
+                        <p className="mx-1 text-gray-600 text-flex"> Hi,</p>
                         <span></span>
                         <span className="text-red-500">{user.name}!</span>
                       </div>
@@ -867,7 +873,7 @@ const Header2 = ({ activeHeading }) => {
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
                     {/* become a seller button */}
-                    <div className=" flex justify-center mb-6">
+                    <div className="flex justify-center mb-6 ">
                       <button
                         className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
                         onClick={() => {
@@ -897,7 +903,7 @@ const Header2 = ({ activeHeading }) => {
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         } w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden border-b border-gray-300`}
       >
-        <div className="w-full flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           <div>
             <BiMenuAltLeft
               size={35}
@@ -937,7 +943,7 @@ const Header2 = ({ activeHeading }) => {
             className={` fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
-              <div className="w-full justify-between flex pr-3">
+              <div className="flex justify-between w-full pr-3">
                 {/*wishlist icon*/}
                 <div>
                   <div
@@ -957,7 +963,7 @@ const Header2 = ({ activeHeading }) => {
 
                 <RxCross1 //close button sa sidebar
                   size={17}
-                  className="ml-4 mt-5 cursor-pointer"
+                  className="mt-5 ml-4 cursor-pointer"
                   onClick={() => setOpen(false)}
                 />
               </div>
@@ -996,7 +1002,7 @@ const Header2 = ({ activeHeading }) => {
 
               <Navbar active={activeHeading} />
               <br />
-              <div className="flex w-full justify-center">
+              <div className="flex justify-center w-full">
                 {isAuthenticated ? (
                   <>
                     <div>
@@ -1058,5 +1064,127 @@ const Header2 = ({ activeHeading }) => {
   );
 };
 
-export { Header, Header2 };
+const SearchHeader = ({ activeHeading }) => {
+  //header sa lahat except login sign up  page
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
+  const { allProducts } = useSelector((state) => state.products);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchData, setSearchData] = useState(null);
+  const [active, setActive] = useState(false);
+  const [dropDown, setDropDown] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [openWishlist, setOpenWishlist] = useState(false);
+  const [open, setOpen] = useState(false); //sidebar sa desktop
+  const [open1, setOpen1] = useState(false); //sidebar sa mobile
+  const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
+
+
+  
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+
+    const filteredProducts =
+      allProducts &&
+      allProducts.filter((product) =>
+        product.name.toLowerCase().includes(term.toLowerCase())
+      );
+    setSearchData(filteredProducts);
+  };
+
+  const handleSearchButton = (term) => {
+    navigate(`/search-results/${term}`);
+  };
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 70) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  });
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (open1 && !event.target.closest(".sidebar")) {
+        setOpen1(false);
+      }
+    };
+
+    const handleScroll = () => {
+      if (open1) {
+        setOpen1(false);
+      }
+    };
+
+    window.addEventListener("click", handleOutsideClick);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("click", handleOutsideClick);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [open1]);
+
+  return (
+    <>
+      <div
+        className={`${
+          active ? "shadow-sm fixed top-0 left-0 z-10" : null
+        }flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] xl:justify-between z-10`}
+      >
+        {/* Search box */}
+        <div className="relative w-auto">
+          <input
+            type="text"
+            placeholder="Search Product..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="h-[30px] px-2 w-auto  border-gray-300 border-[1px] rounded-3xl text-sm"
+          />
+          <AiOutlineSearch
+            size={17}
+            className="absolute right-4 top-1.5 cursor-pointer"
+            onClick={() => handleSearchButton(searchTerm)}
+          />
+          {/* Search results dropdown */}
+          {searchData && searchData.length !== 0 && (
+            <div className="absolute min-h-[20vh] bg-slate-50 shadow-sm-2 z-[9] p-1">
+              {searchData.map((product, index) => (
+                <Link to={`/product/${product._id}`} key={index}>
+                  <div className="flex items-start w-full p-1">
+                    <img
+                      src={`${backend_url}${product.images[0]}`}
+                      alt=""
+                      className="w-[30px] h-[30px] mr-[5px]"
+                    />
+                    <div>
+                      <h1 className="mb-1 text-xs">{product.name}</h1>
+                      {/* Check if 'seller' object exists before accessing 'name' property */}
+                      {product.seller && product.seller.name && (
+                        <p className="mb-1 text-xs">Seller: {product.seller.name}</p>
+                      )}
+                      {/* Check if 'seller' object exists and has 'shopName' property */}
+                      {product.seller && product.seller.shopName && (
+                        <p className="mb-1 text-xs">Shop: {product.seller.shopName}</p>
+                      )}
+                      <p className="text-xs">Category: {product.category}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+
+
+export { SearchHeader,Header, Header2 };
 
