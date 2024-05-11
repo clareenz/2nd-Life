@@ -19,6 +19,7 @@ import {
   SellerActivationPage,
   ShopLoginPage,
   UserInbox,
+  SearchResult
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -179,6 +180,9 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+
+        <Route path="/search-results/:query" element={<SearchResult />} />
+
       </Routes>
       <ToastContainer
         position="bottom-center"

@@ -15,6 +15,7 @@ import ShopCreatePage from "../pages/ShopCreate";
 import SellerActivationPage from "../pages/SellerActivationPage";
 import ShopLoginPage from "../pages/ShopLoginPage";
 import UserInbox from "../pages/UserInbox.jsx";
+import SearchResult from "../pages/SearchResult.jsx";
 
 export {
   LoginPage,
@@ -34,4 +35,5 @@ export {
   SellerActivationPage,
   ShopLoginPage,
   UserInbox,
+  SearchResult,
 };
