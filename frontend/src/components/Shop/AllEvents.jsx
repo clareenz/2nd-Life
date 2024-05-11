@@ -3,7 +3,7 @@ import { Button, Table, Modal, Input, InputNumber } from "antd";
 import { AiOutlineDelete, AiOutlineEye, AiOutlineEdit } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllEventsShop, deleteEvent, updateEvent } from "../../redux/actions/event"; // Import updateEvent
+import { getAllEventsShop, deleteEvent, updateEvent } from "../../redux/actions/event";
 import Loader from "../Layout/Loader";
 
 const AllEvents = () => {
@@ -21,6 +21,8 @@ const AllEvents = () => {
   const [editedEventName, setEditedEventName] = useState("");
   const [editedEventPrice, setEditedEventPrice] = useState(0);
   const [editedEventStock, setEditedEventStock] = useState(0);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [eventIdToDelete, setEventIdToDelete] = useState(null);
 
   const handleEdit = (record) => {
     setEditedEvent({ ...record, eventId: record.id });
@@ -31,10 +33,14 @@ const AllEvents = () => {
   };
 
   const handleEditModalOk = async () => {
-    const updatedEvent = { ...editedEvent, name: editedEventName, price: editedEventPrice, stock: editedEventStock };
-    await dispatch(updateEvent(updatedEvent.eventId, updatedEvent)); // Wait for the update operation to complete
+    const updatedEvent = {
+      ...editedEvent,
+      name: editedEventName,
+      price: editedEventPrice,
+      stock: editedEventStock,
+    };
+    await dispatch(updateEvent(updatedEvent.eventId, updatedEvent));
     setEditModalVisible(false);
-    // Fetch the updated event list again after the update operation is completed
     dispatch(getAllEventsShop(seller._id));
   };
 
@@ -42,8 +48,19 @@ const AllEvents = () => {
     setEditModalVisible(false);
   };
 
-  const handleDelete = (id) => {
-    dispatch(deleteEvent(id));
+  const handleDelete = async (id) => {
+    setDeleteModalVisible(true);
+    setEventIdToDelete(id);
+  };
+
+  const handleDeleteConfirmed = async () => {
+    await dispatch(deleteEvent(eventIdToDelete));
+    dispatch(getAllEventsShop(seller._id));
+    setDeleteModalVisible(false);
+  };
+
+  const handleDeleteCanceled = () => {
+    setDeleteModalVisible(false);
   };
 
   const columns = [
@@ -53,36 +70,22 @@ const AllEvents = () => {
     { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
     { title: "Sold out", dataIndex: "sold", key: "sold", width: 130, align: "center" },
     {
-      title: "Preview",
-      key: "Preview",
-      width: 100,
+      title: "Action",
+      key: "action",
+      width: 200,
       align: "center",
       render: (text, record) => (
-        <Link to={`/events/`}>
-          <Button  icon={<AiOutlineEye />} size={15} />
-        </Link>
-      ),
-    },
-    {
-      title: "Edit",
-      key: "Edit",
-      width: 120,
-      align: "center",
-      render: (text, record) => (
-        <Button onClick={() => handleEdit(record)}>
-          <AiOutlineEdit size={15} />
-        </Button>
-      ),
-    },
-    {
-      title: "Delete",
-      key: "Delete",
-      width: 120,
-      align: "center",
-      render: (text, record) => (
-        <Button onClick={() => handleDelete(record.id)}>
-          <AiOutlineDelete size={15} />
-        </Button>
+        <>
+          <Link to={`/events/`} style={{ marginRight: 8 }}>
+            <Button icon={<AiOutlineEye />} size={15} />
+          </Link>
+          <Button onClick={() => handleEdit(record)} style={{ marginRight: 8 }}>
+            <AiOutlineEdit size={15} />
+          </Button>
+          <Button onClick={() => handleDelete(record.id)}>
+            <AiOutlineDelete size={15} />
+          </Button>
+        </>
       ),
     },
   ];
@@ -105,7 +108,7 @@ const AllEvents = () => {
             columns={columns}
             dataSource={data}
             pagination={{ pageSize: 10 }}
-            style={{scrollbarWidth: "none", overflowY: "auto"}}
+            style={{ scrollbarWidth: "none", overflowX: "auto" }}
           />
           <Modal
             title="Edit Event"
@@ -127,7 +130,6 @@ const AllEvents = () => {
                 value={editedEventName}
                 onChange={(e) => setEditedEventName(e.target.value)}
                 placeholder="Product Name"
-                className="custom-input rounded-2xl"
               />
             </div>
             <div className="flex flex-col">
@@ -137,8 +139,7 @@ const AllEvents = () => {
                 value={editedEventPrice}
                 onChange={(e) => setEditedEventPrice(e.target.value)}
                 placeholder="Product Price"
-                style={{ width: "100%" }} // Adjust the width of the input number
-                className="custom-input rounded-2xl"
+                style={{ width: "100%" }}
               />
             </div>
             <div className="flex flex-col">
@@ -148,10 +149,26 @@ const AllEvents = () => {
                 value={editedEventStock}
                 onChange={(e) => setEditedEventStock(e.target.value)}
                 placeholder="Product Stock"
-                style={{ width: "100%" }} // Adjust the width of the input number
-                className="custom-input rounded-2xl"
+                style={{ width: "100%" }}
               />
             </div>
+          </Modal>
+          <Modal
+            title="Confirm Deletion"
+            visible={deleteModalVisible}
+            onOk={handleDeleteConfirmed}
+            onCancel={handleDeleteCanceled}
+            okText="Yes"
+            cancelText="No"
+            okButtonProps={{
+              className: "custom-ok-button-class rounded-2xl",
+              style: { backgroundColor: "#006665", color: "#fff" }, // Add this style
+            }}
+            cancelButtonProps={{
+              className: "custom-cancel-button-class rounded-2xl",
+            }}
+          >
+            <p>Are you sure you want to delete this event?</p>
           </Modal>
         </div>
       )}
@@ -160,3 +177,5 @@ const AllEvents = () => {
 };
 
 export default AllEvents;
+
+
