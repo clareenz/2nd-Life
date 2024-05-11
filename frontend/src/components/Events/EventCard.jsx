@@ -7,6 +7,8 @@ import Paragraph from "antd/es/skeleton/Paragraph.js";
 const EventCard = ({ active, data }) => {
   // Check if data exists and contains images
   const hasEvents = data && data.images && data.images.length > 0;
+  const activeEvent = +new Date(data.start_Date) < +new Date();
+
 
   return (
     <div className="flex flex-row justify-center">
@@ -15,44 +17,54 @@ const EventCard = ({ active, data }) => {
           active ? "unset" : "mb-12"
         } lg:flex p-9 mt-1 mb-2`}
       >
-        {hasEvents ? ( // dito papasok if may events
-          <div className=" flex flex-row">
-            <div className="w-[45%] h-[80%]">
-              <img src={`${backend_url}${data.images[0]}`} alt="" />
-            </div>
-            <div className="w-full lg:[w-80%] flex flex-col px-[50px]">
-              <h2 className={`${styles.productTitle}`}>{data.name}</h2>
-              <Paragraph style={{ wordWrap: "break-word" }}>
-                {data.description}
-              </Paragraph>
-              <div className="flex py-2 justify-between">
-                <div className="flex pt-3">
-                  <h4 className={`${styles.productDiscountPrice}`}>
-                    ₱{data.discountPrice}
-                  </h4>
-                  <h3 className={`${styles.price1}`}>
-                    {data.originalPrice ? "₱" + data.originalPrice : null}
-                  </h3>
-                </div>
+        {hasEvents ? ( // Check if there are events
+          activeEvent ? ( // Check if the event is active
+            // Display event content if it has started and is active
+            <div className="flex flex-row">
+              <div className="w-[45%] h-[80%]">
+                <img src={`${backend_url}${data.images[0]}`} alt="" />
               </div>
-              <CountDown data={data} />
-              <br />
+              <div className="w-full lg:[w-80%] flex flex-col px-[50px]">
+                <h2 className={`${styles.productTitle}`}>{data.name}</h2>
+                <Paragraph style={{ wordWrap: "break-word" }}>
+                  {data.description}
+                </Paragraph>
+                <div className="flex py-2 justify-between">
+                  <div className="flex pt-3">
+                    <h4 className={`${styles.productDiscountPrice}`}>
+                      ₱{data.discountPrice}
+                    </h4>
+                    <h3 className={`${styles.price1}`}>
+                      {data.originalPrice ? "₱" + data.originalPrice : null}
+                    </h3>
+                  </div>
+                </div>
+                <CountDown data={data} />
+                <br />
+              </div>
             </div>
-          </div>
+          ) : (
+            // Display message if the event is not active
+            <div className="w-full flex justify-center items-center text-md">
+              <p className="text-gray-500">Event coming soon!</p>
+            </div>
+          )
         ) : (
-          //display this if walang events
+          // Display message if there are no events
           <div className="w-full flex justify-center items-center text-md">
-            <p className="text-gray-500">Events coming soon!</p>
+            <p className="text-gray-500">No events</p>
           </div>
         )}
       </div>
     </div>
   );
+  
 };
 
 const EventCard2 = ({ active, data }) => {
   // Check if data exists and contains images
   const hasEvents = data && data.images && data.images.length > 0;
+  const activeEvent = +new Date(data.start_Date) < +new Date();
 
   return (
     <div className="flex flex-row justify-center">
@@ -61,7 +73,7 @@ const EventCard2 = ({ active, data }) => {
           active ? "unset" : "mb-12"
         } lg:flex p-9 mt-1`}
       >
-        {hasEvents ? ( // dito papasok if may events
+        {hasEvents && activeEvent ? ( // dito papasok if may events
           <div className=" flex flex-row">
             <div className="w-[45%] h-[80%]">
               <img src={`${backend_url}${data.images[0]}`} alt="" />
@@ -96,4 +108,4 @@ const EventCard2 = ({ active, data }) => {
   );
 };
 
-export {EventCard, EventCard2};
+export { EventCard, EventCard2 };

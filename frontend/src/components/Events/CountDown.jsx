@@ -1,10 +1,9 @@
-/* The countdown part in the Events feature in homepage
-start time: 6:25:04 (first vid)
- */
-
 import React, { useEffect, useState } from "react";
+import { Button } from "antd";
+import styles from "../../styles/styles";
+import { LuShoppingCart } from "react-icons/lu";
 
-const CountDown = ({data}) => {
+const CountDown = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
@@ -34,20 +33,31 @@ const CountDown = ({data}) => {
     if (!timeLeft[interval]) {
       return null;
     }
-    
-    return (
-        <span className="text-[25px] text-[#475ad2]">
-            {timeLeft[interval]} {interval}{" "}
-        </span>
-    )
-  });
 
+    return (
+      <span className="text-[25px] text-[#475ad2]">
+        {timeLeft[interval]} {interval}{" "}
+      </span>
+    );
+  });
   return (
     <div>
       {timerComponents.length ? (
-        timerComponents
+        <>
+          <span className="text-sm">
+            {timerComponents.map((component, index) => (
+              <span key={index}>{component}</span>
+            ))}
+          </span>
+          <div className={`${styles.button6} bg-black`}>
+            {" "}
+            <span className="text-white flex flex-row"> <LuShoppingCart className="mt-1 mx-1" /> Buy Now</span>
+          </div>
+        </>
       ) : (
-        <span className="text-[red] text-[25px]">Time's up!</span>
+        <>
+          <span className="text-[red] text-[25px]">Time's up!</span>
+        </>
       )}
     </div>
   );
