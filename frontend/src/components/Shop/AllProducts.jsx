@@ -3,55 +3,44 @@ import { Button, Table, Modal, Input, InputNumber } from "antd";
 import { AiOutlineDelete, AiOutlineEye, AiOutlineEdit } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllEventsShop, deleteEvent, updateEvent } from "../../redux/actions/event";
+import { getAllProductsShop, deleteProduct, updateProduct } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 
-const AllEvents = () => {
-  const { events, isLoading } = useSelector((state) => state.events);
+const AllProducts = () => {
+  const { products, isLoading } = useSelector((state) => state.products);
   const { seller } = useSelector((state) => state.seller);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllEventsShop(seller._id));
+    dispatch(getAllProductsShop(seller._id));
   }, [dispatch, seller._id]);
 
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [editedEvent, setEditedEvent] = useState(null);
-  const [editedEventName, setEditedEventName] = useState("");
-  const [editedEventPrice, setEditedEventPrice] = useState(0);
-  const [editedEventStock, setEditedEventStock] = useState(0);
+  const [editedProduct, setEditedProduct] = useState(null);
+  const [editedProductName, setEditedProductName] = useState("");
+  const [editedProductPrice, setEditedProductPrice] = useState(0);
+  const [editedProductStock, setEditedProductStock] = useState(0);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [confirmEditModalVisible, setConfirmEditModalVisible] = useState(false); // Added state
-  const [eventIdToDelete, setEventIdToDelete] = useState(null);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   const handleEdit = (record) => {
-    setEditedEvent({ ...record, eventId: record.id });
-    setEditedEventName(record.name);
-    setEditedEventPrice(record.price);
-    setEditedEventStock(record.stock);
+    setEditedProduct({ ...record, productId: record.id });
+    setEditedProductName(record.name);
+    setEditedProductPrice(record.price);
+    setEditedProductStock(record.stock);
     setEditModalVisible(true);
   };
 
   const handleEditModalOk = async () => {
-    setConfirmEditModalVisible(true); // Show confirmation modal
-  };
-
-  const handleConfirmEditModalOk = async () => {
-    const updatedEvent = {
-      ...editedEvent,
-      name: editedEventName,
-      price: editedEventPrice,
-      stock: editedEventStock,
+    const updatedProduct = {
+      ...editedProduct,
+      name: editedProductName,
+      price: editedProductPrice,
+      stock: editedProductStock,
     };
-    await dispatch(updateEvent(updatedEvent.eventId, updatedEvent));
+    await dispatch(updateProduct(updatedProduct.productId, updatedProduct));
     setEditModalVisible(false);
-    setConfirmEditModalVisible(false);
-    dispatch(getAllEventsShop(seller._id));
-  };
-
-  const handleConfirmEditModalCancel = () => {
-    setConfirmEditModalVisible(false);
+    dispatch(getAllProductsShop(seller._id));
   };
 
   const handleEditModalCancel = () => {
@@ -60,12 +49,12 @@ const AllEvents = () => {
 
   const handleDelete = async (id) => {
     setDeleteModalVisible(true);
-    setEventIdToDelete(id);
+    setProductIdToDelete(id);
   };
 
   const handleDeleteConfirmed = async () => {
-    await dispatch(deleteEvent(eventIdToDelete));
-    dispatch(getAllEventsShop(seller._id));
+    await dispatch(deleteProduct(productIdToDelete));
+    dispatch(getAllProductsShop(seller._id));
     setDeleteModalVisible(false);
   };
 
@@ -78,7 +67,7 @@ const AllEvents = () => {
     { title: "Name", dataIndex: "name", key: "name", width: 180, align: "center" },
     { title: "Price", dataIndex: "price", key: "price", width: 100, align: "center" },
     { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
-    { title: "Sold out", dataIndex: "sold", key: "sold", width: 130, align: "center" },
+    { title: "Status", dataIndex: "sold", key: "sold", width: 130, align: "center" },
     {
       title: "Action",
       key: "action",
@@ -86,7 +75,7 @@ const AllEvents = () => {
       align: "center",
       render: (text, record) => (
         <>
-          <Link to={`/events/`} style={{ marginRight: 8 }}>
+          <Link to={`/product/${record.id}`} style={{ marginRight: 8 }}>
             <Button icon={<AiOutlineEye />} size={15} />
           </Link>
           <Button onClick={() => handleEdit(record)} style={{ marginRight: 8 }}>
@@ -100,13 +89,15 @@ const AllEvents = () => {
     },
   ];
 
-  const data = events ? events.map((item) => ({
-    id: item._id,
-    name: item.name,
-    price: `Php ${item.discountPrice}`,
-    stock: item.stock,
-    sold: 10,
-  })) : [];
+  const data = products
+    ? products.map((item) => ({
+        id: item._id,
+        name: item.name,
+        price: `Php ${item.discountPrice}`,
+        stock: item.stock,
+        sold: "in-stock", // Change this to the actual sold out quantity property
+      }))
+    : [];
 
   return (
     <>
@@ -121,7 +112,7 @@ const AllEvents = () => {
             style={{ scrollbarWidth: "none", overflowX: "auto" }}
           />
           <Modal
-            title="Edit Event"
+            title="Edit Product"
             visible={editModalVisible}
             onOk={handleEditModalOk}
             onCancel={handleEditModalCancel}
@@ -137,32 +128,29 @@ const AllEvents = () => {
             <div>
               <label htmlFor="productName">Product Name</label>
               <Input
-                value={editedEventName}
-                onChange={(e) => setEditedEventName(e.target.value)}
+                value={editedProductName}
+                onChange={(e) => setEditedProductName(e.target.value)}
                 placeholder="Product Name"
-                className="custom-input rounded-2xl"
               />
             </div>
             <div className="flex flex-col">
               <label htmlFor="Price">Price</label>
               <Input
                 type="number"
-                value={editedEventPrice}
-                onChange={(e) => setEditedEventPrice(e.target.value)}
+                value={editedProductPrice}
+                onChange={(e) => setEditedProductPrice(e.target.value)}
                 placeholder="Product Price"
                 style={{ width: "100%" }}
-                className="custom-input rounded-2xl"
               />
             </div>
             <div className="flex flex-col">
               <label htmlFor="Stock">Stock</label>
               <Input
                 type="number"
-                value={editedEventStock}
-                onChange={(e) => setEditedEventStock(e.target.value)}
+                value={editedProductStock}
+                onChange={(e) => setEditedProductStock(e.target.value)}
                 placeholder="Product Stock"
                 style={{ width: "100%" }}
-                className="custom-input rounded-2xl"
               />
             </div>
           </Modal>
@@ -173,18 +161,15 @@ const AllEvents = () => {
             onCancel={handleDeleteCanceled}
             okText="Yes"
             cancelText="No"
+            okButtonProps={{
+              className: "custom-ok-button-class rounded-2xl",
+              style: { backgroundColor: "#006665", color: "#fff" }, // Add this style
+            }}
+            cancelButtonProps={{
+              className: "custom-cancel-button-class rounded-2xl",
+            }}
           >
-            <p>Are you sure you want to delete this event?</p>
-          </Modal>
-          <Modal
-            title="Confirm Edit"
-            visible={confirmEditModalVisible}
-            onOk={handleConfirmEditModalOk}
-            onCancel={handleConfirmEditModalCancel}
-            okText="Yes"
-            cancelText="No"
-          >
-            <p>Are you sure you want to save changes?</p>
+            <p>Are you sure you want to delete this product?</p>
           </Modal>
         </div>
       )}
@@ -192,5 +177,4 @@ const AllEvents = () => {
   );
 };
 
-export default AllEvents;
-
+export default AllProducts;
