@@ -1,7 +1,6 @@
 .container__slider {
     position: relative;
-    width: 80%;
-    height: 300px;
+    width: 100%;
     padding: 0;
     overflow: hidden;
     display: flex;
@@ -12,20 +11,6 @@
     background-color: white;
   }
 
-  .container__slider1 {
-    position: relative;
-    width: 50%;
-    height: 400px;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    background-color: white;
-  }
-  
   .container__slider > button {
     background-color: transparent;
     outline: none;

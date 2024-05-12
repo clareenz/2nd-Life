@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "../../../styles/styles";
 import { Link } from "react-router-dom";
+import styles from "../../../styles/styles";
 
 const Hero = () => {
   return (
@@ -8,7 +8,7 @@ const Hero = () => {
       className={`relative min-h-[70vh] 800px:min-h-[80vh] w-full bg-no-repeat ${styles.normalFlex1}`}
       style={{
         backgroundImage:
-          "url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)",
+        "url('banner1.jpg')",
       }}
     >
       <div className={`${styles.section3} w-[90%] 800px:w-[60%]`}>

@@ -104,12 +104,11 @@ const EventCard = ({ active, data, children }) => {
 
       {/* Ant Design Modal */}
       <Modal
-        title={data.name}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <div className="h-[80%]">
+        <div className="h-[80%] mt-8">
           {/* Display image */}
           <img
             src={`${backend_url}${data.images[0]}`}
@@ -193,7 +192,7 @@ const EventCard2 = ({ active, data }) => {
   return (
     <div className="flex flex-row justify-center">
       <div
-        className={` bg-white shadow rounded-lg container__slider ${
+        className={`h-[80%] bg-white shadow rounded-lg container__slider ${
           active ? "unset" : "mb-12"
         } lg:flex p-9 mt-1`}
       >
@@ -254,12 +253,11 @@ const EventCard2 = ({ active, data }) => {
 
       {/* Ant Design Modal */}
       <Modal
-        title={data.name}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <div className="h-[80%]">
+        <div className="h-[80%] mt-8">
           {/* Display image */}
           <img
             src={`${backend_url}${data.images[0]}`}

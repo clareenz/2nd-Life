@@ -5,7 +5,7 @@ start time: 6:16:07 (first vid)
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "../../styles/styles";
-import {EventCard} from "./EventCard";
+import {EventCard, EventCard2} from "./EventCard";
 
 const Events = () => {
   const { allEvents, isLoading } = useSelector((state) => state.events);
@@ -21,7 +21,7 @@ const Events = () => {
           <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Popular Events</h1>
           </div>
 
-          <div className="w-full grid">
+          <div className="">
             <EventCard data={allEvents && allEvents[0]} />
           </div>
         </div>
