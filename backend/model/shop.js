@@ -46,19 +46,6 @@ const shopSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordTime: Date,
-  ratings: [{
-    rating: {
-      type: Number,
-      required: true,
-    },
-    comment: {
-      type: String,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
-  }],
 });
 
 // Hash password
