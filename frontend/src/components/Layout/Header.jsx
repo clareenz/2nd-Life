@@ -25,6 +25,8 @@ import Cart from "../cart/Cart";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 
+
+
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -72,7 +74,7 @@ const Header = ({ activeHeading }) => {
   };
 
   const handleSearchButton = (term) => {
-    navigate(`/search-results/${term}`);
+    navigate(`/search-results?keyword=${term}`);
   };
 
   window.addEventListener("scroll", () => {
@@ -1081,6 +1083,22 @@ const SearchHeader = ({ activeHeading }) => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
 
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const logoutHandler = () => {
+    axios
+      .get(`${server}/user/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        window.location.reload(true);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
+  };
 
   
   const handleSearchChange = (e) => {
@@ -1096,7 +1114,7 @@ const SearchHeader = ({ activeHeading }) => {
   };
 
   const handleSearchButton = (term) => {
-    navigate(`/search-results/${term}`);
+    navigate(`/search-results?keyword=${term}`);
   };
 
   window.addEventListener("scroll", () => {
@@ -1179,6 +1197,125 @@ const SearchHeader = ({ activeHeading }) => {
             </div>
           )}
         </div>
+
+        <div className="mr-1">
+            <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+          </div>
+
+          <Modal
+            visible={modalVisible}
+            onCancel={toggleModal}
+            footer={null}
+            style={{
+              position: "fixed",
+              top: "7%",
+              right: "2%",
+              transform: "translate(0, 0)",
+              margin: 0,
+            }}
+            className="small-modal"
+          >
+            <div className="justify-center bg-white rounded-3xl">
+              <br />
+              <div className="flex justify-center">
+                {isAuthenticated ? (
+                  <>
+                    <div>
+                      <Link to="/profile">
+                        <img
+                          src={`${backend_url}${user.avatar} `}
+                          alt=""
+                          className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                        />
+                      </Link>
+
+                      <div className="flex justify-center">
+                        <p className="mx-1 text-gray-600 text-flex"> Hi,</p>
+                        <span></span>
+                        <span className="text-red-500">{user.name}!</span>
+                      </div>
+                      <br />
+                      <div className="flex justify-center">
+                        <button
+                          className={`border rounded-3xl px-[80px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={() => {
+                            window.location.href = "/profile";
+                          }}
+                        >
+                          <h1 className="flex items-center">
+                            Manage your account
+                          </h1>
+                        </button>
+                      </div>
+                      {/*logout button*/}
+                      <div className="flex justify-center mt-2">
+                        <button
+                          className={`border rounded-3xl px-[122px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={logoutHandler}
+                        >
+                          <h1 className="flex items-center">Log Out</h1>
+                        </button>
+                      </div>
+                      {/* become a seller button */}
+                      <div className="flex justify-center mt-2 mb-6">
+                        <button
+                          className={`border rounded-3xl px-[98px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                          onClick={() => {
+                            window.location.href = "/shop-create";
+                          }}
+                        >
+                          <h1 className="">Become a Seller</h1>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  //if di naka login, eto makita sa menu
+                  <div className="flex flex-col w-full mb-2">
+                    <br />
+                    <br />
+                    <div className="flex justify-center px-6">
+                      <button
+                        className={`border rounded-3xl px-[127px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/login";
+                        }}
+                      >
+                        Login
+                      </button>
+                    </div>
+                    <div className="flex justify-center px-6 mt-2 mb-2">
+                      <button
+                        className={`border rounded-3xl px-[120px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/sign-up";
+                        }}
+                      >
+                        <h1 className="">Sign up</h1>
+                      </button>
+                    </div>
+                    {/* ----or----- */}
+                    <div className="flex items-center mb-2">
+                      <div className="flex-grow border-t border-gray"></div>
+                      <div className="px-4 text-gray-700">or</div>
+                      <div className="flex-grow border-t border-gray"></div>
+                    </div>
+                    {/* become a seller button */}
+                    <div className="flex justify-center mb-6 ">
+                      <button
+                        className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        onClick={() => {
+                          window.location.href = "/shop-create";
+                        }}
+                      >
+                        <h1 className="">Become a Seller</h1>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Modal>
       </div>
     </>
   );

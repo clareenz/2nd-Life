@@ -181,7 +181,7 @@ const App = () => {
           }
         />
 
-        <Route path="/search-results/:query" element={<SearchResult />} />
+        <Route path="/search-results" element={<SearchResult />} />
 
       </Routes>
       <ToastContainer
