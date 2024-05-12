@@ -6,6 +6,7 @@ import { createProduct } from "../../redux/actions/product";
 import { categoriesData } from "../../static/data";
 import { Button, Form, Input, Select, Upload, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { PiWarningCircleLight } from "react-icons/pi";
 
 const { Option } = Select;
 
@@ -63,34 +64,140 @@ const CreateProduct = () => {
   };
 
   return (
-    
     <div
-      className="w-[90%] 800px:w-[50%] bg-white  shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
-      style={{ scrollbarWidth: "none", overflowY: "auto" }}
+      className="w-[100%] 800px:w-[80%] bg-white  shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
+      style={{ scrollbarWidth: "xs", overflowY: "auto" }}
     >
-      <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
+      <h5 className="text-[30px] font-Poppins text-center pb-8 pt-3">
+        Create Product
+      </h5>
       <Form
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         className=""
       >
-        <div className="input-wrapper">
-          <label htmlFor="name">
-            <span className="text-red-500">*</span>Name:
-          </label>
-          <Form.Item
-            name="name"
-            rules={[{ required: true, message: "Please input product name" }]}
-          >
-            <Input
-              id="name"
-              placeholder="Enter your product name..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
+        <div className="flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="name">
+              <span className="text-red-500">*</span>Name:
+            </label>
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: "Please input product name" }]}
+            >
+              <Input
+                id="name"
+                placeholder="Enter your product name..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="category">
+              <span className="text-red-500">*</span>Category:
+            </label>
+            <Form.Item
+              name="category"
+              rules={[
+                { required: true, message: "Please select product category" },
+              ]}
+            >
+              <Select
+                className="custom-select"
+                id="category"
+                placeholder="Choose a category"
+              >
+                {categoriesData.map((category) => (
+                  <Option key={category.title} value={category.title}>
+                    {category.title}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
         </div>
-        <div className="input-wrapper">
+        <div className="flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="tags">Tags:</label>
+            <Form.Item name="tags">
+              <Input
+                id="tags"
+                placeholder="Enter your product tags..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="originalPrice">
+              <span className="text-red-500">*</span>Original Price:{" "}
+            </label>
+            <Form.Item
+              name="originalPrice"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input product Original price",
+                },
+              ]}
+            >
+              <Input
+                id="originalPrice"
+                type="number"
+                placeholder="Enter your product price..."
+                className="custom-input rounded-2xl"
+              />
+              <span className="text-[12px] text-gray-400 flex items-center">
+                <PiWarningCircleLight className="mr-1 mb-5" />
+                Providing an original price (higher amount than the displayed
+                price) can boost sales, just ensure accurate pricing input.
+              </span>
+            </Form.Item>
+          </div>
+        </div>
+        <div className="flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="discountPrice">
+              <span className="text-red-500">*</span>Price:{" "}
+              <span className="text-gray-400">(to be displayed)</span>
+            </label>
+            <Form.Item
+              name="discountPrice"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input product price with discount",
+                },
+              ]}
+            >
+              <Input
+                id="discountPrice"
+                type="number"
+                placeholder="Enter your product price with discount..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="stock">
+              <span className="text-red-500">*</span>Product Stock:
+            </label>
+            <Form.Item
+              name="stock"
+              rules={[
+                { required: true, message: "Please input product stock" },
+              ]}
+            >
+              <Input
+                id="stock"
+                type="number"
+                placeholder="Enter your product stock..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+        </div>
+        <div className="input-wrapper w-[50%]">
           <label htmlFor="description">
             <span className="text-red-500">*</span>Description:
           </label>
@@ -108,97 +215,7 @@ const CreateProduct = () => {
             />
           </Form.Item>
         </div>
-        <div className="input-wrapper">
-          <label htmlFor="category">
-            <span className="text-red-500">*</span>Category:
-          </label>
-          <Form.Item
-            name="category"
-            rules={[
-              { required: true, message: "Please select product category" },
-            ]}
-          >
-            <Select
-              className="custom-select"
-              id="category"
-              placeholder="Choose a category"
-            >
-              {categoriesData.map((category) => (
-                <Option key={category.title} value={category.title}>
-                  {category.title}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="tags">Tags:</label>
-          <Form.Item name="tags">
-            <Input
-              id="tags"
-              placeholder="Enter your product tags..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="originalPrice">
-            <span className="text-red-500">*</span>Original Price:
-          </label>
-          <Form.Item
-            name="originalPrice"
-            rules={[
-              {
-                required: true,
-                message: "Please input product Original price",
-              },
-            ]}
-          >
-            <Input
-              id="originalPrice"
-              type="number"
-              placeholder="Enter your product price..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="discountPrice">
-            <span className="text-red-500">*</span>Price (With Discount):
-          </label>
-          <Form.Item
-            name="discountPrice"
-            rules={[
-              {
-                required: true,
-                message: "Please input product price with discount",
-              },
-            ]}
-          >
-            <Input
-              id="discountPrice"
-              type="number"
-              placeholder="Enter your product price with discount..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="stock">
-            <span className="text-red-500">*</span>Product Stock:
-          </label>
-          <Form.Item
-            name="stock"
-            rules={[{ required: true, message: "Please input product stock" }]}
-          >
-            <Input
-              id="stock"
-              type="number"
-              placeholder="Enter your product stock..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
+
         <div className="input-wrapper">
           <label htmlFor="images">
             <span className="text-red-500">*</span>Upload Images:
@@ -223,6 +240,17 @@ const CreateProduct = () => {
             </Upload>
           </Form.Item>
         </div>
+
+        <div>
+          <p className="text-gray-400">Recommended Specification:</p>
+          <p className="pl-5 text-gray-400">
+            • At least 2 images with the actual product
+          </p>
+          <p className="pl-5 text-gray-400">
+            • Dimensions of at least 300 x 300 pixels
+          </p>
+        </div>
+        <br />
         <div className="justify-evenly space-x-2">
           <Button
             className="rounded-2xl"

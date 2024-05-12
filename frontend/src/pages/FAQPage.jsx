@@ -75,10 +75,7 @@ const Faq = () => {
           {activeTab === 2 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                If you're not satisfied with your purchase, we accept returns
-                within 30 days of delivery. To initiate a return, please email
-                us at support@myecommercestore.com with your order number and a
-                brief explanation of why you're returning the item.
+              Please note that we do not accept returns. However, we diligently verify the seller's products to ensure they are free from defects and meet our quality standards.
               </p>
             </div>
           )}
@@ -125,9 +122,7 @@ const Faq = () => {
           {activeTab === 3 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                You can track your order by clicking the tracking link in your
-                shipping confirmation email, or by logging into your account on
-                our website and viewing the order details.
+              Order tracking is subject to the delivery service chosen by the seller. Options may include LBC, Maxim, Lalamove, and others
               </p>
             </div>
           )}
@@ -174,9 +169,7 @@ const Faq = () => {
           {activeTab === 4 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                You can contact our customer support team by emailing us at
-                support@myecommercestore.com, or by calling us at (555) 123-4567
-                between the hours of 9am and 5pm EST, Monday through Friday.
+              For inquiries, please feel free to reach out to our customer support team via email at 2ndlife.buyandsell@gmail.com or message us directly on our Facebook page.
               </p>
             </div>
           )}
@@ -223,10 +216,7 @@ const Faq = () => {
           {activeTab === 5 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                Unfortunately, once an order has been placed, we are not able to
-                make changes or cancellations. If you no longer want the items
-                you've ordered, you can return them for a refund within 30 days
-                of delivery.
+              We regret to inform you that once an order has been placed, changes or cancellations are not possible. Therefore, please ensure all details are accurate and final before completing your order.
               </p>
             </div>
           )}
@@ -273,7 +263,7 @@ const Faq = () => {
           {activeTab === 6 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                Currently, we only offer shipping within the United States.
+                Currently, we only offer shipping within Cebu.
               </p>
             </div>
           )}
@@ -320,8 +310,7 @@ const Faq = () => {
           {activeTab === 7 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                We accept visa,mastercard,paypal payment method also we have
-                cash on delivery system.
+              At this time, we only accept gCash as a payment method. We assure you that cash on delivery and other payment methods will be made available soon.
               </p>
             </div>
           )}

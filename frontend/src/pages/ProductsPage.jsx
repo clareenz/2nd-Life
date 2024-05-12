@@ -5,7 +5,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Header } from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
 import styles from "../styles/styles";
 import { useSearchParams } from "react-router-dom";
 import Loader from "../components/Layout/Loader";
@@ -36,7 +35,7 @@ const ProductsPage = () => {
       ) : (
         <div>
           <Header activeHeading={3} />
-          <div className="flex items-center mb-4 absolute left-10 mt-[16px]">
+          <div className="flex items-center mb-4 absolute left-10 mt-[16px] ">
               <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                 {/* Small box */}
               </div>

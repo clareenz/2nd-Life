@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { createevent } from "../../redux/actions/event";
 import { Form, Input, Select, Button, DatePicker, message, Upload } from "antd";
 import { BorderOutlined, PlusOutlined } from "@ant-design/icons";
+import { PiWarningCircleLight } from "react-icons/pi";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -98,184 +99,204 @@ const CreateEvent = () => {
 
   return (
     <div
-      className="w-[90%] 800px:w-[50%] bg-white shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
-      style={{ scrollbarWidth: "none", overflowY: "auto" }}
+      className="w-[100%] 800px:w-[80%] bg-white shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
+      style={{ scrollbarWidth: "xs", overflowY: "auto" }}
     >
-      <h5 className="text-[30px] font-Poppins text-center">Create Event</h5>
+      <h5 className="text-[30px] font-Poppins text-center pb-8 pt-3">
+        Create Event
+      </h5>
       <Form
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         className=""
       >
-        <div className="input-wrapper">
-          <label htmlFor="name">
-            <span className="text-red-500">*</span>Name:
-          </label>
-          <Form.Item
-            name="name"
-            rules={[
-              { required: true, message: "Please enter event product name" },
-            ]}
-          >
-            <Input
-              placeholder="Enter your event product name..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="description">
-            <span className="text-red-500">*</span>Description:
-          </label>
-          <Form.Item
-            name="description"
-            rules={[
-              {
-                required: true,
-                message: "Please enter event product description",
-              },
-            ]}
-          >
-            <TextArea
-              rows={4}
-              placeholder="Enter your event product description..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
-
-        <div className="input-wrapper">
-          <label htmlFor="Category">
-            <span className="text-red-500">*</span>Category:
-          </label>
-          <Form.Item
-            className="custom-input rounded-2xl"
-            name="category"
-            rules={[
-              { required: true, message: "Please select product category" },
-            ]}
-          >
-            <Select
-              id="category"
-              placeholder="Choose a category"
-              className="custom-select"
+        <div className="flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="name">
+              <span className="text-red-500">*</span>Name:
+            </label>
+            <Form.Item
+              name="name"
+              rules={[
+                { required: true, message: "Please enter event product name" },
+              ]}
             >
-              {categoriesData.map((category) => (
-                <Option key={category.title} value={category.title}>
-                  {category.title}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </div>
-
-        <div className="input-wrapper">
-          <label htmlFor="Tags">Tags:</label>
-          <Form.Item name="tags">
-            <Input
-              id="tags"
-              placeholder="Enter your product tags..."
+              <Input
+                placeholder="Enter your event product name..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="Category">
+              <span className="text-red-500">*</span>Category:
+            </label>
+            <Form.Item
               className="custom-input rounded-2xl"
-            />
-          </Form.Item>
+              name="category"
+              rules={[
+                { required: true, message: "Please select product category" },
+              ]}
+            >
+              <Select
+                id="category"
+                placeholder="Choose a category"
+                className="custom-select"
+              >
+                {categoriesData.map((category) => (
+                  <Option key={category.title} value={category.title}>
+                    {category.title}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
         </div>
 
-        <div className="input-wrapper">
-          <label htmlFor="Original Price">Original Price:</label>
-          <Form.Item
-            name="originalPrice"
-            rules={[
-              {
-                required: true,
-                message: "Please input product price with discount",
-              },
-            ]}
-          >
-            <Input
-              id="originalPrice"
-              type="number"
-              placeholder="Enter your product price..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
+        <div className="flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="Tags">Tags:</label>
+            <Form.Item name="tags">
+              <Input
+                id="tags"
+                placeholder="Enter your product tags..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="Original Price">
+              <span className="text-red-500">*</span>Original Price:{" "}
+            </label>
+            <Form.Item
+              name="originalPrice"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input original price",
+                },
+              ]}
+            >
+              <Input
+                id="originalPrice"
+                type="number"
+                placeholder="Enter your product price..."
+                className="custom-input rounded-2xl"
+              />
+              <span className="text-[12px] text-gray-400 flex items-center">
+                <PiWarningCircleLight className="mr-1 mb-5" />
+                Providing an original price (higher amount than the displayed price) can boost sales,
+                just ensure accurate pricing input.
+              </span>
+            </Form.Item>
+          </div>
+        </div>
+        <div className="flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="discountPrice">
+              <span className="text-red-500">*</span>Price:{" "}
+              <span className="text-gray-400">(to be displayed)</span>
+            </label>
+            <Form.Item
+              name="discountPrice"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input product price with discount",
+                },
+              ]}
+            >
+              <Input
+                id="discountPrice"
+                type="number"
+                placeholder="Enter your product price with discount..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
+
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="stock">
+              <span className="text-red-500">*</span>Product Stock:
+            </label>
+            <Form.Item
+              name="stock"
+              rules={[
+                { required: true, message: "Please input product stock" },
+              ]}
+            >
+              <Input
+                id="stock"
+                type="number"
+                placeholder="Enter your product stock..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
         </div>
 
-        <div className="input-wrapper">
-          <label htmlFor="discountPrice">
-            <span className="text-red-500">*</span>Price (With Discount):
-          </label>
-          <Form.Item
-            name="discountPrice"
-            rules={[
-              {
-                required: true,
-                message: "Please input product price with discount",
-              },
-            ]}
-          >
-            <Input
-              id="discountPrice"
-              type="number"
-              placeholder="Enter your product price with discount..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
+        <div className=" flex flex-row space-x-3">
+          <div className="input-wrapper w-[50%]">
+            <label htmlFor="description">
+              <span className="text-red-500">*</span>Description:
+            </label>
+            <Form.Item
+              name="description"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter event product description",
+                },
+              ]}
+            >
+              <TextArea
+                rows={4}
+                placeholder="Enter your event product description..."
+                className="custom-input rounded-2xl"
+              />
+            </Form.Item>
+          </div>
 
-        <div className="input-wrapper">
-          <label htmlFor="stock">
-            <span className="text-red-500">*</span>Product Stock:
-          </label>
-          <Form.Item
-            name="stock"
-            rules={[{ required: true, message: "Please input product stock" }]}
-          >
-            <Input
-              id="stock"
-              type="number"
-              placeholder="Enter your product stock..."
-              className="custom-input rounded-2xl"
-            />
-          </Form.Item>
-        </div>
-
-        <div>
-          <label htmlFor="Event start date">
-            <span className="text-red-500">*</span>Start Date:
-          </label>
-          <Form.Item
-            name="startDate"
-            rules={[
-              { required: true, message: "Please select event start date" },
-            ]}
-          >
-            <DatePicker
-              onChange={(date, dateString) => handleStartDateChange(dateString)}
-              className="custom-date-picker rounded-2xl "
-              style={{}}
-            />
-          </Form.Item>
-        </div>
-
-        <div>
-          <label htmlFor="Event End date">
-            <span className="text-red-500">*</span>End Date:
-          </label>
-          <Form.Item
-            name="endDate"
-            rules={[
-              { required: true, message: "Please select event end date" },
-            ]}
-          >
-            <DatePicker
-              id="end-date"
-              onChange={(date, dateString) =>
-                handleEndDateChange(date, dateString)
-              }
-              className="custom-date-picker rounded-2xl"
-            />
-          </Form.Item>
+          <div>
+            <label htmlFor="Event start date">
+              <span className="text-red-500">*</span>Start Date:
+            </label>
+            <Form.Item
+              name="startDate"
+              rules={[
+                { required: true, message: "Please select event start date" },
+              ]}
+            >
+              <DatePicker
+                onChange={(date, dateString) =>
+                  handleStartDateChange(dateString)
+                }
+                className="custom-date-picker rounded-2xl "
+                style={{}}
+              />
+            </Form.Item>
+          </div>
+          <div>
+            <label htmlFor="Event End date">
+              <span className="text-red-500">*</span>End Date:
+            </label>
+            <Form.Item
+              name="endDate"
+              rules={[
+                { required: true, message: "Please select event end date" },
+              ]}
+            >
+              <DatePicker
+                id="end-date"
+                onChange={(date, dateString) =>
+                  handleEndDateChange(date, dateString)
+                }
+                className="custom-date-picker rounded-2xl"
+              />
+            </Form.Item>
+          </div>
         </div>
 
         <div className="input-wrapper">
@@ -307,8 +328,16 @@ const CreateEvent = () => {
           </Form.Item>
         </div>
 
+        <div>
+          <p className="text-gray-400">Recommended Specification:</p>
+          <p className="pl-5 text-gray-400">
+            • At least 2 advertising pictures or more
+          </p>
+          <p className="pl-5 text-gray-400">
+            • Dimensions of 980x550 to 2500x1500 pixels (landscape)
+          </p>
+        </div>
         <br />
-
         <div className="justify-evenly space-x-2">
           <Button
             className="rounded-2xl"

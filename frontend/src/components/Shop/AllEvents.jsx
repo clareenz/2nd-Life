@@ -68,7 +68,7 @@ const AllEvents = () => {
     { title: "Name", dataIndex: "name", key: "name", width: 180, align: "center" },
     { title: "Price", dataIndex: "price", key: "price", width: 100, align: "center" },
     { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
-    { title: "Sold out", dataIndex: "sold", key: "sold", width: 130, align: "center" },
+    { title: "Status", dataIndex: "sold", key: "sold", width: 130, align: "center" },
     {
       title: "Action",
       key: "action",
@@ -95,7 +95,7 @@ const AllEvents = () => {
     name: item.name,
     price: `Php ${item.discountPrice}`,
     stock: item.stock,
-    sold: 10,
+    sold: "in-stock",
   })) : [];
 
   return (

@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { backend_url } from "../../server";
 import styles from "../../styles/styles";
 import CountDown from "./CountDown.jsx";
 import { Modal } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import { Link } from "react-router-dom";
+import "./custom.slider.css";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-const EventCard = ({ active, data }) => {
+const EventCard = ({ active, data, children }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [interval] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -19,47 +23,71 @@ const EventCard = ({ active, data }) => {
 
   const hasEvents = data && data.images && data.images.length > 0;
   const activeEvent = +new Date(data.start_Date) < +new Date();
+  const [intervalId, setIntervalId] = useState(null);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
+    }, 5000);
+    setIntervalId(id);
+
+    return () => clearInterval(id);
+  }, [data.images.length]);
 
   return (
     <div className="flex flex-row justify-center">
       <div
-        className={`w-[45%] h-[80%] bg-white shadow p-9 rounded-lg ${
+        className={`w-[45%] h-[80%] bg-white shadow p-9 rounded-lg container__slider1 ${
           active ? "unset" : "mb-12"
         } lg:flex p-9 mt-1 mb-2`}
+        onMouseEnter={() => clearInterval(interval)}
+        onMouseLeave={() => {
+          const interval = setInterval(() => {
+            setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
+          }, 5000);
+        }}
       >
         {hasEvents ? (
           activeEvent ? (
-            <div className="flex flex-row">
-              <div className="w-[45%] h-[80%]">
-                {/* Add onClick to trigger modal */}
-                <img
-                  src={`${backend_url}${data.images[0]}`}
-                  alt=""
-                  onClick={showModal}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-              <div className="w-full lg:[w-80%] flex flex-col px-[50px]">
-                {/* Add onClick to trigger modal */}
-                <h2
-                  className={`${styles.productTitle}`}
-                  onClick={showModal}
-                  style={{ cursor: "pointer" }}
+            <div className="flex flex-row justify-center slider-container">
+              <img
+                src={`${backend_url}${data.images[activeIndex]}`}
+                alt=""
+                onClick={showModal}
+                className=""
+              />
+              <div className="slider-buttons">
+                <button
+                  className="slider__btn-next"
+                  onClick={() =>
+                    setActiveIndex(
+                      (prevIndex) => (prevIndex + 1) % data.images.length
+                    )
+                  }
                 >
-                  {data.name}
-                </h2>
-                <div className="flex py-2 justify-between">
-                  <div className="flex pt-3">
-                    <h4 className={`${styles.productDiscountPrice}`}>
-                      ₱{data.discountPrice}
-                    </h4>
-                    <h3 className={`${styles.price1}`}>
-                      {data.originalPrice ? "₱" + data.originalPrice : null}
-                    </h3>
-                  </div>
-                </div>
-                <CountDown data={data} />
-                <br />
+                  <IoIosArrowForward />
+                </button>
+                <button
+                  className="slider__btn-prev"
+                  onClick={() =>
+                    setActiveIndex((prevIndex) =>
+                      prevIndex === 0 ? data.images.length - 1 : prevIndex - 1
+                    )
+                  }
+                >
+                  <IoIosArrowBack />
+                </button>
+              </div>
+              <div className="slider-dots">
+                {data.images.map((image, index) => (
+                  <button
+                    key={index}
+                    className={`slider-dot ${
+                      activeIndex === index ? "active" : ""
+                    }`}
+                    onClick={() => setActiveIndex(index)}
+                  ></button>
+                ))}
               </div>
             </div>
           ) : (
@@ -76,12 +104,11 @@ const EventCard = ({ active, data }) => {
 
       {/* Ant Design Modal */}
       <Modal
-        title={data.name}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <div className="h-[80%]">
+        <div className="h-[80%] mt-8">
           {/* Display image */}
           <img
             src={`${backend_url}${data.images[0]}`}
@@ -140,6 +167,10 @@ const EventCard2 = ({ active, data }) => {
   const hasEvents = data && data.images && data.images.length > 0;
   const activeEvent = +new Date(data.start_Date) < +new Date();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [interval] = useState(false);
+  const [intervalId, setIntervalId] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -149,46 +180,63 @@ const EventCard2 = ({ active, data }) => {
     setIsModalVisible(false);
   };
 
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
+    }, 5000);
+    setIntervalId(id);
+
+    return () => clearInterval(id);
+  }, [data.images.length]);
+
   return (
     <div className="flex flex-row justify-center">
       <div
-        className={`w-[100%] h-[80%] bg-white shadow p-9 rounded-lg ${
+        className={`h-[80%] bg-white shadow rounded-lg container__slider ${
           active ? "unset" : "mb-12"
         } lg:flex p-9 mt-1`}
       >
         {hasEvents ? (
           activeEvent ? (
-            <div className="flex flex-row">
-              <div className="w-[45%] h-[80%]">
-                {/* Add onClick to trigger modal */}
-                <img
-                  src={`${backend_url}${data.images[0]}`}
-                  alt=""
-                  onClick={showModal}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-              <div className="w-full lg:[w-80%] flex flex-col px-[50px]">
-                {/* Add onClick to trigger modal */}
-                <h2
-                  className={`${styles.productTitle}`}
-                  onClick={showModal}
-                  style={{ cursor: "pointer" }}
+            <div className="flex flex-row slider-container">
+              <img
+                src={`${backend_url}${data.images[activeIndex]}`}
+                alt=""
+                onClick={showModal}
+                className=" w-auto"
+              />
+              <div className="slider-buttons">
+                <button
+                  className="slider__btn-next"
+                  onClick={() =>
+                    setActiveIndex(
+                      (prevIndex) => (prevIndex + 1) % data.images.length
+                    )
+                  }
                 >
-                  {data.name}
-                </h2>
-                <div className="flex py-2 justify-between">
-                  <div className="flex pt-3">
-                    <h4 className={`${styles.productDiscountPrice}`}>
-                      ₱{data.discountPrice}
-                    </h4>
-                    <h3 className={`${styles.price1}`}>
-                      {data.originalPrice ? "₱" + data.originalPrice : null}
-                    </h3>
-                  </div>
-                </div>
-                <CountDown data={data} />
-                <br />
+                  <IoIosArrowForward />
+                </button>
+                <button
+                  className="slider__btn-prev"
+                  onClick={() =>
+                    setActiveIndex((prevIndex) =>
+                      prevIndex === 0 ? data.images.length - 1 : prevIndex - 1
+                    )
+                  }
+                >
+                  <IoIosArrowBack />
+                </button>
+              </div>
+              <div className="slider-dots">
+                {data.images.map((image, index) => (
+                  <button
+                    key={index}
+                    className={`slider-dot ${
+                      activeIndex === index ? "active" : ""
+                    }`}
+                    onClick={() => setActiveIndex(index)}
+                  ></button>
+                ))}
               </div>
             </div>
           ) : (
@@ -205,12 +253,11 @@ const EventCard2 = ({ active, data }) => {
 
       {/* Ant Design Modal */}
       <Modal
-        title={data.name}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <div className="h-[80%]">
+        <div className="h-[80%] mt-8">
           {/* Display image */}
           <img
             src={`${backend_url}${data.images[0]}`}
