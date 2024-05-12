@@ -138,9 +138,9 @@ const ProductCard = ({ data }) => {
             <div className="flex">
               <h5 className={`${styles.productDiscountPrice}`}>
                 ₱
-                {data.originalPrice === 0
-                  ? data.originalPrice
-                  : data.originalPrice}
+                {data.discountPrice === 0
+                  ? data.discountPrice
+                  : data.discountPrice}
               </h5>
               <h4 className={`${styles.price}`}>
                 {data.originalPrice ? "₱" + data.originalPrice : null}
@@ -288,3 +288,4 @@ const ProductCard2 = ({ data }) => {
 };
 
 export { ProductCard, ProductCard2 };
+

@@ -13,12 +13,12 @@ const Events = () => {
   return (
     <div>
       {!isLoading && (
-        <div className={`${styles.section3} ${styles.heading}`}>
+        <div className={`px-20`}>
           <div className="flex items-center mb-4">
           <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
             {/* Small box */}
           </div>
-          <h1 className="ml-2 text-[#FE8373] font-bold">Popular Events</h1>
+          <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Popular Events</h1>
           </div>
 
           <div className="w-full grid">
