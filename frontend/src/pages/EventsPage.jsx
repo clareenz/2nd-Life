@@ -3,10 +3,11 @@ import { useSelector } from "react-redux";
 import { EventCard, EventCard2 } from "../components/Events/EventCard";
 import Header from "../components/Layout/Header";
 import Loader from "../components/Layout/Loader";
+import styles from "../styles/styles";
 
 const EventsPage = () => {
   const { allEvents, isLoading } = useSelector((state) => state.events);
-  const [viewType, setViewType] = useState("grid");
+  const [viewType, setViewType] = useState("list");
 
   const switchToGridView = () => {
     setViewType("grid");
@@ -29,7 +30,9 @@ const EventsPage = () => {
                 <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                   {/* Small box */}
                 </div>
-                <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Products</h1>
+                <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">
+                  Events
+                </h1>
               </div>
               <div className="">
                 <button
@@ -51,13 +54,15 @@ const EventsPage = () => {
               </div>
             </div>
             {viewType === "grid" ? (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {allEvents.map((event) => (
-                  <EventCard2 key={event.id} active={true} data={event} />
-                ))}
+              <div className={``}>
+                <div className="grid gap-[20px] md:grid-cols-2 lg:grid-cols-2">
+                  {allEvents.map((event) => (
+                    <EventCard2 key={event.id} active={true} data={event} />
+                  ))}
+                </div>
               </div>
             ) : (
-              <div>
+              <div className="md:grid-cols-2">
                 {allEvents.map((event) => (
                   <EventCard key={event.id} active={true} data={event} />
                 ))}

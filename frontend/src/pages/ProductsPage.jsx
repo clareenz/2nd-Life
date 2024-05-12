@@ -5,7 +5,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Header } from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
 import styles from "../styles/styles";
 import { useSearchParams } from "react-router-dom";
 import Loader from "../components/Layout/Loader";
