@@ -4,6 +4,7 @@ import styles from "../../styles/styles";
 import CountDown from "./CountDown.jsx";
 import { Modal } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
+import { Link } from "react-router-dom";
 
 const EventCard = ({ active, data }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -88,7 +89,30 @@ const EventCard = ({ active, data }) => {
             className="mb-4"
             style={{ maxWidth: "100%", height: "auto" }}
           />
-
+          <div className="w-full 800px:w-[50%]">
+            <div className="flex flex-row mt-[70px]">
+              <div>
+                <Link to={`/shop/preview/${data?.shop._id}`}>
+                  <img
+                    src={`${backend_url}${data?.shop?.avatar}`}
+                    alt=""
+                    className="w-[50px] h-[50px] rounded-full mr-2"
+                  />
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to={`/shop/preview/${data.shop._id}`}
+                  className={`${styles.shop_name}`}
+                >
+                  {data.shop.name}
+                </Link>
+                <h5 className="text-[13px] mt-1">
+                  ({data.shop.ratings}) Ratings
+                </h5>
+              </div>
+            </div>
+          </div>
           {/* Display name */}
           <h1 className={`${styles.productTitle} text-[20px]`}>{data.name}</h1>
 
@@ -194,7 +218,30 @@ const EventCard2 = ({ active, data }) => {
             className="mb-4"
             style={{ maxWidth: "100%", height: "auto" }}
           />
-
+          <div className="w-full 800px:w-[50%]">
+            <div className="flex flex-row mt-[70px]">
+              <div>
+                <Link to={`/shop/preview/${data?.shop._id}`}>
+                  <img
+                    src={`${backend_url}${data?.shop?.avatar}`}
+                    alt=""
+                    className="w-[50px] h-[50px] rounded-full mr-2"
+                  />
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to={`/shop/preview/${data.shop._id}`}
+                  className={`${styles.shop_name}`}
+                >
+                  {data.shop.name}
+                </Link>
+                <h5 className="text-[13px] mt-1">
+                  ({data.shop.ratings}) Ratings
+                </h5>
+              </div>
+            </div>
+          </div>
           {/* Display name */}
           <h1 className={`${styles.productTitle} text-[20px]`}>{data.name}</h1>
 
