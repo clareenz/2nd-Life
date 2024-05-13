@@ -24,6 +24,8 @@ import Wishlist from "../Wishlist/Wishlist";
 import Cart from "../cart/Cart";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
+import { Layout, Avatar, Badge } from "antd";
+import { RiCloseLine } from "react-icons/ri";
 
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page

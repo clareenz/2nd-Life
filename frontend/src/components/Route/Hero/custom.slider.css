@@ -129,4 +129,11 @@
     background-color: black; /* Adjust active dot color */
   }
   
+  .background-image {
+    background-image: url('banner1.jpg');
+    min-height: 70vh;
+    width: 100%;
+    background-repeat: no-repeat;
+  }
+  
   
