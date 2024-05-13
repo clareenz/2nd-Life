@@ -29,9 +29,11 @@ const ProductCard = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+
   const buyNow = () => {
-    navigate("/checkout");
+    navigate("/checkout", { state: { productData: data } });
   };
+  
 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {

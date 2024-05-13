@@ -443,7 +443,7 @@ const Header = ({ activeHeading }) => {
                   >
                     <AiOutlineHeart size={27} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                      4
+                      {wishlist && wishlist.length}
                     </span>
                   </div>
                 </div>
