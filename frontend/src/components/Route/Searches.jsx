@@ -5,9 +5,12 @@ import { ProductCard } from "./ProductCard/ProductCard";
 import { useSearchParams } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "antd";
+import { InputNumber } from "antd";
+import Loader from "../Layout/Loader";
 
 const SearchResult = () => {
-  const { allProducts } = useSelector((state) => state.products);
+  const { allProducts,isLoading } = useSelector((state) => state.products);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("keyword");
   const minimumPrice = searchParams.get("minPrice");
@@ -15,6 +18,8 @@ const SearchResult = () => {
   const rating = searchParams.get("rating");
   const category = searchParams.get("category");
   const navigate = useNavigate();
+
+
 
   // State variables to store min and max price values
   const [minPrice, setMinPrice] = useState("");
@@ -38,9 +43,9 @@ const SearchResult = () => {
       // Filter by price range
       const meetsPriceCriteria =
         (!minimumPrice ||
-          parseFloat(product.originalPrice) >= parseFloat(minimumPrice)) &&
+          parseFloat(product.discountPrice) >= parseFloat(minimumPrice)) &&
         (!maximumPrice ||
-          parseFloat(product.originalPrice) <= parseFloat(maximumPrice));
+          parseFloat(product.discountPrice) <= parseFloat(maximumPrice));
 
       // Filter by rating
       const meetsRatingCriteria =
@@ -67,8 +72,8 @@ const SearchResult = () => {
   const sortProductsByPrice = (order) => {
     const sortedProductsCopy = [...filteredProducts];
     sortedProductsCopy.sort((a, b) => {
-      const priceA = parseFloat(a.originalPrice);
-      const priceB = parseFloat(b.originalPrice);
+      const priceA = parseFloat(a.discountPrice);
+      const priceB = parseFloat(b.discountPrice);
       if (order === "asc") {
         return priceA - priceB;
       } else {
@@ -146,7 +151,7 @@ const SearchResult = () => {
       setSortedProducts(sorted);
     }
   }, [sortOrder, filteredProducts]); // Re-run effect when sortOrder or filteredProducts change
-  
+
   useEffect(() => {
     // Update state variables based on URL parameters
     setMinPrice(minimumPrice || "");
@@ -156,87 +161,143 @@ const SearchResult = () => {
   }, []); // Run only on component mount
 
   return (
-    <div>
-      <div className={`${styles.section3} ${styles.heading}`}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
-            {/* Small box */}
-          </div>
-          <h1 className="ml-2 text-[#FE8373] font-bold">Search Result</h1>
-          {/* Sort buttons */}
-          <div>
-            <button onClick={() => handleSort("asc")}>
-              Sort by Price (Asc)
-            </button>
-            <button onClick={() => handleSort("desc")}>
-              Sort by Price (Desc)
-            </button>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div>
+          <div className={`px-[70px]`}>
+            <div className="flex items-center justify-between mb-4 pt-[120px]">
+              <div className="flex items-center absolute left-10 px-[10mm]">
+                <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
+                  {/* Small box */}
+                </div>
+                <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">
+                  Search Result
+                </h1>
+              </div>
+            </div>
+
+            <div className="flex flex-row justify-evenly pt-8">
+              <div className="bg-white shadow w-[23%] p-6 rounded-xl">
+                {/* Sort by Price */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-lg font-semibold">Sort by Price</div>
+                  <div className="flex space-x-2">
+                    <button
+                      className="px-3 py-1 text-sm rounded-md bg-[#EFEFEF] shadow hover:bg-[#FF8474] hover:text-white transition duration-100"
+                      onClick={() => handleSort("asc")}
+                    >
+                      Asc
+                    </button>
+                    <button
+                      className="px-3 py-1 text-sm rounded-md bg-[#EFEFEF] shadow hover:bg-[#FF8474] hover:text-white transition duration-100"
+                      onClick={() => handleSort("desc")}
+                    >
+                      Desc
+                    </button>
+                  </div>
+                </div>
+
+                {/* Price Range */}
+                <div className="mb-4">
+                  <div className="font-semibold text-lg mb-2">Price Range</div>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="number"
+                      placeholder="Min Price"
+                      className="px-3 py-1 border rounded-2xl w-1/2 hover:border-[#006665] focus:border-[#006665] text-[12px]"
+                      value={minPrice}
+                      onChange={handleMinPriceChange}
+                    />
+                    <span className="text-gray-400">-</span>
+                    <input
+                      type="number"
+                      placeholder="Max Price"
+                      className="px-3 py-1 border rounded-2xl w-1/2 hover:border-[#006665] focus:border-[#006665] text-[12px]"
+                      value={maxPrice}
+                      onChange={handleMaxPriceChange}
+                    />
+                  </div>
+                </div>
+
+                {/* Rating Filter */}
+                <div className="mb-4">
+                  <div className="text-lg font-semibold mb-2">
+                    Rating Filter
+                  </div>
+                  <select
+                    className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
+                    onChange={handleRatingChange}
+                    value={ratingFilter}
+                  >
+                    <option value="0">All Ratings</option>
+                    <option value="5">5 stars</option>
+                    <option value="4">4 stars & above</option>
+                    <option value="3">3 stars & above</option>
+                    <option value="2">2 stars & above</option>
+                    <option value="1">1 star & above</option>
+                  </select>
+                </div>
+
+                {/* Category Filter */}
+                <div className="mb-4">
+                  <div className="text-lg font-semibold mb-2">
+                    Category Filter
+                  </div>
+                  <select
+                    className="px-3 py-1 border rounded-2xl w-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+                    onChange={handleCategoryChange}
+                    value={selectedCategory}
+                  >
+                    {!selectedCategory && (
+                      <option value="">All Categories</option>
+                    )}
+                    {categoriesData.map((category) => (
+                      <option key={category.id} value={category.title}>
+                        {category.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Apply and Clear Filters buttons */}
+                <div className="flex justify-center space-x-3 pt-6">
+                  <div
+                    className={`${styles.button6} py-2 text-sm text-gray-500 rounded-3xl hover:border-gray-600 hover:text-[#006665] transition duration-300`}
+                    onClick={clearFilters}
+                  >
+                    Clear
+                  </div>
+                  <div
+                    className={`${styles.button6} py-2 text-sm text-white bg-[#006665] rounded-3xl hover:bg-[#077773] transition duration-300`}
+                    onClick={applyFilters}
+                  >
+                    Apply
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex-row grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-3 xl:gap-[30px] mb-12 border-0">
+                  {/* Add filter section for min and max price */}
+                  {/* Conditional rendering based on sorted products */}
+                  {((sortOrder && sortedProducts) || filteredProducts)?.map(
+                    (product, index) => (
+                      <ProductCard data={product} key={index} />
+                    )
+                  )}
+                  {((sortOrder && sortedProducts) || filteredProducts)
+                    ?.length === 0 && (
+                    <div>No products found for the search term.</div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="flex-row grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 border-0">
-          {/* Add filter section for min and max price */}
-          <div>
-            <div>Price Range</div>
-            <div className="flex items-center gap-4 mb-4">
-              <input
-                type="number"
-                placeholder="Min Price"
-                style={{ width: "100px" }}
-                value={minPrice}
-                onChange={handleMinPriceChange}
-              />
-              -
-              <input
-                type="number"
-                placeholder="Max Price"
-                style={{ width: "100px" }}
-                value={maxPrice}
-                onChange={handleMaxPriceChange}
-              />
-            </div>
-
-            {/* Add rating filter */}
-            <div>
-              <div>Rating Filter</div>
-              <select onChange={handleRatingChange} value={ratingFilter}>
-                <option value="">All Ratings</option>
-                <option value="5">5 stars</option>
-                <option value="4">4 stars & above</option>
-                <option value="3">3 stars & above</option>
-                <option value="2">2 stars & above</option>
-                <option value="1">1 star & above</option>
-              </select>
-            </div>
-
-            <div>
-              <div>Category Filter</div>
-              <select onChange={handleCategoryChange} value={selectedCategory}>
-                {!selectedCategory && <option value="">All Categories</option>}
-                {categoriesData.map((category) => (
-                  <option key={category.id} value={category.title}>
-                    {category.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Button to apply filters */}
-            <button onClick={applyFilters}>Apply Filters</button>
-            <button onClick={clearFilters}>Clear Filters</button>
-          </div>
-
-          {/* Conditional rendering based on sorted products */}
-          {((sortOrder && sortedProducts) || filteredProducts)?.map(
-            (product, index) => (
-              <ProductCard data={product} key={index} />
-            )
-          )}
-          {((sortOrder && sortedProducts) || filteredProducts)?.length ===
-            0 && <div>No products found for the search term.</div>}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

@@ -25,8 +25,8 @@ const EventsPage = () => {
         <div>
           <div>
             <Header activeHeading={4} />
-            <div className="flex justify-end mt-4 mr-9 mb-8">
-              <div className="flex items-center mb-4 absolute left-10 ">
+            <div className="flex justify-end mt-4 mr-9 mb-8 pt-[80px] px-[10mm]">
+              <div className="flex items-center mb-4 absolute left-10 px-[10mm]">
                 <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                   {/* Small box */}
                 </div>
@@ -54,7 +54,7 @@ const EventsPage = () => {
               </div>
             </div>
             {viewType === "grid" ? (
-              <div className={``}>
+              <div className={`pt-[15px]`}>
                 <div className="grid gap-[20px] md:grid-cols-2 lg:grid-cols-2">
                   {allEvents.map((event) => (
                     <EventCard2 key={event.id} active={true} data={event} />
@@ -62,10 +62,12 @@ const EventsPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="md:grid-cols-2">
-                {allEvents.map((event) => (
-                  <EventCard key={event.id} active={true} data={event} />
-                ))}
+              <div className="pt-[15px]">
+                <div className="md:grid-cols-2">
+                  {allEvents.map((event) => (
+                    <EventCard key={event.id} active={true} data={event} />
+                  ))}
+                </div>
               </div>
             )}
           </div>

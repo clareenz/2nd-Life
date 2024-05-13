@@ -99,7 +99,7 @@ const handleSubmit = (e) => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end p-4 mr-3">
+      <div className="flex justify-end p-4 mr-3 pt-[90px]">
         <p className="text-gray-600 text-flex">
           Welcome! <span style={{ color: "#DB4444" }}>{displayName}</span>
         </p>

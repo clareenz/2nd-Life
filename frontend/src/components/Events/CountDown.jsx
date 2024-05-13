@@ -1,10 +1,34 @@
+import { message } from "antd";
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { LuShoppingBag } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/actions/cart";
 import styles from "../../styles/styles";
-import { LuShoppingCart } from "react-icons/lu";
 
 const CountDown = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [value, setValue] = useState(data?.qty || 1);
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+
+  const addToCartHandler = (id) => {
+    const isItemExists = cart && cart.find((i) => i._id === id);
+    if (isItemExists) {
+      message.error("Item already in cart!");
+    } else {
+      if (data.stock < value) {
+        message.error("Product stock limited!");
+      } else {
+        const cartData = { ...data, qty: value };
+        dispatch(addToCart(cartData));
+        message.success("Item added to cart successfully!");
+      }
+    }
+  };
+
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -49,14 +73,22 @@ const CountDown = ({ data }) => {
               <span key={index}>{component}</span>
             ))}
           </span>
-          <div className="px-[150px]">
+          <div className=" flex flex-row space-x-3 px-[70px]">
             <div
               className={`${styles.button6} bg-[#006665] hover:bg-[#FF8474]`}
             >
               {" "}
               <span className="text-white flex flex-row">
                 {" "}
-                <LuShoppingCart className="mt-1 mx-1" /> Buy Now
+                <LuShoppingBag className="mt-1 mx-1" /> Buy Now
+              </span>
+            </div>
+            <div
+              className={`${styles.button6}  bg-[#006665] hover:bg-[#FF8474]`}
+              onClick={() => addToCartHandler(data._id)}
+            >
+              <span className="flex items-center text-white">
+              <AiOutlineShoppingCart className="mr-1" />Add to Cart
               </span>
             </div>
           </div>

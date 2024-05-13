@@ -157,7 +157,24 @@ input,select{
   height: 100%;
 }
 
+.custom-select1 {
+  appearance: none; /* Remove default arrow */
+  padding-right: 2rem; /* Add padding for arrow */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%232f2e41" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg>'); /* Add custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center; /* Position arrow */
+  background-size: 12px; /* Adjust arrow size */
+  border-radius: 2xl; /* Add border radius */
+}
 
+.custom-select1:hover, .custom-select:focus {
+  background-color: transparent; /* Remove background color on hover and focus */
+  outline: none; /* Remove outline */
+}
+
+.custom-select1.custom-select1:dropdown{
+  border: none;
+}
 
 
 

@@ -3,8 +3,8 @@
  */
 
 import React, { useState } from "react";
-import {Footer} from "../components/Layout/Footer";
-import { Header }  from "../components/Layout/Header";
+import { Footer } from "../components/Layout/Footer";
+import { Header } from "../components/Layout/Header";
 import styles from "../styles/styles";
 
 const FAQPage = () => {
@@ -29,9 +29,15 @@ const Faq = () => {
   };
 
   return (
-    <div className={`${styles.section} my-8`}>
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">FAQ</h2>
-      <div className="mx-auto space-y-4">
+    <div className={`${styles.section} my-8 pt-[64px]`}>
+      <div className="flex items-center mb-4 absolute left-10 px-[10mm]">
+        <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
+          {/* Small box */}
+        </div>
+        <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Frequently-Asked Questions</h1>
+      </div>
+
+      <div className="mx-auto space-y-4 pt-[70px] px-[10mm]">
         {/* single Faq */}
 
         <div className="border-b border-gray-200 pb-4">
@@ -75,7 +81,9 @@ const Faq = () => {
           {activeTab === 2 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-              Please note that we do not accept returns. However, we diligently verify the seller's products to ensure they are free from defects and meet our quality standards.
+                Please note that we do not accept returns. However, we
+                diligently verify the seller's products to ensure they are free
+                from defects and meet our quality standards.
               </p>
             </div>
           )}
@@ -122,7 +130,8 @@ const Faq = () => {
           {activeTab === 3 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-              Order tracking is subject to the delivery service chosen by the seller. Options may include LBC, Maxim, Lalamove, and others
+                Order tracking is subject to the delivery service chosen by the
+                seller. Options may include LBC, Maxim, Lalamove, and others
               </p>
             </div>
           )}
@@ -169,7 +178,9 @@ const Faq = () => {
           {activeTab === 4 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-              For inquiries, please feel free to reach out to our customer support team via email at 2ndlife.buyandsell@gmail.com or message us directly on our Facebook page.
+                For inquiries, please feel free to reach out to our customer
+                support team via email at 2ndlife.buyandsell@gmail.com or
+                message us directly on our Facebook page.
               </p>
             </div>
           )}
@@ -216,7 +227,10 @@ const Faq = () => {
           {activeTab === 5 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-              We regret to inform you that once an order has been placed, changes or cancellations are not possible. Therefore, please ensure all details are accurate and final before completing your order.
+                We regret to inform you that once an order has been placed,
+                changes or cancellations are not possible. Therefore, please
+                ensure all details are accurate and final before completing your
+                order.
               </p>
             </div>
           )}
@@ -310,7 +324,9 @@ const Faq = () => {
           {activeTab === 7 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-              At this time, we only accept gCash as a payment method. We assure you that cash on delivery and other payment methods will be made available soon.
+                At this time, we only accept gCash as a payment method. We
+                assure you that cash on delivery and other payment methods will
+                be made available soon.
               </p>
             </div>
           )}
