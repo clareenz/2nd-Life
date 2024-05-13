@@ -24,7 +24,7 @@ import {
 import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import { IoBagHandleOutline } from "react-icons/io5";
-import { Button } from 'antd';
+import { Button } from "antd";
 
 const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -293,101 +293,103 @@ const ProductDetailsInfo = ({ data, products }) => {
   const [active, setActive] = useState(1);
 
   return (
-    <div className="bg-[#F5F5F5] shadow px-3 800px:px-10 py-2 rounded-xl">
-      <div className="flex justify-between w-full pt-10 pb-2 border-b">
-        <div className="relative">
-          <h5
-            className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            onClick={() => setActive(1)}
-          >
-            Product Details
-          </h5>
-          {active === 1 && <div className={`${styles.active_indicator}`} />}
-        </div>
-        <div className="relative">
-          <h5
-            className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            onClick={() => setActive(2)}
-          >
-            Product Reviews
-          </h5>
-          {active === 2 && <div className={`${styles.active_indicator}`} />}
-        </div>
-        <div className="relative">
-          <h5
-            className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-            onClick={() => setActive(3)}
-          >
-            Seller Information
-          </h5>
-          {active === 3 && <div className={`${styles.active_indicator}`} />}
-        </div>
-      </div>
-      {active === 1 && (
-        <Paragraph style={{ wordWrap: "break-word" }}>
-          {data.description}
-        </Paragraph>
-      )}
-      {active === 2 && (
-        <div className="w-full justify-center min-h-[40vh] flex items-center">
-          <p>No Reviews yet!</p>
-        </div>
-      )}
-      {active === 3 && (
-        <div className="block w-full p-5 800px:flex">
-          <div className="w-full 800px:w-[50%]">
-            <div className="flex flex-row">
-                    <div>
-                      <Link to={`/shop/preview/${data?.shop._id}`}>
-                        <img
-                          src={`${backend_url}${data?.shop?.avatar}`}
-                          alt=""
-                          className="w-[50px] h-[50px] rounded-full mr-2"
-                        />
-                      </Link>
-                    </div>
-                    <div>
-                      <Link
-                        to={`/shop/preview/${data.shop._id}`}
-                        className={`${styles.shop_name}`}
-                      >
-                        {data.shop.name}
-                      </Link>
-                      <h5 className="text-[13px] mt-1">
-                        ({data.shop.ratings}) Ratings
-                      </h5>
-                    </div>
-                  </div>
-            <p className="pt-2">{data.shop.description}</p>
+    <div className="pt-12">
+      <div className="bg-[#F5F5F5] shadow px-3 800px:px-10 py-2 rounded-xl">
+        <div className="flex justify-between w-full pt-10 pb-2 border-b">
+          <div className="relative">
+            <h5
+              className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              onClick={() => setActive(1)}
+            >
+              Product Details
+            </h5>
+            {active === 1 && <div className={`${styles.active_indicator}`} />}
           </div>
-          <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
-            <div className="text-left">
-              <h5 className="font-[600]">
-                Joined on:{" "}
-                <span className="font-[500]">
-                  {data.shop?.createdAt?.slice(0, 10)}
-                </span>
-              </h5>
-              <h5 className="font-[600] pt-3">
-                Total Products:{" "}
-                <span className="font-[500]">
-                  {products && products.length}
-                </span>
-              </h5>
-              <h5 className="font-[600] pt-3">
-                Total Reviews: <span className="font-[500]">324</span>
-              </h5>
-              <Link to={`/shop/preview/${data?.shop._id}`}>
-                <div
-                  className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
-                >
-                  Visit Shop
+          <div className="relative">
+            <h5
+              className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              onClick={() => setActive(2)}
+            >
+              Product Reviews
+            </h5>
+            {active === 2 && <div className={`${styles.active_indicator}`} />}
+          </div>
+          <div className="relative">
+            <h5
+              className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
+              onClick={() => setActive(3)}
+            >
+              Seller Information
+            </h5>
+            {active === 3 && <div className={`${styles.active_indicator}`} />}
+          </div>
+        </div>
+        {active === 1 && (
+          <Paragraph style={{ wordWrap: "break-word" }}>
+            {data.description}
+          </Paragraph>
+        )}
+        {active === 2 && (
+          <div className="w-full justify-center min-h-[40vh] flex items-center">
+            <p>No Reviews yet!</p>
+          </div>
+        )}
+        {active === 3 && (
+          <div className="block w-full p-5 800px:flex">
+            <div className="w-full 800px:w-[50%]">
+              <div className="flex flex-row">
+                <div>
+                  <Link to={`/shop/preview/${data?.shop._id}`}>
+                    <img
+                      src={`${backend_url}${data?.shop?.avatar}`}
+                      alt=""
+                      className="w-[50px] h-[50px] rounded-full mr-2"
+                    />
+                  </Link>
                 </div>
-              </Link>
+                <div>
+                  <Link
+                    to={`/shop/preview/${data.shop._id}`}
+                    className={`${styles.shop_name}`}
+                  >
+                    {data.shop.name}
+                  </Link>
+                  <h5 className="text-[13px] mt-1">
+                    ({data.shop.ratings}) Ratings
+                  </h5>
+                </div>
+              </div>
+              <p className="pt-2">{data.shop.description}</p>
+            </div>
+            <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
+              <div className="text-left">
+                <h5 className="font-[600]">
+                  Joined on:{" "}
+                  <span className="font-[500]">
+                    {data.shop?.createdAt?.slice(0, 10)}
+                  </span>
+                </h5>
+                <h5 className="font-[600] pt-3">
+                  Total Products:{" "}
+                  <span className="font-[500]">
+                    {products && products.length}
+                  </span>
+                </h5>
+                <h5 className="font-[600] pt-3">
+                  Total Reviews: <span className="font-[500]">324</span>
+                </h5>
+                <Link to={`/shop/preview/${data?.shop._id}`}>
+                  <div
+                    className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
+                  >
+                    Visit Shop
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
