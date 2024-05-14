@@ -179,7 +179,7 @@ const SearchResult = () => {
             </div>
 
             <div className="flex flex-row justify-evenly pt-8">
-              <div className="bg-white shadow w-[23%] p-6 rounded-xl">
+              <div className="bg-white shadow w-[320px] p-6 rounded-xl">
                 {/* Sort by Price */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-lg font-semibold">Sort by Price</div>
@@ -279,7 +279,7 @@ const SearchResult = () => {
               </div>
 
               <div className="px-[90px]">
-                <div className="flex-row grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-3 xl:gap-[30px] mb-12 border-0">
+                <div className="flex-row grid grid-cols-1 gap-[20px] md:grid-cols-1 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[30px] mb-12 border-0">
                   {/* Add filter section for min and max price */}
                   {/* Conditional rendering based on sorted products */}
                   {((sortOrder && sortedProducts) || filteredProducts)?.map(

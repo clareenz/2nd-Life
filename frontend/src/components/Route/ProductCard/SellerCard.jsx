@@ -41,7 +41,7 @@ export const SellerCard = ({ data }) => {
 
   return (
     <>
-      <div className="w-[80%] h-[150px] bg-white rounded-lg shadow px-3 relative cursor-pointer">
+      <div className="w-[280px] h-[150px] bg-white rounded-lg shadow px-3 relative cursor-pointer">
         <div className="flex items-center pt-2.5">
           <div className="p-3">
             <Link to={`/shop/preview/${data.shop._id}`}>
