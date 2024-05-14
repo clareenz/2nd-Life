@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import styles from "../../styles/styles";
-import { ProductCard } from "./ProductCard/ProductCard";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { categoriesData } from "../../static/data";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "antd";
-import { InputNumber } from "antd";
+import styles from "../../styles/styles";
 import Loader from "../Layout/Loader";
+import { ProductCard } from "./ProductCard/ProductCard";
 
 const SearchResult = () => {
   const { allProducts,isLoading } = useSelector((state) => state.products);
@@ -278,8 +275,8 @@ const SearchResult = () => {
                 </div>
               </div>
 
-              <div className="px-[90px]">
-                <div className="flex-row grid grid-cols-1 gap-[20px] md:grid-cols-1 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[30px] mb-12 border-0">
+              <div className="px-[40px]">
+                <div className="flex-row grid grid-cols-1 xl:gap-[25px]  lg:gap-[30px] md:gap-[35px] sm:gap-[40px] xs:gap-[45px] md:grid-cols-1  lg:grid-cols-2  xl:grid-cols-3 mb-12 border-0">
                   {/* Add filter section for min and max price */}
                   {/* Conditional rendering based on sorted products */}
                   {((sortOrder && sortedProducts) || filteredProducts)?.map(

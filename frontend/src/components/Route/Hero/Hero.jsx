@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Carousel } from "antd";
 import styles from "../../../styles/styles";
 import banner1 from "./banner1.jpg";
-import banner3 from "./banner3.jpg";
-import banner5 from "./banner5.png";
+import banner02 from "./banner02.jpg";
+import banner03 from "./banner03.jpg";
 
 const Hero = () => {
-  const images = [banner1 , banner3, banner5];
+  const images = [banner1 , banner02, banner03];
 
   return (
     <Carousel autoplay>
