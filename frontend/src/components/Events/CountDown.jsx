@@ -12,7 +12,6 @@ const CountDown = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-
   const addToCartHandler = (id) => {
     const isItemExists = cart && cart.find((i) => i._id === id);
     if (isItemExists) {
@@ -27,8 +26,6 @@ const CountDown = ({ data }) => {
       }
     }
   };
-
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,7 +77,7 @@ const CountDown = ({ data }) => {
               {" "}
               <span className="text-white flex flex-row">
                 {" "}
-                <LuShoppingBag className="mt-1 mx-1" /> Buy Now
+                Buy Now <LuShoppingBag className="mt-1 mx-1" />
               </span>
             </div>
             <div
@@ -88,14 +85,14 @@ const CountDown = ({ data }) => {
               onClick={() => addToCartHandler(data._id)}
             >
               <span className="flex items-center text-white">
-              <AiOutlineShoppingCart className="mr-1" />Add to Cart
+                Add to Cart <AiOutlineShoppingCart className="mr-1" />
               </span>
             </div>
           </div>
         </div>
       ) : (
         <>
-          <span className="text-[red] text-[25px]">Time's up!</span>
+          <span className="text-slate-400 text-[20px]">Promo Ended</span>
         </>
       )}
     </div>

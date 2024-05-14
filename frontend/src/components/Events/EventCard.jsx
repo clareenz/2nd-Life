@@ -103,19 +103,19 @@ const EventCard = ({ active, data, children }) => {
       </div>
 
       {/* Ant Design Modal */}
-      <Modal
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
+      <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <div className="h-[80%] mt-8">
-          {/* Display image */}
-          <img
-            src={`${backend_url}${data.images[0]}`}
-            alt={data.name}
-            className="mb-4"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
+          <div>
+            <Link to={`/product/${data._id}?isEvent=true`}>
+              {/* Display image */}
+              <img
+                src={`${backend_url}${data.images && data.images[0]}`}
+                alt=""
+                className="mb-4"
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </Link>
+          </div>
           <div className="w-full 800px:w-[50%]">
             <div className="flex flex-row mt-[70px]">
               <div>
@@ -170,7 +170,6 @@ const EventCard2 = ({ active, data }) => {
   const [interval] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -252,11 +251,7 @@ const EventCard2 = ({ active, data }) => {
       </div>
 
       {/* Ant Design Modal */}
-      <Modal
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
+      <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <div className="h-[80%] mt-8">
           {/* Display image */}
           <img

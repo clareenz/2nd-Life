@@ -12,8 +12,9 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
+import { IoBagHandleOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/actions/cart";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -23,8 +24,8 @@ import {
 } from "../../redux/actions/wishlist";
 import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
-import { IoBagHandleOutline } from "react-icons/io5";
-import { Button } from "antd";
+import CountDown from "../Events/CountDown.jsx";
+
 
 const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -36,6 +37,9 @@ const ProductDetails = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const [value, setValue] = useState(data?.qty || 1);
+  const [searchParams] = useSearchParams();
+  const eventData = searchParams.get("isEvent");
+
 
   const buyNow = () => {
     navigate("/checkout");
@@ -227,25 +231,29 @@ const ProductDetails = ({ data }) => {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-row justify-center">
-                    <div
-                      className={`${styles.button6} !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-                      onClick={() => addToCartHandler(data._id)}
-                    >
-                      <span className="flex items-center text-white">
-                        Add to cart <AiOutlineShoppingCart className="ml-1" />
-                      </span>
+                  
+                  {eventData   ? (
+                    <CountDown data={data} />
+                  ) : (
+                    <div className="flex flex-row justify-center">
+                      <div
+                        className={`${styles.button6} !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                        onClick={() => addToCartHandler(data._id)}
+                      >
+                        <span className="flex items-center text-white">
+                          Add to cart <AiOutlineShoppingCart className="ml-1" />
+                        </span>
+                      </div>
+                      <div
+                        className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                        onClick={buyNow}
+                      >
+                        <span className="flex items-center text-white">
+                          Buy Now <IoBagHandleOutline className="ml-1" />
+                        </span>
+                      </div>
                     </div>
-                    {/* Buy Now button */}
-                    <div
-                      className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-                      onClick={buyNow}
-                    >
-                      <span className="flex items-center text-white">
-                        Buy Now <IoBagHandleOutline className="ml-1" />
-                      </span>
-                    </div>
-                  </div>
+                  )}
 
                   <div className="flex items-center pt-8 justify-between">
                     <div className="flex flex-row">
