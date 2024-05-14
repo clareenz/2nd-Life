@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { message } from "antd";
+import { getAllOrdersOfUser } from "../../redux/actions/order";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -34,7 +35,7 @@ const ProfileContent = ({ active }) => {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [displayName, setDisplayName] = useState(name)
+  const [displayName, setDisplayName] = useState(name);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,19 +49,19 @@ const ProfileContent = ({ active }) => {
     }
   }, [error, successMessage]);
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  // Check if the password field is empty
-  if (!password) {
-    toast.error("Please input your password to update your information.");
-    return;
-  }
+    // Check if the password field is empty
+    if (!password) {
+      toast.error("Please input your password to update your information.");
+      return;
+    }
 
-  dispatch(updateUserInformation(name, email, phoneNumber, password));
-  setDisplayName(name);
-  toast.success("Changed Successfully!");
-};
+    dispatch(updateUserInformation(name, email, phoneNumber, password));
+    setDisplayName(name);
+    toast.success("Changed Successfully!");
+  };
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
@@ -137,7 +138,7 @@ const handleSubmit = (e) => {
                   <input
                     type="text"
                     className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
-                   // required
+                    // required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -280,18 +281,15 @@ const handleSubmit = (e) => {
 };
 
 const AllOrders = () => {
-  const orders = [
-    {
-      _id: "7463hvbfbhfbrtr28820221",
-      orderItems: [
-        {
-          name: "Iphone 14 pro max",
-        },
-      ],
-      totalPrice: 120,
-      orderStatus: "Processing",
-    },
-  ];
+  const { user } = useSelector((state) => state.user);
+  console.log(useSelector((state) => state.order)+" asd");
+  const { orders } = useSelector((state) => state.order);
+  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllOrdersOfUser(user._id));
+  }, []);
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -346,15 +344,14 @@ const AllOrders = () => {
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.orderItems.length,
-        total: "₱" + item.totalPrice,
-        status: item.orderStatus,
-      });
+  orders.forEach((item) => {
+    row.push({
+      id: item._id,
+      itemsQty: item.cart.length,
+      total: "US$ " + item.totalPrice,
+      status: item.status,
     });
+  });
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
@@ -494,7 +491,9 @@ const ChangePassword = () => {
     e.preventDefault();
 
     if (!validatePassword()) {
-      message.error("Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, one number, and one special character");
+      message.error(
+        "Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, one number, and one special character"
+      );
       return;
     }
 
@@ -509,7 +508,6 @@ const ChangePassword = () => {
         setNewPassword("");
         setConfirmPassword("");
         toast.success(res.data.success);
-
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -694,7 +692,12 @@ const Address = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (addressType === "" || country === "" || province === "" || city === "") {
+    if (
+      addressType === "" ||
+      country === "" ||
+      province === "" ||
+      city === ""
+    ) {
       toast.error("Please fill all the fields!");
     } else {
       dispatch(
@@ -775,7 +778,7 @@ const Address = () => {
                       className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
                     >
                       <option value="" className="block pb-2 border">
-                        Choose your Province 
+                        Choose your Province
                       </option>
                       {State &&
                         State.getStatesOfCountry(country).map((item) => (
@@ -800,7 +803,7 @@ const Address = () => {
                       onChange={(e) => setCity(e.target.value)}
                     />
                   </div>
-                        
+
                   <div className="w-[95%] pb-2">
                     <label className="block pb-2">Address</label>
                     <input
