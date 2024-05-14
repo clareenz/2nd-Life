@@ -7,7 +7,7 @@ const sendMail = async (options) => {
 
   // Replace placeholders with actual values
   const htmlContent = htmlTemplate
-    .replace("{{name}}", options.name)
+    .replace("{{name}}", options.name )
     .replace("{{activationUrl}}", options.activationUrl);
 
   const transporter = nodemailer.createTransport({
