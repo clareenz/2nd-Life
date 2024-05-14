@@ -278,7 +278,7 @@ const SearchResult = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="px-[90px]">
                 <div className="flex-row grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-3 xl:gap-[30px] mb-12 border-0">
                   {/* Add filter section for min and max price */}
                   {/* Conditional rendering based on sorted products */}
