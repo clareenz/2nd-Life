@@ -50,7 +50,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
       await sendMail({
         email: seller.email,
         subject: "Activate your Shop",
-        message: `Hello ${seller.name}, please click on the link to activate your shop: ${activationUrl}`,
+        activationUrl: activationUrl,
       });
       res.status(201).json({
         success: true,
@@ -144,7 +144,6 @@ router.post(
   })
 );
 
-
 // load shop
 router.get(
   "/getSeller",
@@ -152,7 +151,6 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const seller = await Shop.findById(req.seller._id);
-
 
       if (!seller) {
         return next(new ErrorHandler("User doesn't exists", 400));
@@ -238,7 +236,8 @@ router.put(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { name, description, address, phoneNumber, zipCode, password } = req.body;
+      const { name, description, address, phoneNumber, zipCode, password } =
+        req.body;
 
       const shop = await Shop.findOne(req.seller._id).select("+password");
 
@@ -271,7 +270,6 @@ router.put(
     }
   })
 );
-
 
 // update shop password
 router.put(

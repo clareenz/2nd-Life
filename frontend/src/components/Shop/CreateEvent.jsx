@@ -77,7 +77,7 @@ const CreateEvent = () => {
     newForm.append("description", description);
     newForm.append("category", category);
     newForm.append("tags", tags);
-    newForm.append("originalPrice", originalPrice);
+    newForm.append("originalPrice", values.originalPrice || 0)
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
@@ -168,16 +168,10 @@ const CreateEvent = () => {
 
           <div className="input-wrapper w-[50%]">
             <label htmlFor="Original Price">
-              <span className="text-red-500">*</span>Original Price:{" "}
+              <span className="text-red-500"></span>Original Price:{" "}
             </label>
             <Form.Item
               name="originalPrice"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input original price",
-                },
-              ]}
             >
               <Input
                 id="originalPrice"

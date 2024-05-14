@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import { server } from "../../server";
+import { server, backend_url } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
@@ -25,6 +25,7 @@ const DashboardMessages = () => {
   const [images, setImages] = useState();
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
+
 
   useEffect(() => {
     socketId.on("getMessage", (data) => {
@@ -300,8 +301,8 @@ const MessageList = ({
     >
       <div className="relative">
         <img
-          src={`${user?.avatar?.url}`}
-          alt=""
+        src={`${backend_url}${user?.avatar}`}
+        alt=""
           className="w-[50px] h-[50px] rounded-full"
         />
         {online ? (
@@ -323,6 +324,7 @@ const MessageList = ({
   );
 };
 
+
 const SellerInbox = ({
   scrollRef,
   setOpen,
@@ -341,7 +343,7 @@ const SellerInbox = ({
       <div className="w-full flex p-3 items-center justify-between bg-slate-200">
         <div className="flex">
           <img
-            src={`${userData?.avatar?.url}`}
+            src={`${backend_url}${userData?.avatar}`}
             alt=""
             className="w-[60px] h-[60px] rounded-full"
           />
@@ -371,7 +373,7 @@ const SellerInbox = ({
               >
                 {item.sender !== sellerId && (
                   <img
-                    src={`${userData?.avatar?.url}`}
+                  src={`${backend_url}${userData?.avatar}`}
                     className="w-[40px] h-[40px] rounded-full mr-3"
                     alt=""
                   />
@@ -443,6 +445,5 @@ const SellerInbox = ({
     </div>
   );
 };
-
 
 export default DashboardMessages;
