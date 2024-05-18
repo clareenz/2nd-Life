@@ -8,7 +8,8 @@ import ShopPreviewPage from "../pages/Shop/ShopPreviewPage";
 import ShopSettingsPage from "../pages/Shop/ShopSettingsPage";
 import ShopPasswordPage from "../pages/Shop/ShopPasswordPage";
 import ShopInboxPage from "../pages/Shop/ShopInboxPage";
-
+import ShopAllOrders from "../pages/Shop/ShopAllOrders"
+import ShopOrderDetails from "../pages/Shop/ShopOrderDetails.jsx"
 export {
   ShopDashboardPage,
   ShopCreateProduct,
@@ -20,4 +21,6 @@ export {
   ShopSettingsPage,
   ShopPasswordPage,
   ShopInboxPage,
+  ShopAllOrders,
+  ShopOrderDetails
 };

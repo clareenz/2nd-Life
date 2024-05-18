@@ -19,7 +19,8 @@ import {
   SellerActivationPage,
   ShopLoginPage,
   UserInbox,
-  SearchResult
+  SearchResult,
+  OrderDetailsPage,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -32,6 +33,8 @@ import {
   ShopSettingsPage,
   ShopPasswordPage,
   ShopInboxPage,
+  ShopAllOrders,
+  ShopOrderDetails,
 } from "./routes/ShopRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -112,6 +115,14 @@ console.log(stripeApikey);
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/user/order/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
         {/* shop Routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
@@ -145,6 +156,22 @@ console.log(stripeApikey);
           element={
             <SellerProtectedRoute>
               <ShopAllProducts />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-orders"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllOrders />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/order/:id"
+          element={
+            <SellerProtectedRoute>
+              <ShopOrderDetails />
             </SellerProtectedRoute>
           }
         />

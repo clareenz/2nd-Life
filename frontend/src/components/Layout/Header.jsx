@@ -30,6 +30,7 @@ import { RiCloseLine } from "react-icons/ri";
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isSeller } = useSelector((state) => state.seller);
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const { allProducts } = useSelector((state) => state.products);
@@ -102,7 +103,7 @@ const Header = ({ activeHeading }) => {
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-10`} //header sa pinaka taas (yung may cart icon,etc.)
       >
-        <div className=" flex flex-row">
+        <div className="flex flex-row ">
           <div>
             <Link to="/">
               <img
@@ -326,10 +327,10 @@ const Header = ({ activeHeading }) => {
                         <button
                           className={`border rounded-3xl px-[98px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
                           onClick={() => {
-                            window.location.href = "/shop-create";
+                            window.location.href = `${isSeller ? '/dashboard' : '/shop-create'}`;
                           }}
                         >
-                          <h1 className="">Become a Seller</h1>
+                          <h1 className="">{isSeller ? "Go Dashboard" : "Become Seller"}</h1>
                         </button>
                       </div>
                     </div>
@@ -654,7 +655,7 @@ const Header2 = ({ activeHeading }) => {
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
         }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-10`} //header sa pinaka taas (yung may cart icon,etc.)
       >
-        <div className=" flex flex-row">
+        <div className="flex flex-row ">
           <div>
             <Link to="/">
               <img
@@ -795,7 +796,7 @@ const Header2 = ({ activeHeading }) => {
             </div>
 
             {/*menu*/}
-            <div className="mr-1 px-3">
+            <div className="px-3 mr-1">
               <AiOutlineMenu size={27} className="" onClick={toggleModal} />
             </div>
           </div>
