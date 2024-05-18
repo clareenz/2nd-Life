@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../redux/actions/product";
@@ -30,7 +29,7 @@ const CreateProduct = () => {
       navigate("/dashboard-products");
       window.location.reload();
     }
-  }, [dispatch, error, success]);
+  }, [dispatch, error, success, navigate]);
 
   const handleImageChange = ({ fileList }) => {
     setImages(fileList);
@@ -45,8 +44,10 @@ const CreateProduct = () => {
     newForm.append("description", values.description);
     newForm.append("category", values.category);
     newForm.append("tags", values.tags);
-    newForm.append("originalPrice", values.originalPrice || 0)
+    newForm.append("originalPrice", values.originalPrice ?? 0);
+    console.log("Original Price:", values.originalPrice); // Debugging line
     newForm.append("discountPrice", values.discountPrice);
+    console.log("Discount Price:", values.discountPrice); // Debugging line
     newForm.append("stock", values.stock);
     newForm.append("shopId", seller._id);
     dispatch(createProduct(newForm));
@@ -65,7 +66,7 @@ const CreateProduct = () => {
 
   return (
     <div
-      className="w-[100%] 800px:w-[80%] bg-white  shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
+      className="w-[100%] 800px:w-[80%] bg-white shadow h-[88.5vh] mt-2 rounded-xl p-6 absolute"
       style={{ scrollbarWidth: "xs", overflowY: "auto" }}
     >
       <h5 className="text-[30px] font-Poppins text-center pb-8 pt-3">
@@ -75,7 +76,6 @@ const CreateProduct = () => {
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        className=""
       >
         <div className="flex flex-row space-x-3">
           <div className="input-wrapper w-[50%]">
@@ -142,7 +142,7 @@ const CreateProduct = () => {
                 className="custom-input rounded-2xl"
               />
               <span className="text-[12px] text-gray-400 flex items-center">
-                <PiWarningCircleLight className="mr-1 mb-5" />
+                <PiWarningCircleLight className="mb-5 mr-1" />
                 Providing an original price (higher amount than the displayed
                 price) can boost sales, just ensure accurate pricing input.
               </span>
@@ -245,7 +245,7 @@ const CreateProduct = () => {
           </p>
         </div>
         <br />
-        <div className="justify-evenly space-x-2">
+        <div className="space-x-2 justify-evenly">
           <Button
             className="rounded-2xl"
             onClick={() => form.resetFields()}

@@ -81,7 +81,7 @@ const ProductCard = ({ data }) => {
             className="w-[90%] h-[170px] object-contain"
           />
         </Link>
-        <div className="mt-2 flex flex-row justify-between">
+        <div className="flex flex-row justify-between mt-2">
           <div>
             <Link
               to={`/shop/preview/${data?.shop._id}`}
@@ -148,9 +148,9 @@ const ProductCard = ({ data }) => {
                 {data.originalPrice ? "₱" + data.originalPrice : null}
               </h4>
             </div>
-            {/*  <span className="font-[400] text-[17px] text-[#68d284]">
-              {data.total_sell} sold //number of item sold to pero di naman natin need.
-            </span> */}
+            <span className="font-[400] text-[17px] text-[#68d284]">
+            {data?.sold_out} sold 
+            </span> 
             <div>
               {/* Buy Now button */}
               <div
@@ -227,7 +227,7 @@ const ProductCard2 = ({ data }) => {
             className="w-[90%] h-[170px] object-contain"
           />
         </Link>
-        <div className="mt-2 flex flex-row justify-between">
+        <div className="flex flex-row justify-between mt-2">
           <div>
             <Link
               to={`/shop/preview/${data?.shop._id}`}
@@ -270,9 +270,9 @@ const ProductCard2 = ({ data }) => {
                 {data.originalPrice ? "₱" + data.originalPrice : null}
               </h4>
             </div>
-            {/*  <span className="font-[400] text-[17px] text-[#68d284]">
-              {data.total_sell} sold //number of item sold to pero di naman natin need.
-            </span> */}
+             <span className="font-[400] text-[17px] text-[#68d284]">
+             {data?.sold_out} sold
+            </span> 
             <div>
               {/* Buy Now button */}
               <div
