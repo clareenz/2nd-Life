@@ -20,6 +20,7 @@ import {
   ShopLoginPage,
   UserInbox,
   SearchResult,
+  OrderDetailsPage,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -32,6 +33,8 @@ import {
   ShopSettingsPage,
   ShopPasswordPage,
   ShopInboxPage,
+  ShopAllOrders,
+  ShopOrderDetails,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -122,6 +125,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/user/order/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
         {/* shop Routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
@@ -155,6 +166,22 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopAllProducts />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-orders"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllOrders />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/order/:id"
+          element={
+            <SellerProtectedRoute>
+              <ShopOrderDetails />
             </SellerProtectedRoute>
           }
         />
