@@ -2,11 +2,11 @@
   "name": "2nd-life",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/server.js",
+  "main": "backend/api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon backend/server.js",
-    "start": "node backend/server.js"
+    "dev": "nodemon backend/api/index.js",
+    "start": "node backend/api/index.js"
   },
   "author": "Shaira, Mc",
   "license": "ISC",
