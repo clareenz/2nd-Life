@@ -5,6 +5,8 @@ import { LuShoppingBag } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/actions/cart";
 import styles from "../../styles/styles";
+import axios from "axios";
+import { server } from "../../server";
 
 const CountDown = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());

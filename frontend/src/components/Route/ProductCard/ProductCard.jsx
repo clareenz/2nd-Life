@@ -19,6 +19,8 @@ import {
 import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
+import { toast } from "react-toastify";
+import Ratings from "../../Products/Ratings";
 
 const ProductCard = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -149,8 +151,8 @@ const ProductCard = ({ data }) => {
               </h4>
             </div>
             <span className="font-[400] text-[17px] text-[#68d284]">
-            {data?.sold_out} sold 
-            </span> 
+            {data?.sold_out} sold
+            </span>
             <div>
               {/* Buy Now button */}
               <div

@@ -95,7 +95,7 @@ const AllEvents = () => {
     name: item.name,
     price: `Php ${item.discountPrice}`,
     stock: item.stock,
-    sold: "in-stock",
+    sold: item.sold_out,
   })) : [];
 
   return (

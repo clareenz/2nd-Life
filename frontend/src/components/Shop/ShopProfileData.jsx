@@ -8,6 +8,8 @@ import styles from "../../styles/styles";
 import { ProductCard, ProductCard2 } from "../Route/ProductCard/ProductCard";
 import { EventCard2 } from "../Events/EventCard";
 import "./color.css";
+import Ratings from "../Products/Ratings";
+import { backend_url } from "../../server";
 
 const { TabPane } = Tabs;
 const { Title } = Typography;
@@ -17,6 +19,7 @@ const ShopProfileData = ({ isOwner }) => {
   const { events } = useSelector((state) => state.events); // Fetch events from Redux store
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { seller } = useSelector((state) => state.seller);
 
   useEffect(() => {
     dispatch(getAllProductsShop(id));
@@ -28,6 +31,9 @@ const ShopProfileData = ({ isOwner }) => {
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
+
+  const allReviews =
+    products && products.map((product) => product.reviews).flat();
 
   return (
     <div className="w-full mt-4">
@@ -57,7 +63,7 @@ const ShopProfileData = ({ isOwner }) => {
           )}
         </TabPane>
         <TabPane tab="Running Events" key="events">
-        <Title level={5}>Running Events Content</Title>
+          <Title level={5}>Running Events Content</Title>
           <div className="w-full flex justify-center">
             {/* Display running events */}
             <div className="text-[13px] rounded-md w-[70%]">
@@ -74,10 +80,39 @@ const ShopProfileData = ({ isOwner }) => {
           </div>
         </TabPane>
         <TabPane tab="Shop Reviews" key="reviews">
-          {/* Replace this with shop reviews content */}
           <Title level={5}>Shop Reviews Content</Title>
+          <div className="w-full">
+            {allReviews && allReviews.length > 0 ? (
+              allReviews.map((item, index) => (
+                <div className="w-full flex my-4" key={index}>
+                  <img
+                    src={`${backend_url}/${item.user.avatar}`}
+                    className="w-[50px] h-[50px] rounded-full"
+                    alt={`${item.user.name}'s avatar`}
+                  />
+                  <div className="pl-2">
+                    <div className="flex w-full items-center">
+                      <h1 className="font-[600] pr-2">{item.user.name}</h1>
+                      <Ratings rating={item.rating} />
+                    </div>
+                    <p className="font-[400] text-[#000000a7]">
+                      {item.comment}
+                    </p>
+                    <p className="text-[#000000a7] text-[14px]">
+                      {"2 days ago"}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <h5 className="w-full text-center py-5 text-[18px]">
+                No Reviews have for this shop!
+              </h5>
+            )}
+          </div>
         </TabPane>
       </Tabs>
+
       {isOwner && (
         <div className="absolute top-0 right-0 mt-1 mr-3">
           <Link to="/dashboard">
