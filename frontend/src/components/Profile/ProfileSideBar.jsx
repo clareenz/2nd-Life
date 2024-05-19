@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 
 const ProfileSideBar = ({ setActive, active }) => {
   const navigate = useNavigate();
-  const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const logoutHandler = () => {
     axios

@@ -21,6 +21,7 @@ import {
   UserInbox,
   SearchResult,
   OrderDetailsPage,
+  TrackOrderPage,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -35,6 +36,8 @@ import {
   ShopInboxPage,
   ShopAllOrders,
   ShopOrderDetails,
+  ShopWithDrawMoneyPage,
+  ShopAllRefunds,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -125,11 +128,19 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/user/order/:id"
           element={
             <ProtectedRoute>
               <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/track/order/:id"
+          element={
+            <ProtectedRoute>
+              <TrackOrderPage />
             </ProtectedRoute>
           }
         />
@@ -174,6 +185,14 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopAllOrders />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-refunds"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllRefunds />
             </SellerProtectedRoute>
           }
         />
@@ -223,6 +242,14 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopAllCoupouns />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-withdraw-money"
+          element={
+            <SellerProtectedRoute>
+              <ShopWithDrawMoneyPage />
             </SellerProtectedRoute>
           }
         />

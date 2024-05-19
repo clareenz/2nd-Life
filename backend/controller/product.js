@@ -230,7 +230,7 @@ router.put(
         orderId,
         { $set: { "cart.$[elem].isReviewed": true } },
         { arrayFilters: [{ "elem._id": productId }], new: true }
-      );      
+      );
 
       res.status(200).json({
         success: true,

@@ -95,7 +95,7 @@ const AllProducts = () => {
         name: item.name,
         price: `Php ${item.discountPrice}`,
         stock: item.stock,
-        sold: "in-stock", // Change this to the actual sold out quantity property
+        sold: item?.sold_out,
       }))
     : [];
 

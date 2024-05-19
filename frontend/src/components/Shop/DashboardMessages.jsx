@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import { server, backend_url } from "../../server";
+import { backend_url, server } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
@@ -11,9 +11,8 @@ import socketIO from "socket.io-client";
 import { format } from "timeago.js";
 const ENDPOINT = "http://localhost:4000/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
-
 const DashboardMessages = () => {
-  const { seller, isLoading } = useSelector((state) => state.seller);
+  const { seller, loading } = useSelector((state) => state.seller);
   const [conversations, setConversations] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [currentChat, setCurrentChat] = useState();
@@ -26,7 +25,6 @@ const DashboardMessages = () => {
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
 
-
   useEffect(() => {
     socketId.on("getMessage", (data) => {
       setArrivalMessage({
@@ -36,24 +34,21 @@ const DashboardMessages = () => {
       });
     });
   }, []);
-
   useEffect(() => {
     arrivalMessage &&
       currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
-
   useEffect(() => {
     const getConversation = async () => {
       try {
-        const response = await axios.get(
+        const resonse = await axios.get(
           `${server}/conversation/get-all-conversation-seller/${seller?._id}`,
           {
             withCredentials: true,
           }
         );
-
-        setConversations(response.data.conversations);
+        setConversations(resonse.data.conversations);
       } catch (error) {
         // console.log(error);
       }
@@ -63,8 +58,8 @@ const DashboardMessages = () => {
 
   useEffect(() => {
     if (seller) {
-      const sellerId = seller?._id;
-      socketId.emit("addUser", sellerId);
+      const userId = seller?._id;
+      socketId.emit("addUser", userId);
       socketId.on("getUsers", (data) => {
         setOnlineUsers(data);
       });
@@ -74,10 +69,8 @@ const DashboardMessages = () => {
   const onlineCheck = (chat) => {
     const chatMembers = chat.members.find((member) => member !== seller?._id);
     const online = onlineUsers.find((user) => user.userId === chatMembers);
-
     return online ? true : false;
   };
-
   // get messages
   useEffect(() => {
     const getMessage = async () => {
@@ -92,11 +85,9 @@ const DashboardMessages = () => {
     };
     getMessage();
   }, [currentChat]);
-
   // create new message
   const sendMessageHandler = async (e) => {
     e.preventDefault();
-
     const message = {
       sender: seller._id,
       text: newMessage,
@@ -106,13 +97,11 @@ const DashboardMessages = () => {
     const receiverId = currentChat.members.find(
       (member) => member.id !== seller._id
     );
-
     socketId.emit("sendMessage", {
       senderId: seller._id,
       receiverId,
       text: newMessage,
     });
-
     try {
       if (newMessage !== "") {
         await axios
@@ -129,13 +118,11 @@ const DashboardMessages = () => {
       console.log(error);
     }
   };
-
   const updateLastMessage = async () => {
     socketId.emit("updateLastMessage", {
       lastMessage: newMessage,
       lastMessageId: seller._id,
     });
-
     await axios
       .put(`${server}/conversation/update-last-message/${currentChat._id}`, {
         lastMessage: newMessage,
@@ -151,19 +138,19 @@ const DashboardMessages = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImages(reader.result);
-        imageSendingHandler(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    setImages(file);
+    imageSendingHandler(file);
   };
 
   const imageSendingHandler = async (e) => {
+    const formData = new FormData();
+
+    formData.append("images", e);
+    formData.append("sender", seller._id);
+    formData.append("text", newMessage);
+    formData.append("conversationId", currentChat._id);
+
     const receiverId = currentChat.members.find(
       (member) => member !== seller._id
     );
@@ -176,11 +163,10 @@ const DashboardMessages = () => {
 
     try {
       await axios
-        .post(`${server}/message/create-new-message`, {
-          images: e,
-          sender: seller._id,
-          text: newMessage,
-          conversationId: currentChat._id,
+        .post(`${server}/message/create-new-message`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((res) => {
           setImages();
@@ -203,9 +189,8 @@ const DashboardMessages = () => {
   };
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
-
   return (
     <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
       {!open && (
@@ -227,12 +212,11 @@ const DashboardMessages = () => {
                 userData={userData}
                 online={onlineCheck(item)}
                 setActiveStatus={setActiveStatus}
-                isLoading={isLoading}
+                loading={loading}
               />
             ))}
         </>
       )}
-
       {open && (
         <SellerInbox
           setOpen={setOpen}
@@ -251,7 +235,6 @@ const DashboardMessages = () => {
     </div>
   );
 };
-
 const MessageList = ({
   data,
   index,
@@ -261,9 +244,9 @@ const MessageList = ({
   setUserData,
   online,
   setActiveStatus,
-  isLoading,
+  loading,
+  userData,
 }) => {
-  console.log(data);
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
   const handleClick = (id) => {
@@ -271,10 +254,8 @@ const MessageList = ({
     setOpen(true);
   };
   const [active, setActive] = useState(0);
-
   useEffect(() => {
     const userId = data.members.find((user) => user != me);
-
     const getUser = async () => {
       try {
         const res = await axios.get(`${server}/user/user-info/${userId}`);
@@ -285,7 +266,6 @@ const MessageList = ({
     };
     getUser();
   }, [me, data]);
-
   return (
     <div
       className={`w-full flex p-3 px-3 ${
@@ -301,8 +281,8 @@ const MessageList = ({
     >
       <div className="relative">
         <img
-        src={`${backend_url}${user?.avatar}`}
-        alt=""
+          src={`${backend_url}${user?.avatar}`}
+          alt=""
           className="w-[50px] h-[50px] rounded-full"
         />
         {online ? (
@@ -314,17 +294,15 @@ const MessageList = ({
       <div className="pl-3">
         <h1 className="text-[18px]">{user?.name}</h1>
         <p className="text-[16px] text-[#000c]">
-          {!isLoading && data?.lastMessageId !== user?._id
+          {!loading && data?.lastMessageId !== userData?._id
             ? "You:"
-            : user?.name.split(" ")[0] + ": "}{" "}
+            : userData?.name.split(" ")[0] + ": "}{" "}
           {data?.lastMessage}
         </p>
       </div>
     </div>
   );
 };
-
-
 const SellerInbox = ({
   scrollRef,
   setOpen,
@@ -358,14 +336,12 @@ const SellerInbox = ({
           onClick={() => setOpen(false)}
         />
       </div>
-
       {/* messages */}
       <div className="px-3 h-[65vh] py-3 overflow-y-scroll">
         {messages &&
           messages.map((item, index) => {
             return (
               <div
-                key={index}
                 className={`flex w-full my-2 ${
                   item.sender === sellerId ? "justify-end" : "justify-start"
                 }`}
@@ -373,13 +349,19 @@ const SellerInbox = ({
               >
                 {item.sender !== sellerId && (
                   <img
-                  src={`${backend_url}${userData?.avatar}`}
+                    src={`${backend_url}${userData?.avatar}`}
                     className="w-[40px] h-[40px] rounded-full mr-3"
                     alt=""
                   />
                 )}
-                <div>
-                  {item.text !== "" && (
+                {item.images && (
+                  <img
+                    src={`${backend_url}${item.images}`}
+                    className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
+                  />
+                )}
+                {item.text !== "" && (
+                  <div>
                     <div
                       className={`w-max p-2 rounded ${
                         item.sender === sellerId ? "bg-[#000]" : "bg-[#38c776]"
@@ -387,20 +369,11 @@ const SellerInbox = ({
                     >
                       <p>{item.text}</p>
                     </div>
-                  )}
-                  {item.image && (
-                    <div className="w-full">
-                      <img
-                        src={item.image}
-                        alt="Sent Image"
-                        className="w-full rounded-lg mt-2"
-                      />
-                    </div>
-                  )}
-                  <p className="text-[12px] text-[#000000d3] pt-1">
-                    {format(item.createdAt)}
-                  </p>
-                </div>
+                    <p className="text-[12px] text-[#000000d3] pt-1">
+                      {format(item.createdAt)}
+                    </p>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -445,5 +418,4 @@ const SellerInbox = ({
     </div>
   );
 };
-
 export default DashboardMessages;
