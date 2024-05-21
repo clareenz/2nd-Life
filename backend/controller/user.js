@@ -104,18 +104,19 @@ router.post(
     try {
       const { email, password } = req.body;
       if (!email || !password) {
-        return next(new ErrorHandler("Please provide the all fields!", 400));
+        return next(new ErrorHandler("Please provide all fields!", 400));
       }
+
       const user = await User.findOne({ email }).select("+password");
       if (!user) {
-        return next(new ErrorHandler("User doesn't exists!", 400));
+        return next(new ErrorHandler("User doesn't exist!", 400));
       }
+
       const isPasswordValid = await user.comparePassword(password);
       if (!isPasswordValid) {
-        return next(
-          new ErrorHandler("Please provide the correct information", 400)
-        );
+        return next(new ErrorHandler("Incorrect email or password", 400));
       }
+
       sendToken(user, 201, res);
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -416,13 +417,8 @@ router.post(
       if (!user) {
         return res.status(401).send({ message: "No user found" });
       }
-
-      // Hash the new password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
-
-      // Update user's password
-      user.password = hashedPassword;
+      // Update user's password, triggering the pre-save hook to hash the password
+      user.password = req.body.newPassword;
       await user.save();
 
       // Send success response
@@ -434,7 +430,6 @@ router.post(
       } else if (err.name === "JsonWebTokenError") {
         return res.status(401).send({ message: "Invalid token" });
       }
-
       // Send error response for other errors
       res.status(500).send({ message: err.message });
     }
