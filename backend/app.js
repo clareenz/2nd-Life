@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://frontend-topaz-ten.vercel.app",
+    origin: "https://frontend-5s2e4y0fe-clareenzs-projects.vercel.app",
     credentials: true,
   })
 );
