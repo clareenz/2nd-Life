@@ -5,6 +5,8 @@ import {
   LoginPage,
   SignupPage,
   ActivationPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
   HomePage,
   ProductsPage,
   BestSellingPage,
@@ -88,6 +90,14 @@ console.log(stripeApikey);
         <Route
           path="/activation/:activation_token"
           element={<ActivationPage />}
+        />
+         <Route
+          path="/forgot-password"
+          element={<ForgotPasswordPage />}
+        />
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPasswordPage />}
         />
         <Route
           path="/seller/activation/:activation_token"

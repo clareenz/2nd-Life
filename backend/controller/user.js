@@ -10,8 +10,11 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated } = require("../middleware/auth");
-const user = require("../model/user");
+const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+const { trace } = require("console");
 
+//create new user account
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -39,28 +42,30 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
     const activationUrl = `http://localhost:3000/activation/${activationToken}`;
     try {
       await sendMail({
-          name: name, // Pass the user's name here
-          email: user.email,
-          subject: "Activate your account",
-          activationUrl: activationUrl, // Pass the activation URL here
+        name: name, // Pass the user's name here
+        email: user.email,
+        subject: "Activate your account",
+        activationUrl: activationUrl, // Pass the activation URL here
       });
       res.status(201).json({
-          success: true,
-          message: `Please check your email (${user.email}) to activate your account!`,
+        success: true,
+        message: `Please check your email (${user.email}) to activate your account!`,
       });
-  } catch (error) {
+    } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
   } catch (error) {
     return next(new ErrorHandler(error.message, 400));
   }
 });
+
 // create activation token
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_SECRET, {
     expiresIn: "5m",
   });
 };
+
 // activate user
 router.post(
   "/activation",
@@ -91,6 +96,7 @@ router.post(
     }
   })
 );
+
 // login user
 router.post(
   "/login-user",
@@ -116,6 +122,7 @@ router.post(
     }
   })
 );
+
 // load user
 router.get(
   "/getuser",
@@ -135,6 +142,7 @@ router.get(
     }
   })
 );
+
 // log out user
 router.get(
   "/logout",
@@ -222,7 +230,6 @@ router.put(
     }
   })
 );
-
 
 // update user addresses
 router.put(
@@ -315,7 +322,7 @@ router.put(
       user.password = req.body.newPassword;
 
       await user.save();
-  
+
       res.status(200).json({
         success: true,
         message: "Password updated successfully!",
@@ -339,6 +346,97 @@ router.get(
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+//forgot password
+router.post(
+  "/forgot-password",
+  catchAsyncErrors(async (req, res) => {
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+        return res.status(404).send({ message: "User not found" });
+      }
+
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "10m",
+      });
+
+      const transporter = nodemailer.createTransport({
+        service: process.env.SMPT_SERVICE,
+        auth: {
+          user: process.env.SMPT_MAIL,
+          pass: process.env.SMPT_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.SMPT_MAIL,
+        to: req.body.email,
+        subject: "Reset Password",
+        html: `<h1>Reset Your Password</h1>
+    <p>Click on the following link to reset your password:</p>
+    <a href="http://localhost:3000/reset-password/${token}">http://localhost:3000/reset-password/${token}</a>
+    <p>The link will expire in 10 minutes.</p>
+    <p>If you didn't request a password reset, please ignore this email.</p>`,
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          return res.status(500).send({ message: err.message });
+        }
+        res.status(200).send({ message: "Email sent" });
+      });
+    } catch (error) {
+      res.status(500).send({ message: err.message });
+    }
+  })
+);
+
+//reset password
+router.post(
+  "/reset-password/:token",
+  catchAsyncErrors(async (req, res) => {
+    try {
+      // Verify the token sent by the user
+      const decodedToken = jwt.verify(
+        req.params.token,
+        process.env.JWT_SECRET_KEY
+      );
+
+      // If the token is invalid, return an error
+      if (!decodedToken) {
+        return res.status(401).send({ message: "Invalid token" });
+      }
+
+      // Find the user with the id from the token
+      const user = await User.findOne({ _id: decodedToken.userId });
+      if (!user) {
+        return res.status(401).send({ message: "No user found" });
+      }
+
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+      // Update user's password
+      user.password = hashedPassword;
+      await user.save();
+
+      // Send success response
+      res.status(200).send({ message: "Password updated" });
+    } catch (err) {
+      // Handle specific JWT errors
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).send({ message: "Token has expired" });
+      } else if (err.name === "JsonWebTokenError") {
+        return res.status(401).send({ message: "Invalid token" });
+      }
+
+      // Send error response for other errors
+      res.status(500).send({ message: err.message });
     }
   })
 );
