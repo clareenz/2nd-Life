@@ -5,31 +5,30 @@ start: 5:44:53(first vid) */
  *
  */
 
-import React, { useEffect, useState } from "react";
-import { RxCross1 } from "react-icons/rx";
 import Paragraph from "antd/es/typography/Paragraph";
-import styles from "../../../styles/styles";
+import React, { useEffect, useState } from "react";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
+import { RxCross1 } from "react-icons/rx";
+import styles from "../../../styles/styles";
 
+import { message } from "antd";
+import axios from "axios";
 import {
   AiFillHeart,
   AiOutlineHeart,
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { backend_url, server } from "../../../server";
+import { IoBagHandleOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { addToCart } from "../../../redux/actions/cart";
-import { message } from "antd";
 import {
   addToWishlist,
   removeFromWishlist,
 } from "../../../redux/actions/wishlist";
-import { IoBagHandleOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { backend_url, server } from "../../../server";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -193,7 +192,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                     {data.stock > 1 ? (
                       <>
                         <div>
-                          <button onClick={() => increment(data)}>
+                          <button onClick={() => decrement(data)}>
                             <CiSquareMinus size={30} />
                           </button>
                         </div>

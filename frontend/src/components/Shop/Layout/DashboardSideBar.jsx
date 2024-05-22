@@ -189,7 +189,12 @@ const DashboardSideBar = () => {
           <Link to="/dashboard-coupouns">Discount Codes</Link>
         </Menu.Item>
         <Menu.Item
-          key="10"
+          key="11"
+          style={
+            activeKey === "11"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
           icon={<HiOutlineReceiptRefund />}
         >
           <Link to="/dashboard-refunds">Refunds</Link>

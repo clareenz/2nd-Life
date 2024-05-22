@@ -15,19 +15,23 @@ import styles from "../../styles/styles";
 import { message } from "antd";
 import { AiOutlineMessage } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { getAllProductsShop } from "../../redux/actions/product";
 
 const { Title, Text } = Typography;
 
 const ShopInfo = ({ isOwner }) => {
   //left side
   const [data, setData] = useState({});
+  const {products} = useSelector((state) => state.products);
   const [isLoading, setIsLoading] = useState(false);
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { id } = useParams();
 
   useEffect(() => {
+    dispatch(getAllProductsShop(id));
     setIsLoading(true);
     axios
       .get(`${server}/shop/get-shop-info/${id}`)
@@ -47,6 +51,15 @@ const ShopInfo = ({ isOwner }) => {
     });
     window.location.reload();
   };
+
+  
+  const totalReviewsLength =
+    products &&
+    products.reduce((acc, product) => acc + product.reviews.length, 0);
+
+  const totalRatings = products && products.reduce((acc,product) => acc + product.reviews.reduce((sum,review) => sum + review.rating, 0),0);
+
+  const averageRating = totalRatings / totalReviewsLength || 0;
 
   const handleMessageSubmit = async () => {
     if (isAuthenticated) {
@@ -118,7 +131,7 @@ const ShopInfo = ({ isOwner }) => {
               Total Products
             </Title>
           </div>
-          <Text className="ml-6">10</Text>
+          <Text className="ml-6">{products && products.length}</Text>
         </div>
         <div className="px-3 py-2">
           <div className="flex items-center">
@@ -127,7 +140,7 @@ const ShopInfo = ({ isOwner }) => {
               Shop Ratings
             </Title>
           </div>
-          <Text className="ml-6">4/5</Text>
+          <Text className="ml-6">{averageRating}/5</Text>
         </div>
         <div className="px-3 py-2">
           <div className="flex items-center">
