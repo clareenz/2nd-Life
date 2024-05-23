@@ -2,11 +2,19 @@
   "name": "2nd-life",
   "version": "1.0.0",
   "description": "",
+<<<<<<< HEAD
   "main": "backend/config/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon backend/config/index.js",
     "start": "node backend/config/index.js"
+=======
+  "main": "backend/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js"
+>>>>>>> parent of 6456b7ad (vercel)
   },
   "author": "Shaira, Mc",
   "license": "ISC",
