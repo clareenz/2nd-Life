@@ -177,4 +177,176 @@ input,select{
 }
 
 
+.bubble-container {
+  display: inline-block;
+  word-wrap: break-word;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.chat-form {
+  padding: 0.5rem; /* Adjusted padding to use rem units */
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: between;
+  align-items: center;
+}
+
+.file-upload-container {
+  width: 30px;
+  position: relative;
+}
+
+.input-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.chat-input {
+  width: calc(100% - 40px); /* Adjust width considering the button size */
+  padding-right: 2.5rem; /* Space for the send button */
+}
+
+.send-button {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Customize the Switch component */
+.ant-switch-checked {
+  background-color: #006665; /* Your custom green color */
+}
+
+.ant-switch-checked .ant-switch-inner {
+  background-color: #006665; /* Your custom green color */
+}
+
+.ant-switch {
+  border-color: #006665; /* Your custom green color */
+}
+
+.ant-switch-checked:not(.ant-switch-disabled):hover {
+  background-color: #006665; /* A different shade of green for hover state */
+}
+
+.ant-switch-checked:focus {
+  box-shadow: none; /* Remove focus outline */
+}
+
+/* Customize the filter dropdown and checkboxes */
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  color: #006665; /* Change text color to green */
+}
+
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background-color: #006665; /* Light green background on hover */
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #006665; /* Your custom green color */
+  border-color: #006665; /* Your custom green color */
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner {
+  border-color: #006665; /* Your custom green color */
+}
+
+.ant-checkbox-checked::after {
+  border-color: #006665; /* Your custom green color */
+}
+
+/* Customize the sort arrows */
+.ant-table-column-sorter-up,
+.ant-table-column-sorter-down {
+  color: #006665; /* Your custom green color */
+}
+
+/* Customize the filter dropdown button */
+.ant-dropdown-trigger,
+.ant-dropdown-menu {
+  color: #006665; /* Your custom green color */
+}
+
+/* Customize the search input */
+.ant-table-filter-dropdown input {
+  border-color: #006665; /* Your custom green color */
+}
+
+.ant-table-filter-dropdown input:focus {
+  border-color: #006665; /* Your custom green color */
+  box-shadow: none; /* Add green focus outline */
+}
+
+/* Customize the filter dropdown buttons */
+.ant-table-filter-dropdown-btns .ant-btn-link {
+  color: #006665; /* Your custom green color */
+}
+
+.ant-table-filter-dropdown-btns .ant-btn-link:hover {
+  color: #004f4f; /* A different shade of green for hover state */
+}
+
+.ant-table-filter-dropdown-btns .ant-btn-primary {
+  background-color: #006665; /* Your custom green color */
+  border-color: #006665; /* Your custom green color */
+}
+
+.ant-table-filter-dropdown-btns .ant-btn-primary:hover {
+  background-color: #004f4f; /* A different shade of green for hover state */
+  border-color: #004f4f; /* A different shade of green for hover state */
+}
+
+/* Customize other buttons inside the dropdown */
+.ant-dropdown-menu .ant-btn {
+  background-color: #006665; /* Your custom green color */
+  border-color: #006665; /* Your custom green color */
+  color: #fff; /* Ensure text color is white for contrast */
+}
+
+.ant-dropdown-menu .ant-btn:hover {
+  background-color: #004f4f; /* A different shade of green for hover state */
+  border-color: #004f4f; /* A different shade of green for hover state */
+}
+
+.ant-dropdown-menu .ant-btn:focus {
+  background-color: #004f4f; /* A different shade of green for focus state */
+  border-color: #004f4f; /* A different shade of green for focus state */
+  box-shadow: none; /* Remove default box shadow */
+}
+.custom-button {
+  width: 90px;
+  background-color: none;
+  border-color: none;
+  color: none;
+}
+.custom-button:hover {
+  background-color: #004f4f; /* Darker green for hover state */
+  border-color: #004f4f; /* Darker green border for hover state */
+  color: #fff; /* White text color for hover state */
+}
+
+.custom-button:active {
+  background-color: #003333; /* Even darker green for active state */
+  border-color: #003333; /* Even darker green border for active state */
+}
+
+
+
+
+
+
 

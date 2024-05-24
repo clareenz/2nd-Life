@@ -18,7 +18,7 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
-  UserInbox,
+  UserInboxPage,
   SearchResult,
   OrderDetailsPage,
   TrackOrderPage,
@@ -129,6 +129,14 @@ const App = () => {
           }
         />
         <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInboxPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/user/order/:id"
           element={
             <ProtectedRoute>
@@ -221,14 +229,6 @@ const App = () => {
           }
         />
 
-        <Route
-          path="/inbox"
-          element={
-            <ProtectedRoute>
-              <UserInbox />
-            </ProtectedRoute>
-          }
-        />
         <Route
           path="/dashboard-messages"
           element={
