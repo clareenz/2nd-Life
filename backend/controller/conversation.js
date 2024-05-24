@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const express = require("express");
 const { isSeller, isAuthenticated } = require("../middleware/auth");
+const conversation = require("../model/conversation");
 const router = express.Router();
 
 // create a new conversation
@@ -103,5 +104,6 @@ router.put(
     }
   })
 );
+
 
 module.exports = router;

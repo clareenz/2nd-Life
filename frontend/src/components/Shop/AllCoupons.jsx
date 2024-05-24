@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Modal, Input, Select } from "antd"; // Import Ant Design components
+import {
+  Button,
+  Table,
+  Modal,
+  Input,
+  InputNumber,
+  Space,
+  Switch,
+  Select,
+  Menu,
+  Dropdown,
+} from "antd";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/styles";
 import Loader from "../Layout/Loader";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import axios from "axios";
 import { message } from "antd";
+import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 const { Option } = Select;
 
@@ -24,6 +36,9 @@ const AllCoupons = () => {
   const { products } = useSelector((state) => state.products);
   const [isCreateHovered, setIsCreateHovered] = useState(false);
   const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = React.useRef(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -78,41 +93,167 @@ const AllCoupons = () => {
       });
   };
 
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const [visibleColumns, setVisibleColumns] = useState({
+    id: true,
+    name: true,
+    price: true,
+    action: true,
+  });
+
   const columns = [
-    { title: "Id", dataIndex: "id", key: "id", maxWidth: 100, align: "center" },
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      maxWidth: 100,
+      align: "center",
+      ...getColumnSearchProps("id"),
+      sorter: (a, b) => a.id.localeCompare(b.id),
+      render: visibleColumns.id ? (text) => text : null,
+    },
     {
       title: "Coupon Code",
       dataIndex: "name",
       key: "name",
       maxWidth: 100,
       align: "center",
+      ...getColumnSearchProps("name"),
+      filters: [
+        { text: "A", value: "A" },
+        { text: "B", value: "B" },
+        // Add more filters as needed
+      ],
+      onFilter: (value, record) => record.name.startsWith(value),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: visibleColumns.name ? (text) => text : null,
     },
     {
-      title: "Value",
+      title: "Value (%)",
       dataIndex: "price",
       key: "price",
       minWidth: 100,
       align: "center",
+      ...getColumnSearchProps("price"),
+      sorter: (a, b) => a.price - b.price,
+      render: visibleColumns.price ? (text) => text : null,
     },
     {
       title: "",
       key: "action",
       minWidth: 100,
       align: "center",
-      render: (text, record) => (
-        <Button onClick={() => handleDelete(record.id)}>
-          <AiOutlineDelete size={15} />
-        </Button>
-      ),
+      render: visibleColumns.action
+        ? (text, record) => (
+            <Button onClick={() => handleDelete(record.id)}>
+              <AiOutlineDelete size={15} />
+            </Button>
+          )
+        : null,
     },
   ];
 
   const data = coupons.map((item) => ({
     id: item._id,
     name: item.name,
-    price: `${item.value} %`,
+    price: item.value,
     sold: 10,
   }));
+
+  const handleColumnVisibilityChange = (key) => {
+    setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const menu = (
+    <Menu>
+      {Object.keys(visibleColumns).map((key) => (
+        <Menu.Item key={key}>
+          <Switch
+            checked={visibleColumns[key]}
+            onChange={() => handleColumnVisibilityChange(key)}
+            checkedChildren={key}
+            unCheckedChildren={key}
+          />
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
     <>
@@ -121,7 +262,19 @@ const AllCoupons = () => {
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-xl shadow-md">
           <div className="w-full flex justify-between">
-            <h1 className="text-2xl px-4 py-3">Coupons</h1>
+            <div className="flex flex-row">
+              <h1 className="text-2xl pl-4 py-3">Coupons</h1>
+              <div className="flex p-4 pr-[50px]">
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <EllipsisOutlined style={{ fontSize: "24px" }} />
+                  </a>
+                </Dropdown>
+              </div>
+            </div>
             <div
               className={`${styles.button6} m-5 bg-[#FF8474] text-white hover:bg-[#FC9A8E]`}
               onClick={() => setOpen(true)}
@@ -131,7 +284,7 @@ const AllCoupons = () => {
           </div>
           <div style={{ overflowX: "auto" }}>
             <Table
-              columns={columns}
+              columns={columns.filter((column) => visibleColumns[column.key])}
               dataSource={data}
               pagination={{ pageSize: 10 }}
             />

@@ -1,101 +1,226 @@
-import { Button } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
-import React, { useEffect } from "react";
+import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Input, Menu, Space, Switch, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import Highlighter from "react-highlight-words";
+import { AiOutlineArrowRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Loader from "../Layout/Loader";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import Loader from "../Layout/Loader";
 
 const AllOrders = () => {
   const { orders, isLoading } = useSelector((state) => state.order);
   const { seller } = useSelector((state) => state.seller);
-
   const dispatch = useDispatch();
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     dispatch(getAllOrdersOfShop(seller._id));
-  }, [dispatch]);
+  }, [dispatch, seller._id]);
+
+  useEffect(() => {
+    setFilteredData(orders);
+  }, [orders]);
+
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = React.useRef(null);
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const [visibleColumns, setVisibleColumns] = useState({
+    id: true,
+    status: true,
+    itemsQty: true,
+    total: true,
+    action: true,
+  });
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
     {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
+      title: "Order ID",
+      dataIndex: "id",
+      key: "id",
+      align: "center",
+      ...getColumnSearchProps("id"),
+      sorter: (a, b) => a.id.localeCompare(b.id),
+      render: visibleColumns.id ? (text) => text : null,
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      ...getColumnSearchProps("status"),
+      sorter: (a, b) => a.status.localeCompare(b.status),
+      render: visibleColumns.status ? (text) => text : null,
     },
-
     {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      title: "Items Qty",
+      dataIndex: "itemsQty",
+      key: "itemsQty",
+      align: "center",
+      ...getColumnSearchProps("itemsQty"),
+      sorter: (a, b) => a.itemsQty - b.itemsQty,
+      render: visibleColumns.itemsQty ? (text) => text : null,
     },
-
     {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/order/${params.id}`}>
+      title: "Total (₱)",
+      dataIndex: "total",
+      key: "total",
+      align: "center",
+      ...getColumnSearchProps("total"),
+      sorter: (a, b) => a.total - b.total,
+      render: visibleColumns.total ? (text) => text : null,
+    },
+    {
+      title: "Details",
+      key: "action",
+      align: "center",
+      render: visibleColumns.action
+        ? (text, record) => (
+            <Link to={`/order/${record.id}`}>
               <Button>
                 <AiOutlineArrowRight size={20} />
               </Button>
             </Link>
-          </>
-        );
-      },
+          )
+        : null,
     },
   ];
 
-  const row = [];
+  const data = filteredData.map((item) => ({
+    id: item._id,
+    status: item.status,
+    itemsQty: item.cart.reduce((acc, item) => acc + item.qty, 0),
+    total: item.totalPrice,
+  }));
 
-  orders &&
-    orders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.cart.length,
-        total: "US$ " + item.totalPrice,
-        status: item.status,
-      });
-    });
+  const handleColumnVisibilityChange = (key) => {
+    setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+  const menu = (
+    <Menu>
+      {Object.keys(visibleColumns).map((key) => (
+        <Menu.Item key={key}>
+          <Switch
+            checked={visibleColumns[key]}
+            onChange={() => handleColumnVisibilityChange(key)}
+            checkedChildren={key}
+            unCheckedChildren={key}
+          />
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
-    <>
+    <div className="w-[95%] pt-6">
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full pt-1 mx-8 mt-10 bg-white">
-          <DataGrid
-            rows={row}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
-          />
+        <div className="w-full min-h-[45vh] bg-white rounded-3xl shadow-md">
+          <div className="flex flex-row justify-between">
+            <div>
+              <h1 className="text-[25px] font-Poppins px-[50px] py-4">All Orders</h1>
+            </div>
+            <div className="flex p-4 px-[50px]">
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <EllipsisOutlined style={{ fontSize: "24px" }} />
+                </a>
+              </Dropdown>
+            </div>
+          </div>
+          <div style={{  overflowY: "auto" }}>
+            <Table
+              dataSource={data}
+              columns={columns.filter((column) => visibleColumns[column.key])}
+              pagination={{ pageSize: 10 }}
+              rowKey="id"
+            />
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

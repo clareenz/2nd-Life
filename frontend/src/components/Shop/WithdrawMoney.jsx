@@ -103,7 +103,7 @@ const WithdrawMoney = () => {
 
   return (
     <div className="w-full h-[90vh] p-8">
-      <div className="w-full bg-white h-full rounded flex items-center justify-center flex-col">
+      <div className="w-full bg-white h-full rounded-2xl shadow-md flex items-center justify-center flex-col">
         <h5 className="text-[20px] pb-4">
           Available Balance: ₱ {availableBalance}
         </h5>
