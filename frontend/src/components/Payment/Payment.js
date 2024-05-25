@@ -174,13 +174,12 @@ const Payment = () => {
       });
   };
 
-  // Function to create a source for GCASH
   const createSource = async (orderData, user) => {
     try {
       const response = await axios.post(
         "https://api.paymongo.com/v1/sources",
         {
-          amount: orderData?.totalPrice * 100,
+          amount: orderData?.totalPrice * 100, // Convert to cents
           redirect: {
             success: "http://localhost:3000/order/success",
             failed: "http://localhost:3000/payment",
@@ -202,30 +201,29 @@ const Payment = () => {
           },
         }
       );
-
+  
       return response.data.data.attributes.redirect.checkout_url;
     } catch (error) {
       console.error(error);
       throw error;
     }
   };
+  
 
   const onPayment = async (event) => {
     event.preventDefault();
     try {
-      const checkoutUrl = await createSource(orderData, user);
-      window.open(
-        checkoutUrl,
-        "https://checkout.paymongo.com/cs_yWoZHq5WKcemb3X3r5oUdWKd_client_vMbL5kA8Bmd2FAqctrUGXrRE#cGtfdGVzdF9FOEFZck05V0xRd0h3d29qM3BCUkVqUzU="
-      );
+        const checkoutUrl = await createSource(orderData, user);
+        window.open("https://test-sources.paymongo.com/sources?id=src_nTHcXASe3osLAfNpwuXqZJ2f");
     } catch (error) {
-      console.error("Error creating source:", error);
+        console.error("Error creating source:", error);
     }
-  };
+};
+
 
   //Retrieve Source
   const listenToPayment = async () => {
-    const sourceId = "src_33c3MmPxZvqgJQp8iC3Dmapw";
+    const sourceId = "src_nTHcXASe3osLAfNpwuXqZJ2f";
     try {
       for (let i = 5; i > 0; i--) {
         setPaymentStatus(`Listening to Payment in ${i}`);
@@ -237,7 +235,7 @@ const Payment = () => {
             {
               headers: {
                 accept: "application/json",
-                authorization: `Basic ${btoa(process.env.PAYMONGO_PUBLIC_KEY)}`,
+                authorization: `Basic ${btoa(process.env.PAYMONGO_SECRET_KEY)}`,
               },
             }
           );
