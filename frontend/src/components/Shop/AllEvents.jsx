@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table, Modal, Input, InputNumber } from "antd";
+import {
+  Button,
+  Table,
+  Modal,
+  Input,
+  InputNumber,
+  Space,
+  Switch,
+  Menu,
+  Dropdown,
+} from "antd";
 import { AiOutlineDelete, AiOutlineEye, AiOutlineEdit } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getAllEventsShop, deleteEvent, updateEvent } from "../../redux/actions/event";
+import {
+  getAllEventsShop,
+  deleteEvent,
+  updateEvent,
+} from "../../redux/actions/event";
 import Loader from "../Layout/Loader";
+import Highlighter from "react-highlight-words";
+import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
 
 const AllEvents = () => {
   const { events, isLoading } = useSelector((state) => state.events);
   const { seller } = useSelector((state) => state.seller);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,40 +78,207 @@ const AllEvents = () => {
     setDeleteModalVisible(false);
   };
 
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = React.useRef(null);
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const [visibleColumns, setVisibleColumns] = useState({
+    id: true,
+    name: true,
+    price: true,
+    stock: true,
+    sold: true,
+    action: true,
+  });
+
   const columns = [
-    { title: "Product Id", dataIndex: "id", key: "id", width: 150, align: "center" },
-    { title: "Name", dataIndex: "name", key: "name", width: 180, align: "center" },
-    { title: "Price", dataIndex: "price", key: "price", width: 100, align: "center" },
-    { title: "Stock", dataIndex: "stock", key: "stock", width: 80, align: "center" },
-    { title: "Status", dataIndex: "sold", key: "sold", width: 130, align: "center" },
+    {
+      title: "Product ID",
+      dataIndex: "id",
+      key: "id",
+      width: 150,
+      align: "center",
+      ...getColumnSearchProps("id"),
+      sorter: (a, b) => a.id.localeCompare(b.id),
+      render: visibleColumns.id ? (text) => text : null,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 180,
+      align: "center",
+      ...getColumnSearchProps("name"),
+      filters: [
+        { text: "A", value: "A" },
+        { text: "B", value: "B" },
+        // Add more filters as needed
+      ],
+      onFilter: (value, record) => record.name.startsWith(value),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: visibleColumns.name ? (text) => text : null,
+    },
+    {
+      title: "Price (₱)",
+      dataIndex: "price",
+      key: "price",
+      width: 100,
+      align: "center",
+      ...getColumnSearchProps("price"),
+      sorter: (a, b) => a.price - b.price,
+      render: visibleColumns.price ? (text) => text : null,
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      width: 80,
+      align: "center",
+      ...getColumnSearchProps("stock"),
+      sorter: (a, b) => a.stock - b.stock,
+      render: visibleColumns.stock ? (text) => text : null,
+    },
+    {
+      title: "Sold",
+      dataIndex: "sold",
+      key: "sold",
+      width: 130,
+      align: "center",
+      ...getColumnSearchProps("sold"),
+      sorter: (a, b) => a.sold - b.sold,
+      render: visibleColumns.sold ? (text) => text : null,
+    },
     {
       title: "Action",
       key: "action",
       width: 200,
       align: "center",
-      render: (text, record) => (
-        <>
-          <Link to={`/events/`} style={{ marginRight: 8 }}>
-            <Button icon={<AiOutlineEye />} size={15} />
-          </Link>
-          <Button onClick={() => handleEdit(record)} style={{ marginRight: 8 }}>
-            <AiOutlineEdit size={15} />
-          </Button>
-          <Button onClick={() => handleDelete(record.id)}>
-            <AiOutlineDelete size={15} />
-          </Button>
-        </>
-      ),
+      render: visibleColumns.action
+        ? (text, record) => (
+            <>
+              <Link to={`/events/`} style={{ marginRight: 8 }}>
+                <Button icon={<AiOutlineEye />} size={15} />
+              </Link>
+              <Button
+                onClick={() => handleEdit(record)}
+                style={{ marginRight: 8 }}
+              >
+                <AiOutlineEdit size={15} />
+              </Button>
+              <Button onClick={() => handleDelete(record.id)}>
+                <AiOutlineDelete size={15} />
+              </Button>
+            </>
+          )
+        : null,
     },
   ];
 
-  const data = events ? events.map((item) => ({
-    id: item._id,
-    name: item.name,
-    price: `Php ${item.discountPrice}`,
-    stock: item.stock,
-    sold: item.sold_out,
-  })) : [];
+  const data = events
+    ? events.map((item) => ({
+        id: item._id,
+        name: item.name,
+        price: item.discountPrice,
+        stock: item.stock,
+        sold: item.sold_out,
+      }))
+    : [];
+
+  const handleColumnVisibilityChange = (key) => {
+    setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const menu = (
+    <Menu>
+      {Object.keys(visibleColumns).map((key) => (
+        <Menu.Item key={key}>
+          <Switch
+            checked={visibleColumns[key]}
+            onChange={() => handleColumnVisibilityChange(key)}
+            checkedChildren={key}
+            unCheckedChildren={key}
+          />
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
     <>
@@ -104,12 +286,30 @@ const AllEvents = () => {
         <Loader />
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-xl shadow-md">
-          <Table
-            columns={columns}
-            dataSource={data}
-            pagination={{ pageSize: 10 }}
-            style={{ scrollbarWidth: "none", overflowX: "auto" }}
-          />
+          <div className="flex flex-row justify-between">
+            <div className="w-full flex">
+              <h1 className="text-2xl  px-[50px] py-3">All Events</h1>
+            </div>
+            <div className="flex p-4 px-[50px]">
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <EllipsisOutlined style={{ fontSize: "24px" }} />
+                </a>
+              </Dropdown>
+            </div>
+          </div>
+
+          <div style={{  overflowY: "auto" }}>
+            <Table
+              columns={columns.filter((column) => visibleColumns[column.key])}
+              dataSource={data}
+              pagination={{ pageSize: 10 }}
+              style={{ scrollbarWidth: "none", overflowX: "auto" }}
+            />
+          </div>
           <Modal
             title="Edit Event"
             visible={editModalVisible}
@@ -162,7 +362,7 @@ const AllEvents = () => {
             cancelText="No"
             okButtonProps={{
               className: "custom-ok-button-class rounded-2xl",
-              style: { backgroundColor: "#006665", color: "#fff" }, // Add this style
+              style: { backgroundColor: "#006665", color: "#fff" },
             }}
             cancelButtonProps={{
               className: "custom-cancel-button-class rounded-2xl",
@@ -177,5 +377,3 @@ const AllEvents = () => {
 };
 
 export default AllEvents;
-
-
