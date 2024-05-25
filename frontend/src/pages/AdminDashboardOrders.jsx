@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AdminHeader from "../components/Layout/AdminHeader";
-import AdminSideBar from "../components/Layout/AdminSidebar";
+import AdminSideBar from "../components/Admin/Layout/AdminSideBar";
 import { DataGrid } from "@material-ui/data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfAdmin } from "../redux/actions/order";
@@ -46,12 +46,12 @@ const AdminDashboardOrders = () => {
       flex: 0.8,
     },
     {
-      field: "createdAt",
-      headerName: "Order Date",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
+        field: "createdAt",
+        headerName: "Order Date",
+        type: "number",
+        minWidth: 130,
+        flex: 0.8,
+      },
   ];
 
   const row = [];
@@ -62,33 +62,27 @@ const AdminDashboardOrders = () => {
         itemsQty: item?.cart?.reduce((acc, item) => acc + item.qty, 0),
         total: item?.totalPrice + " $",
         status: item?.status,
-        createdAt: item?.createdAt.slice(0, 10),
+        createdAt: item?.createdAt.slice(0,10),
       });
     });
   return (
     <div>
       <AdminHeader />
-      <div className="w-full flex">
+      <div className="flex w-full">
         <div className="flex items-start justify-between w-full">
           <div className="w-[80px] 800px:w-[330px]">
             <AdminSideBar active={2} />
           </div>
 
           <div className="w-full min-h-[45vh] pt-5 rounded flex justify-center">
-            <div className="w-[97%] flex justify-center flex flex-col">
-              <div>
-                <h3 className="text-[22px] font-Poppins pb-2">All Orders</h3>
-              </div>
-              <div>
-                {" "}
-                <DataGrid
-                  rows={row}
-                  columns={columns}
-                  pageSize={10}
-                  disableSelectionOnClick
-                  autoHeight
-                />
-              </div>
+            <div className="w-[97%] flex justify-center">
+              <DataGrid
+                rows={row}
+                columns={columns}
+                pageSize={4}
+                disableSelectionOnClick
+                autoHeight
+              />
             </div>
           </div>
         </div>

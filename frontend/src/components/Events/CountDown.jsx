@@ -33,6 +33,16 @@ const CountDown = ({ data }) => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
+
+    if (
+      typeof timeLeft.days === 'undefined' &&
+      typeof timeLeft.hours === 'undefined' &&
+      typeof timeLeft.minutes === 'undefined' &&
+      typeof timeLeft.seconds === 'undefined'
+    ) {
+      axios.delete(`${server}/event/delete-shop-event/${data._id}`);
+    }
+
     return () => clearTimeout(timer);
   });
 
@@ -77,9 +87,9 @@ const CountDown = ({ data }) => {
               className={`${styles.button6} bg-[#006665] hover:bg-[#FF8474]`}
             >
               {" "}
-              <span className="text-white flex flex-row">
+              <span className="flex flex-row text-white">
                 {" "}
-                Buy Now <LuShoppingBag className="mt-1 mx-1" />
+                Buy Now <LuShoppingBag className="mx-1 mt-1" />
               </span>
             </div>
             <div
