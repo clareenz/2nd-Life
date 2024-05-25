@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import "./custom.slider.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-const EventCard = ({ active, data, children }) => {
+const EventCard = ({ active, data = {}, children }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [interval] = useState(false);
@@ -26,13 +26,16 @@ const EventCard = ({ active, data, children }) => {
   const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
-    }, 5000);
-    setIntervalId(id);
+    if (hasEvents) {
+      const id = setInterval(() => {
+        setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
+      }, 5000);
+      setIntervalId(id);
 
-    return () => clearInterval(id);
-  }, [data.images.length]);
+      return () => clearInterval(id);
+    }
+  }, [data.images, hasEvents]);
+   console.log(hasEvents + "hello")
 
   return (
     <div className="flex flex-row justify-center">
@@ -119,7 +122,7 @@ const EventCard = ({ active, data, children }) => {
           <div className="w-full 800px:w-[50%]">
             <div className="flex flex-row mt-[70px]">
               <div>
-                <Link to={`/shop/preview/${data?.shop._id}`}>
+                <Link to={`/shop/preview/${data?.shop?._id}`}>
                   <img
                     src={`${backend_url}${data?.shop?.avatar}`}
                     alt=""
@@ -129,19 +132,19 @@ const EventCard = ({ active, data, children }) => {
               </div>
               <div>
                 <Link
-                  to={`/shop/preview/${data.shop._id}`}
+                  to={`/shop/preview/${data?.shop?._id}`}
                   className={`${styles.shop_name}`}
                 >
-                  {data.shop.name}
+                  {data?.shop?.name}
                 </Link>
                 <h5 className="text-[13px] mt-1">
-                  ({data.shop.ratings}) Ratings
+                  ({data?.shop?.ratings}) Ratings
                 </h5>
               </div>
             </div>
           </div>
           {/* Display name */}
-          <h1 className={`${styles.productTitle} text-[20px]`}>{data.name}</h1>
+          <h1 className={`${styles.productTitle} text-[20px]`}>{data?.name}</h1>
 
           {/* Display description */}
           <Paragraph>{data.description}</Paragraph>
@@ -162,7 +165,7 @@ const EventCard = ({ active, data, children }) => {
   );
 };
 
-const EventCard2 = ({ active, data }) => {
+const EventCard2 = ({ active, data = {} }) => {
   // Check if data exists and contains images
   const hasEvents = data && data.images && data.images.length > 0;
   const activeEvent = +new Date(data.start_Date) < +new Date();
@@ -180,13 +183,15 @@ const EventCard2 = ({ active, data }) => {
   };
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
-    }, 5000);
-    setIntervalId(id);
+    if (hasEvents) {
+      const id = setInterval(() => {
+        setActiveIndex((prevIndex) => (prevIndex + 1) % data.images.length);
+      }, 5000);
+      setIntervalId(id);
 
-    return () => clearInterval(id);
-  }, [data.images.length]);
+      return () => clearInterval(id);
+    }
+  }, [data.images, hasEvents]);
 
   return (
     <div className="flex flex-row justify-center">
@@ -245,7 +250,7 @@ const EventCard2 = ({ active, data }) => {
           )
         ) : (
           <div className="w-full flex justify-center items-center text-md">
-            <p className="text-gray-500">No events</p>
+            <p className="text-gray-500 ">No events</p>
           </div>
         )}
       </div>
@@ -256,14 +261,14 @@ const EventCard2 = ({ active, data }) => {
           {/* Display image */}
           <img
             src={`${backend_url}${data.images[0]}`}
-            alt={data.name}
+            alt={data?.name}
             className="mb-4"
             style={{ maxWidth: "100%", height: "auto" }}
           />
           <div className="w-full 800px:w-[50%]">
             <div className="flex flex-row mt-[70px]">
               <div>
-                <Link to={`/shop/preview/${data?.shop._id}`}>
+                <Link to={`/shop/preview/${data?.shop?._id}`}>
                   <img
                     src={`${backend_url}${data?.shop?.avatar}`}
                     alt=""
@@ -273,19 +278,19 @@ const EventCard2 = ({ active, data }) => {
               </div>
               <div>
                 <Link
-                  to={`/shop/preview/${data.shop._id}`}
+                  to={`/shop/preview/${data?.shop?._id}`}
                   className={`${styles.shop_name}`}
                 >
                   {data.shop.name}
                 </Link>
                 <h5 className="text-[13px] mt-1">
-                  ({data.shop.ratings}) Ratings
+                  ({data?.shop?.ratings}) Ratings
                 </h5>
               </div>
             </div>
           </div>
           {/* Display name */}
-          <h1 className={`${styles.productTitle} text-[20px]`}>{data.name}</h1>
+          <h1 className={`${styles.productTitle} text-[20px]`}>{data?.name}</h1>
 
           {/* Display description */}
           <Paragraph>{data.description}</Paragraph>

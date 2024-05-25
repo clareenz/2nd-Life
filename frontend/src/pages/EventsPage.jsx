@@ -53,21 +53,27 @@ const EventsPage = () => {
                 </button>
               </div>
             </div>
-            {viewType === "grid" ? (
-              <div className={`pt-[15px]`}>
-                <div className="grid gap-[20px] md:grid-cols-2 lg:grid-cols-2">
-                  {allEvents.map((event) => (
-                    <EventCard2 key={event.id} active={true} data={event} />
-                  ))}
+            {allEvents.length > 0 ? (
+              viewType === "grid" ? (
+                <div className={`pt-[15px]`}>
+                  <div className="grid gap-[20px] md:grid-cols-2 lg:grid-cols-2">
+                    {allEvents.map((event) => (
+                      <EventCard2 key={event.id} active={true} data={event} />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="pt-[15px]">
+                  <div className="md:grid-cols-2">
+                    {allEvents.map((event) => (
+                      <EventCard key={event.id} active={true} data={event} />
+                    ))}
+                  </div>
+                </div>
+              )
             ) : (
-              <div className="pt-[15px]">
-                <div className="md:grid-cols-2">
-                  {allEvents.map((event) => (
-                    <EventCard key={event.id} active={true} data={event} />
-                  ))}
-                </div>
+              <div className="w-full flex justify-center items-center text-md">
+                <p className="text-gray-500">No events</p>
               </div>
             )}
           </div>
