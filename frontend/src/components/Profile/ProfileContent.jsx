@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { message } from "antd";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
+import UserInbox from "./UserInbox";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -99,12 +100,7 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex justify-end p-4 mr-3 pt-[90px]">
-        <p className="text-gray-600 text-flex">
-          Welcome! <span style={{ color: "#DB4444" }}>{displayName}</span>
-        </p>
-      </div>
+    <div className="w-full pt-[90px]">
       {/* profile */}
       {active === 1 && (
         <>
@@ -255,6 +251,12 @@ const ProfileContent = ({ active }) => {
           <AllOrders />
         </div>
       )}
+      {/* Inbox */}
+      {active === 4 && (
+        <div>
+          <UserInbox />
+        </div>
+      )}
 
       {/* Track order */}
       {active === 5 && (
@@ -282,9 +284,9 @@ const ProfileContent = ({ active }) => {
 
 const AllOrders = () => {
   const { user } = useSelector((state) => state.user);
-  console.log(useSelector((state) => state.order)+" asd");
+  console.log(useSelector((state) => state.order) + " asd");
   const { orders } = useSelector((state) => state.order);
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {

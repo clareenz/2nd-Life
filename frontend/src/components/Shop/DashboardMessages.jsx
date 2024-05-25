@@ -1,19 +1,21 @@
+import { Input } from "antd";
 import axios from "axios";
-import React, { useRef, useState } from "react";
-import { useEffect } from "react";
-import { server, backend_url } from "../../server";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
-import styles from "../../styles/styles";
 import { TfiGallery } from "react-icons/tfi";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
+import { backend_url, server } from "../../server";
+import styles from "../../styles/styles";
+import Paragraph from "antd/es/typography/Paragraph";
+import { BsThreeDots } from "react-icons/bs";
 const ENDPOINT = "http://localhost:4000/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const DashboardMessages = () => {
-  const { seller, isLoading } = useSelector((state) => state.seller);
+  const { seller, loading } = useSelector((state) => state.seller);
   const [conversations, setConversations] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [currentChat, setCurrentChat] = useState();
@@ -25,7 +27,7 @@ const DashboardMessages = () => {
   const [images, setImages] = useState();
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
-
+  const [activeKey, setActiveKey] = useState(null);
 
   useEffect(() => {
     socketId.on("getMessage", (data) => {
@@ -42,7 +44,7 @@ const DashboardMessages = () => {
       currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
-
+  
   useEffect(() => {
     const getConversation = async () => {
       try {
@@ -52,7 +54,6 @@ const DashboardMessages = () => {
             withCredentials: true,
           }
         );
-
         setConversations(response.data.conversations);
       } catch (error) {
         // console.log(error);
@@ -63,8 +64,8 @@ const DashboardMessages = () => {
 
   useEffect(() => {
     if (seller) {
-      const sellerId = seller?._id;
-      socketId.emit("addUser", sellerId);
+      const userId = seller?._id;
+      socketId.emit("addUser", userId);
       socketId.on("getUsers", (data) => {
         setOnlineUsers(data);
       });
@@ -74,10 +75,8 @@ const DashboardMessages = () => {
   const onlineCheck = (chat) => {
     const chatMembers = chat.members.find((member) => member !== seller?._id);
     const online = onlineUsers.find((user) => user.userId === chatMembers);
-
     return online ? true : false;
   };
-
   // get messages
   useEffect(() => {
     const getMessage = async () => {
@@ -92,11 +91,9 @@ const DashboardMessages = () => {
     };
     getMessage();
   }, [currentChat]);
-
   // create new message
   const sendMessageHandler = async (e) => {
     e.preventDefault();
-
     const message = {
       sender: seller._id,
       text: newMessage,
@@ -106,13 +103,11 @@ const DashboardMessages = () => {
     const receiverId = currentChat.members.find(
       (member) => member.id !== seller._id
     );
-
     socketId.emit("sendMessage", {
       senderId: seller._id,
       receiverId,
       text: newMessage,
     });
-
     try {
       if (newMessage !== "") {
         await axios
@@ -129,13 +124,11 @@ const DashboardMessages = () => {
       console.log(error);
     }
   };
-
   const updateLastMessage = async () => {
     socketId.emit("updateLastMessage", {
       lastMessage: newMessage,
       lastMessageId: seller._id,
     });
-
     await axios
       .put(`${server}/conversation/update-last-message/${currentChat._id}`, {
         lastMessage: newMessage,
@@ -151,19 +144,19 @@ const DashboardMessages = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImages(reader.result);
-        imageSendingHandler(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    setImages(file);
+    imageSendingHandler(file);
   };
 
   const imageSendingHandler = async (e) => {
+    const formData = new FormData();
+
+    formData.append("images", e);
+    formData.append("sender", seller._id);
+    formData.append("text", newMessage);
+    formData.append("conversationId", currentChat._id);
+
     const receiverId = currentChat.members.find(
       (member) => member !== seller._id
     );
@@ -176,11 +169,10 @@ const DashboardMessages = () => {
 
     try {
       await axios
-        .post(`${server}/message/create-new-message`, {
-          images: e,
-          sender: seller._id,
-          text: newMessage,
-          conversationId: currentChat._id,
+        .post(`${server}/message/create-new-message`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((res) => {
           setImages();
@@ -203,55 +195,116 @@ const DashboardMessages = () => {
   };
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
 
   return (
-    <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
+    //inbox na walang open na chat
+    <div className="w-full 300px:w-[90%] bg-white m-5 shadow rounded-2xl h-[85vh]">
       {!open && (
-        <>
-          <h1 className="text-center text-[30px] py-3 font-Poppins">
-            All Messages
-          </h1>
-          {/* All messages list */}
-          {conversations &&
-            conversations.map((item, index) => (
-              <MessageList
-                data={item}
-                key={index}
-                index={index}
-                setOpen={setOpen}
-                setCurrentChat={setCurrentChat}
-                me={seller._id}
-                setUserData={setUserData}
-                userData={userData}
-                online={onlineCheck(item)}
-                setActiveStatus={setActiveStatus}
-                isLoading={isLoading}
-              />
-            ))}
-        </>
-      )}
+        <div>
+          {" "}
+          <div className="flex flex-row items-center justify-between border-b">
+            <h1 className=" px-10 text-3xl py-6 font-Poppins w-1/2">
+              All Messages
+            </h1>
 
-      {open && (
-        <SellerInbox
-          setOpen={setOpen}
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          sendMessageHandler={sendMessageHandler}
-          messages={messages}
-          sellerId={seller._id}
-          userData={userData}
-          activeStatus={activeStatus}
-          scrollRef={scrollRef}
-          setMessages={setMessages}
-          handleImageUpload={handleImageUpload}
-        />
+            <div className="flex justify-center w-1/2">
+              <div className="px-6 w-full">
+                <Input
+                  placeholder="Search..."
+                  className="h-[30px] w-full border-gray-300 border-[1px] rounded-3xl text-sm custom-input"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="h-[73vh]"
+            style={{ scrollbarWidth: "xs", overflowY: "auto" }}
+          >
+            {/* All messages list */}
+            <div>
+              {conversations &&
+                conversations.map((item, index) => (
+                  <MessageList
+                    data={item}
+                    key={index}
+                    index={index}
+                    setOpen={setOpen}
+                    setCurrentChat={setCurrentChat}
+                    me={seller._id}
+                    setUserData={setUserData}
+                    userData={userData}
+                    online={onlineCheck(item)}
+                    setActiveStatus={setActiveStatus}
+                    loading={loading}
+                    setActiveKey={setActiveKey}
+                    activeKey={activeKey}
+                  />
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {open && ( //message sidebar
+        <div className="flex flex-row">
+          <div className="hidden lg:flex flex-col w-[50%] pt-4 h-[85vh]">
+            <div className=" flex flex-col rounded-2xl">
+              {" "}
+              <div>
+                <h1 className="text-center text-[30px] pt-4 font-Poppins">
+                  All Messages
+                </h1>
+              </div>
+              <div className="p-2 rounded-2xl text-black">
+                <Input
+                  placeholder="Search..."
+                  className="h-[30px] rounded-2xl text-sm custom-input"
+                />
+              </div>
+            </div>
+            <div className="bg-white h-[85vh] overflow-y-scroll ">
+              {/* All messages list */}
+              {conversations &&
+                conversations.map((item, index) => (
+                  <MessageList
+                    data={item}
+                    key={index}
+                    index={index}
+                    setOpen={setOpen}
+                    setCurrentChat={setCurrentChat}
+                    me={seller._id}
+                    setUserData={setUserData}
+                    userData={userData}
+                    online={onlineCheck(item)}
+                    setActiveStatus={setActiveStatus}
+                    loading={loading}
+                    setActiveKey={setActiveKey}
+                    activeKey={activeKey}
+                  />
+                ))}
+            </div>
+          </div>
+          <div className="w-[100%]">
+            <SellerInbox
+              setOpen={setOpen}
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              sendMessageHandler={sendMessageHandler}
+              messages={messages}
+              sellerId={seller._id}
+              userData={userData}
+              activeStatus={activeStatus}
+              scrollRef={scrollRef}
+              setMessages={setMessages}
+              handleImageUpload={handleImageUpload}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
 };
-
 const MessageList = ({
   data,
   index,
@@ -261,20 +314,41 @@ const MessageList = ({
   setUserData,
   online,
   setActiveStatus,
-  isLoading,
+  loading,
+  userData,
+  handleDelete,
+  setActiveKey,
+  activeKey,
 }) => {
-  console.log(data);
+  const [showModal, setShowModal] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
+
+
+  const handleDotsClick = (event) => {
+    event.stopPropagation();
+    setShowModal(!showModal);
+  };
+
+  const handleDeleteClick = (event) => {
+    event.stopPropagation();
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const confirmDelete = () => {
+    handleDelete(data._id); // Call the delete function
+    setShowConfirm(false);
+  };
+
   const handleClick = (id) => {
     navigate(`/dashboard-messages?${id}`);
     setOpen(true);
   };
-  const [active, setActive] = useState(0);
 
   useEffect(() => {
     const userId = data.members.find((user) => user != me);
-
     const getUser = async () => {
       try {
         const res = await axios.get(`${server}/user/user-info/${userId}`);
@@ -288,42 +362,82 @@ const MessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-3 ${
-        active === index ? "bg-[#00000010]" : "bg-transparent"
-      }  cursor-pointer`}
+    className={`relative flex p-6 cursor-pointer rounded-2xl ${
+      activeKey === index ? "bg-[#FFEAE8] before:inset-0 " : "bg-white"
+    } hover:bg-[#F0F0F0]  before:absolute before:border-4 before:border-white before:rounded-2xl before:hover:inset-0 items-center justify-between`}
       onClick={(e) =>
-        setActive(index) ||
-        handleClick(data._id) ||
+        setActiveKey(index)||
         setCurrentChat(data) ||
-        setUserData(user) ||
-        setActiveStatus(online)
+        setUserData(user) || //name ng user
+        setActiveStatus(online) ||
+        setOpen(true)||
+        handleClick(data._id)
       }
     >
-      <div className="relative">
-        <img
-        src={`${backend_url}${user?.avatar}`}
-        alt=""
-          className="w-[50px] h-[50px] rounded-full"
-        />
-        {online ? (
-          <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
-        ) : (
-          <div className="w-[12px] h-[12px] bg-[#c7b9b9] rounded-full absolute top-[2px] right-[2px]" />
+      <div className="flex">
+        <div className="relative ">
+          <img
+            src={`${backend_url}${user?.avatar}`}
+            alt=""
+            className="w-[50px] h-[50px] rounded-full"
+          />
+          {online ? (
+            <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
+          ) : (
+            <div className="w-[12px] h-[12px] bg-[#c7b9b9] rounded-full absolute top-[2px] right-[2px]" />
+          )}
+        </div>
+
+        <div clasdive="pl-3">
+          <h1 className="text-[18px] px-2">{user?.name}</h1>
+          <p className="text-[16px] px-2 text-[#000c] ">
+            {!loading && data?.lastMessageId !== userData?._id
+              ? "You:"
+              : userData?.name.split(" ")[0] + ": "}
+            {data?.lastMessage &&
+              data?.lastMessage.split(/\s+/).slice(0, 4).join(" ")}
+          </p>
+        </div>
+      </div>
+      <div className="flex-shrink-0 relative">
+        <BsThreeDots onClick={handleDotsClick} className="cursor-pointer" />
+        {showModal && (
+          <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+            <button
+              onClick={handleDeleteClick}
+              className="w-full text-center px-4 py-2 text-black hover:bg-slate-100"
+            >
+              Delete
+            </button>
+          </div>
         )}
       </div>
-      <div className="pl-3">
-        <h1 className="text-[18px]">{user?.name}</h1>
-        <p className="text-[16px] text-[#000c]">
-          {!isLoading && data?.lastMessageId !== user?._id
-            ? "You:"
-            : user?.name.split(" ")[0] + ": "}{" "}
-          {data?.lastMessage}
-        </p>
-      </div>
+      {showConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <p className="mb-4">
+              Are you sure you want to delete this message?
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="mr-2 px-4 py-2 custom-cancel-button-class rounded-full border "
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-[#006665] rounded-full text-white hover:bg-[#077773]"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
 
 const SellerInbox = ({
   scrollRef,
@@ -338,112 +452,129 @@ const SellerInbox = ({
   handleImageUpload,
 }) => {
   return (
-    <div className="w-full min-h-full flex flex-col justify-between">
-      {/* message header */}
-      <div className="w-full flex p-3 items-center justify-between bg-slate-200">
-        <div className="flex">
-          <img
-            src={`${backend_url}${userData?.avatar}`}
-            alt=""
-            className="w-[60px] h-[60px] rounded-full"
-          />
-          <div className="pl-3">
-            <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
-            <h1>{activeStatus ? "Active Now" : ""}</h1>
-          </div>
-        </div>
-        <AiOutlineArrowRight
-          size={20}
-          className="cursor-pointer"
-          onClick={() => setOpen(false)}
-        />
-      </div>
-
-      {/* messages */}
-      <div className="px-3 h-[65vh] py-3 overflow-y-scroll">
-        {messages &&
-          messages.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={`flex w-full my-2 ${
-                  item.sender === sellerId ? "justify-end" : "justify-start"
-                }`}
-                ref={scrollRef}
-              >
-                {item.sender !== sellerId && (
-                  <img
-                  src={`${backend_url}${userData?.avatar}`}
-                    className="w-[40px] h-[40px] rounded-full mr-3"
-                    alt=""
-                  />
-                )}
-                <div>
-                  {item.text !== "" && (
-                    <div
-                      className={`w-max p-2 rounded ${
-                        item.sender === sellerId ? "bg-[#000]" : "bg-[#38c776]"
-                      } text-[#fff] h-min`}
-                    >
-                      <p>{item.text}</p>
-                    </div>
-                  )}
-                  {item.image && (
-                    <div className="w-full">
-                      <img
-                        src={item.image}
-                        alt="Sent Image"
-                        className="w-full rounded-lg mt-2"
-                      />
-                    </div>
-                  )}
-                  <p className="text-[12px] text-[#000000d3] pt-1">
-                    {format(item.createdAt)}
-                  </p>
-                </div>
+    <div className="justify-center">
+      <div className="bg-white rounded-2xl ">
+        <div className=" bg-white w-[100%] h-[85vh] flex flex-col p-2 z-30 rounded-2xl">
+          {/* message header */}
+          <div className=" flex p-2 items-center justify-between border-b bg-white ">
+            <div className="flex">
+              <img
+                src={`${backend_url}${userData?.avatar}`}
+                alt=""
+                className="w-[55px] h-[55px] rounded-full"
+              />
+              <div className="pl-3">
+                <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
+                <h1>{activeStatus ? "Active Now" : "Offline"}</h1>
               </div>
-            );
-          })}
-      </div>
-
-      {/* send message input */}
-      <form
-        aria-required={true}
-        className="p-3 relative w-full flex justify-between items-center"
-        onSubmit={sendMessageHandler}
-      >
-        <div className="w-[30px]">
-          <input
-            type="file"
-            name=""
-            id="image"
-            className="hidden"
-            onChange={handleImageUpload}
-          />
-          <label htmlFor="image">
-            <TfiGallery className="cursor-pointer" size={20} />
-          </label>
-        </div>
-        <div className="w-full">
-          <input
-            type="text"
-            required
-            placeholder="Enter your message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            className={`${styles.input}`}
-          />
-          <input type="submit" value="Send" className="hidden" id="send" />
-          <label htmlFor="send">
-            <AiOutlineSend
+            </div>
+            <AiOutlineArrowRight
               size={20}
-              className="absolute right-4 top-5 cursor-pointer"
+              className="cursor-pointer"
+              onClick={() => setOpen(false)}
             />
-          </label>
+          </div>
+          {/* messages */}
+          <div className="px-3 h-[85vh] py-3 overflow-y-scroll">
+            {messages &&
+              messages.map((item, index) => {
+                return (
+                  <div
+                    className={`flex w-full my-2  ${
+                      item.sender === sellerId ? "justify-end" : "justify-start"
+                    }`}
+                    ref={scrollRef}
+                  >
+                    {item.sender !== sellerId && (
+                      <img
+                        src={`${backend_url}${userData?.avatar}`}
+                        className="w-[40px] h-[40px] rounded-full mr-3"
+                        alt=""
+                      />
+                    )}
+                    {item.images && (
+                      <div>
+                        {" "}
+                        <img
+                          src={`${backend_url}${item.images}`}
+                          className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
+                        />
+                        <p className="text-[12px] text-[#000000d3] pt-1">
+                          {format(item.createdAt)}
+                        </p>
+                      </div>
+                    )}
+                    {item.text !== "" && (
+                      <div>
+                        <div
+                          className={`p-2 rounded-xl ${
+                            item.sender === sellerId
+                              ? "bg-[#006665]"
+                              : "bg-[#DFDFDF]"
+                          } h-min w-auto items-center`}
+                        >
+                          <Paragraph
+                            className={`${
+                              item.sender === sellerId
+                                ? "text-white"
+                                : "text-black"
+                            }`}
+                          >
+                            {item.text}
+                          </Paragraph>
+                        </div>
+
+                        <p className="text-[12px] text-[#000000d3] pt-1">
+                          {format(item.createdAt)}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+
+          {/* send message input */}
+          <form
+            aria-required={true}
+            className="chat-form relative w-full flex justify-between items-center"
+            onSubmit={sendMessageHandler}
+          >
+            <div className="file-upload-container w-[30px] relative">
+              <input
+                type="file"
+                name="image"
+                id="image"
+                className="hidden"
+                onChange={handleImageUpload}
+                aria-label="Upload Image"
+              />
+              <label htmlFor="image">
+                <TfiGallery className="cursor-pointer" size={20} />
+              </label>
+            </div>
+            <div className="input-container w-full relative flex items-center px-1">
+              <input
+                type="text"
+                required
+                placeholder="Enter your message..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                className={`chat-input px-3 ${styles.input}`}
+                aria-label="Message input"
+              />
+              <button
+                type="submit"
+                aria-label="Send message"
+                className="send-button absolute right-4 top-1/2 transform -translate-y-1/2"
+              >
+                <AiOutlineSend size={20} className="cursor-pointer" />
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
-
 export default DashboardMessages;

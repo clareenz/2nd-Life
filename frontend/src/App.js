@@ -20,9 +20,10 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
-  UserInbox,
+  UserInboxPage,
   SearchResult,
   OrderDetailsPage,
+  TrackOrderPage,
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -37,7 +38,18 @@ import {
   ShopInboxPage,
   ShopAllOrders,
   ShopOrderDetails,
+  ShopWithDrawMoneyPage,
+  ShopAllRefunds,
 } from "./routes/ShopRoutes";
+import {
+  AdminDashboardPage,
+  AdminDashboardUsers,
+  AdminDashboardSellers,
+  AdminDashboardOrders,
+  AdminDashboardProducts,
+  AdminDashboardEvents,
+  AdminDashboardWithdraw,
+} from "./routes/AdminRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
@@ -51,6 +63,7 @@ import axios from "axios";
 import { server } from "./server";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import ProtectedAdminRoute from "./routes/ProtectedAdminRoute.js";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -66,10 +79,10 @@ const App = () => {
     Store.dispatch(getAllEvents());
     getStripeApikey();
   }, []);
-console.log(stripeApikey);
+  console.log(stripeApikey);
   return (
     <BrowserRouter>
-    {stripeApikey && (
+      {stripeApikey && (
         <Elements stripe={loadStripe(stripeApikey)}>
           <Routes>
             <Route
@@ -83,7 +96,7 @@ console.log(stripeApikey);
           </Routes>
         </Elements>
       )}
-       <Routes>
+      <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
@@ -125,11 +138,27 @@ console.log(stripeApikey);
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInboxPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/user/order/:id"
           element={
             <ProtectedRoute>
               <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/track/order/:id"
+          element={
+            <ProtectedRoute>
+              <TrackOrderPage />
             </ProtectedRoute>
           }
         />
@@ -178,6 +207,14 @@ console.log(stripeApikey);
           }
         />
         <Route
+          path="/dashboard-refunds"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllRefunds />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
           path="/order/:id"
           element={
             <SellerProtectedRoute>
@@ -201,15 +238,7 @@ console.log(stripeApikey);
             </SellerProtectedRoute>
           }
         />
-        
-        <Route
-          path="/inbox"
-          element={
-            <ProtectedRoute>
-              <UserInbox />
-            </ProtectedRoute>
-          }
-        />
+
         <Route
           path="/dashboard-messages"
           element={
@@ -223,6 +252,14 @@ console.log(stripeApikey);
           element={
             <SellerProtectedRoute>
               <ShopAllCoupouns />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-withdraw-money"
+          element={
+            <SellerProtectedRoute>
+              <ShopWithDrawMoneyPage />
             </SellerProtectedRoute>
           }
         />
@@ -245,6 +282,64 @@ console.log(stripeApikey);
 
         <Route path="/search-results" element={<SearchResult />} />
 
+        {/* Admin Routes */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardPage />
+            </ProtectedAdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin-sellers"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardSellers />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-users"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardUsers />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-orders"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardOrders />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-products"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardProducts />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-events"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardEvents />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin-withdraw-request"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboardWithdraw />
+            </ProtectedAdminRoute>
+          }
+        />
       </Routes>
       <ToastContainer
         position="bottom-center"

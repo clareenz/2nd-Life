@@ -32,6 +32,7 @@ exports.isSeller = catchAsyncErrors(async(req,res,next) => {
     next();
 });
 
+
 exports.verifyResetToken = async (req, res, next) => {
     const { token } = req.params; // Assuming the token is provided in the URL parameters
 
@@ -60,3 +61,13 @@ exports.verifyResetToken = async (req, res, next) => {
         return next(new ErrorHandler("Invalid or expired token", 401));
     }
 };
+
+exports.isAdmin = (...roles) => {
+    return (req,res,next) => {
+        if(!roles.includes(req.user.role)){
+            return next(new ErrorHandler(`${req.user.role} can not access this resources!`))
+        };
+        next();
+    }
+}
+
