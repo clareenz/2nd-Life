@@ -1,6 +1,8 @@
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import ActivationPage from "../pages/ActivationPage";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 import HomePage from "../pages/HomePage";
 import ProductsPage from "../pages/ProductsPage";
 import BestSellingPage from "../pages/BestSellingPage";
@@ -18,10 +20,13 @@ import UserInboxPage from "../pages/UserInboxPage";
 import SearchResult from "../pages/SearchResult";
 import OrderDetailsPage from "../pages/OrderDetailsPage"
 import TrackOrderPage from "../pages/TrackOrderPage";
+
 export {
   LoginPage,
   SignupPage,
   ActivationPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
   HomePage,
   ProductsPage,
   BestSellingPage,
