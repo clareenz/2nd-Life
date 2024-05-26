@@ -36,7 +36,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
       avatar: fileUrl,
     };
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `https://frontend-topaz-ten.vercel.app/activation/${activationToken}`;
     try {
       await sendMail({
           name: name, // Pass the user's name here
