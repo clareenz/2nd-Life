@@ -39,7 +39,7 @@ const ProductsPage = () => {
         <div>
           <div className="pt-[96px]">
             <Header activeHeading={3} />
-            <div className="flex items-center absolute left-10 px-[10mm]">
+            <div className="flex items-center absolute left-10 xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
               <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                 {/* Small box */}
               </div>
@@ -49,8 +49,18 @@ const ProductsPage = () => {
             </div>
             <br />
             <br />
-            <div className={`${styles.section} px-[10mm]`}>
-              <div className=" mt-[25px] grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
+            <div
+              className={`${styles.section} xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]`}
+            >
+              <div
+                className=" mt-[25px] grid grid-cols-2 gap-[20px]
+              sm:grid-cols-3 sm:gap-[13px]
+              md:grid-cols-4 md:gap-[13px]
+              lg:grid-cols-5 lg:gap-[20px]
+              xl:grid-cols-6 xl:gap-[20px]
+              2xl:grid-cols-7 2xl:gap-[20px]
+               mb-12"
+              >
                 {data &&
                   data.map((i, index) => <ProductCard data={i} key={index} />)}
               </div>

@@ -224,24 +224,29 @@ const DashboardMessages = () => {
           >
             {/* All messages list */}
             <div>
-              {conversations &&
+              {conversations && conversations.length > 0 ? (
                 conversations.map((item, index) => (
                   <MessageList
-                    data={item}
-                    key={index}
-                    index={index}
-                    setOpen={setOpen}
-                    setCurrentChat={setCurrentChat}
-                    me={seller._id}
-                    setUserData={setUserData}
-                    userData={userData}
-                    online={onlineCheck(item)}
-                    setActiveStatus={setActiveStatus}
-                    loading={loading}
-                    setActiveKey={setActiveKey}
-                    activeKey={activeKey}
+                  data={item}
+                  key={index}
+                  index={index}
+                  setOpen={setOpen}
+                  setCurrentChat={setCurrentChat}
+                  me={seller._id}
+                  setUserData={setUserData}
+                  userData={userData}
+                  online={onlineCheck(item)}
+                  setActiveStatus={setActiveStatus}
+                  loading={loading}
+                  setActiveKey={setActiveKey}
+                  activeKey={activeKey}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="flex items-center justify-center p-[20px] text-gray-400">
+                  <p>No Conversations Available!</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -400,7 +405,7 @@ const MessageList = ({
 
         <div clasdive="pl-3">
           <h1 className="text-[18px] px-2">{user?.name}</h1>
-          <p className="text-[16px] px-2 text-[#000c] ">
+          <p className="text-[16px] px-2 text-[#000c] marquee">
             {!loading && data?.lastMessageId !== userData?._id
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}

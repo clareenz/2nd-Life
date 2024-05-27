@@ -5,7 +5,7 @@ import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import HomePage from "../pages/HomePage";
 import ProductsPage from "../pages/ProductsPage";
-import BestSellingPage from "../pages/BestSellingPage";
+import StorePage from "../pages/StorePage";
 import EventsPage from "../pages/EventsPage";
 import FAQPage from "../pages/FAQPage";
 import CheckoutPage from "../pages/CheckoutPage";
@@ -29,7 +29,7 @@ export {
   ResetPasswordPage,
   HomePage,
   ProductsPage,
-  BestSellingPage,
+  StorePage,
   EventsPage,
   FAQPage,
   CheckoutPage,

@@ -10,7 +10,7 @@ import {
   SellerCard2,
 } from "../components/Route/ProductCard/SellerCard";
 
-const BestSellingPage = () => {
+const StorePage = () => {
   const [sellerData, setSellerData] = useState([]);
   const [view, setView] = useState("grid"); // Default view is grid
   const { allProducts, isLoading } = useSelector((state) => state.products);
@@ -40,14 +40,16 @@ const BestSellingPage = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="px-[10mm]">
+        <div className="xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
           <Header activeHeading={2} />
           <div className="flex justify-end mt-4 mr-9 mb-8 pt-[80px] ">
-            <div className="flex items-center mb-4 absolute left-10 px-[10mm]">
+            <div className="flex items-center mb-4 absolute left-10 xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
               <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center ">
                 {/* Small box */}
               </div>
-              <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Stores</h1>
+              <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">
+                Stores
+              </h1>
             </div>
             {/* Buttons to toggle view */}
             <button
@@ -69,7 +71,15 @@ const BestSellingPage = () => {
           </div>
           <div className={`${styles.section} pt-[15px]`}>
             {view === "grid" ? (
-              <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-4 xl:gap-[15px] mb-12">
+              <div
+                className="grid grid-cols-2 gap-[20px]
+              sm:grid-cols-2 sm:gap-[13px]
+              md:grid-cols-3 md:gap-[13px]
+              lg:grid-cols-4 lg:gap-[20px]
+              xl:grid-cols-5 xl:gap-[25px]
+              2xl:grid-cols-6 2xl:gap-[30px]
+              mb-12"
+              >
                 {sellerData &&
                   sellerData.map((seller, index) => (
                     <SellerCard data={seller} key={index} />
@@ -95,4 +105,4 @@ const BestSellingPage = () => {
   );
 };
 
-export default BestSellingPage;
+export default StorePage;
