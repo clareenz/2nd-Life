@@ -199,13 +199,12 @@ const UserInbox = () => {
   }, [messages]);
 
   return (
+    //inbox na walang open convo
     <div className="w-[100%] 300px:w-[90%] bg-white m-5 shadow rounded-2xl h-[85vh]">
       {!open && (
         <div>
           <div className="flex flex-row items-center justify-between border-b">
-            <h1 className=" px-10 text-3xl py-6 font-Poppins w-1/2">
-              All Messages
-            </h1>
+            <h1 className="px-10 text-3xl py-6 font-Poppins w-1/2">Chats</h1>
 
             <div className="flex justify-center w-1/2">
               <div className="px-6 w-full">
@@ -223,7 +222,7 @@ const UserInbox = () => {
           >
             {/* All messages list */}
             <div>
-              {conversations &&
+              {conversations && conversations.length > 0 ? (
                 conversations.map((item, index) => (
                   <MessageList
                     data={item}
@@ -240,7 +239,12 @@ const UserInbox = () => {
                     setActiveKey={setActiveKey}
                     activeKey={activeKey}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="flex items-center justify-center p-[20px] text-gray-400">
+                  <p>No Conversations Available!</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -252,7 +256,7 @@ const UserInbox = () => {
               {" "}
               <div>
                 <h1 className="text-center text-[30px] pt-4 font-Poppins">
-                  All Messages
+                  Chats
                 </h1>
               </div>
               <div className="p-2 rounded-2xl text-black">
@@ -391,7 +395,8 @@ const MessageList = ({
             {!isLoading && data?.lastMessageId !== userData?._id
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}{" "}
-            {data?.lastMessage}
+            {data?.lastMessage &&
+              data?.lastMessage.split(/\s+/).slice(0, 4).join(" ")}
           </p>
         </div>
       </div>

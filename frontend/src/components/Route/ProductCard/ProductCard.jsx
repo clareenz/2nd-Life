@@ -7,7 +7,7 @@ import {
   AiFillHeart,
   AiOutlineEye,
   AiOutlineHeart,
-  AiOutlineShoppingCart
+  AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,8 +19,7 @@ import {
 import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
-import { toast } from "react-toastify";
-import Ratings from "../../Products/Ratings";
+import { IoBagHandleOutline } from "react-icons/io5";
 
 const ProductCard = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -31,11 +30,10 @@ const ProductCard = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   const buyNow = () => {
+    setOpen(!open);
     navigate("/checkout", { state: { productData: data } });
   };
-  
 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
@@ -72,19 +70,17 @@ const ProductCard = ({ data }) => {
 
   return (
     <>
-      <div
-        className="w-[250px] h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer"
-      >
+      <div className=" max-w-[220px] max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt=""
-            className="w-[90%] h-[170px] object-contain"
+            className="w-[100%] h-[170px] "
           />
         </Link>
         <div className="flex flex-row justify-between mt-2">
-          <div>
+          <div className="marquee">
             <Link
               to={`/shop/preview/${data?.shop._id}`}
               className={`${styles.shop_name} text-[12px]`}
@@ -93,13 +89,15 @@ const ProductCard = ({ data }) => {
             </Link>
           </div>
           <div>
-            <h5 className="text-[12px] mt-1">({data.shop.ratings}) Ratings</h5>
+            <h5 className="text-[12px] mt-1 marquee">
+              ({data.shop.ratings}) Ratings
+            </h5>
           </div>
         </div>
         <Link to={`/product/${data._id}`}>
-          <h4 className="pb-3 font-[500] mt-3">
-            {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
-          </h4>
+          <div className="marquee">
+            <h4 className="pb-3 font-[500] mt-3">{data.name}</h4>
+          </div>
         </Link>
 
         {/* side options */}
@@ -107,7 +105,7 @@ const ProductCard = ({ data }) => {
           {click ? (
             <AiFillHeart
               size={22}
-              className="absolute cursor-pointer right-2 top-5"
+              className="absolute cursor-pointer right-4 top-5  bg-white rounded-full p-1 w-7 h-7 "
               onClick={() => removeFromWishlistHandler(data)}
               color={click ? "#FF8474" : "#333"}
               title="Remove from wishlist"
@@ -115,7 +113,7 @@ const ProductCard = ({ data }) => {
           ) : (
             <AiOutlineHeart
               size={22}
-              className="absolute cursor-pointer right-2 top-5"
+              className="absolute cursor-pointer right-4 top-5  bg-white rounded-full p-1 w-7 h-7"
               onClick={() => addToWishlistHandler(data)}
               color={click ? "#FF8474" : "#333"}
               title="Add to Wishlist"
@@ -123,46 +121,52 @@ const ProductCard = ({ data }) => {
           )}
           <AiOutlineEye
             size={22}
-            className="absolute cursor-pointer right-2 top-14"
+            className="absolute cursor-pointer right-4 top-14 bg-white rounded-full p-1 w-7 h-7"
             onClick={() => setOpen(!open)}
             color="#333"
             title="Quick View"
           />
           <AiOutlineShoppingCart
             size={22}
-            className="absolute cursor-pointer right-2 top-24"
+            className="absolute cursor-pointer right-4 top-24  bg-white rounded-full p-1 w-7 h-7"
             onClick={() => addToCartHandler(data._id)}
             color="#444"
             title="Add to Cart"
+          />
+          <IoBagHandleOutline
+            size={22}
+            className="absolute cursor-pointer right-4 top-32 bg-white rounded-full p-1 w-7 h-7"
+            onClick={buyNow}
+            color="#333"
+            title="Buy Now"
           />
           {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
         </div>
 
         <div className="flex items-center justify-between py-2">
-            <div className="flex">
-              <h5 className={`${styles.productDiscountPrice}`}>
-                ₱
-                {data.discountPrice === 0
-                  ? data.discountPrice
-                  : data.discountPrice}
-              </h5>
-              <h4 className={`${styles.price}`}>
-                {data.originalPrice ? "₱" + data.originalPrice : null}
-              </h4>
-            </div>
-            <span className="font-[400] text-[17px] text-[#68d284]">
-            {data?.sold_out} sold
-            </span>
-            <div>
-              {/* Buy Now button */}
-              <div
-                className={`${styles.button5} flex items-center justify-center rounded-3xl`}
-                onClick={buyNow}
-              >
-                <span className="text-[12px]" >Buy Now</span>
-              </div>
-            </div>
+          <div className="flex">
+            <h5 className={`${styles.productDiscountPrice}`}>
+              ₱
+              {data.discountPrice === 0
+                ? data.discountPrice
+                : data.discountPrice}
+            </h5>
+            <h4 className={`${styles.price}`}>
+              {data.originalPrice ? "₱" + data.originalPrice : null}
+            </h4>
           </div>
+          <span className="font-[400] text-[17px] text-[#68d284]">
+            {data?.sold_out} sold
+          </span>
+          {/* <div> //buy now button
+            <div
+              className={`${styles.button5} flex items-center justify-center rounded-3xl`}
+              onClick={buyNow}
+            >
+              <span className="text-[12px]">Buy Now</span>
+            </div>
+          </div> */}
+        </div>
       </div>
     </>
   );
@@ -261,35 +265,36 @@ const ProductCard2 = ({ data }) => {
         </div>
 
         <div className="flex items-center justify-between py-2">
-            <div className="flex">
-              <h5 className={`${styles.productDiscountPrice}`}>
-                ₱
-                {data.originalPrice === 0
-                  ? data.originalPrice
-                  : data.originalPrice}
-              </h5>
-              <h4 className={`${styles.price}`}>
-                {data.originalPrice ? "₱" + data.originalPrice : null}
-              </h4>
-            </div>
-             <span className="font-[400] text-[17px] text-[#68d284]">
-             {data?.sold_out} sold
-            </span> 
-            <div>
-              {/* Buy Now button */}
-              <div
-                className={`${styles.button5} flex items-center justify-center rounded-3xl`}
-                onClick={() => setOpen(!open)}
-              >
-                <span className="text-[12px]" >View</span>
-                {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
-              </div>
+          <div className="flex">
+            <h5 className={`${styles.productDiscountPrice}`}>
+              ₱
+              {data.originalPrice === 0
+                ? data.originalPrice
+                : data.originalPrice}
+            </h5>
+            <h4 className={`${styles.price}`}>
+              {data.originalPrice ? "₱" + data.originalPrice : null}
+            </h4>
+          </div>
+          <span className="font-[400] text-[17px] text-[#68d284]">
+            {data?.sold_out} sold
+          </span>
+          <div>
+            {/* Buy Now button */}
+            <div
+              className={`${styles.button5} flex items-center justify-center rounded-3xl`}
+              onClick={() => setOpen(!open)}
+            >
+              <span className="text-[12px]">View</span>
+              {open ? (
+                <ProductDetailsCard setOpen={setOpen} data={data} />
+              ) : null}
             </div>
           </div>
+        </div>
       </div>
     </>
   );
 };
 
 export { ProductCard, ProductCard2 };
-
