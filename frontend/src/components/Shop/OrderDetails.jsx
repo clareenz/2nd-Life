@@ -61,7 +61,7 @@ const OrderDetails = () => {
 
   return (
     <div className={`py-4 min-h-screen ${styles.section}`}>
-      <div className="w-full flex items-center justify-between">
+      <div className="flex items-center justify-between w-full">
         <div className="flex items-center">
           <BsFillBagFill size={30} color="crimson" />
           <h1 className="pl-2 text-[25px]">Order Details</h1>
@@ -75,7 +75,7 @@ const OrderDetails = () => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center justify-between pt-6">
+      <div className="flex items-center justify-between w-full pt-6">
         <h5 className="text-[#00000084]">
           Order ID: <span>#{data?._id?.slice(0, 8)}</span>
         </h5>
@@ -89,7 +89,7 @@ const OrderDetails = () => {
       <br />
       {data &&
         data?.cart.map((item, index) => (
-          <div className="w-full flex items-start mb-5">
+          <div className="flex items-start w-full mb-5">
             <img
               src={`${backend_url}/${item.images[0]}`}
               alt=""
@@ -104,20 +104,22 @@ const OrderDetails = () => {
           </div>
         ))}
 
-      <div className="border-t w-full text-right">
+      <div className="w-full text-right border-t">
         <h5 className="pt-3 text-[18px]">
           Total Price: <strong>US${data?.totalPrice}</strong>
         </h5>
       </div>
       <br />
       <br />
-      <div className="w-full 800px:flex items-center">
+      <div className="items-center w-full 800px:flex">
         <div className="w-full 800px:w-[60%]">
           <h4 className="pt-3 text-[20px] font-[600]">Shipping Address:</h4>
           <h4 className="pt-3 text-[20px]">
             {data?.shippingAddress.address +
               " " +
-              data?.shippingAddress.city + " " + data?.shippingAddress.zipCode}
+              data?.shippingAddress.city +
+              " " +
+              data?.shippingAddress.zipCode}
           </h4>
           <h4 className=" text-[20px]">{data?.shippingAddress.country}</h4>
           <h4 className=" text-[20px]">{data?.shippingAddress.city}</h4>

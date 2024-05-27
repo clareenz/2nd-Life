@@ -15,7 +15,13 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const { trace } = require("console");
 
-//create new user account
+// Load environment variables
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({
+    path: "config/.env",
+  });
+}
+
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -40,7 +46,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
       avatar: fileUrl,
     };
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `${process.env.FRONTEND_URL}/activation/${activationToken}`;
     try {
       await sendMail({
         name: name, // Pass the user's name here

@@ -72,7 +72,6 @@ router.get(
 // delete event of a shop
 router.delete(
   "/delete-shop-event/:id",
-  isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const productId = req.params.id;
@@ -159,6 +158,5 @@ router.get(
     }
   })
 );
-
 
 module.exports = router;

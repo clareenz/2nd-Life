@@ -10,9 +10,9 @@ import { TfiGallery } from "react-icons/tfi";
 import styles from "../../styles/styles";
 import Paragraph from "antd/es/typography/Paragraph";
 import { BsThreeDots } from "react-icons/bs";
-import { Input } from "antd";
+import { Input, message } from "antd";
 
-const ENDPOINT = "http://localhost:4000/";
+const ENDPOINT = "https://twondlife-socket-server.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const UserInbox = () => {
@@ -205,9 +205,8 @@ const UserInbox = () => {
         <div>
           <div className="flex flex-row items-center justify-between border-b">
             <h1 className="px-10 text-3xl py-6 font-Poppins w-1/2">Chats</h1>
-
             <div className="flex justify-center w-1/2">
-              <div className="px-6 w-full">
+              <div className="w-full px-6">
                 <Input
                   placeholder="Search..."
                   className="h-[30px] w-full border-gray-300 border-[1px] rounded-3xl text-sm custom-input"
@@ -252,14 +251,14 @@ const UserInbox = () => {
       {open && ( //message sidebar
         <div className="flex flex-row">
           <div className="hidden lg:flex flex-col w-[50%] pt-4 h-[85vh]">
-            <div className=" flex flex-col rounded-2xl">
+            <div className="flex flex-col rounded-2xl">
               {" "}
               <div>
                 <h1 className="text-center text-[30px] pt-4 font-Poppins">
                   Chats
                 </h1>
               </div>
-              <div className="p-2 rounded-2xl text-black">
+              <div className="p-2 text-black rounded-2xl">
                 <Input
                   placeholder="Search..."
                   className="h-[30px] rounded-2xl text-sm custom-input"
@@ -318,7 +317,6 @@ const MessageList = ({
   online,
   setActiveStatus,
   isLoading,
-  handleDelete,
   setActiveKey,
   activeKey,
 }) => {
@@ -334,12 +332,22 @@ const MessageList = ({
 
   const handleDeleteClick = (event) => {
     event.stopPropagation();
+    
     setShowConfirm(true);
     setShowModal(false);
   };
 
-  const confirmDelete = () => {
-    handleDelete(data._id); // Call the delete function
+  const confirmDelete = async () => {
+    console.log(data._id)
+    axios
+      .delete(`${server}/conversation/delete-conversation/${data._id}`)
+      .then((res) => {
+        message.success(res.data.message);
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
     setShowConfirm(false);
   };
 
@@ -400,13 +408,13 @@ const MessageList = ({
           </p>
         </div>
       </div>
-      <div className="flex-shrink-0 relative">
-        <BsThreeDots onClick={handleDotsClick} className="cursor-pointer" />
+      <div className="relative flex-shrink-0">
+        <BsThreeDots onClick={handleDotsClick  || setCurrentChat(data)} className="cursor-pointer" />
         {showModal && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+          <div className="absolute right-0 z-10 w-48 mt-2 bg-white border rounded-lg shadow-lg">
             <button
               onClick={handleDeleteClick}
-              className="w-full text-center px-4 py-2 text-black hover:bg-slate-100"
+              className="w-full px-4 py-2 text-center text-black hover:bg-slate-100"
             >
               Delete
             </button>
@@ -414,15 +422,15 @@ const MessageList = ({
         )}
       </div>
       {showConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="p-6 bg-white rounded-lg shadow-lg">
             <p className="mb-4">
               Are you sure you want to delete this message?
             </p>
             <div className="flex justify-end">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="mr-2 px-4 py-2 custom-cancel-button-class rounded-full border "
+                className="px-4 py-2 mr-2 border rounded-full custom-cancel-button-class "
               >
                 Cancel
               </button>
@@ -456,7 +464,7 @@ const SellerInbox = ({
       <div className="bg-white rounded-2xl">
         <div className=" bg-white w-[100%] h-[85vh] flex flex-col p-2 z-30 rounded-2xl">
           {/* message header */}
-          <div className="flex p-2 items-center justify-between border-b bg-white">
+          <div className="flex items-center justify-between p-2 bg-white border-b">
             <div className="flex">
               <img
                 src={`${backend_url}${userData?.avatar}`}
@@ -537,7 +545,7 @@ const SellerInbox = ({
           {/* send message input */}
           <form
             aria-required={true}
-            className="chat-form relative w-full flex justify-between items-center"
+            className="relative flex items-center justify-between w-full chat-form"
             onSubmit={sendMessageHandler}
           >
             <div className="file-upload-container w-[30px] relative">
@@ -553,7 +561,7 @@ const SellerInbox = ({
                 <TfiGallery className="cursor-pointer" size={20} />
               </label>
             </div>
-            <div className="input-container w-full relative flex items-center px-1">
+            <div className="relative flex items-center w-full px-1 input-container">
               <input
                 type="text"
                 required
@@ -566,7 +574,7 @@ const SellerInbox = ({
               <button
                 type="submit"
                 aria-label="Send message"
-                className="send-button absolute right-4 top-1/2 transform -translate-y-1/2"
+                className="absolute transform -translate-y-1/2 send-button right-4 top-1/2"
               >
                 <AiOutlineSend size={20} className="cursor-pointer" />
               </button>
