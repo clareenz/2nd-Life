@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://frontend-topaz-ten.vercel.app"],
+    origin: [`https://frontend-topaz-ten.vercel.app`,'http://localhost:3000'],
     credentials: true,
   })
 );
