@@ -10,6 +10,7 @@ import { EventCard, EventCard2 } from "./EventCard";
 const Events = () => {
   const { allEvents, isLoading } = useSelector((state) => state.events);
 
+  console.log(allEvents);
   return (
     <div>
       {!isLoading && (
@@ -22,7 +23,6 @@ const Events = () => {
               Popular Events
             </h1>
           </div>
-
           {allEvents && allEvents.length > 0 ? (
             <div className="">
               <EventCard data={allEvents[0]} />
