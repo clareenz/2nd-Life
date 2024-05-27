@@ -23,13 +23,15 @@ const Events = () => {
               Popular Events
             </h1>
           </div>
-
-          <div className="">
-            {allEvents.length !== 0 && (
-              <EventCard data={allEvents && allEvents[0]} />
-            )}
-            <h4>{allEvents?.length === 0 && "No Events have!"}</h4>
-          </div>
+          {allEvents && allEvents.length > 0 ? (
+            <div className="">
+              <EventCard data={allEvents[0]} />
+            </div>
+          ) : (
+            <div className="w-full flex justify-center items-center text-md">
+              <p className="text-gray-500">No events</p>
+            </div>
+          )}
         </div>
       )}
     </div>

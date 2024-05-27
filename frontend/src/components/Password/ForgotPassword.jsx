@@ -2,7 +2,6 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import { message } from "antd";
 
 const ForgotPassword = () => {
@@ -10,10 +9,9 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Send POST request to forgot password endpoint
     try {
-      const response = await axios.post(`${server}/forgot-password`, { email });
+      const response = await axios.post(`${server}/user/forgot-password`, { email });
       message.success(response.data.message);
       setEmail(""); // Clear email field after successful submission
     } catch (error) {
