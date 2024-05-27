@@ -10,7 +10,7 @@ import { TfiGallery } from "react-icons/tfi";
 import styles from "../../styles/styles";
 import Paragraph from "antd/es/typography/Paragraph";
 import { BsThreeDots } from "react-icons/bs";
-import { Input } from "antd";
+import { Input, message } from "antd";
 
 const ENDPOINT = "https://twondlife-socket-server.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
@@ -203,7 +203,7 @@ const UserInbox = () => {
       {!open && (
         <div>
           <div className="flex flex-row items-center justify-between border-b">
-            <h1 className="w-1/2 px-10 py-6 text-3xl  font-Poppins">
+            <h1 className="w-1/2 px-10 py-6 text-3xl font-Poppins">
               All Messages
             </h1>
 
@@ -248,7 +248,7 @@ const UserInbox = () => {
       {open && ( //message sidebar
         <div className="flex flex-row">
           <div className="hidden lg:flex flex-col w-[50%] pt-4 h-[85vh]">
-            <div className="flex flex-col  rounded-2xl">
+            <div className="flex flex-col rounded-2xl">
               {" "}
               <div>
                 <h1 className="text-center text-[30px] pt-4 font-Poppins">
@@ -314,7 +314,6 @@ const MessageList = ({
   online,
   setActiveStatus,
   isLoading,
-  handleDelete,
   setActiveKey,
   activeKey,
 }) => {
@@ -330,12 +329,22 @@ const MessageList = ({
 
   const handleDeleteClick = (event) => {
     event.stopPropagation();
+    
     setShowConfirm(true);
     setShowModal(false);
   };
 
-  const confirmDelete = () => {
-    handleDelete(data._id); // Call the delete function
+  const confirmDelete = async () => {
+    console.log(data._id)
+    axios
+      .delete(`${server}/conversation/delete-conversation/${data._id}`)
+      .then((res) => {
+        message.success(res.data.message);
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
     setShowConfirm(false);
   };
 
@@ -396,7 +405,7 @@ const MessageList = ({
         </div>
       </div>
       <div className="relative flex-shrink-0">
-        <BsThreeDots onClick={handleDotsClick} className="cursor-pointer" />
+        <BsThreeDots onClick={handleDotsClick  || setCurrentChat(data)} className="cursor-pointer" />
         {showModal && (
           <div className="absolute right-0 z-10 w-48 mt-2 bg-white border rounded-lg shadow-lg">
             <button
