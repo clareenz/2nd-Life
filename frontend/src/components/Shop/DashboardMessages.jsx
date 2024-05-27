@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, message } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
@@ -337,11 +337,21 @@ const MessageList = ({
     setShowModal(false);
   };
 
-  const confirmDelete = () => {
-    handleDelete(data._id); // Call the delete function
+  const confirmDelete = async () => {
+    console.log(data._id)
+    axios
+      .delete(`${server}/conversation/delete-conversation/${data._id}`)
+      .then((res) => {
+        message.success(res.data.message);
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
     setShowConfirm(false);
   };
 
+  
   const handleClick = (id) => {
     navigate(`/dashboard-messages?${id}`);
     setOpen(true);
