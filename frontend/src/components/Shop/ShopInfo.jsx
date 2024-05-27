@@ -46,10 +46,16 @@ const ShopInfo = ({ isOwner }) => {
   }, []);
 
   const logoutHandler = async () => {
-    axios.get(`${server}/shop/logout`, {
-      withCredentials: true,
-    });
-    window.location.reload();
+    axios
+      .get(`${server}/shop/logout`, { withCredentials: true })
+      .then((res) => {
+        message.success(res.data.message);
+        window.location.reload(true);
+        navigate("/shop-login");
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
   };
 
   
@@ -95,7 +101,7 @@ const ShopInfo = ({ isOwner }) => {
           <Text>{data.description}</Text>
         </div>
         {!isOwner && (
-          <div className=" justify-center px-20">
+          <div className="justify-center px-20 ">
             <div
               className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
               onClick={handleMessageSubmit}
@@ -109,7 +115,7 @@ const ShopInfo = ({ isOwner }) => {
         <div className="px-3 py-2">
           <div className="flex items-center">
             <EnvironmentOutlined />
-            <Title level={5} className="ml-2 mb-0">
+            <Title level={5} className="mb-0 ml-2">
               Address
             </Title>
           </div>
@@ -118,7 +124,7 @@ const ShopInfo = ({ isOwner }) => {
         <div className="px-3 py-2">
           <div className="flex items-center">
             <PhoneOutlined />
-            <Title level={5} className="ml-2 mb-0">
+            <Title level={5} className="mb-0 ml-2">
               Phone Number
             </Title>
           </div>
@@ -127,7 +133,7 @@ const ShopInfo = ({ isOwner }) => {
         <div className="px-3 py-2">
           <div className="flex items-center">
             <ShoppingCartOutlined />
-            <Title level={5} className="ml-2 mb-0">
+            <Title level={5} className="mb-0 ml-2">
               Total Products
             </Title>
           </div>
@@ -136,7 +142,7 @@ const ShopInfo = ({ isOwner }) => {
         <div className="px-3 py-2">
           <div className="flex items-center">
             <StarOutlined />
-            <Title level={5} className="ml-2 mb-0">
+            <Title level={5} className="mb-0 ml-2">
               Shop Ratings
             </Title>
           </div>
@@ -145,14 +151,14 @@ const ShopInfo = ({ isOwner }) => {
         <div className="px-3 py-2">
           <div className="flex items-center">
             <CalendarOutlined />
-            <Title level={5} className="ml-2 mb-0">
+            <Title level={5} className="mb-0 ml-2">
               Joined On
             </Title>
           </div>
           <Text className="ml-6">{data?.createdAt?.slice(0, 10)}</Text>
         </div>
         {isOwner && (
-          <div className="py-3 px-4">
+          <div className="px-4 py-3">
             <Link to="/settings">
               <div
                 type="primary"
