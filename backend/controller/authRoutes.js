@@ -8,13 +8,13 @@ const REDIRECT_URI = 'https://frontend-topaz-ten.vercel.app/oauth/fb_login';
 
 
 // Initiates the Facebook Login flow
-router.get('/auth/facebook', (req, res) => {
+router.get('/oauth', (req, res) => {
   const url = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&scope=email`;
   res.redirect(url);
 });
 
 // Callback URL for handling the Facebook Login response
-router.get('/auth/facebook/callback', async (req, res) => {
+router.get('/oauth/fb_login', async (req, res) => {
   const { code } = req.query;
 
   try {
