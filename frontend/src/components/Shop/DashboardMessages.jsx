@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, message } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
@@ -224,24 +224,29 @@ const DashboardMessages = () => {
           >
             {/* All messages list */}
             <div>
-              {conversations &&
+              {conversations && conversations.length > 0 ? (
                 conversations.map((item, index) => (
                   <MessageList
-                    data={item}
-                    key={index}
-                    index={index}
-                    setOpen={setOpen}
-                    setCurrentChat={setCurrentChat}
-                    me={seller._id}
-                    setUserData={setUserData}
-                    userData={userData}
-                    online={onlineCheck(item)}
-                    setActiveStatus={setActiveStatus}
-                    loading={loading}
-                    setActiveKey={setActiveKey}
-                    activeKey={activeKey}
+                  data={item}
+                  key={index}
+                  index={index}
+                  setOpen={setOpen}
+                  setCurrentChat={setCurrentChat}
+                  me={seller._id}
+                  setUserData={setUserData}
+                  userData={userData}
+                  online={onlineCheck(item)}
+                  setActiveStatus={setActiveStatus}
+                  loading={loading}
+                  setActiveKey={setActiveKey}
+                  activeKey={activeKey}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="flex items-center justify-center p-[20px] text-gray-400">
+                  <p>No Conversations Available!</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -337,11 +342,21 @@ const MessageList = ({
     setShowModal(false);
   };
 
-  const confirmDelete = () => {
-    handleDelete(data._id); // Call the delete function
+  const confirmDelete = async () => {
+    console.log(data._id)
+    axios
+      .delete(`${server}/conversation/delete-conversation/${data._id}`)
+      .then((res) => {
+        message.success(res.data.message);
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
     setShowConfirm(false);
   };
 
+  
   const handleClick = (id) => {
     navigate(`/dashboard-messages?${id}`);
     setOpen(true);
@@ -390,7 +405,7 @@ const MessageList = ({
 
         <div clasdive="pl-3">
           <h1 className="text-[18px] px-2">{user?.name}</h1>
-          <p className="text-[16px] px-2 text-[#000c] ">
+          <p className="text-[16px] px-2 text-[#000c] marquee">
             {!loading && data?.lastMessageId !== userData?._id
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}

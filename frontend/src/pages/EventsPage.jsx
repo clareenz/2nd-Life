@@ -25,8 +25,8 @@ const EventsPage = () => {
         <div>
           <div>
             <Header activeHeading={4} />
-            <div className="flex justify-end mt-4 mr-9 mb-8 pt-[80px] px-[10mm]">
-              <div className="flex items-center mb-4 absolute left-10 px-[10mm]">
+            <div className="flex justify-end mt-4 mr-9 mb-8 pt-[80px] xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
+              <div className="flex items-center mb-4 absolute left-10 xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
                 <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                   {/* Small box */}
                 </div>

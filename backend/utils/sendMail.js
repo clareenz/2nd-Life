@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const sendMail = async (options) => {
   // Read the HTML template file
-  const htmlTemplate = fs.readFileSync('./frontend/src/pages/emailTemplate.html', 'utf8');
+  const htmlTemplate = fs.readFileSync('../frontend/src/pages/emailTemplate.html', 'utf8');
 
   // Replace placeholders with actual values
   const htmlContent = htmlTemplate

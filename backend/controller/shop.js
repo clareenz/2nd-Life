@@ -4,6 +4,7 @@ const router = express.Router();
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
+const sendMailSeller = require("../utils/sendMailSeller");
 const sendToken = require("../utils/jwtToken");
 const Shop = require("../model/shop");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
@@ -11,6 +12,13 @@ const { upload } = require("../multer");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendShopToken = require("../utils/shopToken");
+
+// Load environment variables
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({
+    path: "config/.env",
+  });
+}
 
 // create shop
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
@@ -43,18 +51,18 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
     };
 
     const activationToken = createActivationToken(seller);
-
-    const activationUrl = `https://frontend-topaz-ten.vercel.app/seller/activation/${activationToken}`;
+    const activationUrlSeller = `${process.env.FRONTEND_URL}/seller/activation/${activationToken}`;
 
     try {
-      await sendMail({
+      await sendMailSeller({
+        name: seller.name,
         email: seller.email,
         subject: "Activate your Shop",
-        activationUrl: activationUrl,
+        activationUrlSeller: activationUrlSeller,
       });
       res.status(201).json({
         success: true,
-        message: `please check your email:- ${seller.email} to activate your shop!`,
+        message: `Please check your email (${seller.email}) to activate your shop!`,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -63,6 +71,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
     return next(new ErrorHandler(error.message, 400));
   }
 });
+
 
 // create activation token
 const createActivationToken = (seller) => {

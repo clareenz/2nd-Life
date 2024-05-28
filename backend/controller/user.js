@@ -8,6 +8,7 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
+const sendMail1 = require("../utils/senMail1");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
 const user = require("../model/user");
@@ -15,7 +16,13 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const { trace } = require("console");
 
-//create new user account
+// Load environment variables
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({
+    path: "config/.env",
+  });
+}
+
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -40,7 +47,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
       avatar: fileUrl,
     };
     const activationToken = createActivationToken(user);
-    const activationUrl = `https://frontend-topaz-ten.vercel.app/activation/${activationToken}`;
+    const activationUrl = `${process.env.FRONTEND_URL}/activation/${activationToken}`;
     try {
       await sendMail({
         name: name, // Pass the user's name here
@@ -356,7 +363,7 @@ router.get(
 //forgot password
 router.post(
   "/forgot-password",
-  catchAsyncErrors(async (req, res) => {
+  catchAsyncErrors(async (req, res, next) => {
     try {
       const user = await User.findOne({ email: req.body.email });
       if (!user) {
@@ -367,33 +374,24 @@ router.post(
         expiresIn: "10m",
       });
 
-      const transporter = nodemailer.createTransport({
-        service: process.env.SMPT_SERVICE,
-        auth: {
-          user: process.env.SMPT_MAIL,
-          pass: process.env.SMPT_PASSWORD,
-        },
-      });
+      const resetLink = `http://localhost:3000/reset-password/${token}`;
 
-      const mailOptions = {
-        from: process.env.SMPT_MAIL,
-        to: req.body.email,
-        subject: "Reset Password",
-        html: `<h1>Reset Your Password</h1>
-    <p>Click on the following link to reset your password:</p>
-    <a href="http://localhost:3000/reset-password/${token}">http://localhost:3000/reset-password/${token}</a>
-    <p>The link will expire in 10 minutes.</p>
-    <p>If you didn't request a password reset, please ignore this email.</p>`,
-      };
-
-      transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          return res.status(500).send({ message: err.message });
-        }
-        res.status(200).send({ message: "Email sent" });
-      });
+      try {
+        await sendMail1({
+          name: user.name || 'User', // Assuming you have a name field
+          email: user.email,
+          subject: "Password Reset",
+          resetLink: resetLink,
+        });
+        res.status(201).json({
+          success: true,
+          message: "Email sent successfully",
+        });
+      } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+      }
     } catch (error) {
-      res.status(500).send({ message: err.message });
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );

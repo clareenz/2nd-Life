@@ -9,7 +9,7 @@ import {
   ResetPasswordPage,
   HomePage,
   ProductsPage,
-  BestSellingPage,
+  StorePage,
   EventsPage,
   FAQPage,
   CheckoutPage,
@@ -118,7 +118,7 @@ const App = () => {
         />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
-        <Route path="/stores" element={<BestSellingPage />} />
+        <Route path="/stores" element={<StorePage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route

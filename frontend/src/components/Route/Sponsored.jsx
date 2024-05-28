@@ -7,44 +7,46 @@ import styles from "../../styles/styles";
 
 const Sponsored = () => {
   return (
-    <div
-    className={`${styles.section} hidden sm:block bg-white py-10 mb-12 cursor-pointer rounded-xl`}
-    >
-      <div className=" flex flex-row justify-center">
-        <div className="">
-        <img
-            src="sponsors.png"
-            style={{width:"150px", objectFit:"contain"}}
-            alt=""
-          />
-        </div>
-        <div className="">
-        <img
-            src="sponsors.png"
-            style={{width:"150px", objectFit:"contain"}}
-            alt=""
-          />
-        </div>
-        <div className="">
-          <img
-            src="sponsors.png"
-            alt=""
-            style={{width:"150px", objectFit:"contain"}}
-          />
-        </div>
-        <div className="">
-          <img
-            src="sponsors.png"
-            alt=""
-            style={{width:"150px", objectFit:"contain"}}
-          />
-        </div>
-        <div className="">
-          <img
-            src="sponsors.png"
-            alt=""
-            style={{width:"150px", objectFit:"contain"}}
-          />
+    <div className="pt-12">
+      <div
+        className={`${styles.section} hidden sm:block bg-white py-10  mb-12 cursor-pointer rounded-xl`}
+      >
+        <div className=" flex flex-row justify-center">
+          <div className="">
+            <img
+              src="sponsors.png"
+              style={{ width: "150px", objectFit: "contain" }}
+              alt=""
+            />
+          </div>
+          <div className="">
+            <img
+              src="sponsors.png"
+              style={{ width: "150px", objectFit: "contain" }}
+              alt=""
+            />
+          </div>
+          <div className="">
+            <img
+              src="sponsors.png"
+              alt=""
+              style={{ width: "150px", objectFit: "contain" }}
+            />
+          </div>
+          <div className="">
+            <img
+              src="sponsors.png"
+              alt=""
+              style={{ width: "150px", objectFit: "contain" }}
+            />
+          </div>
+          <div className="">
+            <img
+              src="sponsors.png"
+              alt=""
+              style={{ width: "150px", objectFit: "contain" }}
+            />
+          </div>
         </div>
       </div>
     </div>
