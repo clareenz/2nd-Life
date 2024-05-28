@@ -38,6 +38,7 @@ const message = require("./controller/message");
 const payment = require("./controller/payment");
 const order = require("./controller/order");
 const withdraw = require("./controller/withdraw");
+const fbLogin = require("./controller/authRoutes");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/shop", shop);
@@ -49,6 +50,7 @@ app.use("/api/v2/message", message);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/order", order);
 app.use("/api/v2/withdraw", withdraw);
+app.use("/api/v2/fbLogin", fbLogin);
 
 // Error handling middleware
 app.use(ErrorHandler);
