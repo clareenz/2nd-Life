@@ -1,37 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
 import { backend_url } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../../redux/actions/cart";
+import { addToCart, removeFromCart, toggleSelectItem, clearCart } from "../../redux/actions/cart";
 import { message, Modal } from "antd";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { CiSquarePlus } from "react-icons/ci";
-import { CiSquareMinus } from "react-icons/ci";
+import { CiSquarePlus, CiSquareMinus } from "react-icons/ci";
 
 const Cart = ({ setOpenCart }) => {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    // Ensure every cart item has a `selected` field
+    cart.forEach((item) => {
+      if (typeof item.selected === 'undefined') {
+        dispatch(addToCart({ ...item, selected: true }));
+      }
+    });
+  }, [cart, dispatch]);
+
+  const handleSelect = (productId) => {
+    dispatch(toggleSelectItem(productId));
+  };
+
   const removeFromCartHandler = (data) => {
     dispatch(removeFromCart(data));
   };
 
-  const totalPrice = cart.reduce(
-    (acc, item) => acc + item.qty * item.discountPrice,
-    0
-  );
+  const totalPrice = cart
+    .filter(item => item.selected)
+    .reduce((acc, item) => acc + item.qty * item.discountPrice, 0);
 
   const quantityChangeHandler = (data) => {
     dispatch(addToCart(data));
   };
 
+  const handleDeleteAll = () => {
+    dispatch(clearCart());
+  };
+
   return (
     <Modal
       title="Your Cart"
-      visible={true} // Set this to true to display the modal
-      onCancel={() => setOpenCart(false)} // Handle closing the modal
+      visible={true}
+      onCancel={() => setOpenCart(false)}
       footer={null}
       style={{
         position: "fixed",
@@ -40,17 +55,16 @@ const Cart = ({ setOpenCart }) => {
         transform: "translate(0, 0)",
         margin: 0,
       }}
-      bodyStyle={{ maxHeight: "60vh", overflowY: "auto" }} // Added style for scrollbar
+      bodyStyle={{ maxHeight: "60vh", overflowY: "auto" }}
     >
       <div className="flex flex-col justify-between shadow-sm">
         {cart && cart.length === 0 ? (
-          <div className="w-full h-[300px]  flex items-center justify-center">
+          <div className="w-full h-[300px] flex items-center justify-center">
             <h5>Cart Items is empty!</h5>
           </div>
         ) : (
           <>
             <div>
-              {/* Item length */}
               <div className={`${styles.normalFlex} p-4`}>
                 <IoBagHandleOutline size={25} />
                 <h5 className="pl-2 text-[20px] font-[500]">
@@ -58,13 +72,13 @@ const Cart = ({ setOpenCart }) => {
                 </h5>
               </div>
 
-              {/* cart Single Items */}
               <div className="border-t">
                 {cart &&
                   cart.map((i, index) => (
                     <CartSingle
                       key={index}
                       data={i}
+                      handleSelect={handleSelect}
                       quantityChangeHandler={quantityChangeHandler}
                       removeFromCartHandler={removeFromCartHandler}
                     />
@@ -74,14 +88,20 @@ const Cart = ({ setOpenCart }) => {
 
             <div className="px-5 mb-3 mt-6 flex flex-row justify-between">
               <div>Total: ₱{totalPrice}</div>
-              {/* checkout buttons */}
-              <Link to="/checkout">
-                <div className={`${styles.cart_button}`}>
+              <div className="flex flex-row">
+                <button onClick={handleDeleteAll} className={`${styles.cart_button} mr-2`}>
                   <h1 className="text-[#fff] text-[15px] font-[400] px-3">
-                    Checkout Now
+                    Delete All
                   </h1>
-                </div>
-              </Link>
+                </button>
+                <Link to="/checkout">
+                  <div className={`${styles.cart_button}`}>
+                    <h1 className="text-[#fff] text-[15px] font-[400] px-3">
+                      Checkout Now
+                    </h1>
+                  </div>
+                </Link>
+              </div>
             </div>
           </>
         )}
@@ -90,7 +110,7 @@ const Cart = ({ setOpenCart }) => {
   );
 };
 
-const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
+const CartSingle = ({ data, handleSelect, quantityChangeHandler, removeFromCartHandler }) => {
   const [value, setValue] = useState(data.qty);
   const totalPrice = data.discountPrice * value;
 
@@ -106,7 +126,6 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
 
   const decrement = (data) => {
     if (value === 1) {
-      // Minimum quantity reached, do nothing or show a message
       return;
     }
     setValue(value - 1);
@@ -118,6 +137,11 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
     <div className="border-b p-4">
       <div className="flex flex-row justify-between">
         <div className="flex items-center">
+          <input
+            type="checkbox"
+            checked={data.selected}
+            onChange={() => handleSelect(data._id)}
+          />
           {data.stock > 1 ? (
             <>
               <div onClick={() => decrement(data)}>
@@ -132,13 +156,13 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
             <>
               <div className="text-gray-400 mt-1.5">
                 <button disabled>
-                <CiSquareMinus size={15} />
+                  <CiSquareMinus size={15} />
                 </button>
               </div>
               <div className="px-[10px]">{value}</div>
               <div className="text-gray-400 mt-1.5">
-              <button disabled>
-                <CiSquarePlus size={15} />
+                <button disabled>
+                  <CiSquarePlus size={15} />
                 </button>
               </div>
             </>
@@ -155,7 +179,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
               ₱{data.discountPrice} * {value}
             </h4>
             <h4 className="font-[600] text-[12px] pt-[3px] text-[#d02222] font-Roboto">
-              ₱{totalPrice}
+            ₱{totalPrice}
             </h4>
           </div>
         </div>
