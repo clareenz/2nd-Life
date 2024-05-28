@@ -32,7 +32,7 @@ const ProductCard = ({ data }) => {
 
   const buyNow = () => {
     setOpen(!open);
-    navigate("/checkout", { state: { productData: data } });
+    navigate("/checkoutBuyNow", { state: { productData: data } });
   };
 
   useEffect(() => {
@@ -182,7 +182,7 @@ const ProductCard2 = ({ data }) => {
   const dispatch = useDispatch();
 
   const buyNow = () => {
-    navigate("/checkout");
+    navigate("/checkoutBuyNow");
   };
 
   useEffect(() => {

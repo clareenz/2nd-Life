@@ -41,7 +41,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
 
   const buyNow = () => {
-    navigate("/checkout");
+    navigate("/checkoutBuyNow");
   };
 
   const handleMessageSubmit = async () => {
