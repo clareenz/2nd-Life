@@ -1,14 +1,14 @@
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 
-const sendMail = async (options) => {
+const sendMailSeller = async (options) => {
   // Read the HTML template file
-  const htmlTemplate = fs.readFileSync('../frontend/src/pages/emailTemplate.html', 'utf8');
+  const htmlTemplate = fs.readFileSync('../frontend/src/pages/emailTemplateSeller.html', 'utf8');
 
   // Replace placeholders with actual values
   const htmlContent = htmlTemplate
     .replace("{{name}}", options.name )
-    .replace("{{activationUrl}}", options.activationUrl);
+    .replace("{{activationUrlSeller}}", options.activationUrlSeller);
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMPT_HOST,
@@ -30,4 +30,4 @@ const sendMail = async (options) => {
   await transporter.sendMail(mailOptions);
 };
 
-module.exports = sendMail;
+module.exports = sendMailSeller;
