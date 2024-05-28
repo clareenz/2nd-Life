@@ -4,6 +4,7 @@ const router = express.Router();
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
+const sendMailSeller = require("../utils/sendMailSeller");
 const sendToken = require("../utils/jwtToken");
 const Shop = require("../model/shop");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
@@ -19,7 +20,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
-//create shop
+// create shop
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -50,14 +51,14 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
     };
 
     const activationToken = createActivationToken(seller);
-
-    const activationUrl = `${process.env.FRONTEND_URL}/seller/activation/${activationToken}`;
+    const activationUrlSeller = `${process.env.FRONTEND_URL}/seller/activation/${activationToken}`;
 
     try {
-      await sendMail({
+      await sendMailSeller({
+        name: seller.name,
         email: seller.email,
         subject: "Activate your Shop",
-        activationUrl: activationUrl,
+        activationUrlSeller: activationUrlSeller,
       });
       res.status(201).json({
         success: true,
@@ -70,6 +71,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
     return next(new ErrorHandler(error.message, 400));
   }
 });
+
 
 // create activation token
 const createActivationToken = (seller) => {

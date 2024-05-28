@@ -1,14 +1,15 @@
 const nodemailer = require("nodemailer");
 const fs = require("fs");
+const path = require("path");
 
-const sendMail = async (options) => {
+const sendMail1 = async (options) => {
   // Read the HTML template file
-  const htmlTemplate = fs.readFileSync('../frontend/src/pages/emailTemplate.html', 'utf8');
+  const htmlTemplate = fs.readFileSync(path.join(__dirname, '../../frontend/src/pages/passwordResetTemplate.html'), 'utf8');
 
   // Replace placeholders with actual values
   const htmlContent = htmlTemplate
-    .replace("{{name}}", options.name )
-    .replace("{{activationUrl}}", options.activationUrl);
+    .replace("{{name}}", options.name)
+    .replace("{{resetLink}}", options.resetLink);
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMPT_HOST,
@@ -27,7 +28,7 @@ const sendMail = async (options) => {
     html: htmlContent,
   };
 
-  await transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);  // Corrected from sendMail1 to sendMail
 };
 
-module.exports = sendMail;
+module.exports = sendMail1;
