@@ -4,7 +4,7 @@ import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
 import { backend_url } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart, toggleSelectItem, clearCart } from "../../redux/actions/cart";
+import { addToCart, removeFromCart, toggleSelectItem, selectAllItems, clearCart } from "../../redux/actions/cart";
 import { message, Modal } from "antd";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { CiSquarePlus, CiSquareMinus } from "react-icons/ci";
@@ -14,7 +14,6 @@ const Cart = ({ setOpenCart }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Ensure every cart item has a `selected` field
     cart.forEach((item) => {
       if (typeof item.selected === 'undefined') {
         dispatch(addToCart({ ...item, selected: true }));
@@ -24,6 +23,10 @@ const Cart = ({ setOpenCart }) => {
 
   const handleSelect = (productId) => {
     dispatch(toggleSelectItem(productId));
+  };
+
+  const handleSelectAll = (e) => {
+    dispatch(selectAllItems(e.target.checked));
   };
 
   const removeFromCartHandler = (data) => {
@@ -41,6 +44,8 @@ const Cart = ({ setOpenCart }) => {
   const handleDeleteAll = () => {
     dispatch(clearCart());
   };
+
+  const allSelected = cart.every(item => item.selected);
 
   return (
     <Modal
@@ -70,6 +75,13 @@ const Cart = ({ setOpenCart }) => {
                 <h5 className="pl-2 text-[20px] font-[500]">
                   {cart && cart.length} items
                 </h5>
+                <div className="ml-auto">
+                  <input
+                    type="checkbox"
+                    checked={allSelected}
+                    onChange={handleSelectAll}
+                  /> Select All
+                </div>
               </div>
 
               <div className="border-t">
@@ -179,7 +191,7 @@ const CartSingle = ({ data, handleSelect, quantityChangeHandler, removeFromCartH
               ₱{data.discountPrice} * {value}
             </h4>
             <h4 className="font-[600] text-[12px] pt-[3px] text-[#d02222] font-Roboto">
-            ₱{totalPrice}
+              ₱{totalPrice}
             </h4>
           </div>
         </div>

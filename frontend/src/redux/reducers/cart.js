@@ -27,5 +27,8 @@ export const cartReducer = createReducer(initialState, (builder) => {
     })
     .addCase('clearCart', (state) => {
       state.cart = [];
+    })
+    .addCase('selectAllItems', (state, action) => {
+      state.cart = state.cart.map((item) => ({ ...item, selected: action.payload }));
     });
 });
