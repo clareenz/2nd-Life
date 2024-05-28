@@ -70,14 +70,72 @@ const Login = () => {
     return () => clearTimeout(timeoutId);
   }, [email, password]); // Listen for changes in email and password fields
 
+  // Facebook Login Logic
+  useEffect(() => {
+    // Load and initialize the Facebook SDK
+    window.fbAsyncInit = function () {
+      window.FB.init({
+        appId: process.env.FB_APP_ID, // Replace with your Facebook App ID
+        cookie: true,
+        xfbml: true,
+        version: "v20.0", // Use the correct Graph API version
+      });
+
+      // Check login status
+      window.FB.getLoginStatus(function (response) {
+        statusChangeCallback(response);
+      });
+    };
+
+    // Load the SDK asynchronously
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+  }, []);
+
+  // Handle the response from FB.getLoginStatus
+  const statusChangeCallback = (response) => {
+    if (response.status === "connected") {
+      // Logged into your app and Facebook.
+      console.log("Welcome! Fetching your information....");
+      window.FB.api("/me", 'GET', { fields: "id,name,email" }, function (response) {
+        document.getElementById("profile").innerHTML =
+          "Good to see you, " +
+          response.name +
+          ". I see your email address is " +
+          response.email;
+      });
+    } else if (response.status === "not_authorized") {
+      // The person is logged into Facebook, but not your app.
+      console.log("Please log into this app.");
+    } else {
+      // The person is not logged into Facebook, so we're not sure if they are logged into this app or not.
+      console.log("Please log into Facebook.");
+    }
+  };
+
+  const handleFBLogin = () => {
+    window.FB.login(
+      function (response) {
+        statusChangeCallback(response);
+      },
+      { scope: "email" }
+    );
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
       {/* Left side with the image */}
       <div className="lg:w-flex md:w-1/3 sm:w-1/3 w-1/4">
-        <img
-          src="/2ndLife_Logo.png"
-          alt="2ndLife Logo"
-        />
+        <img src="/2ndLife_Logo.png" alt="2ndLife Logo" />
       </div>
 
       {/* Right side with the login form */}
@@ -195,9 +253,18 @@ const Login = () => {
                 <div className="flex-grow border-t border-gray"></div>
               </div>
 
-              <div className="flex mt-4 space-x-4">
+              <div
+                className="fb-login-button"
+                data-width="flex mt-4 space-x-4"
+                data-size=""
+                data-button-type=""
+                data-layout=""
+                data-auto-logout-link="true"
+                data-use-continue-as="false"
+              >
                 <button
                   type="button"
+                  onClick={handleFBLogin}
                   className="group relative flex-1 h-[40px] flex items-center justify-center py-2 px-4 border border-gray-350 text-sm font-medium rounded-3xl text-black hover:bg-gray-100"
                 >
                   <FaFacebook className="mr-2" />
