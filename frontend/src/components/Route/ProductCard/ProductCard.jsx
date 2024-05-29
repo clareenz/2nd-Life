@@ -78,7 +78,7 @@ const ProductCard = ({ data }) => {
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
           <img
-            src={`${backend_url}${data.images && data.images[0]}`}
+            src={`${data.images && data.images[0]?.url}`}
             alt=""
             className="w-[90%] h-[170px] object-contain"
           />
@@ -224,7 +224,7 @@ const ProductCard2 = ({ data }) => {
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
           <img
-            src={`${backend_url}${data.images && data.images[0]}`}
+            src={`${data.images && data.images[0]?.url}`}
             alt=""
             className="w-[90%] h-[170px] object-contain"
           />

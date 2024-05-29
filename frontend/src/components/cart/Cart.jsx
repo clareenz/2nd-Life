@@ -72,7 +72,7 @@ const Cart = ({ setOpenCart }) => {
               </div>
             </div>
 
-            <div className="px-5 mb-3 mt-6 flex flex-row justify-between">
+            <div className="flex flex-row justify-between px-5 mt-6 mb-3">
               <div>Total: ₱{totalPrice}</div>
               {/* checkout buttons */}
               <Link to="/checkout">
@@ -115,7 +115,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
   };
 
   return (
-    <div className="border-b p-4">
+    <div className="p-4 border-b">
       <div className="flex flex-row justify-between">
         <div className="flex items-center">
           {data.stock > 1 ? (
@@ -145,7 +145,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
           )}
 
           <img
-            src={`${backend_url}${data?.images[0]}`}
+            src={`${data?.images[0]?.url}`}
             alt=""
             className="w-[70px] h-min ml-2 mr-2 rounded-[5px]"
           />
@@ -160,7 +160,7 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
           </div>
         </div>
         <FaRegTrashCan
-          className="cursor-pointer justify-between mt-7"
+          className="justify-between cursor-pointer mt-7"
           onClick={() => removeFromCartHandler(data)}
         />
       </div>

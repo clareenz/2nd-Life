@@ -20,25 +20,30 @@ const ShopSettings = () => {
   };
 
   const handleImage = async (e) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    setAvatar(file);
+    const reader = new FileReader();
 
-    const formData = new FormData();
-    formData.append("image", e.target.files[0]);
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+        axios
+          .put(
+            `${server}/shop/update-shop-avatar`,
+            { avatar: reader.result },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            dispatch(loadSeller());
+            toast.success("Avatar updated successfully!");
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+      }
+    };
 
-    try {
-      const res = await axios.put(`${server}/shop/update-shop-avatar`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
-      dispatch(loadSeller());
-      toast.success("Avatar updated successfully!");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   const updateHandler = async (values) => {
@@ -79,8 +84,8 @@ const ShopSettings = () => {
             <img
               src={
                 avatar
-                  ? URL.createObjectURL(avatar)
-                  : `${backend_url}/${seller.avatar}`
+                  ? avatar
+                  : `${seller.avatar?.url}`
               }
               alt=""
               className="w-[200px] h-[200px] rounded-full cursor-pointer"

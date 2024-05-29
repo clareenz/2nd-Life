@@ -140,14 +140,14 @@ const ProductDetails = ({ data }) => {
 
   return (
     <div className="pt-[60px]">
-      <div className="bg-white p-5 mx-6 my-6 rounded-lg shadow ">
+      <div className="p-5 mx-6 my-6 bg-white rounded-lg shadow ">
         {data ? (
           <div className={`${styles.section3} w-[90%] 700px:w-[90%] `}>
             <div className="w-full py-5">
               <div className="block w-full 800px:flex">
                 <div className="w-full 800px:w-[50%]">
                   <img
-                    src={`${backend_url}${data && data.images[select]}`}
+                    src={`${data && data.images[select]?.url}`}
                     alt=""
                     className="w-auto"
                   />
@@ -160,7 +160,7 @@ const ProductDetails = ({ data }) => {
                           } cursor-pointer`}
                         >
                           <img
-                            src={`${backend_url}${i}`}
+                            src={`${i?.url}`}
                             alt=""
                             className="h-[200px] overflow-hidden mr-3 mt-3"
                             onClick={() => setSelect(index)}
@@ -208,7 +208,7 @@ const ProductDetails = ({ data }) => {
                           </div>
                         </>
                       ) : (
-                        <div className="text-gray-400 flex flex-row">
+                        <div className="flex flex-row text-gray-400">
                           <div>
                             <button disabled>
                               <CiSquareMinus size={30} />
@@ -268,12 +268,12 @@ const ProductDetails = ({ data }) => {
                     </div>
                   )}
 
-                  <div className="flex items-center pt-8 justify-between">
+                  <div className="flex items-center justify-between pt-8">
                     <div className="flex flex-row">
                       <div>
                         <Link to={`/shop/preview/${data?.shop._id}`}>
                           <img
-                            src={`${backend_url}${data?.shop?.avatar}`}
+                            src={`${data?.shop?.avatar?.url}`}
                             alt=""
                             className="w-[50px] h-[50px] rounded-full mr-2"
                           />
@@ -358,14 +358,14 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
           <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
             {data &&
               data.reviews.map((item, index) => (
-                <div className="w-full flex my-2">
+                <div className="flex w-full my-2">
                   <img
-                    src={`${backend_url}/${item.user.avatar}`}
+                    src={`${item.user.avatar?.url}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full"
                   />
                   <div className="pl-2">
-                    <div className="w-full flex items-center">
+                    <div className="flex items-center w-full">
                       <h1 className=" font-[500] mr-3">{item.user.name}</h1>
                       <Ratings rating={data?.ratings} />
                     </div>
@@ -374,7 +374,7 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
                 </div>
               ))}
 
-            <div className="w-full flex justify-center">
+            <div className="flex justify-center w-full">
               {data && data.reviews.length === 0 && (
                 <h5>No Reviews have for this product!</h5>
               )}
@@ -388,7 +388,7 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
                 <div>
                   <Link to={`/shop/preview/${data?.shop._id}`}>
                     <img
-                      src={`${backend_url}${data?.shop?.avatar}`}
+                      src={`${data?.shop?.avatar?.url}`}
                       alt=""
                       className="w-[50px] h-[50px] rounded-full mr-2"
                     />

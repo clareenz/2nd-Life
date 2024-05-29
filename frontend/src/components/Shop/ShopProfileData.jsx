@@ -64,7 +64,7 @@ const ShopProfileData = ({ isOwner }) => {
         </TabPane>
         <TabPane tab="Running Events" key="events">
           <Title level={5}>Running Events Content</Title>
-          <div className="w-full flex justify-center">
+          <div className="flex justify-center w-full">
             {/* Display running events */}
             <div className="text-[13px] rounded-md w-[70%]">
               {events &&
@@ -84,14 +84,14 @@ const ShopProfileData = ({ isOwner }) => {
           <div className="w-full">
             {allReviews && allReviews.length > 0 ? (
               allReviews.map((item, index) => (
-                <div className="w-full flex my-4" key={index}>
+                <div className="flex w-full my-4" key={index}>
                   <img
-                    src={`${backend_url}/${item.user.avatar}`}
+                    src={`${item.user.avatar?.url}`}
                     className="w-[50px] h-[50px] rounded-full"
                     alt={`${item.user.name}'s avatar`}
                   />
                   <div className="pl-2">
-                    <div className="flex w-full items-center">
+                    <div className="flex items-center w-full">
                       <h1 className="font-[600] pr-2">{item.user.name}</h1>
                       <Ratings rating={item.rating} />
                     </div>

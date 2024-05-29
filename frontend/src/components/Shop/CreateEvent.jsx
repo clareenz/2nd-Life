@@ -48,7 +48,7 @@ const CreateEvent = () => {
         endDateInput.min = minEndDate.toISOString().slice(0, 10);
       }
     }
-  };
+  }
 
   const handleEndDateChange = (date, dateString) => {
     setEndDate(dateString);
@@ -58,7 +58,7 @@ const CreateEvent = () => {
     setImages(fileList);
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const {
       name,
       description,
@@ -69,21 +69,46 @@ const CreateEvent = () => {
       stock,
     } = values;
 
-    const newForm = new FormData();
-    images.forEach((image) => {
-      newForm.append("images", image.originFileObj);
-    });
-    newForm.append("name", name);
-    newForm.append("description", description);
-    newForm.append("category", category);
-    newForm.append("tags", tags);
-    newForm.append("originalPrice", values.originalPrice || 0)
-    newForm.append("discountPrice", discountPrice);
-    newForm.append("stock", stock);
-    newForm.append("shopId", seller._id);
-    newForm.append("start_Date", startDate);
-    newForm.append("Finish_Date", endDate);
-    dispatch(createevent(newForm));
+    const base64Images = await Promise.all(
+      images.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file.originFileObj);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+        });
+      })
+    );
+
+    console.log(name)
+    console.log(description)
+    console.log(category)
+    console.log(tags)
+    console.log(0)
+    console.log(discountPrice)
+    console.log(stock)
+    console.log(seller._id)
+    console.log(startDate)
+    console.log(endDate)
+    console.log( base64Images)
+    
+
+
+    dispatch(
+      createevent({
+        name,
+        description,
+        category,
+        tags,
+        originalPrice: 0,
+        discountPrice,
+        stock,
+        shopId: seller._id,
+        start_Date: startDate,
+        Finish_Date: endDate,
+        images: base64Images,
+      })
+    );
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -170,9 +195,7 @@ const CreateEvent = () => {
             <label htmlFor="Original Price">
               <span className="text-red-500"></span>Original Price:{" "}
             </label>
-            <Form.Item
-              name="originalPrice"
-            >
+            <Form.Item name="originalPrice">
               <Input
                 id="originalPrice"
                 type="number"
@@ -180,9 +203,9 @@ const CreateEvent = () => {
                 className="custom-input rounded-2xl"
               />
               <span className="text-[12px] text-gray-400 flex items-center">
-                <PiWarningCircleLight className="mr-1 mb-5" />
-                Providing an original price (higher amount than the displayed price) can boost sales,
-                just ensure accurate pricing input.
+                <PiWarningCircleLight className="mb-5 mr-1" />
+                Providing an original price (higher amount than the displayed
+                price) can boost sales, just ensure accurate pricing input.
               </span>
             </Form.Item>
           </div>
@@ -231,7 +254,7 @@ const CreateEvent = () => {
           </div>
         </div>
 
-        <div className=" flex flex-row space-x-3">
+        <div className="flex flex-row space-x-3 ">
           <div className="input-wrapper w-[50%]">
             <label htmlFor="description">
               <span className="text-red-500">*</span>Description:
@@ -332,7 +355,7 @@ const CreateEvent = () => {
           </p>
         </div>
         <br />
-        <div className="justify-evenly space-x-2">
+        <div className="space-x-2 justify-evenly">
           <Button
             className="rounded-2xl"
             onClick={() => form.resetFields()}

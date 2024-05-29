@@ -53,8 +53,17 @@ const Signup = () => {
   };
 
   const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
+    const reader = new FileReader();
+
+    console.log(e.target.files[0])
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
+      }
+    };
+
+   
   };
 
   const validatePassword = () => {
@@ -62,11 +71,9 @@ const Signup = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|])[A-Za-z\d@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|]{6,}$/;
     return regex.test(password);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     // Validate that password and confirm password match
     if (password !== confirmPassword) {
@@ -89,8 +96,9 @@ const Signup = () => {
     newForm.append("email", email);
     newForm.append("password", password);
 
+    console.log(avatar);
     axios
-      .post(`${server}/user/create-user`, newForm, config)
+      .post(`${server}/user/create-user`, { name, email, password, avatar })
       .then((res) => {
         toast.success(res.data.message);
         setName("");
@@ -115,19 +123,19 @@ const Signup = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
       {/* Left side with the image */}
-      <div className="lg:w-flex md:w-1/3 sm:w-1/3 w-1/4">
+      <div className="w-1/4 lg:w-flex md:w-1/3 sm:w-1/3">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" />
       </div>
 
       {/* Right side with the form */}
       <div className="lg:w-1/2">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold text-center text-gray-900">
             Create an account
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-flex sm:max-w-sm">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="relative">
                 <input
@@ -178,7 +186,7 @@ const Signup = () => {
               </div>
 
               <div className="relative">
-                <div className="mt-1 relative">
+                <div className="relative mt-1">
                   <input
                     type={visible ? "text" : "password"}
                     name="password"
@@ -192,14 +200,14 @@ const Signup = () => {
                   />
                   {visible ? (
                     <AiOutlineEye
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
+                      className="absolute z-20 transform cursor-pointer right-2 top-2/4 -translate-y-2/4"
                       size={17}
                       style={{ color: passwordClicked ? "#006665" : "black" }}
                       onClick={() => setVisible(false)}
                     ></AiOutlineEye>
                   ) : (
                     <AiOutlineEyeInvisible
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
+                      className="absolute z-20 transform cursor-pointer right-2 top-2/4 -translate-y-2/4"
                       size={17}
                       style={{ color: passwordClicked ? "#006665" : "black" }}
                       onClick={() => setVisible(true)}
@@ -220,7 +228,7 @@ const Signup = () => {
 
               {/* Confirm Password input */}
               <div className="relative">
-                <div className="mt-1 relative">
+                <div className="relative mt-1">
                   <input
                     type={visible ? "text" : "confirmPassword"}
                     name="confirmPassword"
@@ -234,14 +242,14 @@ const Signup = () => {
                   />
                   {visible ? (
                     <AiOutlineEye
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
+                      className="absolute z-20 transform cursor-pointer right-2 top-2/4 -translate-y-2/4"
                       size={17}
                       style={{ color: passwordClicked ? "#006665" : "black" }}
                       onClick={() => setVisible(false)}
                     />
                   ) : (
                     <AiOutlineEyeInvisible
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
+                      className="absolute z-20 transform cursor-pointer right-2 top-2/4 -translate-y-2/4"
                       size={17}
                       style={{ color: passwordClicked ? "#006665" : "black" }}
                       onClick={() => setVisible(true)}
@@ -265,21 +273,21 @@ const Signup = () => {
                   htmlFor="avatar"
                   className="block text-sm font-medium text-gray-700"
                 ></label>
-                <div className="mt-2 flex items-center">
-                  <span className="inline-block h-8 rounded-full overflow-hidden">
+                <div className="flex items-center mt-2">
+                  <span className="inline-block h-8 overflow-hidden rounded-full">
                     {avatar ? (
                       <img
-                        src={URL.createObjectURL(avatar)}
+                        src={avatar}
                         alt="avatar"
-                        className="h-full w-full object-cover rounded-full"
+                        className="object-cover w-full h-full rounded-full"
                       />
                     ) : (
-                      <RxAvatar className="h-8 w-8" />
+                      <RxAvatar className="w-8 h-8" />
                     )}
                   </span>
                   <label
                     htmlFor="file-input"
-                    className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg bg-white hover:bg-gray-100"
+                    className="flex items-center justify-center px-4 py-2 ml-5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm bg hover:bg-gray-100"
                   >
                     <span>Upload a photo</span>
                     <input

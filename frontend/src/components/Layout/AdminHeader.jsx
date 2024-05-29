@@ -36,7 +36,7 @@ const AdminHeader = () => {
             />
           </Link>
             <img
-              src={`${backend_url}${user?.avatar}`}
+              src={`${user?.avatar?.url}`}
               alt=""
               className="ml-3 w-[34px] h-[35px] rounded-full object-cover"
             />

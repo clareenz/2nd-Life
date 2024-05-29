@@ -54,7 +54,7 @@ const EventCard = ({ active, data = {}, children }) => {
           activeEvent ? (
             <div className="flex flex-row justify-center slider-container">
               <img
-                src={`${backend_url}${data.images[activeIndex]}`}
+                src={`${data.images[activeIndex]?.url}`}
                 alt=""
                 onClick={showModal}
                 className=""
@@ -94,12 +94,12 @@ const EventCard = ({ active, data = {}, children }) => {
               </div>
             </div>
           ) : (
-            <div className="w-full flex justify-center items-center text-md">
+            <div className="flex items-center justify-center w-full text-md">
               <p className="text-gray-500">Event coming soon!</p>
             </div>
           )
         ) : (
-          <div className="w-full flex justify-center items-center text-md">
+          <div className="flex items-center justify-center w-full text-md">
             <p className="text-gray-500">No events</p>
           </div>
         )}
@@ -112,7 +112,7 @@ const EventCard = ({ active, data = {}, children }) => {
             <Link to={`/product/${data._id}?isEvent=true`}>
               {/* Display image */}
               <img
-                src={`${backend_url}${data.images && data.images[0]}`}
+                src={`${data.images && data.images[0]?.url}`}
                 alt=""
                 className="mb-4"
                 style={{ maxWidth: "100%", height: "auto" }}
@@ -124,7 +124,7 @@ const EventCard = ({ active, data = {}, children }) => {
               <div>
                 <Link to={`/shop/preview/${data?.shop?._id}`}>
                   <img
-                    src={`${backend_url}${data?.shop?.avatar}`}
+                    src={`${data?.shop?.avatar?.url}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full mr-2"
                   />
@@ -204,10 +204,10 @@ const EventCard2 = ({ active, data = {} }) => {
           activeEvent ? (
             <div className="flex flex-row slider-container">
               <img
-                src={`${backend_url}${data.images[activeIndex]}`}
+                src={`${data.images[activeIndex]?.url}`}
                 alt=""
                 onClick={showModal}
-                className=" w-auto"
+                className="w-auto "
               />
               <div className="slider-buttons">
                 <button
@@ -244,12 +244,12 @@ const EventCard2 = ({ active, data = {} }) => {
               </div>
             </div>
           ) : (
-            <div className="w-full flex justify-center items-center text-md">
+            <div className="flex items-center justify-center w-full text-md">
               <p className="text-gray-500">Event coming soon!</p>
             </div>
           )
         ) : (
-          <div className="w-full flex justify-center items-center text-md">
+          <div className="flex items-center justify-center w-full text-md">
             <p className="text-gray-500 ">No events</p>
           </div>
         )}
@@ -260,7 +260,7 @@ const EventCard2 = ({ active, data = {} }) => {
         <div className="h-[80%] mt-8">
           {/* Display image */}
           <img
-            src={`${backend_url}${data.images[0]}`}
+            src={`${data.images[0]?.url}`}
             alt={data?.name}
             className="mb-4"
             style={{ maxWidth: "100%", height: "auto" }}
@@ -270,7 +270,7 @@ const EventCard2 = ({ active, data = {} }) => {
               <div>
                 <Link to={`/shop/preview/${data?.shop?._id}`}>
                   <img
-                    src={`${backend_url}${data?.shop?.avatar}`}
+                    src={`${data?.shop?.avatar?.url}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full mr-2"
                   />

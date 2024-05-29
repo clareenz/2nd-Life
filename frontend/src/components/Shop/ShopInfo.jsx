@@ -93,7 +93,7 @@ const ShopInfo = ({ isOwner }) => {
       <div>
         <div className="text-center">
           <Avatar
-            src={`${backend_url}${data.avatar}`}
+            src={`${data.avatar?.url}`}
             size={150}
             className="mt-10"
           />

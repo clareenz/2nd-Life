@@ -15,7 +15,7 @@ const ENDPOINT = "https://twondlife-socket-server.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const DashboardMessages = () => {
-  const { seller, loading } = useSelector((state) => state.seller);
+  const { seller, isLoading } = useSelector((state) => state.seller);
   const [conversations, setConversations] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [currentChat, setCurrentChat] = useState();
@@ -144,23 +144,22 @@ const DashboardMessages = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    setImages(file);
-    imageSendingHandler(file);
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages(reader.result);
+        imageSendingHandler(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   const imageSendingHandler = async (e) => {
-    const formData = new FormData();
-
-    formData.append("images", e);
-    formData.append("sender", seller._id);
-    formData.append("text", newMessage);
-    formData.append("conversationId", currentChat._id);
-
     const receiverId = currentChat.members.find(
       (member) => member !== seller._id
     );
-
     socketId.emit("sendMessage", {
       senderId: seller._id,
       receiverId,
@@ -169,10 +168,11 @@ const DashboardMessages = () => {
 
     try {
       await axios
-        .post(`${server}/message/create-new-message`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        .post(`${server}/message/create-new-message`, {
+          images: e,
+          sender: seller._id,
+          text: newMessage,
+          conversationId: currentChat._id,
         })
         .then((res) => {
           setImages();
@@ -237,7 +237,7 @@ const DashboardMessages = () => {
                     userData={userData}
                     online={onlineCheck(item)}
                     setActiveStatus={setActiveStatus}
-                    loading={loading}
+                    isLoading={isLoading}
                     setActiveKey={setActiveKey}
                     activeKey={activeKey}
                   />
@@ -278,7 +278,7 @@ const DashboardMessages = () => {
                     userData={userData}
                     online={onlineCheck(item)}
                     setActiveStatus={setActiveStatus}
-                    loading={loading}
+                    isLoading={isLoading}
                     setActiveKey={setActiveKey}
                     activeKey={activeKey}
                   />
@@ -314,7 +314,7 @@ const MessageList = ({
   setUserData,
   online,
   setActiveStatus,
-  loading,
+  isLoading,
   userData,
   handleDelete,
   setActiveKey,
@@ -387,7 +387,7 @@ const MessageList = ({
       <div className="flex">
         <div className="relative ">
           <img
-            src={`${backend_url}${user?.avatar}`}
+            src={`${user?.avatar?.url}`}
             alt=""
             className="w-[50px] h-[50px] rounded-full"
           />
@@ -401,7 +401,7 @@ const MessageList = ({
         <div clasdive="pl-3">
           <h1 className="text-[18px] px-2">{user?.name}</h1>
           <p className="text-[16px] px-2 text-[#000c] ">
-            {!loading && data?.lastMessageId !== userData?._id
+            {!isLoading && data?.lastMessageId !== userData?._id
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}
             {data?.lastMessage &&
@@ -469,7 +469,7 @@ const SellerInbox = ({
           <div className="flex items-center justify-between p-2 bg-white border-b ">
             <div className="flex">
               <img
-                src={`${backend_url}${userData?.avatar}`}
+                src={`${userData?.avatar?.url}`}
                 alt=""
                 className="w-[55px] h-[55px] rounded-full"
               />
@@ -497,7 +497,7 @@ const SellerInbox = ({
                   >
                     {item.sender !== sellerId && (
                       <img
-                        src={`${backend_url}${userData?.avatar}`}
+                        src={`${userData?.avatar?.url}`}
                         className="w-[40px] h-[40px] rounded-full mr-3"
                         alt=""
                       />
@@ -506,7 +506,7 @@ const SellerInbox = ({
                       <div>
                         {" "}
                         <img
-                          src={`${backend_url}${item.images}`}
+                          src={`${item.images?.url}`}
                           className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
                         />
                         <p className="text-[12px] text-[#000000d3] pt-1">
