@@ -38,7 +38,7 @@ const ProfileSideBar = ({ setActive, active }) => {
 
   return (
     <div className="pt-[90px]">
-      <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
+      <div className="xl:w-[250px] lg:w-[250px] bg-white shadow rounded-2xl p-4 pt-8">
         <div
           className="flex items-center cursor-pointer w-full mb-8"
           onClick={() => setActive(1)}
@@ -134,7 +134,7 @@ const ProfileSideBar = ({ setActive, active }) => {
             >
               <MdOutlineAdminPanelSettings
                 size={20}
-                color={active === 7 ? "006665" : ""}
+                color={active === 9 ? "006665" : ""}
               />
               <span
                 className={`pl-3 ${

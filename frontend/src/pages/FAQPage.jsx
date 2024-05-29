@@ -30,14 +30,14 @@ const Faq = () => {
 
   return (
     <div className={`${styles.section} my-8 pt-[64px]`}>
-      <div className="flex items-center mb-4 absolute left-10 px-[10mm]">
+      <div className="flex items-center mb-4 absolute left-10 xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
         <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
           {/* Small box */}
         </div>
         <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">Frequently-Asked Questions</h1>
       </div>
 
-      <div className="mx-auto space-y-4 pt-[70px] px-[10mm]">
+      <div className="mx-auto space-y-4 pt-[70px] xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
         {/* single Faq */}
 
         <div className="border-b border-gray-200 pb-4">

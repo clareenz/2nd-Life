@@ -7,6 +7,12 @@ import Paragraph from "antd/es/typography/Paragraph";
 import { Link } from "react-router-dom";
 import "./custom.slider.css";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { server } from "../../server";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { AiOutlineMessage } from "react-icons/ai";
 
 const EventCard = ({ active, data = {}, children }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -24,6 +30,8 @@ const EventCard = ({ active, data = {}, children }) => {
   const hasEvents = data && data.images && data.images.length > 0;
   const activeEvent = +new Date(data.start_Date) < +new Date();
   const [intervalId, setIntervalId] = useState(null);
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (hasEvents) {
@@ -35,14 +43,36 @@ const EventCard = ({ active, data = {}, children }) => {
       return () => clearInterval(id);
     }
   }, [data.images, hasEvents]);
-   console.log(hasEvents + "hello")
+  console.log(hasEvents + "hello");
+
+  const handleMessageSubmit = async () => {
+    if (isAuthenticated) {
+      const groupTitle = data._id + user._id;
+      const userId = user._id;
+      const sellerId = data.shop._id;
+      await axios
+        .post(`${server}/conversation/create-new-conversation`, {
+          groupTitle,
+          userId,
+          sellerId,
+        })
+        .then((res) => {
+          navigate(`/inbox?${res.data.conversation._id}`);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        });
+    } else {
+      toast.error("Please login to create a conversation");
+    }
+  };
 
   return (
     <div className="flex flex-row justify-center">
       <div
-        className={`w-[45%] h-[80%] bg-white shadow p-9 rounded-lg container__slider1 ${
+        className={` h-[80%] bg-white shadow p-9 rounded-lg container__slider1 ${
           active ? "unset" : "mb-12"
-        } lg:flex p-9 mt-1 mb-2`}
+        } lg:flex p-9 mt-1`}
         onMouseEnter={() => clearInterval(interval)}
         onMouseLeave={() => {
           const interval = setInterval(() => {
@@ -57,7 +87,7 @@ const EventCard = ({ active, data = {}, children }) => {
                 src={`${data.images[activeIndex]?.url}`}
                 alt=""
                 onClick={showModal}
-                className=""
+                className="w-full object-cover"
               />
               <div className="slider-buttons">
                 <button
@@ -114,15 +144,14 @@ const EventCard = ({ active, data = {}, children }) => {
               <img
                 src={`${data.images && data.images[0]?.url}`}
                 alt=""
-                className="mb-4"
-                style={{ maxWidth: "100%", height: "auto" }}
+                className="w-full h-auto object-cover"
               />
             </Link>
           </div>
-          <div className="w-full 800px:w-[50%]">
-            <div className="flex flex-row mt-[70px]">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-row mt-[10px]">
               <div>
-                <Link to={`/shop/preview/${data?.shop?._id}`}>
+                <Link to={`/shop/preview/${data?.shop._id}`}>
                   <img
                     src={`${data?.shop?.avatar?.url}`}
                     alt=""
@@ -130,24 +159,35 @@ const EventCard = ({ active, data = {}, children }) => {
                   />
                 </Link>
               </div>
-              <div>
+              <div className="marquee">
                 <Link
-                  to={`/shop/preview/${data?.shop?._id}`}
+                  to={`/shop/preview/${data.shop._id}`}
                   className={`${styles.shop_name}`}
                 >
-                  {data?.shop?.name}
+                  {data.shop.name}
                 </Link>
                 <h5 className="text-[13px] mt-1">
-                  ({data?.shop?.ratings}) Ratings
+                  ({data.shop.ratings}) Ratings
                 </h5>
               </div>
+            </div>
+            <div
+              className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+              onClick={handleMessageSubmit}
+            >
+              <span className="text-white text-[13px] mr-1">Message</span>
+              <AiOutlineMessage className="text-white" />
             </div>
           </div>
           {/* Display name */}
           <h1 className={`${styles.productTitle} text-[20px]`}>{data?.name}</h1>
 
           {/* Display description */}
-          <Paragraph>{data.description}</Paragraph>
+          <div style={{ width: "100%" }}>
+            <Paragraph style={{ textAlign: "justify", wordWrap: "break-word" }}>
+              {data.description}
+            </Paragraph>
+          </div>
 
           {/* Display price */}
           <div className="flex items-center mb-4">

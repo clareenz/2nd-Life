@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../styles/styles";
 import { Country, State } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
@@ -26,6 +25,20 @@ const Checkout = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Calculate subtotal based on prices of products in cart
+  const subTotalPrice = cart
+    .filter((item) => item.selected) // Filter selected items only
+    .reduce((acc, item) => acc + item.qty * item.discountPrice, 0);
+
+  const shipping = subTotalPrice * 0.1;
+
+  const discountPercentage = couponCodeData ? discountPrice : "";
+
+  const totalPrice = couponCodeData
+    ? (subTotalPrice + shipping - discountPercentage).toFixed(2)
+    : (subTotalPrice + shipping).toFixed(2);
+
+  // Payment submission function
   const paymentSubmit = () => {
     if (
       address === "" ||
@@ -54,20 +67,12 @@ const Checkout = () => {
         user,
       };
 
-      // update local storage with the updated orders array
       localStorage.setItem("latestOrder", JSON.stringify(orderData));
       navigate("/payment");
     }
   };
 
-  const subTotalPrice = cart.reduce(
-    (acc, item) => acc + item.qty * item.discountPrice,
-    0
-  );
-
-  // this is shipping cost variable
-  const shipping = subTotalPrice * 0.1;
-
+  // Function to handle coupon code submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const name = couponCode;
@@ -84,7 +89,7 @@ const Checkout = () => {
           setCouponCode("");
         } else {
           const eligiblePrice = isCouponValid.reduce(
-            (acc, item) => acc + item.qty * item.discountPrice,
+            (acc, item) => acc + item.price * item.qty,
             0
           );
           const discountPrice = (eligiblePrice * couponCodeValue) / 100;
@@ -92,21 +97,13 @@ const Checkout = () => {
           setCouponCodeData(res.data.couponCode);
           setCouponCode("");
         }
-      }
-      if (res.data.couponCode === null) {
-        toast.error("Coupon code doesn't exists!");
+      } else {
+        toast.error("Coupon code doesn't exist!");
         setCouponCode("");
       }
     });
   };
 
-  const discountPercentage = couponCodeData ? discountPrice : "";
-
-  const totalPrice = couponCodeData
-    ? (subTotalPrice + shipping - discountPercentage).toFixed(2)
-    : (subTotalPrice + shipping).toFixed(2);
-
-  console.log(discountPercentage);
   return (
     <div className="flex flex-col items-center w-full py-8">
       <div className="w-[90%] 1000px:w-[80%] block 800px:flex">
@@ -148,6 +145,7 @@ const Checkout = () => {
     </div>
   );
 };
+
 
 const ShippingInfo = ({
   user,
@@ -252,7 +250,6 @@ const ShippingInfo = ({
         </div>
 
         <div className="flex w-full pb-3">
-          
           <div className="w-[50%]">
             <label className="block pb-2">City/Municipality</label>
             <input
@@ -275,8 +272,6 @@ const ShippingInfo = ({
             />
           </div>
         </div>
-
-        <div></div>
       </form>
       <h5
         className="text-[18px] cursor-pointer inline-block"
@@ -288,7 +283,7 @@ const ShippingInfo = ({
         <div>
           {user &&
             user.addresses.map((item, index) => (
-              <div className="flex w-full mt-1">
+              <div className="flex w-full mt-1" key={index}>
                 <input
                   type="checkbox"
                   className="mr-3"
@@ -322,12 +317,12 @@ const CartData = ({
   return (
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
+        <h3 className="text-[16px] font-[400] text-[#000000a4]">Subtotal:</h3>
         <h5 className="text-[18px] font-[600]">₱{subTotalPrice}</h5>
       </div>
       <br />
       <div className="flex justify-between">
-        <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
+        <h3 className="text-[16px] font-[400] text-[#000000a4]">Shipping:</h3>
         <h5 className="text-[18px] font-[600]">₱{shipping.toFixed(2)}</h5>
       </div>
       <br />

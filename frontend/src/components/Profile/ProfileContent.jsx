@@ -24,9 +24,22 @@ import { Country, State } from "country-state-city";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { message } from "antd";
+import {
+  Space,
+  Table,
+  message,
+  Input,
+  Menu,
+  Dropdown,
+  Switch,
+  Modal,
+  Form,
+  Select,
+} from "antd";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
 import UserInbox from "./UserInbox";
+import Highlighter from "react-highlight-words";
+import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -100,7 +113,7 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full pt-[90px]">
+    <div className="w-full pt-[70px]">
       {/* profile */}
       {active === 1 && (
         <>
@@ -131,9 +144,9 @@ const ProfileContent = ({ active }) => {
               <div className="block w-full pb-3 800px:flex">
                 <div className=" w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Full Name</label>
-                  <input
+                  <Input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm px-4 custom-input`}
                     // required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -141,9 +154,9 @@ const ProfileContent = ({ active }) => {
                 </div>
                 <div className=" w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Email Address</label>
-                  <input
+                  <Input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
+                    className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm px-4 custom-input`}
                     //required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -154,9 +167,9 @@ const ProfileContent = ({ active }) => {
               <div className="block w-full pb-3 800px:flex">
                 <div className=" w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Phone Number</label>
-                  <input
+                  <Input
                     type="number"
-                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm`}
+                    className={`${styles.input} !w-[95%] mb-4 800px:mb-0 shadow-sm px-4 custom-input`}
                     //required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
@@ -166,9 +179,9 @@ const ProfileContent = ({ active }) => {
                 <div className="w-[100%] 800px:w-[50%]">
                   <label className="block pb-2">Enter your password</label>
                   <div className="relative">
-                    <input
+                    <Input
                       type={showPassword ? "text" : "password"}
-                      className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm`}
+                      className={`${styles.input} !w-[95%] mb-1 800px:mb-0 shadow-sm px-4 custom-input`}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -179,14 +192,20 @@ const ProfileContent = ({ active }) => {
                       onClick={() => togglePasswordVisibility("showPassword")}
                     >
                       {showPassword ? (
-                        <AiOutlineEyeInvisible size={17} />
+                        <div className="px-2">
+                          <AiOutlineEyeInvisible size={17} />
+                        </div>
                       ) : (
-                        <AiOutlineEye size={17} />
+                        <div className="px-2">
+                          {" "}
+                          <AiOutlineEye size={17} />
+                        </div>
                       )}
                     </button>
                   </div>
                 </div>
               </div>
+              {/* Buttons for Cancel and Save Changes */}
               <div
                 style={{
                   display: "flex",
@@ -195,48 +214,47 @@ const ProfileContent = ({ active }) => {
                   height: "20vh",
                 }}
               >
-                <button //cancel button
+                {/* Cancel Button */}
+                <div
+                  className={`${styles.button6} border-[#077773] px-2`}
                   style={{
-                    width: "150px",
-                    height: "50px",
-                    margin: "3px 0",
+                    margin: "3px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: "25px",
                     cursor: "pointer",
                     color: "#006665",
-                    backgroundColor: "transparent", // Set initial background color to transparent
-                    //  border: "2px solid #fe8373", // Set the border color
-                    transition: "background-color 0.3s ease, color 0.3s ease", // Add a smooth transition effect for background color and text color
+                    backgroundColor: "transparent",
+                    transition: "background-color 0.3s ease, color 0.3s ease",
                   }}
                   onClick={handleCancel}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "#006665"; // Change background color on hover
-                    e.currentTarget.style.color = "#ffffff"; // Change text color on hover
+                    e.currentTarget.style.backgroundColor = "#006665";
+                    e.currentTarget.style.color = "#ffffff";
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent "; // Reset background color on mouse out
-                    e.currentTarget.style.color = "#006665"; // Reset text color on mouse out
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "#006665";
                   }}
                 >
                   Cancel
-                </button>
+                </div>
 
                 {/* Save Changes Button */}
                 <input
-                  className={`${styles.button2} w-[150px] text-white text-center text-[#006665]  cursor-pointer`}
+                  className={`${styles.button6} w-[150px] text-white text-center bg-[#FF8474] cursor-pointer px-2`}
                   required
                   value="Save Changes"
                   type="submit"
                   onClick={handleSubmit}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "#FF8474"; // Change background color on hover
-                    e.currentTarget.style.color = "#ffffff"; // Change text color on hover
+                    e.currentTarget.style.backgroundColor = "#FFA99E";
+                    e.currentTarget.style.color = "white";
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent"; // Reset background color on mouse out
-                    e.currentTarget.style.color = "#006665";
+                    e.currentTarget.style.backgroundColor = "#FF8474";
+                    e.currentTarget.style.color = "white";
                   }}
                 />
               </div>
@@ -284,176 +302,286 @@ const ProfileContent = ({ active }) => {
 
 const AllOrders = () => {
   const { user } = useSelector((state) => state.user);
-  console.log(useSelector((state) => state.order) + " asd");
   const { orders } = useSelector((state) => state.order);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllOrdersOfUser(user._id));
-  }, []);
+    if (user && user._id) {
+      dispatch(getAllOrdersOfUser(user._id));
+    }
+  }, [dispatch, user]);
+
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = React.useRef(null);
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const [visibleColumns, setVisibleColumns] = useState({
+    id: true,
+    status: true,
+    itemsQty: true,
+    total: true,
+    actions: true,
+  });
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
     {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
+      title: "Order ID",
+      dataIndex: "id",
+      key: "id",
+      width: 150,
+      ...getColumnSearchProps("id"),
+      sorter: (a, b) => a.id.localeCompare(b.id),
+      render: visibleColumns.id ? (text) => text : null,
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 130,
+      ...getColumnSearchProps("status"),
+      sorter: (a, b) => a.status.localeCompare(b.status),
+      render: visibleColumns.status ? (text) => text : null,
     },
-
     {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      title: "Items Qty",
+      dataIndex: "itemsQty",
+      key: "itemsQty",
+      width: 130,
+      ...getColumnSearchProps("itemsQty"),
+      sorter: (a, b) => a.itemsQty - b.itemsQty,
+      render: visibleColumns.itemsQty ? (text) => text : null,
     },
-
     {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/user/order/${params.id}`}>
+      title: "Total (₱)",
+      dataIndex: "total",
+      key: "total",
+      width: 130,
+      ...getColumnSearchProps("total"),
+      sorter: (a, b) => a.total - b.total,
+      render: visibleColumns.total ? (text) => text : null,
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      width: 150,
+      render: visibleColumns.actions
+        ? (text, record) => (
+            <Link to={`/user/order/${record.id}`}>
               <Button>
                 <AiOutlineArrowRight size={20} />
               </Button>
             </Link>
-          </>
-        );
-      },
+          )
+        : null,
     },
   ];
 
-  const row = [];
+  const data = orders.map((item) => ({
+    key: item._id,
+    id: item._id,
+    itemsQty: item.cart.length,
+    total: item.totalPrice,
+    status: item.status,
+  }));
 
-  orders.forEach((item) => {
-    row.push({
-      id: item._id,
-      itemsQty: item.cart.length,
-      total: "Php" + item.totalPrice,
-      status: item.status,
-    });
-  });
-
-  const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const handleColumnVisibilityChange = (key) => {
+    setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+  const menu = (
+    <Menu>
+      {Object.keys(visibleColumns).map((key) => (
+        <Menu.Item key={key}>
+          <Switch
+            checked={visibleColumns[key]}
+            onChange={() => handleColumnVisibilityChange(key)}
+            checkedChildren={key}
+            unCheckedChildren={key}
+          />
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
-    <div className="pt-12 pl-8">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSize={10}
-        disableSelectionOnClick
-        autoHeight
-      />
+    <div className="pl-4 pt-[20px]">
+      <div className="w-full min-h-[45vh] bg-white rounded-2xl shadow-md">
+        <div className="flex flex-row justify-between">
+          <div>
+            <h1 className="text-[25px] font-Poppins px-[50px] py-4">
+              All Orders
+            </h1>
+          </div>
+          <div className="flex p-4 px-[30px]">
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
+              >
+                <EllipsisOutlined style={{ fontSize: "24px" }} />
+              </a>
+            </Dropdown>
+          </div>
+        </div>
+        <div style={{ overflowY: "auto" }}>
+          <Table
+            columns={columns.filter((column) => visibleColumns[column.key])}
+            dataSource={data}
+            pagination={{ pageSize: 10 }}
+            rowClassName={(record) =>
+              record.status === "Delivered" ? "greenColor" : "redColor"
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 };
-
 const TrackOrder = () => {
-  const orders = [
-    {
-      _id: "7463hvbfbhfbrtr28820221",
-      orderItems: [
-        {
-          name: "Iphone 14 pro max",
-        },
-      ],
-      totalPrice: 120,
-      orderStatus: "Processing",
-    },
-  ];
+  const orders = [];
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
     {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
+      title: "Order ID",
+      dataIndex: "id",
+      key: "id",
+      width: 150,
     },
     {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 130,
+      render: (status) => (
+        <span className={status === "Delivered" ? "greenColor" : "redColor"}>
+          {status}
+        </span>
+      ),
     },
     {
-      field: " ",
-      flex: 1,
-      minWidth: 130,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/order/${params.id}`}>
-              <Button>
-                <MdOutlineTrackChanges size={20} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
+      title: "Items Qty",
+      dataIndex: "itemsQty",
+      key: "itemsQty",
+      width: 130,
+    },
+    {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
+      width: 130,
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      width: 130,
+      render: (_, record) => (
+        <Link to={`/order/${record.id}`}>
+          <Button>
+            <MdOutlineTrackChanges size={20} />
+          </Button>
+        </Link>
+      ),
     },
   ];
 
-  const row = [];
-
-  orders &&
-    orders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.orderItems.length,
-        total: "₱" + item.totalPrice,
-        status: item.orderStatus,
-      });
-    });
+  const data = orders.map((item) => ({
+    key: item._id,
+    id: item._id,
+    itemsQty: item.orderItems.length,
+    total: `₱${item.totalPrice}`,
+    status: item.orderStatus,
+  }));
 
   return (
-    <div className="pt-1 pl-8">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSize={5}
-        disableSelectionOnClick
-        autoHeight
-      />
+    <div className="pl-4 pt-[20px]">
+      <div className="w-full min-h-[45vh] bg-white rounded-2xl shadow-md">
+        <div style={{ overflowY: "auto" }}>
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{ pageSize: 5 }}
+            rowClassName={(record) =>
+              record.status === "Delivered" ? "greenColor" : "redColor"
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 };
@@ -524,145 +652,148 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="w-full px-10 pt-6">
-      <h1 className="block text-[25px] font-[600] text-[#000000ba] pb-2">
-        Change Password
-      </h1>
-      <div className="w-full pt-9">
-        <form
-          aria-required
-          onSubmit={passwordChangeHandler}
-          className="flex flex-col"
-        >
-          {/* Current Password Input */}
-          <div className="w-full 800px:w-[500px] relative">
-            <label className="block pb-2">Current Password</label>
-            <div className="relative">
-              <input
-                type={oldPasswordVisible ? "text" : "password"}
-                className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                required={newPassword !== "" || confirmPassword !== ""}
-              />
-              <button
-                type="button"
-                className="absolute transform -translate-y-1/2 top-4 right-8"
-                onClick={() => togglePasswordVisibility("oldPassword")}
-              >
-                {oldPasswordVisible ? (
-                  <AiOutlineEyeInvisible size={17} />
-                ) : (
-                  <AiOutlineEye size={17} />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* New Password Input */}
-          <div className="w-full 800px:w-[500px] relative">
-            <label className="block pb-2">New Password</label>
-            <div className="relative">
-              <input
-                type={newPasswordVisible ? "text" : "password"}
-                className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required={oldPassword !== ""}
-              />
-              <button
-                type="button"
-                className="absolute transform -translate-y-1/2 top-4 right-8"
-                onClick={() => togglePasswordVisibility("newPassword")}
-              >
-                {newPasswordVisible ? (
-                  <AiOutlineEyeInvisible size={17} />
-                ) : (
-                  <AiOutlineEye size={17} />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Confirm New Password Input */}
-          <div className="w-full 800px:w-[500px] relative">
-            <label className="block pb-2">Confirm New Password</label>
-            <div className="relative">
-              <input
-                type={confirmPasswordVisible ? "text" : "password"}
-                className={`${styles.input} !w-[95%] mb-4 800px:0 shadow-sm`}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required={oldPassword !== "" && newPassword !== ""}
-              />
-              <button
-                type="button"
-                className="absolute transform -translate-y-1/2 top-4 right-8"
-                onClick={() => togglePasswordVisibility("confirmPassword")}
-              >
-                {confirmPasswordVisible ? (
-                  <AiOutlineEyeInvisible size={17} />
-                ) : (
-                  <AiOutlineEye size={17} />
-                )}
-              </button>
-            </div>
-          </div>
-          {/* Buttons for Cancel and Save Changes */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "right",
-              alignItems: "center",
-              height: "20vh",
-            }}
-          >
-            {/* Cancel Button */}
-            <button
-              style={{
-                width: "150px",
-                height: "50px",
-                margin: "3px 0",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "25px",
-                cursor: "pointer",
-                color: "#006665",
-                backgroundColor: "transparent",
-                transition: "background-color 0.3s ease, color 0.3s ease",
-              }}
-              onClick={handleCancel}
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = "#006665";
-                e.currentTarget.style.color = "#ffffff";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = "transparent";
-                e.currentTarget.style.color = "#006665";
-              }}
+    <div className="flex flex-col items-center w-full px-2 min-h-screen pt-[20px]">
+      <div className="flex w-full 800px:w-[90%] flex-col justify-center shadow-sm bg-white p-6 rounded-2xl">
+        <div className="w-full px-10 pt-6">
+          <h1 className="block text-[25px] font-[600] text-[#000000ba] pb-2">
+            Change Password
+          </h1>
+          <div className="w-full pt-9">
+            <form
+              aria-required
+              onSubmit={passwordChangeHandler}
+              className="flex flex-col"
             >
-              Cancel
-            </button>
+              {/* Current Password Input */}
+              <div className="w-full 800px:w-[500px] relative">
+                <label className="block pb-2">Current Password</label>
+                <div className="relative">
+                  <Input
+                    type={oldPasswordVisible ? "text" : "password"}
+                    className={`${styles.input} !w-[100%] mb-4 800px:0 shadow-sm custom-input px-4`}
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    required={newPassword !== "" || confirmPassword !== ""}
+                  />
+                  <button
+                    type="button"
+                    className="absolute transform -translate-y-1/2 top-4 right-8"
+                    onClick={() => togglePasswordVisibility("oldPassword")}
+                  >
+                    {oldPasswordVisible ? (
+                      <AiOutlineEyeInvisible size={17} />
+                    ) : (
+                      <AiOutlineEye size={17} />
+                    )}
+                  </button>
+                </div>
+              </div>
 
-            {/* Save Changes Button */}
-            <input
-              className={`${styles.button2} w-[150px] text-white text-center text-[#006665]  cursor-pointer`}
-              required
-              value="Save Changes"
-              type="submit"
-              onClick={passwordChangeHandler}
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = "#FF8474";
-                e.currentTarget.style.color = "#ffffff";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = "transparent";
-                e.currentTarget.style.color = "#006665";
-              }}
-            />
+              {/* New Password Input */}
+              <div className="w-full 800px:w-[500px] relative">
+                <label className="block pb-2">New Password</label>
+                <div className="relative">
+                  <Input
+                    type={newPasswordVisible ? "text" : "password"}
+                    className={`${styles.input} !w-[100%] mb-4 800px:0 shadow-sm custom-input px-4`}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required={oldPassword !== ""}
+                  />
+                  <button
+                    type="button"
+                    className="absolute transform -translate-y-1/2 top-4 right-8"
+                    onClick={() => togglePasswordVisibility("newPassword")}
+                  >
+                    {newPasswordVisible ? (
+                      <AiOutlineEyeInvisible size={17} />
+                    ) : (
+                      <AiOutlineEye size={17} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm New Password Input */}
+              <div className="w-full 800px:w-[500px] relative">
+                <label className="block pb-2">Confirm New Password</label>
+                <div className="relative">
+                  <Input
+                    type={confirmPasswordVisible ? "text" : "password"}
+                    className={`${styles.input} !w-[100%] mb-4 800px:0 shadow-sm custom-input px-4`}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required={oldPassword !== "" && newPassword !== ""}
+                  />
+                  <button
+                    type="button"
+                    className="absolute transform -translate-y-1/2 top-4 right-8"
+                    onClick={() => togglePasswordVisibility("confirmPassword")}
+                  >
+                    {confirmPasswordVisible ? (
+                      <AiOutlineEyeInvisible size={17} />
+                    ) : (
+                      <AiOutlineEye size={17} />
+                    )}
+                  </button>
+                </div>
+              </div>
+              {/* Buttons for Cancel and Save Changes */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "center",
+                  height: "20vh",
+                }}
+              >
+                {/* Cancel Button */}
+                <div
+                  className={`${styles.button6} border-[#077773] px-2`}
+                  style={{
+                    margin: "3px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "25px",
+                    cursor: "pointer",
+                    color: "#006665",
+                    backgroundColor: "transparent",
+                    transition: "background-color 0.3s ease, color 0.3s ease",
+                  }}
+                  onClick={handleCancel}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = "#006665";
+                    e.currentTarget.style.color = "#ffffff";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "#006665";
+                  }}
+                >
+                  Cancel
+                </div>
+
+                {/* Save Changes Button */}
+                <input
+                  className={`${styles.button6} w-[150px] text-white text-center bg-[#FF8474] cursor-pointer px-2`}
+                  required
+                  value="Save Changes"
+                  type="submit"
+                  onClick={passwordChangeHandler}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = "#FFA99E";
+                    e.currentTarget.style.color = "white";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = "#FF8474";
+                    e.currentTarget.style.color = "white";
+                  }}
+                />
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
@@ -729,144 +860,94 @@ const Address = () => {
 
   return (
     <div className="w-full px-5">
-      {open && (
-        <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center ">
-          <div className="w-flex h-[80vh] bg-white rounded shadow relative overflow-y-scroll">
-            <div className="flex justify-end w-full p-3">
-              <RxCross1
-                size={17}
-                className="cursor-pointer"
-                onClick={() => setOpen(false)}
-              />
-            </div>
-            <h1 className="text-center text-[20px] font-Poppins">
-              Add New Address
-            </h1>
-            <div className="w-full">
-              <form aria-required onSubmit={handleSubmit} className="w-full">
-                <div className="block w-full p-4">
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Country</label>
-                    <select
-                      name=""
-                      id=""
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
-                    >
-                      <option value="" className="block pb-2 border">
-                        Choose your country
-                      </option>
-                      {Country &&
-                        Country.getAllCountries().map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.isoCode}
-                            value={item.isoCode}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Choose your Province</label>
-                    <select
-                      name=""
-                      id=""
-                      value={province}
-                      onChange={(e) => setProvince(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
-                    >
-                      <option value="" className="block pb-2 border">
-                        Choose your Province
-                      </option>
-                      {State &&
-                        State.getStatesOfCountry(country).map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.isoCode}
-                            value={item.isoCode}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className="w-[95%] pb-2">
-                    <label className="block pb-2">City</label>
-                    <input
-                      type=""
-                      className={`${styles.input} focus:border-[#006665]`}
-                      required
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="w-[95%] pb-2">
-                    <label className="block pb-2">Address</label>
-                    <input
-                      type="address"
-                      className={`${styles.input} focus:border-[#006665]`}
-                      required
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="w-[95%] pb-2">
-                    <label className="block pb-2">Zip Code</label>
-                    <input
-                      type="number"
-                      className={`${styles.input} focus:border-[#006665]`}
-                      required
-                      value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value || "")}
-                    />
-                  </div>
-
-                  <div className="w-full pb-2">
-                    <label className="block pb-2">Address Type</label>
-                    <select
-                      name=""
-                      id=""
-                      value={addressType}
-                      onChange={(e) => setAddressType(e.target.value)}
-                      className="w-[95%] border h-[40px] rounded-[5px] focus:border-[#006665]"
-                    >
-                      <option value="" className="block pb-2 border">
-                        Choose your Address Type
-                      </option>
-                      {addressTypeData &&
-                        addressTypeData.map((item) => (
-                          <option
-                            className="block pb-2"
-                            key={item.name}
-                            value={item.name}
-                          >
-                            {item.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className="w-[60%] pb-2 mx-auto text-center round-md">
-                    <input
-                      type="submit"
-                      className={`${styles.input} mt-5 cursor-pointer text-[#006665] border border-[#006665] hover:border-[#FF8474] hover:text-[#FF8474]`}
-                      required
-                      readOnly
-                    />
-                  </div>
-                </div>
-              </form>
-            </div>
+      <Modal
+        title="Add New Address"
+        visible={open}
+        onCancel={() => setOpen(false)}
+        onOk={handleSubmit}
+        okText="Submit"
+        okButtonProps={{
+          className: "custom-ok-button-class rounded-2xl",
+        }}
+        cancelButtonProps={{
+          className: "custom-cancel-button-class rounded-2xl",
+        }}
+      >
+        <form aria-required onSubmit={handleSubmit} className="w-full">
+          <div className="block w-full pb-2">
+            <label className="block pb-2">Country</label>
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className=" px-4 w-full border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+            >
+              <option value="">Choose your country</option>
+              {Country.getAllCountries().map((item) => (
+                <option key={item.isoCode} value={item.isoCode}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
-      )}
+          <div className="block w-full pb-2">
+            <label className="block pb-2 ">Province</label>
+            <select
+              value={province}
+              onChange={(e) => setProvince(e.target.value)}
+              className=" px-4 w-full border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+            >
+              <option value="">Choose your Province</option>
+              {State.getStatesOfCountry(country).map((item) => (
+                <option key={item.isoCode} value={item.isoCode}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="block w-full pb-2">
+            <label className="block pb-2">City</label>
+            <input
+              type="text"
+              className=" px-4 w-full border h-[30px] rounded-full focus:border-[#006665]"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <div className="block w-full pb-2">
+            <label className="block pb-2">Barangay</label>
+            <input
+              type="text"
+              className="px-4 w-full border h-[30px] rounded-full focus:border-[#006665]"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
+          <div className="block w-full pb-2">
+            <label className="block pb-2">Zip Code</label>
+            <input
+              type="number"
+              className="px-4 w-full border h-[30px] rounded-full focus:border-[#006665]"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
+            />
+          </div>
+          <div className="block w-full pb-2">
+            <label className="block pb-2">Address Type</label>
+            <select
+              value={addressType}
+              onChange={(e) => setAddressType(e.target.value)}
+              className="px-4 w-full border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+            >
+              <option value="">Choose your Address Type</option>
+              {addressTypeData.map((item) => (
+                <option key={item.name} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </form>
+      </Modal>
 
       <div className="flex items-center justify-between w-full pt-3">
         <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
@@ -903,7 +984,7 @@ const Address = () => {
             <div className="min-w-[10%] flex items-center justify-between pl-8">
               <AiOutlineDelete
                 size={20}
-                className="cursor-pointer hover:text-red-600"
+                className="cursor-pointer hover:text-[#FE8373]"
                 onClick={() => handleDelete(item)}
               />
             </div>

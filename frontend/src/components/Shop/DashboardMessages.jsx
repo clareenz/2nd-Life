@@ -224,7 +224,7 @@ const DashboardMessages = () => {
           >
             {/* All messages list */}
             <div>
-              {conversations &&
+              {conversations && conversations.length > 0 ? (
                 conversations.map((item, index) => (
                   <MessageList
                     data={item}
@@ -241,7 +241,12 @@ const DashboardMessages = () => {
                     setActiveKey={setActiveKey}
                     activeKey={activeKey}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="flex items-center justify-center p-[20px] text-gray-400">
+                  <p>No Conversations Available!</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -402,6 +407,7 @@ const MessageList = ({
           <h1 className="text-[18px] px-2">{user?.name}</h1>
           <p className="text-[16px] px-2 text-[#000c] ">
             {!isLoading && data?.lastMessageId !== userData?._id
+
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}
             {data?.lastMessage &&

@@ -5,7 +5,7 @@ export const navItems = [
     url: "/",
   },
   {
-    title: "Stores", //wala tayo best selling, best store lang
+    title: "Stores",
     url: "/stores",
   },
   {
@@ -27,7 +27,7 @@ export const brandingData = [
   {
     id: 1,
     title: "Free Shipping",
-    Description: "From all orders over 100$",
+    Description: "From all orders over ₱1000",
     icon: (
       <svg
         width="36"

@@ -1,9 +1,11 @@
-/* Best Deals duh
-start:  */
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import styles from "../../../styles/styles";
 import { ProductCard, ProductCard2 } from "../ProductCard/ProductCard";
+
 const BestDeals = () => {
   const [data, setData] = useState([]);
   const { allProducts } = useSelector((state) => state.products);
@@ -15,9 +17,48 @@ const BestDeals = () => {
     setData(firstFive);
   }, [allProducts]);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6, // Number of cards to show in one slide
+    slidesToScroll: 6, // Number of cards to scroll on arrow click
+    centerMode: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+    ],
+  };
+
+
   return (
     <div>
-      <div className={`px-20`}>
+      <div className={`2xl:px-20 xl:px-20 lg:px-20 md:px-20 sm:px-20 px-10 pb-8`}>
         <div className="flex items-center mb-4">
           <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
             {/* Small box */}
@@ -26,14 +67,15 @@ const BestDeals = () => {
             Best Deals
           </h1>
         </div>
-        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[2px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 border-0">
-          {data && data.length !== 0 && (
-            <>
-              {data &&
-                data.map((i, index) => <ProductCard data={i} key={index} />)}
-            </>
-          )}
-        </div>
+        <Slider {...settings}>
+          {data &&
+            data.length !== 0 &&
+            data.map((i, index) => (
+              <div className="px-1">
+                <ProductCard data={i} key={index} />
+              </div>
+            ))}
+        </Slider>
       </div>
     </div>
   );

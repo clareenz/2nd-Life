@@ -4,6 +4,7 @@ const router = express.Router();
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
+const sendMailSeller = require("../utils/sendMailSeller");
 const sendToken = require("../utils/jwtToken");
 const Shop = require("../model/shop");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
@@ -70,6 +71,7 @@ router.post(
     }
   })
 );
+
 
 // create activation token
 const createActivationToken = (seller) => {

@@ -1,6 +1,6 @@
 /* The logo, search bar, become seller button, and the blue header's here */
 
-import { Input, Modal } from "antd";
+import { Divider, Input, Modal } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -13,7 +13,7 @@ import {
 import { BiMenuAltLeft } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoIosArrowDown } from "react-icons/io";
-import { RxCross1 } from "react-icons/rx";
+import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -23,7 +23,7 @@ import styles from "../../styles/styles";
 import Wishlist from "../Wishlist/Wishlist";
 import Cart from "../cart/Cart";
 import DropDown from "./DropDown";
-import Navbar from "./Navbar";
+import { Navbar, Navbar2 } from "./Navbar";
 import { Layout, Avatar, Badge } from "antd";
 import { RiCloseLine } from "react-icons/ri";
 
@@ -101,7 +101,7 @@ const Header = ({ activeHeading }) => {
       <div
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-10`} //header sa pinaka taas (yung may cart icon,etc.)
+        }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-50`} //header sa pinaka taas (yung may cart icon,etc.)
       >
         <div className="flex flex-row ">
           <div>
@@ -264,7 +264,7 @@ const Header = ({ activeHeading }) => {
 
             {/*menu*/}
             <div className="mr-1">
-              <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+              <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
             </div>
           </div>
 
@@ -291,7 +291,7 @@ const Header = ({ activeHeading }) => {
                         <img
                           src={`${backend_url}${user.avatar} `}
                           alt=""
-                          className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                          className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
                       </Link>
 
@@ -324,14 +324,36 @@ const Header = ({ activeHeading }) => {
                       </div>
                       {/* become a seller button */}
                       <div className="flex justify-center mt-2 mb-6">
-                        <button
-                          className={`border rounded-3xl px-[98px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
-                          onClick={() => {
-                            window.location.href = `${isSeller ? '/dashboard' : '/shop-create'}`;
-                          }}
-                        >
-                          <h1 className="">{isSeller ? "Go Dashboard" : "Become Seller"}</h1>
-                        </button>
+                        {isSeller ? (
+                          <button
+                            className="border rounded-3xl px-[102px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]"
+                            onClick={() => {
+                              window.location.href = "/dashboard";
+                            }}
+                          >
+                            <h1 className="">Go Dashboard</h1>
+                          </button>
+                        ) : (
+                          <div>
+                            <div className="flex items-center">
+                              <div className="flex-grow border-t border-gray"></div>
+                              <div className="px-4 text-gray-700">or</div>
+                              <div className="flex-grow border-t border-gray"></div>
+                            </div>
+                            <div className="flex items-center">
+                              <h1 className="text-[#000]">Become a Seller?</h1>
+                              <span className="mx-1"></span>
+                              <span
+                                className="text-[#006665] hover:text-[#FF8474] cursor-pointer"
+                                onClick={() => {
+                                  window.location.href = "/shop-create";
+                                }}
+                              >
+                                Sign Up
+                              </span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>
@@ -367,15 +389,17 @@ const Header = ({ activeHeading }) => {
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
                     {/* become a seller button */}
-                    <div className="flex justify-center mb-6 ">
-                      <button
-                        className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                    <div className="flex justify-center items-center">
+                      <h1 className="text-black">Become a Seller?</h1>
+                      <span className="mx-1"></span>
+                      <span
+                        className="text-[#006665] hover:text-[#FF8474] cursor-pointer"
                         onClick={() => {
                           window.location.href = "/shop-create";
                         }}
                       >
-                        <h1 className="">Become a Seller</h1>
-                      </button>
+                        Login
+                      </span>
                     </div>
                   </div>
                 )}
@@ -394,13 +418,13 @@ const Header = ({ activeHeading }) => {
       {/* mobile header (start time: 2:56:00[2nd vid]) */}
       <div
         className={`${
-          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+          active === true ? "shadow fixed top-0 left-0 z-10" : null
         } fixed  w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden border-b border-gray-300`}
       >
         <div className="flex items-center justify-between w-full">
           <div>
-            <BiMenuAltLeft
-              size={35}
+            <RxHamburgerMenu
+              size={25}
               className="ml-4"
               onClick={() => setOpen(true)}
             />
@@ -462,7 +486,7 @@ const Header = ({ activeHeading }) => {
                 />
               </div>
 
-              <div className=" lg:w-[400px]">
+              <div className=" lg:w-[400px] py-4 px-4">
                 {/* Search Input Field */}
                 <Input
                   ref={searchRef}
@@ -513,27 +537,32 @@ const Header = ({ activeHeading }) => {
                 ) : null}
               </div>
 
-              <Navbar active={activeHeading} />
+              <Navbar2 active={activeHeading} />
               <br />
               <div className="flex justify-center w-full">
                 {isAuthenticated ? (
-                  <>
+                  <div className="flex flex-col items-center">
                     <div>
                       <Link to="/profile">
                         <img
                           src={`${backend_url}${user.avatar}`}
                           alt=""
-                          className="w-[50px] h-[50px] rounded-full border-[3px] border-[#0eae88]"
+                          className="w-[70px] h-[70px] rounded-full border-[3px] object-cover border-[#0eae88]"
                         />
                       </Link>
                     </div>
-                  </>
+                    <div className="flex justify-center py-1">
+                      <p className="mx-1 text-gray-600 text-flex"> Hi,</p>
+                      <span></span>
+                      <span className="text-red-500">{user.name}!</span>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex flex-col w-full px-6 mb-2">
                     <br />
                     <br />
                     <button
-                      className={`${styles.button4}`}
+                      className={`text-[15px] text-[#000000b7] bg-transparent  text-[#006665] hover:text-[#FF8474] py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-3xl transition-all duration-200 ease-in-out mb-4 justify-center`}
                       onClick={() => {
                         window.location.href = "/login";
                       }}
@@ -541,7 +570,7 @@ const Header = ({ activeHeading }) => {
                       Login
                     </button>
                     <button
-                      className={`${styles.button4}`}
+                      className={`text-[15px] text-[#000000b7] bg-transparent  text-[#006665] hover:text-[#FF8474] py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-3xl transition-all duration-200 ease-in-out mb-4 justify-center`}
                       onClick={() => {
                         window.location.href = "/sign-up";
                       }}
@@ -557,18 +586,19 @@ const Header = ({ activeHeading }) => {
                   </div>
                 )}
               </div>
-              <br />
-              <br />
+
               {/* become a seller button */}
-              <div className="flex justify-center px-6">
-                <div className={`${styles.button4} flex w-full`}>
-                  <Link to="/shop-create">
-                    <h1 className="flex items-center">
-                      <AiOutlineShop size={19} className="mx-1" /> Become a
-                      Seller
-                    </h1>
-                  </Link>
-                </div>
+              <div className="flex justify-center items-center">
+                <h1 className="text-black text-[13px]">Become a Seller?</h1>
+                <span className="mx-1"></span>
+                <span
+                  className="text-[#006665] hover:text-[#FF8474] cursor-pointer text-[13px]"
+                  onClick={() => {
+                    window.location.href = "/shop-create";
+                  }}
+                >
+                  Sign up
+                </span>
               </div>
             </div>
           </div>
@@ -797,7 +827,7 @@ const Header2 = ({ activeHeading }) => {
 
             {/*menu*/}
             <div className="px-3 mr-1">
-              <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+              <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
             </div>
           </div>
 
@@ -824,7 +854,7 @@ const Header2 = ({ activeHeading }) => {
                         <img
                           src={`${backend_url}${user.avatar} `}
                           alt=""
-                          className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                          className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
                       </Link>
 
@@ -856,15 +886,17 @@ const Header2 = ({ activeHeading }) => {
                         </button>
                       </div>
                       {/* become a seller button */}
-                      <div className="flex justify-center mt-2 mb-6">
-                        <button
-                          className={`border rounded-3xl px-[98px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                      <div className="flex justify-center items-center">
+                        <h1 className="text-black">Become a Seller?</h1>
+                        <span className="mx-1"></span>
+                        <span
+                          className="text-[#006665] hover:text-[#FF8474] cursor-pointer"
                           onClick={() => {
                             window.location.href = "/shop-create";
                           }}
                         >
-                          <h1 className="">Become a Seller</h1>
-                        </button>
+                          Sign up
+                        </span>
                       </div>
                     </div>
                   </>
@@ -875,7 +907,7 @@ const Header2 = ({ activeHeading }) => {
                     <br />
                     <div className="flex justify-center px-6">
                       <button
-                        className={`border rounded-3xl px-[127px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        className={`border rounded-3xl px-[106px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
                         onClick={() => {
                           window.location.href = "/login";
                         }}
@@ -885,7 +917,7 @@ const Header2 = ({ activeHeading }) => {
                     </div>
                     <div className="flex justify-center px-6 mt-2 mb-2">
                       <button
-                        className={`border rounded-3xl px-[120px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                        className={`border rounded-3xl px-[100px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
                         onClick={() => {
                           window.location.href = "/sign-up";
                         }}
@@ -900,15 +932,17 @@ const Header2 = ({ activeHeading }) => {
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
                     {/* become a seller button */}
-                    <div className="flex justify-center mb-6 ">
-                      <button
-                        className={`border rounded-3xl px-[95px] py-2 border-[#006665] hover:border-[#FF8474] text-[#006665] hover:text-[#FF8474]`}
+                    <div className="flex justify-center items-center">
+                      <h1 className="text-black">Become a Seller?</h1>
+                      <span className="mx-1"></span>
+                      <span
+                        className="text-[#006665] hover:text-[#FF8474] cursor-pointer"
                         onClick={() => {
                           window.location.href = "/shop-create";
                         }}
                       >
-                        <h1 className="">Become a Seller</h1>
-                      </button>
+                        Sign up
+                      </span>
                     </div>
                   </div>
                 )}
@@ -927,13 +961,13 @@ const Header2 = ({ activeHeading }) => {
       {/* mobile header (start time: 2:56:00[2nd vid]) */}
       <div
         className={`${
-          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        } fixed w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden border-b border-gray-300`}
+          active === true ? "shadow fixed top-0 left-0 z-10" : null
+        } fixed  w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden border-b border-gray-300`}
       >
         <div className="flex items-center justify-between w-full">
           <div>
-            <BiMenuAltLeft
-              size={35}
+            <RxHamburgerMenu
+              size={25}
               className="ml-4"
               onClick={() => setOpen(true)}
             />
@@ -979,7 +1013,7 @@ const Header2 = ({ activeHeading }) => {
                   >
                     <AiOutlineHeart size={27} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-4 h-4 top right p-0 m-0 text-black font-mono text-[12px] leading-tight text-center">
-                      4
+                      {wishlist && wishlist.length}
                     </span>
                   </div>
                 </div>
@@ -994,7 +1028,8 @@ const Header2 = ({ activeHeading }) => {
                   onClick={() => setOpen(false)}
                 />
               </div>
-              <div className=" lg:w-[400px]">
+
+              <div className=" lg:w-[400px] py-4 px-4">
                 {/* Search Input Field */}
                 <Input
                   ref={searchRef}
@@ -1045,27 +1080,32 @@ const Header2 = ({ activeHeading }) => {
                 ) : null}
               </div>
 
-              <Navbar active={activeHeading} />
+              <Navbar2 active={activeHeading} />
               <br />
               <div className="flex justify-center w-full">
                 {isAuthenticated ? (
-                  <>
+                  <div className="flex flex-col items-center">
                     <div>
                       <Link to="/profile">
                         <img
                           src={`${backend_url}${user.avatar}`}
                           alt=""
-                          className="w-[50px] h-[50px] rounded-full border-[3px] border-[#0eae88]"
+                          className="w-[70px] h-[70px] rounded-full border-[3px] object-cover border-[#0eae88]"
                         />
                       </Link>
                     </div>
-                  </>
+                    <div className="flex justify-center">
+                      <p className="mx-1 text-gray-600 text-flex"> Hi,</p>
+                      <span></span>
+                      <span className="text-red-500">{user.name}!</span>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex flex-col w-full px-6 mb-2">
                     <br />
                     <br />
                     <button
-                      className={`${styles.button4}`}
+                      className={`text-[15px] text-[#000000b7] bg-transparent  text-[#006665] hover:text-[#FF8474] py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-3xl transition-all duration-200 ease-in-out mb-4 justify-center`}
                       onClick={() => {
                         window.location.href = "/login";
                       }}
@@ -1073,7 +1113,7 @@ const Header2 = ({ activeHeading }) => {
                       Login
                     </button>
                     <button
-                      className={`${styles.button4}`}
+                      className={`text-[15px] text-[#000000b7] bg-transparent  text-[#006665] hover:text-[#FF8474] py-2 px-4 border border-[#006665] hover:border-[#FF8474] rounded-3xl transition-all duration-200 ease-in-out mb-4 justify-center`}
                       onClick={() => {
                         window.location.href = "/sign-up";
                       }}
@@ -1089,18 +1129,19 @@ const Header2 = ({ activeHeading }) => {
                   </div>
                 )}
               </div>
-              <br />
-              <br />
+
               {/* become a seller button */}
-              <div className="flex justify-center px-6">
-                <div className={`${styles.button4} flex w-full`}>
-                  <Link to="/shop-create">
-                    <h1 className="flex items-center">
-                      <AiOutlineShop size={19} className="mx-1" /> Become a
-                      Seller
-                    </h1>
-                  </Link>
-                </div>
+              <div className="flex justify-center items-center">
+                <h1 className="text-black text-[13px]">Become a Seller?</h1>
+                <span className="mx-1"></span>
+                <span
+                  className="text-[#006665] hover:text-[#FF8474] cursor-pointer text-[13px]"
+                  onClick={() => {
+                    window.location.href = "/shop-create";
+                  }}
+                >
+                  Sign up
+                </span>
               </div>
             </div>
           </div>
@@ -1266,7 +1307,7 @@ const SearchHeader = ({ activeHeading }) => {
         </div>
 
         <div className="mr-1">
-          <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+          <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
         </div>
 
         <Modal
@@ -1292,7 +1333,7 @@ const SearchHeader = ({ activeHeading }) => {
                       <img
                         src={`${backend_url}${user.avatar} `}
                         alt=""
-                        className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                        className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                       />
                     </Link>
 
