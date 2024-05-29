@@ -101,7 +101,7 @@ const Header = ({ activeHeading }) => {
       <div
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-10`} //header sa pinaka taas (yung may cart icon,etc.)
+        }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-50`} //header sa pinaka taas (yung may cart icon,etc.)
       >
         <div className="flex flex-row ">
           <div>

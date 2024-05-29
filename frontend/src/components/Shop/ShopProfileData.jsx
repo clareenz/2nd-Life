@@ -39,7 +39,12 @@ const ShopProfileData = ({ isOwner }) => {
     <div className="w-full mt-4">
       <Tabs activeKey={activeTab} onChange={handleTabChange}>
         <TabPane tab="Shop Products" key="products">
-          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+          <div className="grid grid-cols-2 gap-[20px]
+              sm:grid-cols-3 sm:gap-[13px]
+              md:grid-cols-4 md:gap-[13px]
+              lg:grid-cols-5 lg:gap-[10px]
+              xl:grid-cols-5 xl:gap-[10px]
+              2xl:grid-cols-7 2xl:gap-[20px] mb-12 border-0">
             {isOwner ? (
               <>
                 {products &&
@@ -112,18 +117,6 @@ const ShopProfileData = ({ isOwner }) => {
           </div>
         </TabPane>
       </Tabs>
-
-      {isOwner && (
-        <div className="absolute top-0 right-0 mt-1 mr-3">
-          <Link to="/dashboard">
-            <div
-              className={`${styles.button6} text-white bg-[#006665] rounded-3xl text-[14px] hover:bg-[#077773]`}
-            >
-              Go Dashboard
-            </div>
-          </Link>
-        </div>
-      )}
     </div>
   );
 };
