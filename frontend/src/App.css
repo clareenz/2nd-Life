@@ -381,6 +381,11 @@ input,select{
 .slick-prev:hover:before, .slick-next:hover:before {
   color: #FF8474 !important; /* Arrow color on hover */
 }
+/* Hide the Slick slider dots */
+.slick-dots {
+  display: none !important;
+}
+
 
 
 

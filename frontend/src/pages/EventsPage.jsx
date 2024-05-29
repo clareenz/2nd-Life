@@ -64,7 +64,7 @@ const EventsPage = () => {
                 </div>
               ) : (
                 <div className="pt-[15px]">
-                  <div className="md:grid-cols-2">
+                  <div className="">
                     {allEvents.map((event) => (
                       <EventCard key={event.id} active={true} data={event} />
                     ))}

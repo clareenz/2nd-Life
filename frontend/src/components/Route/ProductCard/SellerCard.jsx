@@ -68,11 +68,11 @@ export const SellerCard = ({ data }) => {
                 <img
                   src={`${backend_url}${data?.shop?.avatar}`}
                   alt=""
-                  className="w-[50px] h-[50px] rounded-full mr-3"
+                  className="w-[50px] h-[50px] rounded-full object-cover mr-3"
                 />
               </Link>
             </div>
-            <div className="marquee">
+            <div className="marquee text-black">
               <Link
                 to={`/shop/preview/${data.shop._id}`}
                 className={`${styles.shop_name}`}
@@ -159,7 +159,7 @@ export const SellerCard2 = ({ data }) => {
                   <img
                     src={`${backend_url}${data?.shop?.avatar}`}
                     alt=""
-                    className="w-[50px] h-[50px] rounded-full mr-3"
+                    className="w-[50px] h-[50px] rounded-full object-cover mr-3"
                   />
                 </Link>
               </div>
@@ -178,14 +178,14 @@ export const SellerCard2 = ({ data }) => {
           </div>
           <div className="flex flex-col space-y-1">
             <div
-              className={`w-[95px]  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
+              className={`w-[80px]  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
               onClick={handleMessageSubmit}
             >
               <span className="text-white text-[13px] mr-1">Message</span>
               <AiOutlineMessage size={13} className="text-white" />
             </div>
             <div
-              className={`w-[95px]  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
+              className={`w-[80px]  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
             >
               <span className="text-white text-[13px] mr-1">Follow</span>
               <SlUserFollow size={13} className="text-white" />

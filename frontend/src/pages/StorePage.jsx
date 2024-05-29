@@ -76,7 +76,7 @@ const StorePage = () => {
               sm:grid-cols-2 sm:gap-[13px]
               md:grid-cols-3 md:gap-[13px]
               lg:grid-cols-4 lg:gap-[20px]
-              xl:grid-cols-5 xl:gap-[25px]
+              xl:grid-cols-5 xl:gap-[20px]
               2xl:grid-cols-6 2xl:gap-[30px]
               mb-12"
               >

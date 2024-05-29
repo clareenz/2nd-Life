@@ -18,7 +18,7 @@ import {
 } from "../../../redux/actions/wishlist";
 import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
-import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
+import {ProductDetailsCard, ProductDetailsCard2} from "../ProductDetailsCard/ProductDetailsCard";
 import { IoBagHandleOutline } from "react-icons/io5";
 
 const ProductCard = ({ data }) => {
@@ -70,13 +70,13 @@ const ProductCard = ({ data }) => {
 
   return (
     <>
-      <div className=" max-w-[220px] max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer">
+      <div className=" max-w-[220px] w-full max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt=""
-            className="w-[100%] h-[170px] "
+            className="w-full h-[170px] object-cover"
           />
         </Link>
         <div className="flex flex-row justify-between mt-2">
@@ -221,7 +221,7 @@ const ProductCard2 = ({ data }) => {
   return (
     <>
       <div
-        className="w-full h-[370px] bg-white rounded-lg shadow p-3 relative cursor-pointer"
+        className="max-w-[220px] w-full max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -230,7 +230,7 @@ const ProductCard2 = ({ data }) => {
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt=""
-            className="w-[90%] h-[170px] object-contain"
+            className="w-full h-[170px] object-cover"
           />
         </Link>
         <div className="flex flex-row justify-between mt-2">
@@ -287,7 +287,7 @@ const ProductCard2 = ({ data }) => {
             >
               <span className="text-[12px]">View</span>
               {open ? (
-                <ProductDetailsCard setOpen={setOpen} data={data} />
+                <ProductDetailsCard2 setOpen={setOpen} data={data} />
               ) : null}
             </div>
           </div>
