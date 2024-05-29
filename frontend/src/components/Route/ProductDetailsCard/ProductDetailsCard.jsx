@@ -37,7 +37,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const buyNow = () => {
-    navigate("/checkout");
+    navigate("/checkoutBuyNow");
   };
 
   const handleMessageSubmit = async () => {

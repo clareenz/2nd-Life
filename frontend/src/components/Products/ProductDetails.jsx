@@ -41,7 +41,7 @@ const ProductDetails = ({ data }) => {
   const eventData = searchParams.get("isEvent");
 
   const buyNow = () => {
-    navigate("/checkout");
+    navigate("/checkoutBuyNow");
   };
 
   useEffect(() => {
