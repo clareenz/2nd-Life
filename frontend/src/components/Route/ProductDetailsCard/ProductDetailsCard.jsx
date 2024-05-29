@@ -4,14 +4,11 @@ start: 5:44:53(first vid) */
  * * Use to Display the Product Details when Clicked
  *
  */
-
 import Paragraph from "antd/es/typography/Paragraph";
 import React, { useEffect, useState } from "react";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
-import { RxCross1 } from "react-icons/rx";
 import styles from "../../../styles/styles";
-
-import { message } from "antd";
+import { Modal, message } from "antd";
 import axios from "axios";
 import {
   AiFillHeart,
@@ -38,7 +35,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   const [value, setValue] = useState(data?.qty || 1);
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.user);
-
 
   const buyNow = () => {
     navigate("/checkoutBuyNow");
@@ -124,150 +120,152 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   };
 
   return (
-    <div className="bg-[#fff] relative">
-      {data ? (
-        <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
-          <div className="w-[90%] 800px:w-[60%] h-[90vh]  800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
-            <RxCross1
-              size={30}
-              className="absolute z-50 right-3 top-3"
-              onClick={() => setOpen(false)}
+    <Modal
+      visible={!!data}
+      onCancel={() => setOpen(false)}
+      centered
+      title="Product Details"
+      footer={null}
+    >
+      {data && (
+        <div className="flex flex-col ">
+          <div className="">
+            <img
+              src={`${backend_url}${data.images && data.images[0]}`}
+              alt=""
+              className="w-full h-auto"
             />
-
-            <div className="block w-full 800px:flex">
-              <div className="w-full 800px:w-[50%]">
-                <img
-                  src={`${backend_url}${data.images && data.images[0]}`}
-                  alt=""
-                  style={{ width: '300px', height: '300px' }} //recommended size. ilagay to sa add product na size requirement para sure na di ma stretch and picture pag upload sa container
-                />
-                <div className="flex flex-row mt-[70px]">
-                  <div>
-                    <Link to={`/shop/preview/${data?.shop._id}`}>
-                      <img
-                        src={`${backend_url}${data?.shop?.avatar}`}
-                        alt=""
-                        className="w-[50px] h-[50px] rounded-full mr-2"
-                      />
-                    </Link>
-                  </div>
-                  <div>
-                    <Link
-                      to={`/shop/preview/${data.shop._id}`}
-                      className={`${styles.shop_name}`}
-                    >
-                      {data.shop.name}
-                    </Link>
-                    <h5 className="text-[13px] mt-1">
-                      ({data.shop.ratings}) Ratings
-                    </h5>
-                  </div>
-                </div>
-                <div
-                  className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-                  onClick={handleMessageSubmit}
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-row mt-[10px]">
+              <div>
+                <Link to={`/shop/preview/${data?.shop._id}`}>
+                  <img
+                    src={`${backend_url}${data?.shop?.avatar}`}
+                    alt=""
+                    className="w-[50px] h-[50px] rounded-full mr-2"
+                  />
+                </Link>
+              </div>
+              <div className="marquee">
+                <Link
+                  to={`/shop/preview/${data.shop._id}`}
+                  className={`${styles.shop_name}`}
                 >
-                  <span className="text-white text-[13px] mr-1">Message</span>
-                  <AiOutlineMessage className="text-white" />
-                </div>
+                  {data.shop.name}
+                </Link>
+                <h5 className="text-[13px] mt-1">
+                  ({data.shop.ratings}) Ratings
+                </h5>
+              </div>
+            </div>
+            <div
+              className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+              onClick={handleMessageSubmit}
+            >
+              <span className="text-white text-[13px] mr-1">Message</span>
+              <AiOutlineMessage className="text-white" />
+            </div>
+          </div>
+          <div className=" ">
+            <h1 className={`${styles.productTitle} text-[20px]`}>
+              {data.name}
+            </h1>
+            <div style={{ width: "100%" }}>
+              <Paragraph
+                style={{ textAlign: "justify", wordWrap: "break-word" }}
+              >
+                {data.description}
+              </Paragraph>
+            </div>
+            <div className="flex pt-3">
+              <h4 className={`${styles.productDiscountPrice}`}>
+                ₱{data.discountPrice}
+              </h4>
+              <h3 className={`${styles.price1}`}>
+                {data.originalPrice ? "₱" + data.originalPrice : null}
+              </h3>
+            </div>
+            <div className="flex items-center justify-between pr-3 pt-2">
+              <div className="flex flex-row">
+                {data.stock > 1 ? (
+                  <>
+                    <div>
+                      <button onClick={() => decrement(data)}>
+                        <CiSquareMinus size={30} />
+                      </button>
+                    </div>
+                    <div className="px-4 mt-0.5">{value}</div>
+                    <div>
+                      <button
+                        className="justify-center"
+                        onClick={() => increment(data)}
+                      >
+                        <CiSquarePlus size={30} />
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-gray-400 flex flex-row">
+                    <div>
+                      <button disabled>
+                        <CiSquareMinus size={30} />
+                      </button>
+                    </div>
+                    <div className="px-4 mt-0.5">{value}</div>
+                    <div>
+                      <button disabled className="justify-center">
+                        <CiSquarePlus size={30} />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
-                <h1 className={`${styles.productTitle} text-[20px]`}>
-                  {data.name}
-                </h1>
-                <Paragraph style={{ wordWrap: "break-word" }}>
-                  {data.description}
-                </Paragraph>
-                <div className="flex pt-3">
-                  <h4 className={`${styles.productDiscountPrice}`}>
-                    ₱{data.discountPrice}
-                  </h4>
-                  <h3 className={`${styles.price1}`}>
-                    {data.originalPrice ? "₱" + data.originalPrice : null}
-                  </h3>
-                </div>
-                <div className="flex items-center justify-between pr-3 mt-12">
-                  <div className="flex flex-row">
-                    {data.stock > 1 ? (
-                      <>
-                        <div>
-                          <button onClick={() => decrement(data)}>
-                            <CiSquareMinus size={30} />
-                          </button>
-                        </div>
-                        <div className="px-4 mt-0.5">{value}</div>
-                        <div>
-                          <button
-                            className="justify-center"
-                            onClick={() => increment(data)}
-                          >
-                            <CiSquarePlus size={30} />
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-gray-400 flex flex-row">
-                        <div>
-                          <button disabled>
-                            <CiSquareMinus size={30} />
-                          </button>
-                        </div>
-                        <div className="px-4 mt-0.5">{value}</div>
-                        <div>
-                          <button disabled className="justify-center">
-                            <CiSquarePlus size={30} />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+              <div>
+                {click ? (
+                  <AiFillHeart
+                    size={30}
+                    className="cursor-pointer"
+                    onClick={() => removeFromWishlistHandler(data)}
+                    color={click ? "#FF8474" : "#333"}
+                    title="Remove from wishlist"
+                  />
+                ) : (
+                  <AiOutlineHeart
+                    size={30}
+                    className="cursor-pointer"
+                    onClick={() => addToWishlistHandler(data)}
+                    color={click ? "#FF8474" : "#333"}
+                    title="Add to wishlist"
+                  />
+                )}
+              </div>
+            </div>
 
-                  <div>
-                    {click ? (
-                      <AiFillHeart
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => removeFromWishlistHandler(data)}
-                        color={click ? "#FF8474" : "#333"}
-                        title="Remove from wishlist"
-                      />
-                    ) : (
-                      <AiOutlineHeart
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => addToWishlistHandler(data)}
-                        color={click ? "#FF8474" : "#333"}
-                        title="Add to wishlist"
-                      />
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-row justify-center">
-                  <div
-                    className={`${styles.button6} !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-                    onClick={() => addToCartHandler(data._id)}
-                  >
-                    <span className="flex items-center text-white">
-                      Add to cart <AiOutlineShoppingCart className="ml-1" />
-                    </span>
-                  </div>
-                  {/* Buy Now button */}
-                  <div
-                    className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-                    onClick={buyNow}
-                  >
-                    <span className="flex items-center text-white">
-                      Buy Now <IoBagHandleOutline className="ml-1" />
-                    </span>
-                  </div>
-                </div>
+            <div className="flex flex-row justify-center">
+              <div
+                className={`${styles.button6} !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                onClick={() => addToCartHandler(data._id)}
+              >
+                <span className="flex items-center text-white">
+                  Add to cart <AiOutlineShoppingCart className="ml-1" />
+                </span>
+              </div>
+              {/* Buy Now button */}
+              <div
+                className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                onClick={buyNow}
+              >
+                <span className="flex items-center text-white">
+                  Buy Now <IoBagHandleOutline className="ml-1" />
+                </span>
               </div>
             </div>
           </div>
         </div>
-      ) : null}
-    </div>
+      )}
+    </Modal>
   );
 };
 
