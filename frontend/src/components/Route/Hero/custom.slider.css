@@ -19,9 +19,7 @@
     font-size: 24px;
   }
   
-  .container__slider > button:active {
-    color: black;
-  }
+
   
   .slider__btn-next {
     position: absolute;
@@ -107,27 +105,7 @@
     align-items: center;
   }
   
-  .slider-dots {
-    position: absolute;
-    bottom: 10px; /* Adjust the distance from the bottom */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-  }
   
-  .slider-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: gray;
-    margin: 0 5px; /* Adjust spacing between dots */
-    cursor: pointer;
-  }
-  
-  .slider-dot.active {
-    background-color: black; /* Adjust active dot color */
-  }
   
   .background-image {
     background-image: url('banner1.jpg');
@@ -135,5 +113,7 @@
     width: 100%;
     background-repeat: no-repeat;
   }
-  
+  .container__slider__links {
+    display: none; /* Hide the container that holds the slider dots */
+  }
   
