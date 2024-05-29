@@ -1,19 +1,32 @@
 import React from "react";
-import styles from "../../styles/styles";
 import ShopInfo from "../../components/Shop/ShopInfo";
 import ShopProfileData from "../../components/Shop/ShopProfileData";
+import { Header } from "../../components/Layout/Header";
+import { Footer2 } from "../../components/Layout/Footer";
 
-const ShopPreviewPage = () => {
+const ShopPreviewPage = (isOwner) => {
   return (
-    <div className={`${styles.section} bg-[#f5f5f5]`}>
-      <div className="w-full flex py-10 justify-between">
-        <div className="w-[25%] bg-[#fff] rounded-[4px] shadow-sm overflow-y-scroll h-[90vh] sticky top-10 left-0 z-10">
-          <ShopInfo isOwner={false} />
+    <div className={` bg-[#f5f5f5]`}>
+      <Header/>
+      <div className=" mx-auto sm:px-[20px] md:px-[50px] lg:px-[100px] xl:px-[230px] 2xl:px-[250px]">
+        <div className="flex flex-col pt-10">
+          <div className=" rounded-2xl">
+            <ShopInfo isOwner={false} />
+          </div>
         </div>
-        <div className="w-[72%] rounded-[4px]">
+        <div className=" rounded-[4px] px-4">
           <ShopProfileData isOwner={false} />
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
         </div>
       </div>
+
+      <Footer2 />
     </div>
   );
 };
