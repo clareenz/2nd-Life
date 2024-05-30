@@ -46,7 +46,7 @@ const DashboardHeader = () => {
           </Link>
           <Link to={`/shop/${seller._id}`}>
             <img
-              src={`$${seller.avatar?.url}`}
+              src={`${seller.avatar?.url}`}
               alt=""
               className="ml-3 w-[34px] h-[35px] rounded-full object-cover"
             />

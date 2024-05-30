@@ -11,15 +11,19 @@ import { RiDashboardLine } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
 import { BiShoppingBag } from "react-icons/bi";
 import { FaCartShopping } from "react-icons/fa6";
-import './sidebar.css';
-
-
+import { BsInboxes } from "react-icons/bs";
+import "./sidebar.css";
+import { IoBagAddOutline } from "react-icons/io5";
+import { BsTags } from "react-icons/bs";
+import { LuCalendarPlus } from "react-icons/lu";
+import { TbShoppingBagEdit } from "react-icons/tb";
+import { GiPadlock } from "react-icons/gi";
 
 const { SubMenu } = Menu;
 
 const DashboardSideBar = () => {
   const location = useLocation();
-  const [activeKey, setActiveKey] = useState("1"); // Define setActiveKey
+  const [activeKey, setActiveKey] = useState("1");
 
   useEffect(() => {
     switch (location.pathname) {
@@ -68,16 +72,13 @@ const DashboardSideBar = () => {
   }, [location]);
 
   return (
-    <div
-      style={{ height: "100vh", position: "fixed" }}
-      className="w-[60px] 800px:w-[250px] z-10 submenu-container"
-    >
+    <div className="sidebar-container pt-[80px] z-10">
       <Menu
         mode="inline"
         selectedKeys={[activeKey.toString()]}
         theme="light"
         style={{
-          maxHeight: "calc(100vh - 80px)",
+          height: "100%",
           overflowY: "auto",
           scrollbarWidth: "none",
         }}
@@ -100,16 +101,11 @@ const DashboardSideBar = () => {
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
               : {}
           }
-          icon={<FiShoppingBag />}
+          icon={<FaCartShopping />}
         >
           <Link to="/dashboard-orders">All Orders</Link>
         </Menu.Item>
-
-        <SubMenu
-          key="sub1"
-          icon={<FiPackage />}
-          title="Products"
-        >
+        <SubMenu key="sub1" icon={<FiPackage />} title="Products">
           <Menu.Item
             key="3"
             style={
@@ -117,7 +113,7 @@ const DashboardSideBar = () => {
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
                 : {}
             }
-            icon={<FaCartShopping />}
+            icon={<BsInboxes className="" />}
           >
             <Link to="/dashboard-products">All products</Link>
           </Menu.Item>
@@ -128,7 +124,7 @@ const DashboardSideBar = () => {
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
                 : {}
             }
-            icon={<BiShoppingBag />}
+            icon={<IoBagAddOutline className="" />}
           >
             <Link to="/dashboard-create-product">Add products</Link>
           </Menu.Item>
@@ -141,6 +137,7 @@ const DashboardSideBar = () => {
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
                 : {}
             }
+            icon={<BsTags />}
           >
             <Link to="/dashboard-events">All Events</Link>
           </Menu.Item>
@@ -151,6 +148,7 @@ const DashboardSideBar = () => {
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
                 : {}
             }
+            icon={<LuCalendarPlus />}
           >
             <Link to="/dashboard-create-event">Create Events</Link>
           </Menu.Item>
@@ -199,12 +197,7 @@ const DashboardSideBar = () => {
         >
           <Link to="/dashboard-refunds">Refunds</Link>
         </Menu.Item>
-        <SubMenu
-          key="sub3"
-          icon={<CiSettings />}
-          title="Settings"
-          style={{ marginTop: "270px" }}
-        >
+        <SubMenu key="sub3" icon={<CiSettings />} title="Settings">
           <Menu.Item
             key="12"
             style={
@@ -212,6 +205,7 @@ const DashboardSideBar = () => {
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
                 : {}
             }
+            icon={<TbShoppingBagEdit />}
           >
             <Link to="/settings">Shop</Link>
           </Menu.Item>
@@ -222,6 +216,7 @@ const DashboardSideBar = () => {
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
                 : {}
             }
+            icon={<GiPadlock />}
           >
             <Link to="/shop-password">Password</Link>
           </Menu.Item>

@@ -50,16 +50,13 @@ const AdminSidebar = () => {
   }, [location]);
 
   return (
-    <div
-      style={{ height: "100vh", position: "fixed" }}
-      className="w-[60px] 800px:w-[250px] z-10 submenu-container"
-    >
+    <div className="sidebar-container pt-[80px] z-10">
       <Menu
         mode="inline"
         selectedKeys={[activeKey.toString()]}
         theme="light"
         style={{
-          maxHeight: "calc(100vh - 80px)",
+          height: "100%",
           overflowY: "auto",
           scrollbarWidth: "none",
         }}
