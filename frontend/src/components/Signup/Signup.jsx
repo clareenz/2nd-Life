@@ -53,17 +53,8 @@ const Signup = () => {
   };
 
   const handleFileInputChange = (e) => {
-    const reader = new FileReader();
-
-    console.log(e.target.files[0])
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setAvatar(reader.result);
-      }
-    };
-
-   
+    const file = e.target.files[0];
+    setAvatar(file);
   };
 
   const validatePassword = () => {
@@ -74,13 +65,13 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     // Validate that password and confirm password match
     if (password !== confirmPassword) {
       toast.error("Password and confirm password do not match");
       return;
     }
-
     // Validate password strength
     if (!validatePassword()) {
       toast.error(
@@ -88,17 +79,14 @@ const Signup = () => {
       );
       return;
     }
-
     const newForm = new FormData();
-
     newForm.append("file", avatar);
     newForm.append("name", name);
     newForm.append("email", email);
     newForm.append("password", password);
 
-    console.log(avatar);
     axios
-      .post(`${server}/user/create-user`, { name, email, password, avatar })
+      .post(`${server}/user/create-user`, newForm, config)
       .then((res) => {
         toast.success(res.data.message);
         setName("");
@@ -277,7 +265,7 @@ const Signup = () => {
                   <span className="inline-block h-8 overflow-hidden rounded-full">
                     {avatar ? (
                       <img
-                        src={avatar}
+                        src={URL.createObjectURL(avatar)}
                         alt="avatar"
                         className="object-cover w-full h-full rounded-full"
                       />

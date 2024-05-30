@@ -35,43 +35,22 @@ const CreateProduct = () => {
     setImages(fileList);
   };
 
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     const newForm = new FormData();
-
-    const base64Images = await Promise.all(
-      images.map(file => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file.originFileObj);
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = error => reject(error);
-        });
-      })
-    );
-
-    newForm.append("images", base64Images);
+    images.forEach((image) => {
+      newForm.append("images", image.originFileObj);
+    });
     newForm.append("name", values.name);
     newForm.append("description", values.description);
     newForm.append("category", values.category);
     newForm.append("tags", values.tags);
-    newForm.append("originalPrice", values.originalPrice);
+    newForm.append("originalPrice", values.originalPrice ?? 0);
+    console.log("Original Price:", values.originalPrice); // Debugging line
     newForm.append("discountPrice", values.discountPrice);
+    console.log("Discount Price:", values.discountPrice); // Debugging line
     newForm.append("stock", values.stock);
     newForm.append("shopId", seller._id);
-
-    dispatch(
-      createProduct({
-        name: values.name,
-        description: values.description,
-        category: values.category,
-        tags: values.tags,
-        originalPrice: values.originalPrice,
-        discountPrice: values.discountPrice,
-        stock: values.stock,
-        shopId: seller._id,
-        images: base64Images,
-      })
-    );
+    dispatch(createProduct(newForm));
   };
 
 

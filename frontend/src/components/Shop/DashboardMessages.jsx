@@ -144,22 +144,23 @@ const DashboardMessages = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImages(reader.result);
-        imageSendingHandler(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    setImages(file);
+    imageSendingHandler(file);
   };
 
   const imageSendingHandler = async (e) => {
+    const formData = new FormData();
+
+    formData.append("images", e);
+    formData.append("sender", seller._id);
+    formData.append("text", newMessage);
+    formData.append("conversationId", currentChat._id);
+
     const receiverId = currentChat.members.find(
       (member) => member !== seller._id
     );
+
     socketId.emit("sendMessage", {
       senderId: seller._id,
       receiverId,
@@ -168,11 +169,10 @@ const DashboardMessages = () => {
 
     try {
       await axios
-        .post(`${server}/message/create-new-message`, {
-          images: e,
-          sender: seller._id,
-          text: newMessage,
-          conversationId: currentChat._id,
+        .post(`${server}/message/create-new-message`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((res) => {
           setImages();
