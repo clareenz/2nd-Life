@@ -20,6 +20,7 @@ import UserInboxPage from "../pages/UserInboxPage";
 import SearchResult from "../pages/SearchResult";
 import OrderDetailsPage from "../pages/OrderDetailsPage"
 import TrackOrderPage from "../pages/TrackOrderPage";
+import ReportPage from "../pages/ReportPage";
 
 export {
   LoginPage,
@@ -44,4 +45,5 @@ export {
   SearchResult,
   OrderDetailsPage,
   TrackOrderPage,
+  ReportPage
 };

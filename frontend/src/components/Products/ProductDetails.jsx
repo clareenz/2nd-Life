@@ -13,6 +13,7 @@ import {
 } from "react-icons/ai";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import { IoBagHandleOutline } from "react-icons/io5";
+import { GoReport } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -98,7 +99,9 @@ const ProductDetails = ({ data }) => {
     }
   };
 
-  const totalReviewsLength = products && products.reduce((acc,product) => acc + product.reviews.length, 0);
+  const totalReviewsLength =
+    products &&
+    products.reduce((acc, product) => acc + product.reviews.length, 0);
 
   const totalRatings =
     products &&
@@ -107,10 +110,10 @@ const ProductDetails = ({ data }) => {
         acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
       0
     );
-      
-    const avg =  totalRatings / totalReviewsLength || 0;
 
-    const averageRating = avg.toFixed(2);
+  const avg = totalRatings / totalReviewsLength || 0;
+
+  const averageRating = avg.toFixed(2);
 
   const handleMessageSubmit = async () => {
     if (isAuthenticated) {
@@ -287,7 +290,7 @@ const ProductDetails = ({ data }) => {
                           {data.shop.name}
                         </Link>
                         <h5 className="text-[13px] mt-1">
-                        ({averageRating}/5) Ratings
+                          ({averageRating}/5) Ratings
                         </h5>
                       </div>
                     </div>
@@ -300,11 +303,20 @@ const ProductDetails = ({ data }) => {
                       </span>
                       <AiOutlineMessage className="text-white" />
                     </div>
+                    {/* Report Icon */}
+                    <Link to={`/report?productId=${data._id}`}>
+                      <GoReport size={30} title="Report" />
+                    </Link>
                   </div>
                 </div>
               </div>
             </div>
-            <ProductDetailsInfo data={data} products={products} totalReviewsLength={totalReviewsLength} averageRating={averageRating} />
+            <ProductDetailsInfo
+              data={data}
+              products={products}
+              totalReviewsLength={totalReviewsLength}
+              averageRating={averageRating}
+            />
             <br />
             <br />
           </div>
@@ -314,7 +326,12 @@ const ProductDetails = ({ data }) => {
   );
 };
 
-const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating }) => {
+const ProductDetailsInfo = ({
+  data,
+  products,
+  totalReviewsLength,
+  averageRating,
+}) => {
   const [active, setActive] = useState(1);
 
   return (
@@ -402,7 +419,7 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
                     {data.shop.name}
                   </Link>
                   <h5 className="text-[13px] mt-1">
-                  ({averageRating}/5) Ratings
+                    ({averageRating}/5) Ratings
                   </h5>
                 </div>
               </div>
@@ -423,7 +440,8 @@ const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating 
                   </span>
                 </h5>
                 <h5 className="font-[600] pt-3">
-                  Total Reviews: <span className="font-[500]">{totalReviewsLength}</span>
+                  Total Reviews:{" "}
+                  <span className="font-[500]">{totalReviewsLength}</span>
                 </h5>
                 <Link to={`/shop/preview/${data?.shop._id}`}>
                   <div
