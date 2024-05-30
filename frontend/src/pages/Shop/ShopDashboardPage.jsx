@@ -8,7 +8,7 @@ const ShopDashboardPage = () => {
         <div>
           <DashboardHeader />
           <div className="flex">
-            <div className="w-[60px] 800px:w-[270px]">
+            <div className=" w-[60px] 800px:w-[270px]">
               <DashboardSideBar active={1} />
             </div>
             <DashboardHero />

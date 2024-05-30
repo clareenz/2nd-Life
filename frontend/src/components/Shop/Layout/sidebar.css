@@ -7,3 +7,27 @@
 .ant-menu-submenu-selected.ant-menu-submenu-selected:hover > .ant-menu-submenu-title {
     background-color: #FFEAE8 !important;
   }
+
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .sidebar-container {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white; /* Adjust as needed */
+    overflow-y: auto;
+    width: 60px; /* Default width */
+  }
+  
+  @media (min-width: 800px) {
+    .sidebar-container {
+      width: 250px; /* Width for larger screens */
+    }
+  }
+  

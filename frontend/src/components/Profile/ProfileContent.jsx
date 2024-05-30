@@ -173,6 +173,7 @@ const ProfileContent = ({ active }) => {
                     //required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
+                    min="0"
                   />
                 </div>
 
@@ -929,6 +930,7 @@ const Address = () => {
               className="px-4 w-full border h-[30px] rounded-full focus:border-[#006665]"
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
+              min="0"
             />
           </div>
           <div className="block w-full pb-2">
@@ -973,7 +975,7 @@ const Address = () => {
             </div>
             <div className="flex items-center pl-8">
               <h6 className="text-[12px] 800px:text-[unset]">
-                {item.address1} {item.address2}
+                {item.country} {item.city} {item.zipCode}
               </h6>
             </div>
             <div className="flex items-center pl-8">

@@ -66,7 +66,7 @@ export const SellerCard = ({ data }) => {
                 className="flex flex-row items-center"
               >
                 <img
-                  src={`${backend_url}${data?.shop?.avatar}`}
+                  src={`${data?.shop?.avatar?.url}`}
                   alt=""
                   className="w-[50px] h-[50px] rounded-full object-cover mr-3"
                 />

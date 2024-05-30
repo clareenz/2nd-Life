@@ -399,6 +399,78 @@ input,select{
   font-size: 18px; /* Adjust font size as needed */
 }
 
+/* Basic container styling */
+.dashboard-container {
+  width: 100%;
+  padding: 8px 50px;
+}
+
+/* Header styling */
+
+
+/* Overview section styling */
+.overview-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Overview card styling */
+.overview-card {
+  width: 100%;
+  margin-bottom: 16px;
+  min-height: 20vh;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Responsive styling for cards on larger screens */
+@media (min-width: 800px) {
+  .overview-card {
+    width: 30%;
+  }
+}
+
+/* Table container styling */
+.table-container {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  overflow-x: auto;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Table controls styling */
+.table-controls {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 50px;
+}
+
+/* Remove indentation from submenu items */
+.ant-menu-sub .ant-menu-item {
+  padding-left: 24px !important; /* Adjust this value as needed */
+}
+
+/* Optional: Further customize the submenu appearance */
+.ant-menu-sub {
+  background-color: #ffffff; /* Example background color */
+}
+
+.ant-menu-sub .ant-menu-item-selected {
+  background-color: #FFEAE8 !important;
+  color: #FF8474 !important;
+}
+
+
+
+
+
 
 
 

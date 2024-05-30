@@ -102,7 +102,7 @@ const ShopInfo = ({ isOwner }) => {
 
   return (
     <Spin spinning={isLoading}>
-      <div className="bg-[#f5f5f5] px-1 sm:px-[1] md:px-[1px] lg:px-[1px] xl:px-[1px] 2xl:px-60 py-10 relative">
+      <div className="bg-[#f5f5f5] px-1 sm:px-[1] md:px-[1px] lg:px-[1px] xl:px-[1px] 2xl:px-[1px] py-10 relative">
         <div className="flex flex-col items-center">
           <div className="relative w-full" style={{ paddingTop: "37.037%" }}>
             <img

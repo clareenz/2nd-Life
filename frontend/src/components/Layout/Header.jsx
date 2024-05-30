@@ -1,6 +1,6 @@
 /* The logo, search bar, become seller button, and the blue header's here */
 
-import { Divider, Input, Modal } from "antd";
+import { Divider, Dropdown, Input, Menu, Modal } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -26,6 +26,7 @@ import DropDown from "./DropDown";
 import { Navbar, Navbar2 } from "./Navbar";
 import { Layout, Avatar, Badge } from "antd";
 import { RiCloseLine } from "react-icons/ri";
+import { AiOutlineBell } from "react-icons/ai";
 
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
@@ -45,6 +46,15 @@ const Header = ({ activeHeading }) => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
   const searchRef = useRef(null);
+
+  const notificationMenu = (
+    <Menu>
+      <Menu.Item key="1">
+        <Link to="/notifications">Notification 1</Link>
+      </Menu.Item>
+      {/* Add more notification items as needed */}
+    </Menu>
+  );
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -166,7 +176,7 @@ const Header = ({ activeHeading }) => {
           </div>
         </div>
 
-        <div className="flex flex-row">
+        <div className="flex flex-row ">
           <div className=" lg:w-[400px]">
             {/* Search Input Field */}
             <Input
@@ -218,7 +228,7 @@ const Header = ({ activeHeading }) => {
 
           {/* heart icon */}
           <div className="flex">
-            <div className={`${styles.normalFlex} px-3`}>
+            <div className={`${styles.normalFlex} pl-2`}>
               <div
                 className="relative cursor-pointer"
                 onClick={() => setOpenWishlist(true)}
@@ -231,7 +241,7 @@ const Header = ({ activeHeading }) => {
             </div>
 
             {/* shopping cart icon */}
-            <div className={`${styles.normalFlex}`}>
+            <div className={`${styles.normalFlex} px-2`}>
               <div
                 className="relative cursor-pointer"
                 onClick={() => setOpenCart(true)}
@@ -243,14 +253,23 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
 
+            {/* notif */}
+            <div className={`${styles.normalFlex} pr-2`}>
+              <Dropdown overlay={notificationMenu} placement="bottomRight">
+                <div className="relative cursor-pointer">
+                  <AiOutlineBell color="#000" size={27} fill="text-black" />
+                </div>
+              </Dropdown>
+            </div>
+
             {/* profile icon */}
-            <div className={`${styles.normalFlex} px-3`}>
+            <div className={`${styles.normalFlex} pr-2`}>
               <div className="relative cursor-pointer">
                 {isAuthenticated ? (
                   <Link to="/profile">
                     <img
-                      src={`${user.avatar.url}`}
-                      className="w-[25px] h-[25px] rounded-full object-cover"
+                      src={`${user.avatar?.url}`}
+                      className="w-[30px] h-[30px] rounded-full object-cover"
                       alt=""
                     />
                   </Link>
@@ -263,7 +282,7 @@ const Header = ({ activeHeading }) => {
             </div>
 
             {/*menu*/}
-            <div className="mr-1">
+            <div className=" pr-2">
               <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
             </div>
           </div>
@@ -289,7 +308,7 @@ const Header = ({ activeHeading }) => {
                     <div>
                       <Link to="/profile">
                         <img
-                          src={`${backend_url}${user.avatar} `}
+                          src={`${user.avatar?.url} `}
                           alt=""
                           className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
@@ -545,7 +564,7 @@ const Header = ({ activeHeading }) => {
                     <div>
                       <Link to="/profile">
                         <img
-                          src={`${backend_url}${user.avatar}`}
+                          src={`${user.avatar?.url}`}
                           alt=""
                           className="w-[70px] h-[70px] rounded-full border-[3px] object-cover border-[#0eae88]"
                         />
@@ -852,7 +871,7 @@ const Header2 = ({ activeHeading }) => {
                     <div>
                       <Link to="/profile">
                         <img
-                          src={`${backend_url}${user.avatar} `}
+                          src={`${user.avatar?.url} `}
                           alt=""
                           className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
@@ -1088,7 +1107,7 @@ const Header2 = ({ activeHeading }) => {
                     <div>
                       <Link to="/profile">
                         <img
-                          src={`${backend_url}${user.avatar}`}
+                          src={`${user.avatar?.url}`}
                           alt=""
                           className="w-[70px] h-[70px] rounded-full border-[3px] object-cover border-[#0eae88]"
                         />
@@ -1331,7 +1350,7 @@ const SearchHeader = ({ activeHeading }) => {
                   <div>
                     <Link to="/profile">
                       <img
-                        src={`${backend_url}${user.avatar} `}
+                        src={`${user.avatar?.url} `}
                         alt=""
                         className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                       />

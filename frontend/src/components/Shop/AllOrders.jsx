@@ -197,7 +197,9 @@ const AllOrders = () => {
         <div className="w-full min-h-[45vh] bg-white rounded-3xl shadow-md">
           <div className="flex flex-row justify-between">
             <div>
-              <h1 className="text-[25px] font-Poppins px-[50px] py-4">All Orders</h1>
+              <h1 className="text-[25px] font-Poppins px-[50px] py-4">
+                All Orders
+              </h1>
             </div>
             <div className="flex p-4 px-[50px]">
               <Dropdown overlay={menu} trigger={["click"]}>
@@ -210,7 +212,7 @@ const AllOrders = () => {
               </Dropdown>
             </div>
           </div>
-          <div style={{  overflowY: "auto" }}>
+          <div style={{ overflowY: "auto" }}>
             <Table
               dataSource={data}
               columns={columns.filter((column) => visibleColumns[column.key])}
