@@ -5,7 +5,7 @@ import { server } from "../../server";
 import { message } from "antd";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const ResetPassword = () => {
+const ResetSellerPassword = () => {
   const { token } = useParams(); // Get the token from the URL
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -51,17 +51,17 @@ const ResetPassword = () => {
     }
     try {
       const response = await axios.post(
-        `${server}/user/reset-password/${token}`,
+        `${server}/shop/reset-seller-password/${token}`,
         { newPassword }
       );
       message.success(response.data.message);
-      setNewPassword(""); // Clear password fields after successful submission
+      setNewPassword(""); 
       setConfirmPassword("");
     } catch (error) {
       message.error(error.response.data.message);
     }
   };
-
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
       {/* Right side with the form */}
@@ -177,7 +177,7 @@ const ResetPassword = () => {
               {/* Login link */}
               <div className="text-center mt-4">
                 <Link
-                  to="/login"
+                  to="/shop-login"
                   className="text-[13px] text-006665 hover:text-fe8373"
                 >
                   Back to Login
@@ -189,6 +189,7 @@ const ResetPassword = () => {
       </div>
     </div>
   );
+
 };
 
-export default ResetPassword;
+export default ResetSellerPassword;

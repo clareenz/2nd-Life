@@ -41,6 +41,8 @@ import {
   ShopOrderDetails,
   ShopWithDrawMoneyPage,
   ShopAllRefunds,
+  ForgotSellerPasswordPage,
+  ResetSellerPasswordPage,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -175,6 +177,14 @@ const App = () => {
         {/* shop Routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
         <Route path="/shop-login" element={<ShopLoginPage />} />
+        <Route
+          path="/forgot-seller-password"
+          element={<ForgotSellerPasswordPage />}
+        />
+        <Route
+          path="/reset-seller-password/:token"
+          element={<ResetSellerPasswordPage />}
+        />
         <Route
           path="/shop/:id"
           element={

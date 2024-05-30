@@ -177,7 +177,7 @@ const ShopLogin = () => {
                 </div>
                 <div className="text-sm">
                   <a
-                    href=".forgot-password"
+                    href="/forgot-seller-password"
                     className="font-sm text-006665 hover:text-fe8373"
                   >
                     Forgot password?

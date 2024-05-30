@@ -12,6 +12,10 @@ import ShopAllOrders from "../pages/Shop/ShopAllOrders"
 import ShopOrderDetails from "../pages/Shop/ShopOrderDetails"
 import ShopAllRefunds from "../pages/Shop/ShopAllRefunds";
 import ShopWithDrawMoneyPage from "../pages/Shop/ShopWithdrawMoneyPage";
+import ForgotSellerPasswordPage from "../pages/Shop/ForgotSellerPasswordPage";
+import ResetSellerPasswordPage from "../pages/Shop/ResetSellerPasswordPage";
+
+
 export {
   ShopDashboardPage,
   ShopCreateProduct,
@@ -27,4 +31,6 @@ export {
   ShopOrderDetails,
   ShopWithDrawMoneyPage,
   ShopAllRefunds,
+  ForgotSellerPasswordPage,
+  ResetSellerPasswordPage
 };
