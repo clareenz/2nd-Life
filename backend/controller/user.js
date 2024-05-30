@@ -8,8 +8,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const sendMail = require("../utils/sendMail");
-const sendMail1 = require("../utils/senMail1");
+const { sendActivationEmail, sendPasswordResetEmail, sendSellerActivationEmail } = require('../utils/sendMail');
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
 const user = require("../model/user");
@@ -52,10 +51,10 @@ router.post("/create-user", async (req, res, next) => {
     const activationUrl = `${process.env.FRONTEND_URL}/activation/${activationToken}`;
 
     try {
-      await sendMail({
+      await sendActivationEmail({
         email: user.email,
         subject: "Activate your account",
-        message: `Hello ${user.name}, please click on the link to activate your account: ${activationUrl}`,
+        activationUrl: activationUrl,
       });
       res.status(201).json({
         success: true,
@@ -383,10 +382,10 @@ router.post(
         expiresIn: "10m",
       });
 
-      const resetLink = `http://localhost:3000/reset-password/${token}`;
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
       try {
-        await sendMail1({
+        await sendPasswordResetEmail({
           name: user.name || 'User', // Assuming you have a name field
           email: user.email,
           subject: "Password Reset",
