@@ -144,19 +144,19 @@ const UserInbox = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    setImages(file);
-    imageSendingHandler(file);
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages(reader.result);
+        imageSendingHandler(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
   };
-
+  
   const imageSendingHandler = async (e) => {
-    const formData = new FormData();
-
-    formData.append("images", e);
-    formData.append("sender", user._id);
-    formData.append("text", newMessage);
-    formData.append("conversationId", currentChat._id);
-
     const receiverId = currentChat.members.find(
       (member) => member !== user._id
     );
@@ -169,11 +169,15 @@ const UserInbox = () => {
 
     try {
       await axios
-        .post(`${server}/message/create-new-message`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        .post(
+          `${server}/message/create-new-message`,
+          {
+            images: e,
+            sender: user._id,
+            text: newMessage,
+            conversationId: currentChat._id,
+          }
+        )
         .then((res) => {
           setImages();
           setMessages([...messages, res.data.message]);
@@ -387,7 +391,7 @@ const MessageList = ({
       <div className="flex">
         <div className="relative">
           <img
-            src={`${backend_url}${user?.avatar}`}
+            src={`${user?.avatar?.url}`}
             alt=""
             className="w-[50px] h-[50px] rounded-full"
           />
@@ -467,7 +471,7 @@ const SellerInbox = ({
           <div className="flex items-center justify-between p-2 bg-white border-b">
             <div className="flex">
               <img
-                src={`${backend_url}${userData?.avatar}`}
+                src={`${userData?.avatar?.url}`}
                 alt=""
                 className="w-[55px] h-[55px] rounded-full"
               />
@@ -495,7 +499,7 @@ const SellerInbox = ({
                   >
                     {item.sender !== sellerId && (
                       <img
-                        src={`${backend_url}${userData?.avatar}`}
+                        src={`${userData?.avatar?.url}`}
                         className="w-[40px] h-[40px] rounded-full mr-3"
                         alt=""
                       />
@@ -504,7 +508,7 @@ const SellerInbox = ({
                       <div>
                         {" "}
                         <img
-                          src={`${backend_url}${item.images}`}
+                          src={`${item.images?.url}`}
                           className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
                         />
                         <p className="text-[12px] text-[#000000d3] pt-1">

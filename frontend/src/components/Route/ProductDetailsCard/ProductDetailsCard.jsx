@@ -371,7 +371,7 @@ const ProductDetailsCard2 = ({ setOpen, data }) => {
         <div className="flex flex-col pt-8 ">
           <div className="">
             <img
-              src={`${backend_url}${data.images && data.images[0]}`}
+              src={`${data.images && data.images[0]?.url}`}
               alt=""
               className="w-full h-auto object-cover pb-3"
             />
@@ -381,7 +381,7 @@ const ProductDetailsCard2 = ({ setOpen, data }) => {
               <div>
                 <Link to={`/shop/preview/${data?.shop._id}`}>
                   <img
-                    src={`${backend_url}${data?.shop?.avatar}`}
+                    src={`${data?.shop?.avatar?.url}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full mr-2"
                   />

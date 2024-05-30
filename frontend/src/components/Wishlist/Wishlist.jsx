@@ -79,10 +79,10 @@ const CartSingle = ({ data, removeFromWishlistHandler, addToCartHandler }) => {
   const totalPrice = data.discountPrice * value;
 
   return (
-    <div className="p-4 border-b flex flex-row">
+    <div className="flex flex-row p-4 border-b">
       <div className="flex items-center w-full">
         <img
-          src={`${backend_url}${data?.images[0]}`}
+          src={`${data?.images[0]?.url}`}
           alt=""
           className="w-[70px] h-min ml-2 mr-2 rounded-[5px]"
         />
@@ -98,12 +98,12 @@ const CartSingle = ({ data, removeFromWishlistHandler, addToCartHandler }) => {
         <div className="">
           <LiaCartPlusSolid
             size={20}
-            className="cursor-pointer mb-8"
+            className="mb-8 cursor-pointer"
             title="Add to Cart"
             onClick={() => addToCartHandler(data) || removeFromWishlistHandler(data)}
           />
         </div>
-        <div className=" ml-1">
+        <div className="ml-1 ">
           <FaRegTrashCan
             size={15}
             className="cursor-pointer"

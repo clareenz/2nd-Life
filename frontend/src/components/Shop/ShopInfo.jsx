@@ -125,7 +125,7 @@ const ShopInfo = ({ isOwner }) => {
             )}
             <div className="absolute bottom-0 2xl:left-[150px] xl:left-[150px] lg:left-[150px] md:left-[150px] sm:left-[150px] left-1/2 transform -translate-x-1/2 z-10 text-center mb-[-125px]">
               <Avatar
-                src={`${backend_url}${data.avatar}`}
+                src={`${data.avatar?.url}`}
                 size={160}
                 className="border-4 border-white"
               />
