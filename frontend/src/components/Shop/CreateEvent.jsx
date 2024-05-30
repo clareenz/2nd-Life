@@ -58,7 +58,7 @@ const CreateEvent = () => {
     setImages(fileList);
   };
 
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     const {
       name,
       description,
@@ -69,46 +69,21 @@ const CreateEvent = () => {
       stock,
     } = values;
 
-    const base64Images = await Promise.all(
-      images.map((file) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file.originFileObj);
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
-        });
-      })
-    );
-
-    console.log(name)
-    console.log(description)
-    console.log(category)
-    console.log(tags)
-    console.log(0)
-    console.log(discountPrice)
-    console.log(stock)
-    console.log(seller._id)
-    console.log(startDate)
-    console.log(endDate)
-    console.log( base64Images)
-    
-
-
-    dispatch(
-      createevent({
-        name,
-        description,
-        category,
-        tags,
-        originalPrice: 0,
-        discountPrice,
-        stock,
-        shopId: seller._id,
-        start_Date: startDate,
-        Finish_Date: endDate,
-        images: base64Images,
-      })
-    );
+    const newForm = new FormData();
+    images.forEach((image) => {
+      newForm.append("images", image.originFileObj);
+    });
+    newForm.append("name", name);
+    newForm.append("description", description);
+    newForm.append("category", category);
+    newForm.append("tags", tags);
+    newForm.append("originalPrice", values.originalPrice || 0)
+    newForm.append("discountPrice", discountPrice);
+    newForm.append("stock", stock);
+    newForm.append("shopId", seller._id);
+    newForm.append("start_Date", startDate);
+    newForm.append("Finish_Date", endDate);
+    dispatch(createevent(newForm));
   };
 
   const onFinishFailed = (errorInfo) => {

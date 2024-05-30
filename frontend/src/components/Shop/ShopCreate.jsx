@@ -72,15 +72,8 @@ const ShopCreate = () => {
   };
 
   const handleFileInputChange = (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setAvatar(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    setAvatar(file);
   };
 
   const validatePassword = () => {
@@ -91,13 +84,13 @@ const ShopCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     // Validate that password and confirm password match
     if (password !== confirmPassword) {
       message.error("Password and confirm password do not match");
       return;
     }
-
     // Validate password strength
     if (!validatePassword()) {
       message.error(
@@ -106,18 +99,20 @@ const ShopCreate = () => {
       return;
     }
 
+    const newForm = new FormData();
+
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email);
+    newForm.append("password", password);
+    newForm.append("zipCode", zipCode);
+    newForm.append("address", address);
+    newForm.append("phoneNumber", phoneNumber);
+
     axios
-      .post(`${server}/shop/create-shop`, {
-        name,
-        email,
-        password,
-        avatar,
-        zipCode,
-        address,
-        phoneNumber,
-      })
+      .post(`${server}/shop/create-shop`, newForm, config)
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
         setName("");
         setEmail("");
         setPassword("");
@@ -127,10 +122,9 @@ const ShopCreate = () => {
         setPhoneNumber();
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       checkAutofill();
@@ -370,7 +364,7 @@ const ShopCreate = () => {
                   <span className="inline-block h-8 overflow-hidden rounded-full">
                     {avatar ? (
                       <img
-                        src={avatar}
+                        src={URL.createObjectURL(avatar)}
                         alt="avatar"
                         className="object-cover w-full h-full rounded-full"
                       />

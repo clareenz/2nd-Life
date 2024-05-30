@@ -144,23 +144,22 @@ const UserInbox = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImages(reader.result);
-        imageSendingHandler(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    setImages(file);
+    imageSendingHandler(file);
   };
-  
+
   const imageSendingHandler = async (e) => {
+    const formData = new FormData();
+
+    formData.append("images", e);
+    formData.append("sender", user._id);
+    formData.append("text", newMessage);
+    formData.append("conversationId", currentChat._id);
+
     const receiverId = currentChat.members.find(
       (member) => member !== user._id
     );
-
     socketId.emit("sendMessage", {
       senderId: user._id,
       receiverId,
@@ -169,15 +168,11 @@ const UserInbox = () => {
 
     try {
       await axios
-        .post(
-          `${server}/message/create-new-message`,
-          {
-            images: e,
-            sender: user._id,
-            text: newMessage,
-            conversationId: currentChat._id,
-          }
-        )
+        .post(`${server}/message/create-new-message`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           setImages();
           setMessages([...messages, res.data.message]);
@@ -208,7 +203,7 @@ const UserInbox = () => {
       {!open && (
         <div>
           <div className="flex flex-row items-center justify-between border-b">
-            <h1 className="px-10 text-3xl py-6 font-Poppins w-1/2">Chats</h1>
+            <h1 className="w-1/2 px-10 py-6 text-3xl font-Poppins">Chats</h1>
             <div className="flex justify-center w-1/2">
               <div className="w-full px-6">
                 <Input
