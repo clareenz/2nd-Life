@@ -25,7 +25,8 @@ import {
   SearchResult,
   OrderDetailsPage,
   TrackOrderPage,
-} from "./routes/Routes.js";
+  ReportPage
+} from "./routes/Routes";
 import {
   ShopDashboardPage,
   ShopCreateProduct,
@@ -349,6 +350,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+        <Route path="/report" element={<ReportPage />} />
       </Routes>
       <ToastContainer
         position="bottom-center"

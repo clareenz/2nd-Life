@@ -13,6 +13,7 @@ import {
 } from "react-icons/ai";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import { IoBagHandleOutline } from "react-icons/io5";
+import { GoReport } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -296,7 +297,7 @@ const ProductDetails = ({ data }) => {
                           {data.shop.name}
                         </Link>
                         <h5 className="text-[13px] mt-1">
-                        ({averageRating}/5) Ratings
+                          ({averageRating}/5) Ratings
                         </h5>
                       </div>
                     </div>
@@ -309,6 +310,10 @@ const ProductDetails = ({ data }) => {
                       </span>
                       <AiOutlineMessage className="text-white" />
                     </div>
+                    {/* Report Icon */}
+                    <Link to={`/report?productId=${data._id}`}>
+                      <GoReport size={30} title="Report" />
+                    </Link>
                   </div>
                 </div>
               </div>
