@@ -53,6 +53,7 @@ const CreateProduct = () => {
     dispatch(createProduct(newForm));
   };
 
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };

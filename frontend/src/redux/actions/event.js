@@ -2,6 +2,7 @@ import axios from "axios";
 import { server } from "../../server";
 
 // create event
+// create product
 export const createevent = (newForm) => async (dispatch) => {
   try {
     dispatch({
@@ -92,7 +93,6 @@ export const getAllEvents = () => async (dispatch) => {
     });
   }
 };
-
 // updateEvent
 export const updateEvent = (id, updatedEventData) => async (dispatch) => {
   try {

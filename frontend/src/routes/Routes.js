@@ -9,6 +9,7 @@ import StorePage from "../pages/StorePage";
 import EventsPage from "../pages/EventsPage";
 import FAQPage from "../pages/FAQPage";
 import CheckoutPage from "../pages/CheckoutPage";
+import CheckoutBuyNowPage from "../pages/CheckoutBuyNowPage.jsx"
 import PaymentPage from "../pages/PaymentPage";
 import OrderSuccessPage from "../pages/OrderSuccessPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
@@ -34,6 +35,7 @@ export {
   EventsPage,
   FAQPage,
   CheckoutPage,
+  CheckoutBuyNowPage,
   PaymentPage,
   OrderSuccessPage,
   ProductDetailsPage,

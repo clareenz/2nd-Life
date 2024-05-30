@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
@@ -15,12 +15,12 @@ const ShopCreate = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber, setPhoneNumber] = useState(""); // Initialize as empty string
   const [address, setAddress] = useState("");
-  const [zipCode, setZipCode] = useState();
+  const [zipCode, setZipCode] = useState(""); // Initialize as empty string
   const [emailClicked, setEmailClicked] = useState(false); // State to track email input click
   const [passwordClicked, setPasswordClicked] = useState(false); // State to track password input click
-  const [nameclicked, setNameClicked] = useState(false);
+  const [nameClicked, setNameClicked] = useState(false);
   const [phoneNumberClicked, setPhoneNumberClicked] = useState(false);
   const [addressClicked, setAddressClicked] = useState(false);
   const [zipCodeClicked, setZipCodeClicked] = useState(false);
@@ -62,7 +62,7 @@ const ShopCreate = () => {
       setNameClicked(false);
     } else if (field === "confirmPassword") {
       setConfirmPasswordClicked(false);
-    } else if (field === "phoneNumner") {
+    } else if (field === "phoneNumber") {
       setPhoneNumberClicked(false);
     } else if (field === "address") {
       setAddressClicked(false);
@@ -81,7 +81,6 @@ const ShopCreate = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|])[A-Za-z\d@$!%*?&~`^()\-_={}[\]:;'"<>,.\\/|]{6,}$/;
     return regex.test(password);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,7 +91,6 @@ const ShopCreate = () => {
       message.error("Password and confirm password do not match");
       return;
     }
-
     // Validate password strength
     if (!validatePassword()) {
       message.error(
@@ -118,16 +116,17 @@ const ShopCreate = () => {
         setName("");
         setEmail("");
         setPassword("");
-        setAvatar();
-        setZipCode();
+        setConfirmPassword(""); // Reset confirm password
+        setAvatar(null); // Reset avatar
+        setZipCode(""); // Reset zip code
         setAddress("");
-        setPhoneNumber();
+        setPhoneNumber(""); // Reset phone number
       })
       .catch((error) => {
         message.error(error.response.data.message);
       });
   };
-
+  
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       checkAutofill();
@@ -139,19 +138,19 @@ const ShopCreate = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
       {/* Left side with the image */}
-      <div className="lg:w-flex md:w-1/3 sm:w-1/3 w-1/4">
+      <div className="w-1/4 lg:w-flex md:w-1/3 sm:w-1/3">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" />
       </div>
 
       {/* Right side with the form */}
       <div className="lg:w-1/2">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold text-center text-gray-900">
             Create an account
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-flex sm:max-w-sm">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             <form className="space-y-5" onSubmit={handleSubmit}>
               {/* Shop Name */}
               <div className="relative flex flex-row">
@@ -169,7 +168,7 @@ const ShopCreate = () => {
                 <label
                   htmlFor="name"
                   className={`absolute left-5 ${
-                    isAutofilled || nameclicked || name
+                    isAutofilled || nameClicked || name
                       ? "transition transform -translate-y-[18px] bg-white h-3 top-2 text-xs px-1 text-[#006665] z-10"
                       : "bottom-2.5 text-sm transition text-gray-500 text-center"
                   }`}
@@ -183,6 +182,7 @@ const ShopCreate = () => {
                 <input
                   type="number"
                   name="phoneNumber"
+                  autoComplete="phoneNumber"
                   required
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
@@ -223,15 +223,16 @@ const ShopCreate = () => {
                       : "bottom-2.5 text-sm transition text-gray-500 text-center"
                   }`}
                 >
-                  Email Address
+                  Email address
                 </label>
               </div>
 
               {/* Address */}
               <div className="relative">
                 <input
-                  type="address"
+                  type="text"
                   name="address"
+                  autoComplete="address"
                   required
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -251,11 +252,12 @@ const ShopCreate = () => {
                 </label>
               </div>
 
-              {/* Zip Code*/}
+              {/* Zip Code */}
               <div className="relative">
                 <input
                   type="number"
                   name="zipCode"
+                  autoComplete="zipCode"
                   required
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
@@ -275,83 +277,76 @@ const ShopCreate = () => {
                 </label>
               </div>
 
+              {/* Password */}
               <div className="relative">
-                <div className="mt-1 relative">
-                  <input
-                    type={visible ? "text" : "password"}
-                    name="password"
-                    autoComplete="current-password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onFocus={() => handleFocus("password")}
-                    onBlur={() => handleBlur("password")}
-                    className="block w-full px-6 py-2 placeholder-gray-400 border bg-white border-gray-300 shadow-sm appearance-none rounded-3xl focus:outline-none focus:ring-[#006665] focus:border-[#006665] sm:text-sm relative"
+                <input
+                  type={visible ? "text" : "password"}
+                  name="password"
+                  autoComplete="new-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => handleFocus("password")}
+                  onBlur={() => handleBlur("password")}
+                  className="block w-full px-6 py-2 placeholder-gray-400 border bg-white border-gray-300 shadow-sm appearance-none rounded-3xl focus:outline-none focus:ring-[#006665] focus:border-[#006665] sm:text-sm relative"
+                />
+                {visible ? (
+                  <AiOutlineEye
+                    className="absolute cursor-pointer right-2 top-2.5"
+                    size={20}
+                    onClick={() => setVisible(false)}
                   />
-                  {visible ? (
-                    <AiOutlineEye
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
-                      size={17}
-                      style={{ color: passwordClicked ? "#006665" : "black" }}
-                      onClick={() => setVisible(false)}
-                    ></AiOutlineEye>
-                  ) : (
-                    <AiOutlineEyeInvisible
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
-                      size={17}
-                      style={{ color: passwordClicked ? "#006665" : "black" }}
-                      onClick={() => setVisible(true)}
-                    ></AiOutlineEyeInvisible>
-                  )}
-                </div>
+                ) : (
+                  <AiOutlineEyeInvisible
+                    className="absolute cursor-pointer right-2 top-2.5"
+                    size={20}
+                    onClick={() => setVisible(true)}
+                  />
+                )}
                 <label
                   htmlFor="password"
                   className={`absolute left-5 ${
                     isAutofilled || passwordClicked || password
-                      ? " transition transform -translate-y-[18px] bg-white h-3 top-2 text-xs px-1 text-[#006665] z-10"
-                      : "bottom-2.5 text-sm transition text-gray-500"
+                      ? "transition transform -translate-y-[18px] bg-white h-3 top-2 text-xs px-1 text-[#006665] z-10"
+                      : "bottom-2.5 text-sm transition text-gray-500 text-center"
                   }`}
                 >
                   Password
                 </label>
               </div>
 
-              {/* Confirm Password input */}
+              {/* Confirm Password */}
               <div className="relative">
-                <div className="mt-1 relative">
-                  <input
-                    type={visible ? "text" : "confirmPassword"}
-                    name="confirmPassword"
-                    autoComplete="new-password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    onFocus={() => handleFocus("confirmPassword")}
-                    onBlur={() => handleBlur("confirmPassword")}
-                    className="block w-full px-6 py-2 placeholder-gray-400 border bg-white border-gray-300 shadow-sm appearance-none rounded-3xl focus:outline-none focus:ring-[#006665] focus:border-[#006665] sm:text-sm relative"
+                <input
+                  type={visible ? "text" : "password"}
+                  name="confirmPassword"
+                  autoComplete="confirm-password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onFocus={() => handleFocus("confirmPassword")}
+                  onBlur={() => handleBlur("confirmPassword")}
+                  className="block w-full px-6 py-2 placeholder-gray-400 border bg-white border-gray-300 shadow-sm appearance-none rounded-3xl focus:outline-none focus:ring-[#006665] focus:border-[#006665] sm:text-sm relative"
+                />
+                {visible ? (
+                  <AiOutlineEye
+                    className="absolute cursor-pointer right-2 top-2.5"
+                    size={20}
+                    onClick={() => setVisible(false)}
                   />
-                  {visible ? (
-                    <AiOutlineEye
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
-                      size={17}
-                      style={{ color: passwordClicked ? "#006665" : "black" }}
-                      onClick={() => setVisible(false)}
-                    />
-                  ) : (
-                    <AiOutlineEyeInvisible
-                      className="absolute cursor-pointer right-2 top-2/4 transform -translate-y-2/4 z-20"
-                      size={17}
-                      style={{ color: passwordClicked ? "#006665" : "black" }}
-                      onClick={() => setVisible(true)}
-                    />
-                  )}
-                </div>
+                ) : (
+                  <AiOutlineEyeInvisible
+                    className="absolute cursor-pointer right-2 top-2.5"
+                    size={20}
+                    onClick={() => setVisible(true)}
+                  />
+                )}
                 <label
                   htmlFor="confirmPassword"
                   className={`absolute left-5 ${
                     isAutofilled || confirmPasswordClicked || confirmPassword
-                      ? " transition transform -translate-y-[18px] bg-white h-3 top-2 text-xs px-1 text-[#006665] z-10"
-                      : "bottom-2.5 text-sm transition text-gray-500"
+                      ? "transition transform -translate-y-[18px] bg-white h-3 top-2 text-xs px-1 text-[#006665] z-10"
+                      : "bottom-2.5 text-sm transition text-gray-500 text-center"
                   }`}
                 >
                   Confirm Password
@@ -363,21 +358,21 @@ const ShopCreate = () => {
                   htmlFor="avatar"
                   className="block text-sm font-medium text-gray-700"
                 ></label>
-                <div className="mt-2 flex items-center">
-                  <span className="inline-block h-8 rounded-full overflow-hidden">
+                <div className="flex items-center mt-2">
+                  <span className="inline-block h-8 overflow-hidden rounded-full">
                     {avatar ? (
                       <img
                         src={URL.createObjectURL(avatar)}
                         alt="avatar"
-                        className="h-full w-full object-cover rounded-full"
+                        className="object-cover w-full h-full rounded-full"
                       />
                     ) : (
-                      <RxAvatar className="h-8 w-8" />
+                      <RxAvatar className="w-8 h-8" />
                     )}
                   </span>
                   <label
                     htmlFor="file-input"
-                    className="ml-5 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg bg-white hover:bg-gray-100"
+                    className="flex items-center justify-center px-4 py-2 ml-5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm bg hover:bg-gray-100"
                   >
                     <span>Upload a photo</span>
                     <input
@@ -396,18 +391,16 @@ const ShopCreate = () => {
               <div>
                 <button
                   type="submit"
-                  className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-3xl text-white bg-fe8373 hover:bg-006665"
+                  className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-[#006665] border border-transparent rounded-3xl shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                 >
-                  Submit
+                  Sign up
                 </button>
               </div>
+  
               <div className={`${styles.normalFlex} w-full`}>
                 <h4>Already have an account?</h4>
-                <Link
-                  to="/shop-login"
-                  className="text-006665 pl-2 hover:text-[#FF8474]"
-                >
-                  Sign in
+                <Link to="/shop-login" className="pl-2 text-[#006665]">
+                  Sign In
                 </Link>
               </div>
             </form>

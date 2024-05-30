@@ -13,6 +13,7 @@ import {
   EventsPage,
   FAQPage,
   CheckoutPage,
+  CheckoutBuyNowPage,
   PaymentPage,
   OrderSuccessPage,
   ProductDetailsPage,
@@ -127,6 +128,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkoutBuyNow"
+          element={
+            <ProtectedRoute>
+              <CheckoutBuyNowPage />
             </ProtectedRoute>
           }
         />

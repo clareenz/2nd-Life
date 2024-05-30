@@ -39,7 +39,14 @@ const ShopProfileData = ({ isOwner }) => {
     <div className="w-full mt-4">
       <Tabs activeKey={activeTab} onChange={handleTabChange}>
         <TabPane tab="Shop Products" key="products">
-          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
+          <div
+            className="grid grid-cols-2 gap-[20px]
+              sm:grid-cols-3 sm:gap-[13px]
+              md:grid-cols-4 md:gap-[13px]
+              lg:grid-cols-5 lg:gap-[10px]
+              xl:grid-cols-5 xl:gap-[10px]
+              2xl:grid-cols-7 2xl:gap-[20px] mb-12 border-0"
+          >
             {isOwner ? (
               <>
                 {products &&
@@ -64,34 +71,33 @@ const ShopProfileData = ({ isOwner }) => {
         </TabPane>
         <TabPane tab="Running Events" key="events">
           <Title level={5}>Running Events Content</Title>
-          <div className="w-full flex justify-center">
-            {/* Display running events */}
-            <div className="text-[13px] rounded-md w-[70%]">
-              {events &&
-                events.map((event, index) => (
-                  <EventCard2 data={event} key={index} />
-                ))}
-            </div>
-            {events && events.length === 0 && (
-              <h5 className="w-full text-center py-5 text-[18px]">
+          {/* Display running events */}
+          {events &&
+            events.map((event, index) => (
+              <EventCard2 data={event} key={index} />
+            ))}
+          {events && events.length === 0 && (
+            <div className="no-events-container">
+              <h5 className="no-events-message">
                 No events available for this shop!
               </h5>
-            )}
-          </div>
+            </div>
+          )}
         </TabPane>
+
         <TabPane tab="Shop Reviews" key="reviews">
           <Title level={5}>Shop Reviews Content</Title>
           <div className="w-full">
             {allReviews && allReviews.length > 0 ? (
               allReviews.map((item, index) => (
-                <div className="w-full flex my-4" key={index}>
+                <div className="flex w-full my-4" key={index}>
                   <img
-                    src={`${backend_url}/${item.user.avatar}`}
+                    src={`${item.user.avatar?.url}`}
                     className="w-[50px] h-[50px] rounded-full"
                     alt={`${item.user.name}'s avatar`}
                   />
                   <div className="pl-2">
-                    <div className="flex w-full items-center">
+                    <div className="flex items-center w-full">
                       <h1 className="font-[600] pr-2">{item.user.name}</h1>
                       <Ratings rating={item.rating} />
                     </div>
@@ -112,18 +118,6 @@ const ShopProfileData = ({ isOwner }) => {
           </div>
         </TabPane>
       </Tabs>
-
-      {isOwner && (
-        <div className="absolute top-0 right-0 mt-1 mr-3">
-          <Link to="/dashboard">
-            <div
-              className={`${styles.button6} text-white bg-[#006665] rounded-3xl text-[14px] hover:bg-[#077773]`}
-            >
-              Go Dashboard
-            </div>
-          </Link>
-        </div>
-      )}
     </div>
   );
 };

@@ -15,7 +15,7 @@ const ENDPOINT = "https://twondlife-socket-server.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 const DashboardMessages = () => {
-  const { seller, loading } = useSelector((state) => state.seller);
+  const { seller, isLoading } = useSelector((state) => state.seller);
   const [conversations, setConversations] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [currentChat, setCurrentChat] = useState();
@@ -227,19 +227,19 @@ const DashboardMessages = () => {
               {conversations && conversations.length > 0 ? (
                 conversations.map((item, index) => (
                   <MessageList
-                  data={item}
-                  key={index}
-                  index={index}
-                  setOpen={setOpen}
-                  setCurrentChat={setCurrentChat}
-                  me={seller._id}
-                  setUserData={setUserData}
-                  userData={userData}
-                  online={onlineCheck(item)}
-                  setActiveStatus={setActiveStatus}
-                  loading={loading}
-                  setActiveKey={setActiveKey}
-                  activeKey={activeKey}
+                    data={item}
+                    key={index}
+                    index={index}
+                    setOpen={setOpen}
+                    setCurrentChat={setCurrentChat}
+                    me={seller._id}
+                    setUserData={setUserData}
+                    userData={userData}
+                    online={onlineCheck(item)}
+                    setActiveStatus={setActiveStatus}
+                    isLoading={isLoading}
+                    setActiveKey={setActiveKey}
+                    activeKey={activeKey}
                   />
                 ))
               ) : (
@@ -283,7 +283,7 @@ const DashboardMessages = () => {
                     userData={userData}
                     online={onlineCheck(item)}
                     setActiveStatus={setActiveStatus}
-                    loading={loading}
+                    isLoading={isLoading}
                     setActiveKey={setActiveKey}
                     activeKey={activeKey}
                   />
@@ -319,7 +319,7 @@ const MessageList = ({
   setUserData,
   online,
   setActiveStatus,
-  loading,
+  isLoading,
   userData,
   handleDelete,
   setActiveKey,
@@ -392,7 +392,7 @@ const MessageList = ({
       <div className="flex">
         <div className="relative ">
           <img
-            src={`${backend_url}${user?.avatar}`}
+            src={`${user?.avatar?.url}`}
             alt=""
             className="w-[50px] h-[50px] rounded-full"
           />
@@ -405,8 +405,9 @@ const MessageList = ({
 
         <div clasdive="pl-3">
           <h1 className="text-[18px] px-2">{user?.name}</h1>
-          <p className="text-[16px] px-2 text-[#000c] marquee">
-            {!loading && data?.lastMessageId !== userData?._id
+          <p className="text-[16px] px-2 text-[#000c] ">
+            {!isLoading && data?.lastMessageId !== userData?._id
+
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}
             {data?.lastMessage &&
@@ -474,7 +475,7 @@ const SellerInbox = ({
           <div className="flex items-center justify-between p-2 bg-white border-b ">
             <div className="flex">
               <img
-                src={`${backend_url}${userData?.avatar}`}
+                src={`${userData?.avatar?.url}`}
                 alt=""
                 className="w-[55px] h-[55px] rounded-full"
               />
@@ -502,7 +503,7 @@ const SellerInbox = ({
                   >
                     {item.sender !== sellerId && (
                       <img
-                        src={`${backend_url}${userData?.avatar}`}
+                        src={`${userData?.avatar?.url}`}
                         className="w-[40px] h-[40px] rounded-full mr-3"
                         alt=""
                       />
@@ -511,7 +512,7 @@ const SellerInbox = ({
                       <div>
                         {" "}
                         <img
-                          src={`${backend_url}${item.images}`}
+                          src={`${item.images?.url}`}
                           className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
                         />
                         <p className="text-[12px] text-[#000000d3] pt-1">

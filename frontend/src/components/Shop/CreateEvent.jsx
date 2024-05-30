@@ -48,7 +48,7 @@ const CreateEvent = () => {
         endDateInput.min = minEndDate.toISOString().slice(0, 10);
       }
     }
-  };
+  }
 
   const handleEndDateChange = (date, dateString) => {
     setEndDate(dateString);
@@ -170,9 +170,7 @@ const CreateEvent = () => {
             <label htmlFor="Original Price">
               <span className="text-red-500"></span>Original Price:{" "}
             </label>
-            <Form.Item
-              name="originalPrice"
-            >
+            <Form.Item name="originalPrice">
               <Input
                 id="originalPrice"
                 type="number"
@@ -180,9 +178,9 @@ const CreateEvent = () => {
                 className="custom-input rounded-2xl"
               />
               <span className="text-[12px] text-gray-400 flex items-center">
-                <PiWarningCircleLight className="mr-1 mb-5" />
-                Providing an original price (higher amount than the displayed price) can boost sales,
-                just ensure accurate pricing input.
+                <PiWarningCircleLight className="mb-5 mr-1" />
+                Providing an original price (higher amount than the displayed
+                price) can boost sales, just ensure accurate pricing input.
               </span>
             </Form.Item>
           </div>
@@ -231,7 +229,7 @@ const CreateEvent = () => {
           </div>
         </div>
 
-        <div className=" flex flex-row space-x-3">
+        <div className="flex flex-row space-x-3 ">
           <div className="input-wrapper w-[50%]">
             <label htmlFor="description">
               <span className="text-red-500">*</span>Description:
@@ -332,7 +330,7 @@ const CreateEvent = () => {
           </p>
         </div>
         <br />
-        <div className="justify-evenly space-x-2">
+        <div className="space-x-2 justify-evenly">
           <Button
             className="rounded-2xl"
             onClick={() => form.resetFields()}

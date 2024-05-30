@@ -7,7 +7,7 @@ import Loader from "../Layout/Loader";
 import { ProductCard } from "./ProductCard/ProductCard";
 
 const SearchResult = () => {
-  const { allProducts,isLoading } = useSelector((state) => state.products);
+  const { allProducts, isLoading } = useSelector((state) => state.products);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("keyword");
   const minimumPrice = searchParams.get("minPrice");
@@ -15,8 +15,6 @@ const SearchResult = () => {
   const rating = searchParams.get("rating");
   const category = searchParams.get("category");
   const navigate = useNavigate();
-
-
 
   // State variables to store min and max price values
   const [minPrice, setMinPrice] = useState("");
@@ -162,133 +160,124 @@ const SearchResult = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div>
-          <div className={`px-[70px]`}>
-            <div className="flex items-center justify-between mb-4 pt-[120px]">
-              <div className="flex items-center absolute left-10 px-[10mm]">
-                <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
-                  {/* Small box */}
+        <div className={`2xl:px-20 xl:px-20 lg:px-20 md:px-20 sm:px-20 px-10`}>
+          <div className="flex items-center mb-4 pt-[120px]">
+            <div className="flex items-center absolute left-10 xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
+              <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
+                {/* Small box */}
+              </div>
+              <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">
+                Search Result
+              </h1>
+            </div>
+          </div>
+          <div className="container p-4 flex flex-col lg:flex-row justify-evenly items-start space-y-8 lg:space-y-0 lg:space-x-8">
+            <div className="bg-white shadow w-full lg:w-1/3 p-6 rounded-xl">
+              {/* Sort by Price */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-lg font-semibold">Sort by Price</div>
+                <div className="flex space-x-2">
+                  <button
+                    className="px-3 py-1 text-sm rounded-md bg-[#EFEFEF] shadow hover:bg-[#FF8474] hover:text-white transition duration-100"
+                    onClick={() => handleSort("asc")}
+                  >
+                    Asc
+                  </button>
+                  <button
+                    className="px-3 py-1 text-sm rounded-md bg-[#EFEFEF] shadow hover:bg-[#FF8474] hover:text-white transition duration-100"
+                    onClick={() => handleSort("desc")}
+                  >
+                    Desc
+                  </button>
                 </div>
-                <h1 className="ml-2 text-[#FE8373] font-bold text-[21px]">
-                  Search Result
-                </h1>
+              </div>
+
+              {/* Price Range */}
+              <div className="mb-4">
+                <div className="font-semibold text-lg mb-2">Price Range</div>
+                <div className="flex items-center space-x-4">
+                  <input
+                    type="number"
+                    placeholder="Min Price"
+                    className="px-3 py-1 border rounded-2xl w-1/2 hover:border-[#006665] focus:border-[#006665] text-[12px]"
+                    value={minPrice}
+                    onChange={handleMinPriceChange}
+                  />
+                  <span className="text-gray-400">-</span>
+                  <input
+                    type="number"
+                    placeholder="Max Price"
+                    className="px-3 py-1 border rounded-2xl w-1/2 hover:border-[#006665] focus:border-[#006665] text-[12px]"
+                    value={maxPrice}
+                    onChange={handleMaxPriceChange}
+                  />
+                </div>
+              </div>
+
+              {/* Rating Filter */}
+              <div className="mb-4">
+                <div className="text-lg font-semibold mb-2">Rating Filter</div>
+                <select
+                  className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
+                  onChange={handleRatingChange}
+                  value={ratingFilter}
+                >
+                  <option value="0">All Ratings</option>
+                  <option value="5">5 stars</option>
+                  <option value="4">4 stars & above</option>
+                  <option value="3">3 stars & above</option>
+                  <option value="2">2 stars & above</option>
+                  <option value="1">1 star & above</option>
+                </select>
+              </div>
+
+              {/* Category Filter */}
+              <div className="mb-4">
+                <div className="text-lg font-semibold mb-2">
+                  Category Filter
+                </div>
+                <select
+                  className="px-3 py-1 border rounded-2xl w-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+                  onChange={handleCategoryChange}
+                  value={selectedCategory}
+                >
+                  {!selectedCategory && (
+                    <option value="">All Categories</option>
+                  )}
+                  {categoriesData.map((category) => (
+                    <option key={category.id} value={category.title}>
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Apply and Clear Filters buttons */}
+              <div className="flex justify-center space-x-3 pt-6">
+                <div
+                  className={`${styles.button6} py-2 text-sm text-gray-500 rounded-3xl hover:border-gray-600 hover:text-[#006665] transition duration-300`}
+                  onClick={clearFilters}
+                >
+                  Clear
+                </div>
+                <div
+                  className={`${styles.button6} py-2 text-sm text-white bg-[#006665] rounded-3xl hover:bg-[#077773] transition duration-300`}
+                  onClick={applyFilters}
+                >
+                  Apply
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-row justify-evenly pt-8">
-              <div className="bg-white shadow w-[320px] p-6 rounded-xl">
-                {/* Sort by Price */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-lg font-semibold">Sort by Price</div>
-                  <div className="flex space-x-2">
-                    <button
-                      className="px-3 py-1 text-sm rounded-md bg-[#EFEFEF] shadow hover:bg-[#FF8474] hover:text-white transition duration-100"
-                      onClick={() => handleSort("asc")}
-                    >
-                      Asc
-                    </button>
-                    <button
-                      className="px-3 py-1 text-sm rounded-md bg-[#EFEFEF] shadow hover:bg-[#FF8474] hover:text-white transition duration-100"
-                      onClick={() => handleSort("desc")}
-                    >
-                      Desc
-                    </button>
-                  </div>
-                </div>
-
-                {/* Price Range */}
-                <div className="mb-4">
-                  <div className="font-semibold text-lg mb-2">Price Range</div>
-                  <div className="flex items-center space-x-4">
-                    <input
-                      type="number"
-                      placeholder="Min Price"
-                      className="px-3 py-1 border rounded-2xl w-1/2 hover:border-[#006665] focus:border-[#006665] text-[12px]"
-                      value={minPrice}
-                      onChange={handleMinPriceChange}
-                    />
-                    <span className="text-gray-400">-</span>
-                    <input
-                      type="number"
-                      placeholder="Max Price"
-                      className="px-3 py-1 border rounded-2xl w-1/2 hover:border-[#006665] focus:border-[#006665] text-[12px]"
-                      value={maxPrice}
-                      onChange={handleMaxPriceChange}
-                    />
-                  </div>
-                </div>
-
-                {/* Rating Filter */}
-                <div className="mb-4">
-                  <div className="text-lg font-semibold mb-2">
-                    Rating Filter
-                  </div>
-                  <select
-                    className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
-                    onChange={handleRatingChange}
-                    value={ratingFilter}
-                  >
-                    <option value="0">All Ratings</option>
-                    <option value="5">5 stars</option>
-                    <option value="4">4 stars & above</option>
-                    <option value="3">3 stars & above</option>
-                    <option value="2">2 stars & above</option>
-                    <option value="1">1 star & above</option>
-                  </select>
-                </div>
-
-                {/* Category Filter */}
-                <div className="mb-4">
-                  <div className="text-lg font-semibold mb-2">
-                    Category Filter
-                  </div>
-                  <select
-                    className="px-3 py-1 border rounded-2xl w-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
-                    onChange={handleCategoryChange}
-                    value={selectedCategory}
-                  >
-                    {!selectedCategory && (
-                      <option value="">All Categories</option>
-                    )}
-                    {categoriesData.map((category) => (
-                      <option key={category.id} value={category.title}>
-                        {category.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Apply and Clear Filters buttons */}
-                <div className="flex justify-center space-x-3 pt-6">
-                  <div
-                    className={`${styles.button6} py-2 text-sm text-gray-500 rounded-3xl hover:border-gray-600 hover:text-[#006665] transition duration-300`}
-                    onClick={clearFilters}
-                  >
-                    Clear
-                  </div>
-                  <div
-                    className={`${styles.button6} py-2 text-sm text-white bg-[#006665] rounded-3xl hover:bg-[#077773] transition duration-300`}
-                    onClick={applyFilters}
-                  >
-                    Apply
-                  </div>
-                </div>
-              </div>
-
-              <div className="px-[40px]">
-                <div className="flex-row grid grid-cols-1 xl:gap-[25px]  lg:gap-[30px] md:gap-[35px] sm:gap-[40px] xs:gap-[45px] md:grid-cols-1  lg:grid-cols-2  xl:grid-cols-3 mb-12 border-0">
-                  {/* Add filter section for min and max price */}
-                  {/* Conditional rendering based on sorted products */}
-                  {((sortOrder && sortedProducts) || filteredProducts)?.map(
-                    (product, index) => (
-                      <ProductCard data={product} key={index} />
-                    )
-                  )}
-                  {((sortOrder && sortedProducts) || filteredProducts)
-                    ?.length === 0 && (
-                    <div>No products found for the search term.</div>
-                  )}
-                </div>
+            <div className="w-full lg:w-2/3 px-[10px]">
+              <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
+                {((sortOrder && sortedProducts) || filteredProducts)?.map(
+                  (product, index) => (
+                    <ProductCard data={product} key={index} />
+                  )
+                )}
+                {((sortOrder && sortedProducts) || filteredProducts)?.length ===
+                  0 && <div>No products found for the search term.</div>}
               </div>
             </div>
           </div>

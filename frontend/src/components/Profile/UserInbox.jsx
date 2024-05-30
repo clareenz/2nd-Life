@@ -160,7 +160,6 @@ const UserInbox = () => {
     const receiverId = currentChat.members.find(
       (member) => member !== user._id
     );
-
     socketId.emit("sendMessage", {
       senderId: user._id,
       receiverId,
@@ -204,7 +203,7 @@ const UserInbox = () => {
       {!open && (
         <div>
           <div className="flex flex-row items-center justify-between border-b">
-            <h1 className="px-10 text-3xl py-6 font-Poppins w-1/2">Chats</h1>
+            <h1 className="w-1/2 px-10 py-6 text-3xl font-Poppins">Chats</h1>
             <div className="flex justify-center w-1/2">
               <div className="w-full px-6">
                 <Input
@@ -387,7 +386,7 @@ const MessageList = ({
       <div className="flex">
         <div className="relative">
           <img
-            src={`${backend_url}${user?.avatar}`}
+            src={`${user?.avatar?.url}`}
             alt=""
             className="w-[50px] h-[50px] rounded-full"
           />
@@ -467,7 +466,7 @@ const SellerInbox = ({
           <div className="flex items-center justify-between p-2 bg-white border-b">
             <div className="flex">
               <img
-                src={`${backend_url}${userData?.avatar}`}
+                src={`${userData?.avatar?.url}`}
                 alt=""
                 className="w-[55px] h-[55px] rounded-full"
               />
@@ -495,7 +494,7 @@ const SellerInbox = ({
                   >
                     {item.sender !== sellerId && (
                       <img
-                        src={`${backend_url}${userData?.avatar}`}
+                        src={`${userData?.avatar?.url}`}
                         className="w-[40px] h-[40px] rounded-full mr-3"
                         alt=""
                       />
@@ -504,7 +503,7 @@ const SellerInbox = ({
                       <div>
                         {" "}
                         <img
-                          src={`${backend_url}${item.images}`}
+                          src={`${item.images?.url}`}
                           className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
                         />
                         <p className="text-[12px] text-[#000000d3] pt-1">

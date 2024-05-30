@@ -101,7 +101,7 @@ const Header = ({ activeHeading }) => {
       <div
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
-        }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-10`} //header sa pinaka taas (yung may cart icon,etc.)
+        }shadow-sm fixed top-0 left-0 flex transition hidden 800px:flex items-center border-b border-gray-300 w-full bg-white h-[70px] justify-between z-50`} //header sa pinaka taas (yung may cart icon,etc.)
       >
         <div className="flex flex-row ">
           <div>
@@ -249,7 +249,7 @@ const Header = ({ activeHeading }) => {
                 {isAuthenticated ? (
                   <Link to="/profile">
                     <img
-                      src={`${backend_url}${user.avatar}`}
+                      src={`${user.avatar.url}`}
                       className="w-[25px] h-[25px] rounded-full object-cover"
                       alt=""
                     />
@@ -264,7 +264,7 @@ const Header = ({ activeHeading }) => {
 
             {/*menu*/}
             <div className="mr-1">
-              <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+              <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
             </div>
           </div>
 
@@ -291,7 +291,7 @@ const Header = ({ activeHeading }) => {
                         <img
                           src={`${backend_url}${user.avatar} `}
                           alt=""
-                          className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                          className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
                       </Link>
 
@@ -547,7 +547,7 @@ const Header = ({ activeHeading }) => {
                         <img
                           src={`${backend_url}${user.avatar}`}
                           alt=""
-                          className="w-[70px] h-[70px] rounded-full border-[3px] border-[#0eae88]"
+                          className="w-[70px] h-[70px] rounded-full border-[3px] object-cover border-[#0eae88]"
                         />
                       </Link>
                     </div>
@@ -827,7 +827,7 @@ const Header2 = ({ activeHeading }) => {
 
             {/*menu*/}
             <div className="px-3 mr-1">
-              <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+              <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
             </div>
           </div>
 
@@ -854,7 +854,7 @@ const Header2 = ({ activeHeading }) => {
                         <img
                           src={`${backend_url}${user.avatar} `}
                           alt=""
-                          className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                          className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                         />
                       </Link>
 
@@ -1090,7 +1090,7 @@ const Header2 = ({ activeHeading }) => {
                         <img
                           src={`${backend_url}${user.avatar}`}
                           alt=""
-                          className="w-[70px] h-[70px] rounded-full border-[3px] border-[#0eae88]"
+                          className="w-[70px] h-[70px] rounded-full border-[3px] object-cover border-[#0eae88]"
                         />
                       </Link>
                     </div>
@@ -1307,7 +1307,7 @@ const SearchHeader = ({ activeHeading }) => {
         </div>
 
         <div className="mr-1">
-          <AiOutlineMenu size={27} className="" onClick={toggleModal} />
+          <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
         </div>
 
         <Modal
@@ -1333,7 +1333,7 @@ const SearchHeader = ({ activeHeading }) => {
                       <img
                         src={`${backend_url}${user.avatar} `}
                         alt=""
-                        className="m-auto w-[100px] h-[100px] rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
+                        className="m-auto w-[100px] h-[100px] object-cover rounded-full border-[3px] border-[#0eae88] mb-5 mt-2"
                       />
                     </Link>
 

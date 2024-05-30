@@ -1,3 +1,4 @@
+const cloudinary = require("cloudinary");
 const express = require("express");
 const path = require("path");
 const User = require("../model/user");
@@ -7,8 +8,11 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const sendMail = require("../utils/sendMail");
-const sendMail1 = require("../utils/senMail1");
+const {
+  sendActivationEmail,
+  sendPasswordResetEmail,
+  sendSellerActivationEmail,
+} = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
 const user = require("../model/user");
@@ -23,13 +27,17 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
+// create user
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const userEmail = await User.findOne({ email });
+
+    const fileName = req.file.filename;
+    const filePath = req.file.path;
+
+    //user exist
     if (userEmail) {
-      const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
       fs.unlink(filePath, (err) => {
         if (err) {
           console.log(err);
@@ -38,19 +46,30 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
       });
       return next(new ErrorHandler("User already exists", 400));
     }
-    const filename = req.file.filename;
-    const fileUrl = path.join(filename);
+
+    const myCloud = await cloudinary.v2.uploader.upload(filePath, {
+      folder: "avatars",
+      public_id: fileName,
+    });
+
     const user = {
       name: name,
       email: email,
       password: password,
-      avatar: fileUrl,
+      avatar: {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      },
     };
+
+    console.log(user);
+    // Clean up the file after uploading
+    fs.unlinkSync(filePath);
+
     const activationToken = createActivationToken(user);
-    //const activationUrl = `http://localhost:3000/activation/${activationToken}`;
     const activationUrl = `${process.env.FRONTEND_URL}/activation/${activationToken}`;
     try {
-      await sendMail({
+      await sendActivationEmail({
         name: name, // Pass the user's name here
         email: user.email,
         subject: "Activate your account",
@@ -219,21 +238,31 @@ router.put(
   upload.single("image"),
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const existsUser = await User.findById(req.user.id);
+      let existsUser = await User.findById(req.user.id);
+      if (req.body.avatar !== "") {
+        const imageId = existsUser.avatar.public_id;
 
-      const existAvatarPath = `uploads/${existsUser.avatar}`;
+        await cloudinary.v2.uploader.destroy(imageId);
 
-      fs.unlinkSync(existAvatarPath);
+        const fileName = req.file.filename;
+        const filePath = req.file.path;
 
-      const fileUrl = path.join(req.file.filename);
+        const myCloud = await cloudinary.v2.uploader.upload(filePath, {
+          folder: "avatars",
+          public_id: fileName,
+        });
 
-      const user = await User.findByIdAndUpdate(req.user.id, {
-        avatar: fileUrl,
-      });
+        existsUser.avatar = {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
+      }
+      
+      await existsUser.save();
 
       res.status(200).json({
         success: true,
-        user,
+        user: existsUser,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -360,7 +389,6 @@ router.get(
   })
 );
 
-
 //forgot password
 router.post(
   "/forgot-password",
@@ -375,11 +403,11 @@ router.post(
         expiresIn: "10m",
       });
 
-      const resetLink = `http://localhost:3000/reset-password/${token}`;
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
       try {
-        await sendMail1({
-          name: user.name || 'User', // Assuming you have a name field
+        await sendPasswordResetEmail({
+          name: user.name || "User", // Assuming you have a name field
           email: user.email,
           subject: "Password Reset",
           resetLink: resetLink,
@@ -437,7 +465,6 @@ router.post(
   })
 );
 
-
 // all users --- for admin
 router.get(
   "/admin-all-users",
@@ -486,4 +513,3 @@ router.delete(
 );
 
 module.exports = router;
-
