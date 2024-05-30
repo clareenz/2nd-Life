@@ -39,12 +39,14 @@ const ShopProfileData = ({ isOwner }) => {
     <div className="w-full mt-4">
       <Tabs activeKey={activeTab} onChange={handleTabChange}>
         <TabPane tab="Shop Products" key="products">
-          <div className="grid grid-cols-2 gap-[20px]
+          <div
+            className="grid grid-cols-2 gap-[20px]
               sm:grid-cols-3 sm:gap-[13px]
               md:grid-cols-4 md:gap-[13px]
               lg:grid-cols-5 lg:gap-[10px]
               xl:grid-cols-5 xl:gap-[10px]
-              2xl:grid-cols-7 2xl:gap-[20px] mb-12 border-0">
+              2xl:grid-cols-7 2xl:gap-[20px] mb-12 border-0"
+          >
             {isOwner ? (
               <>
                 {products &&
@@ -69,21 +71,20 @@ const ShopProfileData = ({ isOwner }) => {
         </TabPane>
         <TabPane tab="Running Events" key="events">
           <Title level={5}>Running Events Content</Title>
-          <div className="flex justify-center w-full">
-            {/* Display running events */}
-            <div className="text-[13px] rounded-md w-[70%]">
-              {events &&
-                events.map((event, index) => (
-                  <EventCard2 data={event} key={index} />
-                ))}
-            </div>
-            {events && events.length === 0 && (
-              <h5 className="w-full text-center py-5 text-[18px]">
+          {/* Display running events */}
+          {events &&
+            events.map((event, index) => (
+              <EventCard2 data={event} key={index} />
+            ))}
+          {events && events.length === 0 && (
+            <div className="no-events-container">
+              <h5 className="no-events-message">
                 No events available for this shop!
               </h5>
-            )}
-          </div>
+            </div>
+          )}
         </TabPane>
+
         <TabPane tab="Shop Reviews" key="reviews">
           <Title level={5}>Shop Reviews Content</Title>
           <div className="w-full">
