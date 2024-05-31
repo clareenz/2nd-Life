@@ -1,4 +1,4 @@
-import { Button, Dropdown, Input, Menu, Space, Switch, Table } from "antd";
+import { Button, Dropdown, Input, Menu, Space, Switch, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BiSolidShoppingBags } from "react-icons/bi";
@@ -141,6 +141,7 @@ const DashboardHero = () => {
       title: "Order ID",
       dataIndex: "id",
       key: "id",
+      width: 130,
       align: "center",
       ...getColumnSearchProps("id"),
       sorter: (a, b) => a.id.localeCompare(b.id),
@@ -150,15 +151,21 @@ const DashboardHero = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: 130,
       align: "center",
       ...getColumnSearchProps("status"),
       sorter: (a, b) => a.status.localeCompare(b.status),
-      render: visibleColumns.status ? (text) => text : null,
+      render: visibleColumns.status
+        ? (status) => (
+            <Tag color={status === "Delivered" ? "green" : "red"}>{status}</Tag>
+          )
+        : null,
     },
     {
       title: "Items Qty",
       dataIndex: "itemsQty",
       key: "itemsQty",
+      width: 130,
       align: "center",
       ...getColumnSearchProps("itemsQty"),
       sorter: (a, b) => a.itemsQty - b.itemsQty,
@@ -168,6 +175,7 @@ const DashboardHero = () => {
       title: "Total (₱)",
       dataIndex: "total",
       key: "total",
+      width: 130,
       align: "center",
       ...getColumnSearchProps("total"),
       sorter: (a, b) => a.total - b.total,
@@ -176,6 +184,7 @@ const DashboardHero = () => {
     {
       title: "Details",
       key: "action",
+      width: 130,
       align: "center",
       render: visibleColumns.action
         ? (text, record) => (
@@ -216,111 +225,116 @@ const DashboardHero = () => {
   );
 
   return (
-    <div className="w-full p-8">
-    <h3 className="text-[25px] font-Poppins pb-2">Overview</h3>
-    <div className="w-full block 800px:flex items-center justify-between">
-
-      <div className="overview-card">
-        <div className="flex flex-row items-center justify-between p-2">
-          <div className="flex items-center">
-            <FcMoneyTransfer size={25} className="mr-2" fill="#00000085" />
-            <h3 className="!text-[18px] leading-5 !font-[400] text-[#00000085]">
-              Account Balance{" "}
-            </h3>
+    <div className="w-full">
+      <h3 className="text-[25px] font-Poppins pb-4 px-[40px]">Overview</h3>
+      <div className="w-full block 800px:flex items-center justify-between">
+        <div className="overview-card">
+          <div className="flex flex-row items-center justify-between p-2">
+            <div className="flex items-center">
+              <FcMoneyTransfer size={25} className="mr-2" fill="#00000085" />
+              <h3 className="!text-[18px] leading-5 !font-[400] text-[#00000085]">
+                Account Balance{" "}
+              </h3>
+            </div>
+            <div className="">
+              <Link to="/dashboard-withdraw-money">
+                <h5 className="text-[#077f9c]">Withdraw</h5>
+              </Link>
+            </div>
           </div>
-          <div className="">
-            <Link to="/dashboard-withdraw-money">
-              <h5 className="text-[#077f9c]">Withdraw</h5>
-            </Link>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+            ₱ {availableBalance}
+          </h5>
+        </div>
+
+        <div className="overview-card">
+          <div className="flex flex-row items-center justify-between p-2">
+            <div className="flex items-center">
+              <BiSolidShoppingBags size={25} className="mr-2" fill="orange" />
+              <h3 className="!text-[18px] leading-5 !font-[400] text-[#00000085]">
+                All Orders
+              </h3>
+            </div>
+            <div>
+              <Link to="/dashboard-orders">
+                <h5 className="text-[#077f9c]">View Orders</h5>
+              </Link>
+            </div>
+          </div>
+          <div className="flex flex-row justify-between">
+            <div>
+              <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+                {orders && orders.length}
+              </h5>
+            </div>
+            <div className="text-[10px] pt-2">
+              <h5 className="text-[#00000085]">
+                Total Revenue: ₱ {totalRevenue.toFixed(2)}
+              </h5>
+              <h5 className="text-[#00000085]">
+                Average Order Value: ₱ {averageOrderValue.toFixed(2)}
+              </h5>
+            </div>
           </div>
         </div>
-        <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-          ₱ {availableBalance}
-        </h5>
+
+        <div className="overview-card">
+          <div className="flex flex-row items-center justify-between p-2">
+            <div className="flex items-center">
+              <PiPackageDuotone size={25} className="mr-2" fill="brown" />
+              <h3 className="!text-[18px] leading-5 !font-[400] text-[#00000085]">
+                All Products
+              </h3>
+            </div>
+            <div>
+              <Link to="/dashboard-products">
+                <h5 className="text-[#077f9c]">View Products</h5>
+              </Link>
+            </div>
+          </div>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
+            {products && products.length}
+          </h5>
+        </div>
       </div>
-
-      <div className="overview-card">
-        <div className="flex flex-row items-center justify-between p-2">
-          <div className="flex items-center">
-            <BiSolidShoppingBags size={25} className="mr-2" fill="orange" />
-            <h3 className="!text-[18px] leading-5 !font-[400] text-[#00000085]">
-              All Orders
-            </h3>
-          </div>
-          <div>
-            <Link to="/dashboard-orders">
-              <h5 className="text-[#077f9c]">View Orders</h5>
-            </Link>
-          </div>
-        </div>
-        <div className="flex flex-row justify-between">
-          <div>
-            <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-              {orders && orders.length}
-            </h5>
-          </div>
-          <div className="text-[10px] pt-2">
-            <h5 className="text-[#00000085]">
-              Total Revenue: ₱ {totalRevenue.toFixed(2)}
-            </h5>
-            <h5 className="text-[#00000085]">
-              Average Order Value: ₱ {averageOrderValue.toFixed(2)}
-            </h5>
-          </div>
-        </div>
+      <br />
+      <div className="justify-center">
+        <h3 className="text-[25px] font-Poppins pb-4 px-[50px]">
+          Latest Orders
+        </h3>
       </div>
+      <div className="">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="w-full min-h-[45vh] bg-white rounded-3xl shadow-md">
+            <div className="flex flex-col justify-between">
+              <div className="flex justify-end p-4 px-[50px]">
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <EllipsisOutlined style={{ fontSize: "24px" }} />
+                  </a>
+                </Dropdown>
+              </div>
 
-      <div className="overview-card">
-        <div className="flex flex-row items-center justify-between p-2">
-          <div className="flex items-center">
-            <PiPackageDuotone size={25} className="mr-2" fill="brown" />
-            <h3 className="!text-[18px] leading-5 !font-[400] text-[#00000085]">
-              All Products
-            </h3>
+              <div style={{ overflowX: "auto" }} className="">
+                <Table
+                  dataSource={data}
+                  columns={columns.filter(
+                    (column) => visibleColumns[column.key]
+                  )}
+                  pagination={{ pageSize: 10 }}
+                  rowKey="id"
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <Link to="/dashboard-products">
-              <h5 className="text-[#077f9c]">View Products</h5>
-            </Link>
-          </div>
-        </div>
-        <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">
-          {products && products.length}
-        </h5>
+        )}
       </div>
     </div>
-    <br />
-    <div className="justify-center">
-      <h3 className="text-[25px] font-Poppins pb-4">Latest Orders</h3>
-    </div>
-    <div className="table-container">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="">
-          <div className="table-controls">
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                <EllipsisOutlined style={{ fontSize: "24px" }} />
-              </a>
-            </Dropdown>
-          </div>
-
-          <div style={{ overflowX: "auto" }}>
-            <Table
-              dataSource={data}
-              columns={columns.filter((column) => visibleColumns[column.key])}
-              pagination={{ pageSize: 10 }}
-              rowKey="id"
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  </div>
   );
 };
 

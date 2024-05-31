@@ -9,11 +9,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
-import { DataGrid } from "@material-ui/data-grid";
 import { Button, useMediaQuery } from "@material-ui/core";
 import { Link, Navigate } from "react-router-dom";
 import { MdOutlineTrackChanges, MdTrackChanges } from "react-icons/md";
-import { RxCross1 } from "react-icons/rx";
 import {
   deleteUserAddress,
   loadUser,

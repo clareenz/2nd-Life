@@ -467,6 +467,24 @@ input,select{
   color: #FF8474 !important;
 }
 
+.custom-button {
+  background-color: #006665; /* Custom background color */
+  color: #fff; /* Custom text color */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+
+  /* Hover and active states */
+  &:hover {
+    background-color: #ff8474; /* Hover background color */
+    color: #fff; /* Ensure text color remains white */
+  }
+
+  &:active {
+    background-color: #e76356; /* Active background color */
+    color: #fff; /* Ensure text color remains white */
+  }
+}
+
+
 
 
 

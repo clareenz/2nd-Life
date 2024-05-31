@@ -1,5 +1,5 @@
 import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Menu, Space, Switch, Table } from "antd";
+import { Button, Dropdown, Input, Menu, Space, Switch, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -117,6 +117,7 @@ const AllOrders = () => {
       dataIndex: "id",
       key: "id",
       align: "center",
+      width: 150,
       ...getColumnSearchProps("id"),
       sorter: (a, b) => a.id.localeCompare(b.id),
       render: visibleColumns.id ? (text) => text : null,
@@ -126,15 +127,19 @@ const AllOrders = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
+      width: 150,
       ...getColumnSearchProps("status"),
       sorter: (a, b) => a.status.localeCompare(b.status),
-      render: visibleColumns.status ? (text) => text : null,
+      render: visibleColumns.status ? (status) => (
+        <Tag color={status === "Delivered" ? "green" : "red"}>{status}</Tag>
+      ): null,
     },
     {
       title: "Items Qty",
       dataIndex: "itemsQty",
       key: "itemsQty",
       align: "center",
+      width: 150,
       ...getColumnSearchProps("itemsQty"),
       sorter: (a, b) => a.itemsQty - b.itemsQty,
       render: visibleColumns.itemsQty ? (text) => text : null,
@@ -144,6 +149,7 @@ const AllOrders = () => {
       dataIndex: "total",
       key: "total",
       align: "center",
+      width: 150,
       ...getColumnSearchProps("total"),
       sorter: (a, b) => a.total - b.total,
       render: visibleColumns.total ? (text) => text : null,
@@ -152,6 +158,7 @@ const AllOrders = () => {
       title: "Details",
       key: "action",
       align: "center",
+      width: 150,
       render: visibleColumns.action
         ? (text, record) => (
             <Link to={`/order/${record.id}`}>
@@ -212,7 +219,7 @@ const AllOrders = () => {
               </Dropdown>
             </div>
           </div>
-          <div style={{ overflowY: "auto" }}>
+          <div style={{ overflowY: "auto" }} >
             <Table
               dataSource={data}
               columns={columns.filter((column) => visibleColumns[column.key])}

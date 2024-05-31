@@ -7,7 +7,7 @@ import Loader from "../Layout/Loader";
 import { getAllSellers } from "../../redux/actions/sellers";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { LiaStoreSolid } from "react-icons/lia";
-import { Button, Dropdown, Input, Menu, Space, Switch, Table } from "antd";
+import { Button, Dropdown, Input, Menu, Space, Switch, Table, Tag } from "antd";
 import Highlighter from "react-highlight-words";
 import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
 import { BsCartCheck } from "react-icons/bs";
@@ -137,9 +137,9 @@ const AdminDashboardMain = () => {
       dataIndex: "status",
       key: "status",
       width: 130,
-      ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.status.localeCompare(b.status),
-      render: visibleColumns.status ? (text) => text : null,
+      render: (status) => (
+        <Tag color={status === "Delivered" ? "green" : "red"}>{status}</Tag>
+      ),
     },
     {
       title: "Items Qty",

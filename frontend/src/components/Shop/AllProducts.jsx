@@ -183,7 +183,7 @@ const AllProducts = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: 180,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("name"),
       filters: [
@@ -199,7 +199,7 @@ const AllProducts = () => {
       title: "Price (₱)",
       dataIndex: "price",
       key: "price",
-      width: 100,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("price"),
       sorter: (a, b) => a.price - b.price,
@@ -209,7 +209,7 @@ const AllProducts = () => {
       title: "Stock",
       dataIndex: "stock",
       key: "stock",
-      width: 80,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("stock"),
       sorter: (a, b) => a.stock - b.stock,
@@ -219,7 +219,7 @@ const AllProducts = () => {
       title: "Sold",
       dataIndex: "sold",
       key: "sold",
-      width: 130,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("sold"),
       sorter: (a, b) => a.sold - b.sold,
@@ -228,7 +228,7 @@ const AllProducts = () => {
     {
       title: "Action",
       key: "action",
-      width: 200,
+      width: 150,
       align: "center",
       render: visibleColumns.action
         ? (text, record) => (
@@ -288,7 +288,7 @@ const AllProducts = () => {
         <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-2xl shadow-md">
           <div className="flex flex-row">
             <div className="w-full flex justify-between">
-              <h1 className="text-2xl px-4 py-3">All Products</h1>
+              <h1 className="text-2xl px-[40px] py-3">All Products</h1>
             </div>
             <div className="flex p-4 px-[50px]">
               <Dropdown overlay={menu} trigger={["click"]}>

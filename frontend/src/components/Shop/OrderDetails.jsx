@@ -70,14 +70,14 @@ const OrderDetails = () => {
             </h1>
           </div>
           <div className="">
-          <Link to="/dashboard-orders">
-            <div
-              className={`w-[130px] pt-0.5 hover:bg-fe8373 h-8 flex  justify-center rounded-2xl cursor-pointer  text-[#fff] bg-[#006665] text-[16px]`}
-            >
-              Order List
-            </div>
-          </Link>
-        </div>
+            <Link to="/dashboard-orders">
+              <div
+                className={`w-[130px] pt-0.5 hover:bg-fe8373 h-8 flex  justify-center rounded-2xl cursor-pointer  text-[#fff] bg-[#006665] text-[16px]`}
+              >
+                Order List
+              </div>
+            </Link>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full border-b ">
@@ -101,8 +101,8 @@ const OrderDetails = () => {
                 className="w-20 h-20 rounded-lg shadow-md"
               />
               <div className="w-full sm:pl-3">
-                <h5 className="text-lg sm:text-xl">{item.name}</h5>
-                <h5 className="text-lg sm:text-xl text-gray-700">
+                <h5 className="">{item.name}</h5>
+                <h5 className=" text-gray-700">
                   ₱{item.discountPrice} x {item.qty}
                 </h5>
               </div>
@@ -110,7 +110,7 @@ const OrderDetails = () => {
           ))}
 
         <div className="w-full text-right border-t pt-3 mt-6">
-          <h5 className="text-lg sm:text-xl">
+          <h5 className="">
             Total Price: <strong>₱{data?.totalPrice}</strong>
           </h5>
         </div>
@@ -120,19 +120,19 @@ const OrderDetails = () => {
             <h4 className="text-xl sm:text-2xl font-semibold">
               Shipping Address:
             </h4>
-            <h4 className="pt-3 text-[20px]">
+            <h4 className="pt-3">
               {data?.shippingAddress.country +
                 " " +
                 data?.shippingAddress.city +
                 " " +
                 data?.shippingAddress.zipCode}
             </h4>
-            <h4 className=" text-[20px]">{data?.shippingAddress.country}</h4>
-            <h4 className=" text-[20px]">{data?.shippingAddress.city}</h4>
-            <h4 className=" text-[20px]">{data?.user?.phoneNumber}</h4>
+            <h4 className="">{data?.shippingAddress.country}</h4>
+            <h4 className="">{data?.shippingAddress.city}</h4>
+            <h4 className="">{data?.user?.phoneNumber}</h4>
           </div>
           <div className="w-full 800px:w-[40%]">
-            <h4 className="pt-3 text-[20px]">Payment Info:</h4>
+            <h4 className=" text-[20px]">Payment Info:</h4>
             <h4>
               Status:{" "}
               {data?.paymentInfo?.status
@@ -195,15 +195,17 @@ const OrderDetails = () => {
           </select>
         ) : null} */}
 
-        <div
-          className={`${styles.button} mt-5 !bg-[#FCE1E6] !rounded-[4px] text-[#E94560] font-[600] !h-[45px] text-[18px]`}
-          onClick={
-            data?.status !== "Processing refund"
-              ? orderUpdateHandler
-              : refundOrderUpdateHandler
-          }
-        >
-          Update Status
+        <div className="pt-3 items-center">
+          <div
+            className={` w-[200px] pt-1 hover:bg-fe8373 h-8 flex  justify-center rounded-2xl cursor-pointer  text-[#fff] bg-[#006665] text-[16px]`}
+            onClick={
+              data?.status !== "Processing refund"
+                ? orderUpdateHandler
+                : refundOrderUpdateHandler
+            }
+          >
+            Update Status
+          </div>
         </div>
       </div>
     </div>
