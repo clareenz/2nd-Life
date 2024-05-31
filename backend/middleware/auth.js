@@ -22,6 +22,7 @@ exports.isAuthenticated = catchAsyncErrors(async (req, res, next) => {
 
     next();
 });
+  
 
 // Middleware to check if a user is a seller
 exports.isSeller = catchAsyncErrors(async (req, res, next) => {
