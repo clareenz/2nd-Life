@@ -161,3 +161,29 @@ export const getAllUsers = () => async (dispatch) => {
     });
   }
 };
+
+// delete user
+export const deleteUser = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "DeleteUserRequest",
+    });
+
+    const { data } = await axios.delete(`${server}/user/delete-user-account`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: "DeleteUserSuccess",
+      payload: {
+        successMessage: "User deleted successfully!",
+        user: data.user,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "DeleteUserFailed",
+      payload: error.response.data.message,
+    });
+  }
+};

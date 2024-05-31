@@ -79,5 +79,18 @@ export const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(`clearMessages`, (state) => {
       state.successMessage = null;
+    })
+    // delete user
+    .addCase(`DeleteUserRequest`, (state) => {
+      state.loading = true;
+    })
+    .addCase(`DeleteUserSuccess`, (state, action) => {
+      state.loading = false;
+      state.successMessage = action.payload.successMessage;
+      state.user = action.payload.user;
+    })
+    .addCase(`DeleteUserFailed`, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     });
 });

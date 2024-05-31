@@ -512,4 +512,28 @@ router.delete(
   })
 );
 
+// delete user account
+router.delete("/delete-user-account", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Get the user ID from the authenticated request
+    // Find the user by ID and delete it from the database
+    await User.findByIdAndDelete(userId);
+    // Logout the user by clearing the token cookie
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
+    // Send a success response
+    res.status(200).json({ success: true, message: "User account deleted successfully!" });
+  } catch (error) {
+    // Handle errors
+    return next(new ErrorHandler(error.message, 500));
+  }
+}));
+
+module.exports = router;
+
+
 module.exports = router;
