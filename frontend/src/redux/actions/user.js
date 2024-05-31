@@ -187,3 +187,47 @@ export const deleteUser = () => async (dispatch) => {
     });
   }
 };
+
+export const followShop = (shopId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'FOLLOW_SHOP_REQUEST',
+    });
+
+    const { data } = await axios.post(`${server}/user/follow/${shopId}`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: 'FOLLOW_SHOP_SUCCESS',
+      payload: data.shopId,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'FOLLOW_SHOP_FAILED',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const unfollowShop = (shopId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'UNFOLLOW_SHOP_REQUEST',
+    });
+
+    const { data } = await axios.post(`${server}/user/unfollow/${shopId}`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: 'UNFOLLOW_SHOP_SUCCESS',
+      payload: data.shopId,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'UNFOLLOW_SHOP_FAILED',
+      payload: error.response.data.message,
+    });
+  }
+};
