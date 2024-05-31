@@ -4,41 +4,42 @@ import {
   Table,
   Modal,
   Input,
-  InputNumber,
-  Space,
-  Switch,
   Select,
   Menu,
   Dropdown,
+  message,
+  Space,
+  Switch,
 } from "antd";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "../../styles/styles";
-import Loader from "../Layout/Loader";
-import { server } from "../../server";
 import axios from "axios";
-import { message } from "antd";
 import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import Loader from "../Layout/Loader";
+import styles from "../../styles/styles";
+import { server } from "../../server";
 
 const { Option } = Select;
 
 const AllCoupons = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [coupons, setCoupons] = useState([]);
+  const [value, setValue] = useState("");
   const [minAmount, setMinAmount] = useState(null);
   const [maxAmount, setMaxAmount] = useState(null);
+  const [expirationDate, setExpirationDate] = useState("");
   const [selectedProducts, setSelectedProducts] = useState(null);
-  const [value, setValue] = useState(null);
-  const { seller } = useSelector((state) => state.seller);
-  const { products } = useSelector((state) => state.products);
+  const [isLoading, setIsLoading] = useState(false);
+  const [coupons, setCoupons] = useState([]);
   const [isCreateHovered, setIsCreateHovered] = useState(false);
-  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = React.useRef(null);
+
+  const { seller } = useSelector((state) => state.seller);
+  const { products } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
@@ -50,19 +51,19 @@ const AllCoupons = () => {
         setIsLoading(false);
         setCoupons(res.data.couponCodes);
       })
-      .catch((error) => {
+      .catch(() => {
         setIsLoading(false);
       });
-  }, [dispatch]);
+  }, [dispatch, seller._id]);
 
   const handleDelete = async (id) => {
     axios
       .delete(`${server}/coupon/delete-coupon/${id}`, { withCredentials: true })
-      .then((res) => {
+      .then(() => {
         message.success("Coupon code deleted successfully!");
         setCoupons(coupons.filter((coupon) => coupon._id !== id)); // Update state after deletion
       })
-      .catch((error) => {
+      .catch(() => {
         message.error("Failed to delete coupon code!");
       });
   };
@@ -77,13 +78,14 @@ const AllCoupons = () => {
           name,
           minAmount,
           maxAmount,
+          expirationDate,
           selectedProducts,
           value,
           shopId: seller._id,
         },
         { withCredentials: true }
       )
-      .then((res) => {
+      .then(() => {
         message.success("Coupon code created successfully!");
         setOpen(false);
         window.location.reload();
@@ -173,7 +175,10 @@ const AllCoupons = () => {
   const [visibleColumns, setVisibleColumns] = useState({
     id: true,
     name: true,
-    price: true,
+    value: true,
+    minAmount: true,
+    maxAmount: true,
+    expirationDate: true,
     action: true,
   });
 
@@ -182,7 +187,7 @@ const AllCoupons = () => {
       title: "ID",
       dataIndex: "id",
       key: "id",
-      maxWidth: 100,
+      maxWidth: 150,
       align: "center",
       ...getColumnSearchProps("id"),
       sorter: (a, b) => a.id.localeCompare(b.id),
@@ -192,32 +197,56 @@ const AllCoupons = () => {
       title: "Coupon Code",
       dataIndex: "name",
       key: "name",
-      maxWidth: 100,
+      maxWidth: 150,
       align: "center",
       ...getColumnSearchProps("name"),
-      filters: [
-        { text: "A", value: "A" },
-        { text: "B", value: "B" },
-        // Add more filters as needed
-      ],
-      onFilter: (value, record) => record.name.startsWith(value),
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: visibleColumns.name ? (text) => text : null,
     },
     {
       title: "Value (%)",
-      dataIndex: "price",
-      key: "price",
-      minWidth: 100,
+      dataIndex: "value",
+      key: "value",
+      minWidth: 150,
       align: "center",
-      ...getColumnSearchProps("price"),
-      sorter: (a, b) => a.price - b.price,
-      render: visibleColumns.price ? (text) => text : null,
+      ...getColumnSearchProps("value"),
+      sorter: (a, b) => a.value - b.value,
+      render: visibleColumns.value ? (text) => text : null,
     },
     {
-      title: "",
+      title: "Min Amount",
+      dataIndex: "minAmount",
+      key: "minAmount",
+      minWidth: 150,
+      align: "center",
+      ...getColumnSearchProps("minAmount"),
+      sorter: (a, b) => a.minAmount - b.minAmount,
+      render: visibleColumns.minAmount ? (text) => text : null,
+    },
+    {
+      title: "Max Amount",
+      dataIndex: "maxAmount",
+      key: "maxAmount",
+      minWidth: 150,
+      align: "center",
+      ...getColumnSearchProps("maxAmount"),
+      sorter: (a, b) => a.maxAmount - b.maxAmount,
+      render: visibleColumns.maxAmount ? (text) => text : null,
+    },
+    {
+      title: "Exp Date",
+      dataIndex: "expirationDate",
+      key: "expirationDate",
+      minWidth: 150,
+      align: "center",
+      ...getColumnSearchProps("expirationDate"),
+      sorter: (a, b) => new Date(a.expirationDate) - new Date(b.expirationDate),
+      render: visibleColumns.expirationDate ? (text) => text : null,
+    },
+    {
+      title: "Action",
       key: "action",
-      minWidth: 100,
+      minWidth: 150,
       align: "center",
       render: visibleColumns.action
         ? (text, record) => (
@@ -232,8 +261,10 @@ const AllCoupons = () => {
   const data = coupons.map((item) => ({
     id: item._id,
     name: item.name,
-    price: item.value,
-    sold: 10,
+    value: item.value,
+    minAmount: item.minAmount,
+    maxAmount: item.maxAmount,
+    expirationDate: item.expirationDate.slice(0, 10),
   }));
 
   const handleColumnVisibilityChange = (key) => {
@@ -262,7 +293,7 @@ const AllCoupons = () => {
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-xl shadow-md">
           <div className="w-full flex justify-between">
-            <div className="flex flex-row">
+            <div className="flex flex-row px-[40px]">
               <h1 className="text-2xl pl-4 py-3">Coupons</h1>
               <div className="flex p-4 pr-[50px]">
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -276,10 +307,10 @@ const AllCoupons = () => {
               </div>
             </div>
             <div
-              className={`${styles.button6} m-5 bg-[#FF8474] text-white hover:bg-[#FC9A8E]`}
+              className={`w-[90px] border border-006665  h-[35px] my-3 flex items-center justify-center rounded-full cursor-pointer m-5 bg-[#FF8474] text-white hover:bg-[#FC9A8E]`}
               onClick={() => setOpen(true)}
             >
-              <span className=" p-1 text-sm">Create Coupon Code</span>
+              <span className="p-1 text-sm">Create</span>
             </div>
           </div>
           <div style={{ overflowX: "auto" }}>
@@ -298,7 +329,7 @@ const AllCoupons = () => {
             <form onSubmit={handleSubmit} aria-required={true}>
               <div className="mb-3">
                 <label>
-                  <span className="text-red-500">*</span>Name
+                  <span className="text-red-500">*</span> Name
                 </label>
                 <Input
                   type="text"
@@ -328,8 +359,9 @@ const AllCoupons = () => {
                 <label>Min Amount</label>
                 <Input
                   type="number"
-                  name="value"
+                  name="minAmount"
                   value={minAmount}
+                  min="0"
                   onChange={(e) => setMinAmount(e.target.value)}
                   placeholder="Enter your coupon code min amount..."
                   className="custom-input rounded-2xl"
@@ -339,10 +371,24 @@ const AllCoupons = () => {
                 <label>Max Amount</label>
                 <Input
                   type="number"
-                  name="value"
+                  name="maxAmount"
                   value={maxAmount}
+                  min="0"
                   onChange={(e) => setMaxAmount(e.target.value)}
                   placeholder="Enter your coupon code max amount..."
+                  className="custom-input rounded-2xl"
+                />
+              </div>
+              <div className="mb-3">
+                <label>
+                  <span className="text-red-500">*</span> Expiration Date
+                </label>
+                <Input
+                  type="date"
+                  name="expirationDate"
+                  required
+                  value={expirationDate}
+                  onChange={(e) => setExpirationDate(e.target.value)}
                   className="custom-input rounded-2xl"
                 />
               </div>

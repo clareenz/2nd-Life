@@ -183,7 +183,7 @@ const AllEvents = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: 180,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("name"),
       filters: [
@@ -199,7 +199,7 @@ const AllEvents = () => {
       title: "Price (₱)",
       dataIndex: "price",
       key: "price",
-      width: 100,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("price"),
       sorter: (a, b) => a.price - b.price,
@@ -209,7 +209,7 @@ const AllEvents = () => {
       title: "Stock",
       dataIndex: "stock",
       key: "stock",
-      width: 80,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("stock"),
       sorter: (a, b) => a.stock - b.stock,
@@ -219,7 +219,7 @@ const AllEvents = () => {
       title: "Sold",
       dataIndex: "sold",
       key: "sold",
-      width: 130,
+      width: 150,
       align: "center",
       ...getColumnSearchProps("sold"),
       sorter: (a, b) => a.sold - b.sold,
@@ -228,7 +228,7 @@ const AllEvents = () => {
     {
       title: "Action",
       key: "action",
-      width: 200,
+      width: 150,
       align: "center",
       render: visibleColumns.action
         ? (text, record) => (

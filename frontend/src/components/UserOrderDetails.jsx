@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BsFillBagFill } from "react-icons/bs";
-import {  useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/styles";
 import { getAllOrdersOfUser } from "../redux/actions/order";
-import {  server } from "../server";
+import { server } from "../server";
 import { RxCross1 } from "react-icons/rx";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { AiOutlineMessage } from "react-icons/ai";
-import { message } from 'antd';
+import { Button, Modal, Rate, message } from "antd";
 
 const UserOrderDetails = () => {
   const { orders } = useSelector((state) => state.order);
@@ -21,7 +21,6 @@ const UserOrderDetails = () => {
   const [rating, setRating] = useState(1);
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.user);
-
 
   const { id } = useParams();
 
@@ -125,8 +124,8 @@ const UserOrderDetails = () => {
                 className="w-20 h-20 rounded-lg shadow-md"
               />
               <div className="w-full sm:pl-3">
-                <h5 className="text-lg sm:text-xl">{item.name}</h5>
-                <h5 className="text-lg sm:text-xl text-gray-700">
+                <h5 className="">{item.name}</h5>
+                <h5 className=" text-gray-700">
                   ₱{item.discountPrice} x {item.qty}
                 </h5>
               </div>
@@ -145,61 +144,42 @@ const UserOrderDetails = () => {
           ))}
 
         {open && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-            <div className="w-full max-w-2xl bg-white shadow-lg rounded-md p-4">
-              <div className="flex justify-end">
-                <RxCross1
-                  size={30}
-                  onClick={() => setOpen(false)}
-                  className="cursor-pointer"
-                />
-              </div>
-              <h2 className="text-center text-2xl sm:text-3xl font-semibold mb-4">
-                Give a Review
-              </h2>
-              <div className="flex items-center mb-4">
-                <img
-                  src={`${selectedItem?.images[0]?.url}`}
-                  alt=""
-                  className="w-20 h-20 rounded-lg shadow-md"
-                />
-                <div className="pl-3">
-                  <h5 className="text-lg sm:text-xl">{selectedItem?.name}</h5>
-                  <h5 className="text-lg sm:text-xl">
-                    ₱{selectedItem?.discountPrice} x {selectedItem?.qty}
-                  </h5>
+          <>
+            <Modal visible={open} onCancel={() => setOpen(false)} footer={null}>
+              <div className="pt-4">
+                <div className="flex items-center mb-4">
+                  <img
+                    src={`${selectedItem?.images[0]?.url}`}
+                    alt=""
+                    className="w-20 h-20 rounded-lg shadow-md"
+                  />
+                  <div className="pl-3">
+                    <h5 className="">{selectedItem?.name}</h5>
+                    <h5 className="">
+                      ₱{selectedItem?.discountPrice} x {selectedItem?.qty}
+                    </h5>
+                  </div>
                 </div>
               </div>
-
               <div className="mb-4">
-                <h5 className="text-lg sm:text-xl font-semibold">
+                <h5 className=" font-Poppins ">
                   Give a Rating <span className="text-red-500">*</span>
                 </h5>
-                <div className="flex mt-2">
-                  {[1, 2, 3, 4, 5].map((i) =>
-                    rating >= i ? (
-                      <AiFillStar
-                        key={i}
-                        className="mr-1 cursor-pointer"
-                        color="rgb(246,186,0)"
-                        size={25}
-                        onClick={() => setRating(i)}
-                      />
+                <Rate
+                  value={rating}
+                  onChange={(value) => setRating(value)}
+                  character={({ index }) =>
+                    rating >= index + 1 ? (
+                      <AiFillStar color="rgb(246,186,0)" size={25} />
                     ) : (
-                      <AiOutlineStar
-                        key={i}
-                        className="mr-1 cursor-pointer"
-                        color="rgb(246,186,0)"
-                        size={25}
-                        onClick={() => setRating(i)}
-                      />
+                      <AiOutlineStar color="rgb(246,186,0)" size={25} />
                     )
-                  )}
-                </div>
+                  }
+                />
               </div>
 
               <div className="mb-4">
-                <label className="block text-lg sm:text-xl font-semibold">
+                <label className=" font-Poppins">
                   Write a comment
                   <span className="ml-1 font-normal text-gray-500">
                     (optional)
@@ -212,21 +192,23 @@ const UserOrderDetails = () => {
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="How was your product? Write your expression about it!"
-                  className="mt-2 w-full border p-2 outline-none rounded-lg shadow-sm"
+                  className="mt-2 w-full border p-2 outline-none rounded-lg shadow-sm  hover:border-[#006665] focus:border-[#006665]"
                 ></textarea>
               </div>
-              <div
-                className={`${styles.button} text-white text-xl sm:text-2xl`}
-                onClick={rating > 1 ? reviewHandler : null}
-              >
-                Submit
+              <div className="flex justify-end">
+                <input
+                  type="submit"
+                  value="Confirm"
+                  className="!w-[100px] bg-fe8373 hover:bg-006665 flex items-center justify-center text-[#fff] h-8 rounded-2xl cursor-pointer text-[14px]"
+                  onClick={rating > 1 ? reviewHandler : null}
+                />
               </div>
-            </div>
-          </div>
+            </Modal>
+          </>
         )}
 
         <div className="w-full text-right border-t pt-3 mt-6">
-          <h5 className="text-lg sm:text-xl">
+          <h5 className="">
             Total Price: ₱<strong>{data?.totalPrice}</strong>
           </h5>
         </div>
@@ -236,18 +218,18 @@ const UserOrderDetails = () => {
             <h4 className="text-xl sm:text-2xl font-semibold">
               Shipping Address:
             </h4>
-            <h4 className="text-lg sm:text-xl mt-2">
+            <h4 className=" mt-2">
               {data?.shippingAddress.city + " " + data?.shippingAddress.zipCode}
             </h4>
-            <h4 className="text-lg sm:text-xl">
+            <h4 className="">
               {data?.shippingAddress.country}
             </h4>
-            <h4 className="text-lg sm:text-xl">{data?.shippingAddress.city}</h4>
-            <h4 className="text-lg sm:text-xl">{data?.user.phoneNumber}</h4>
+            <h4 className="">{data?.shippingAddress.city}</h4>
+            <h4 className="">{data?.user.phoneNumber}</h4>
           </div>
           <div className="w-full sm:w-2/5">
-            <h4 className="text-xl sm:text-2xl">Payment Info:</h4>
-            <h4 className="text-lg sm:text-xl mt-2">
+            <h4 className="text-[20px]">Payment Info:</h4>
+            <h4 className=" mt-2">
               Status:{" "}
               {data?.paymentInfo?.status
                 ? data?.paymentInfo?.status
@@ -265,7 +247,7 @@ const UserOrderDetails = () => {
         </div>
 
         <div
-          className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+          className={`w-[150px] border border-006665  my-3  justify-center  cursor-pointer ml-2 !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
           onClick={handleMessageSubmit}
         >
           <span className="text-white text-[13px] mr-1">Message</span>
