@@ -14,6 +14,7 @@ import {
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { GoReport } from "react-icons/go";
+import { RiUserFollowLine, RiUserFollowFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -23,6 +24,7 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../redux/actions/wishlist";
+import { followShop, unfollowShop } from "../../redux/actions/user";
 import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import CountDown from "../Events/CountDown.jsx";
@@ -340,6 +342,22 @@ const ProductDetailsInfo = ({
   averageRating,
 }) => {
   const [active, setActive] = useState(1);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const dispatch = useDispatch();
+
+  // Function to handle follow/unfollow
+  const handleFollowToggle = () => {
+    // Logic to toggle follow state
+    setIsFollowing((prev) => !prev);
+    // Call follow/unfollow action based on current follow state
+    if (isFollowing) {
+      // Call unfollow action
+      dispatch(unfollowShop(data.shop._id)); // Replace `unfollowShop` with your actual unfollow action
+    } else {
+      // Call follow action
+      dispatch(followShop(data.shop._id)); // Replace `followShop` with your actual follow action
+    }
+  };
 
   return (
     <div className="pt-[150px]">
@@ -375,68 +393,79 @@ const ProductDetailsInfo = ({
         </div>
 
         {active === 1 && (
-          <div className=" justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
-            <div className="w-full">
-              <div className="flex flex-row">
-                <div>
-                  <Link to={`/shop/preview/${data?.shop._id}`}>
-                    <img
-                      src={`${backend_url}${data?.shop?.avatar}`}
-                      alt=""
-                      className=" object-cover w-[50px] h-[50px] rounded-full mr-2"
-                    />
-                  </Link>
-                </div>
-                <div className="marquee">
-                  <Link
-                    to={`/shop/preview/${data.shop._id}`}
-                    className={`${styles.shop_name}`}
-                  >
-                    {data.shop.name}
-                  </Link>
-                  <h5 className="text-[13px] mt-1">
-                    ({averageRating}/5) Ratings
-                  </h5>
-                </div>
-              </div>
-              <div style={{ width: "100%" }} className="px-2 py-3">
-                <Paragraph
-                  className="pt-2"
-                  style={{ textAlign: "justify", wordWrap: "break-word" }}
-                >
-                  {data.shop.description}
-                </Paragraph>
-              </div>
+      <div className="justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
+        <div className="w-full">
+          <div className="flex flex-row">
+            <div>
+              <Link to={`/shop/preview/${data?.shop._id}`}>
+                <img
+                  src={`${backend_url}${data?.shop?.avatar}`}
+                  alt=""
+                  className="object-cover w-[50px] h-[50px] rounded-full mr-2"
+                />
+              </Link>
             </div>
-            <div className="items-end">
-              <div className="w-full text-[14px]">
-                <div className="text-left flex flex-col">
-                  <h5 className="font-[600]">
-                    Joined on:{" "}
-                    <span className="font-[500]">
-                      {data.shop?.createdAt?.slice(0, 10)}
-                    </span>
-                  </h5>
-                  <h5 className="font-[600]">
-                    Total Products:{" "}
-                    <span className="font-[500]">
-                      {products && products.length}
-                    </span>
-                  </h5>
-                  <h5 className="font-[600]">
-                    Total Reviews:{" "}
-                    <span className="font-[500]">{totalReviewsLength}</span>
-                  </h5>
-                  <div className="">
-                    <div className="center-container">
-                      <Link to={`/shop/preview/${data?.shop._id}`}>
-                        <div
-                          className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
-                        >
-                          Visit Shop
-                        </div>
-                      </Link>
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <Link
+                  to={`/shop/preview/${data.shop._id}`}
+                  className={`${styles.shop_name}`}
+                >
+                  {data.shop.name}
+                </Link>
+                {isFollowing ? (
+                  <RiUserFollowFill
+                    className="ml-2 text-red-500 cursor-pointer"
+                    onClick={handleFollowToggle}
+                  />
+                ) : (
+                  <RiUserFollowLine
+                    className="ml-2 text-gray-500 cursor-pointer"
+                    onClick={handleFollowToggle}
+                  />
+                )}
+              </div>
+              <h5 className="text-[13px] mt-1">({averageRating}/5) Ratings</h5>
+            </div>
+          </div>
+          <div style={{ width: "100%" }} className="px-2 py-3">
+            <Paragraph
+              className="pt-2"
+              style={{ textAlign: "justify", wordWrap: "break-word" }}
+            >
+              {data.shop.description}
+            </Paragraph>
+          </div>
+        </div>
+        <div className="items-end">
+          <div className="w-full text-[14px]">
+            <div className="text-left flex flex-col">
+              <h5 className="font-[600]">
+                Joined on:{" "}
+                <span className="font-[500]">
+                  {data.shop?.createdAt?.slice(0, 10)}
+                </span>
+              </h5>
+              <h5 className="font-[600]">
+                Total Products:{" "}
+                <span className="font-[500]">
+                  {products && products.length}
+                </span>
+              </h5>
+              <h5 className="font-[600]">
+                Total Reviews:{" "}
+                <span className="font-[500]">{totalReviewsLength}</span>
+              </h5>
+              <div className="">
+                <div className="center-container">
+                  <Link to={`/shop/preview/${data?.shop._id}`}>
+                    <div
+                      className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
+                    >
+                      Visit Shop
                     </div>
+                  </Link>
+                </div>
 
                     <style jsx>{`
                       .center-container {

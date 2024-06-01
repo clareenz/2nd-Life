@@ -7,9 +7,9 @@ import {
   AiOutlineEyeInvisible,
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url, server } from "../../server";
+import { server } from "../../server";
 import styles from "../../styles/styles";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineTrackChanges, MdTrackChanges } from "react-icons/md";
 import {
   deleteUserAddress,
@@ -35,9 +35,14 @@ import {
   Button,
 } from "antd";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
+import { deleteUser } from "../../redux/actions/user";
 import UserInbox from "./UserInbox";
 import Highlighter from "react-highlight-words";
-import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  EllipsisOutlined,
+  SearchOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -118,7 +123,7 @@ const ProfileContent = ({ active }) => {
           <div className="flex w-auto justify-evenly">
             <div className="relative">
               <img
-               src={`${user?.avatar?.url}`}
+                src={`${user?.avatar?.url}`}
                 className="w-[150px] h-[150px] rounded-full object-cover border-[3px] border-[#3ad132]"
                 alt=""
               />
@@ -293,6 +298,13 @@ const ProfileContent = ({ active }) => {
       {active === 7 && (
         <div>
           <Address />
+        </div>
+      )}
+
+      {/* delete user account */}
+      {active === 10 && (
+        <div>
+          <DeleteUserAccount />
         </div>
       )}
     </div>
@@ -512,6 +524,7 @@ const AllOrders = () => {
     </div>
   );
 };
+
 const TrackOrder = () => {
   const orders = [];
 
@@ -999,4 +1012,59 @@ const Address = () => {
     </div>
   );
 };
+
+const DeleteUserAccount = () => {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+
+  const showDeleteModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = () => {
+    dispatch(deleteUser());
+    setVisible(false);
+    navigate("/");
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  return (
+    <>
+      <div className="flex flex-col items-center justify-center h-full">
+        <p className="text-red-600 font-semibold mb-4 text-center">
+          Warning: This action cannot be undone. Proceed with caution.
+        </p>
+        <Button
+          type="primary"
+          danger
+          onClick={showDeleteModal}
+          className="mb-4"
+        >
+          Delete Account
+        </Button>
+      </div>
+      <Modal
+        title="Delete Account"
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <div className="flex flex-col items-center">
+          <ExclamationCircleOutlined className="text-5xl text-red-500 mb-4" />
+          <p className="text-center">
+            Are you sure you want to delete your account, {user.name}?
+          </p>
+        </div>
+      </Modal>
+    </>
+  );
+};
+
 export default ProfileContent;

@@ -15,10 +15,7 @@ const {
 } = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
-const user = require("../model/user");
-const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
-const { trace } = require("console");
+const Shop = require("../model/shop");
 
 // Load environment variables
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -516,5 +513,81 @@ router.delete(
     }
   })
 );
+
+// delete user account
+router.delete("/delete-user-account", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+  try {
+    const userId = req.user.id; // Get the user ID from the authenticated request
+    // Find the user by ID and delete it from the database
+    await User.findByIdAndDelete(userId);
+    // Logout the user by clearing the token cookie
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
+    // Send a success response
+    res.status(200).json({ success: true, message: "User account deleted successfully!" });
+  } catch (error) {
+    // Handle errors
+    return next(new ErrorHandler(error.message, 500));
+  }
+}));
+
+//follow a shop
+router.post("/follow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
+  try {
+    const shopId = req.params.shopId;
+    const userId = req.user.id;
+
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    // Check if the user is already following the shop
+    if (shop.followers.includes(userId)) {
+      return res.status(400).json({ success: false, message: "User is already following this shop" });
+    }
+
+    // Add the user to the followers array
+    shop.followers.push(userId);
+    await shop.save();
+
+    res.status(200).json({ success: true, message: "User followed the shop successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}));
+
+// Route to unfollow a shop
+router.post("/unfollow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
+  try {
+    const shopId = req.params.shopId;
+    const userId = req.user.id;
+
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    // Check if the user is following the shop
+    if (!shop.followers.includes(userId)) {
+      return res.status(400).json({ success: false, message: "User is not following this shop" });
+    }
+
+    // Remove the user from the followers array
+    shop.followers = shop.followers.filter(followerId => followerId !== userId);
+    await shop.save();
+
+    res.status(200).json({ success: true, message: "User unfollowed the shop successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}));
+
 
 module.exports = router;
