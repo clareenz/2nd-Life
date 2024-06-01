@@ -4,6 +4,7 @@
 
 import React from "react";
 import {
+  AiOutlineDelete,
   AiOutlineKey,
   AiOutlineLogout,
   AiOutlineMessage,
@@ -15,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { TbAddressBook } from "react-icons/tb";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
+import { message } from "antd";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { useSelector } from "react-redux";
 
@@ -27,7 +28,20 @@ const ProfileSideBar = ({ setActive, active }) => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
+        window.location.reload(true);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
+  };
+
+  const deleteAccountHandler = () => {
+    axios
+      .get(`${server}/user/delete-user-account`, { withCredentials: true })
+      .then((res) => {
+        message.success(res.data.message);
         window.location.reload(true);
         navigate("/login");
       })
@@ -160,6 +174,21 @@ const ProfileSideBar = ({ setActive, active }) => {
             Log Out
           </span>
         </div>
+
+        <div
+          className="flex items-center cursor-pointer w-full mb-8"
+          onClick={() => setActive(10)}
+        >
+          <AiOutlineDelete size={20} color={active === 10 ? "006665" : ""} />
+          <span
+            className={`pl-3 ${
+              active === 10 ? "text-[#FE8373]" : ""
+            } 800px:block hidden`}
+          >
+            Delete Account
+          </span>
+        </div>
+
       </div>
     </div>
   );

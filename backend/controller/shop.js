@@ -256,46 +256,52 @@ router.put(
   })
 );
 
-// update seller info
+// Update seller info
 router.put(
   "/update-seller-info",
+  isAuthenticated,
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { name, description, address, phoneNumber, zipCode, password } =
-        req.body;
+      const { email, password, phoneNumber, name, description, address, zipCode } = req.body;
 
-      const shop = await Shop.findOne(req.seller._id).select("+password");
+      // Find the seller by their ID (better security)
+      const seller = await Shop.findById(req.seller.id).select("+password");
 
-      if (!shop) {
-        return next(new ErrorHandler("Shop not found", 400));
+      if (!seller) {
+        return next(new ErrorHandler("Seller not found", 400));
       }
 
-      const isPasswordValid = await shop.comparePassword(password);
+      // Verify the password
+      const isPasswordValid = await seller.comparePassword(password);
 
       if (!isPasswordValid) {
         return next(
-          new ErrorHandler("Please provide the correct information", 400)
+          new ErrorHandler("Incorrect password. Please provide the correct information", 400)
         );
       }
 
-      shop.name = name;
-      shop.description = description;
-      shop.address = address;
-      shop.phoneNumber = phoneNumber;
-      shop.zipCode = zipCode;
+      // Update seller information if provided
+      if (name) seller.name = name;
+      if (email) seller.email = email;
+      if (phoneNumber) seller.phoneNumber = phoneNumber;
+      if (description) seller.description = description;
+      if (address) seller.address = address;
+      if (zipCode) seller.zipCode = zipCode;
 
-      await shop.save();
+      await seller.save();
 
-      res.status(201).json({
+      res.status(200).json({
         success: true,
-        shop,
+        message: "Seller information updated successfully",
+        seller,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
   })
 );
+
 
 // update shop password
 router.put(
@@ -509,6 +515,23 @@ router.post(
     }
   })
 );
+
+// get shop info
+router.get(
+  "/get-shop-info/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const shop = await Shop.findById(req.params.id).populate('followers');
+      res.status(200).json({
+        success: true,
+        shop,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
 
 
 module.exports = router;

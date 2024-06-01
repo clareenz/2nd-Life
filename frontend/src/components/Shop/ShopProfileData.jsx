@@ -4,12 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { getAllEventsShop } from "../../redux/actions/event"; // Import action to fetch events
-import styles from "../../styles/styles";
 import { ProductCard, ProductCard2 } from "../Route/ProductCard/ProductCard";
 import { EventCard2 } from "../Events/EventCard";
 import "./color.css";
 import Ratings from "../Products/Ratings";
-import { backend_url } from "../../server";
 
 const { TabPane } = Tabs;
 const { Title } = Typography;

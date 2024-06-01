@@ -161,3 +161,73 @@ export const getAllUsers = () => async (dispatch) => {
     });
   }
 };
+
+// delete user
+export const deleteUser = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "DeleteUserRequest",
+    });
+
+    const { data } = await axios.delete(`${server}/user/delete-user-account`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: "DeleteUserSuccess",
+      payload: {
+        successMessage: "User deleted successfully!",
+        user: data.user,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "DeleteUserFailed",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const followShop = (shopId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'FOLLOW_SHOP_REQUEST',
+    });
+
+    const { data } = await axios.post(`${server}/user/follow/${shopId}`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: 'FOLLOW_SHOP_SUCCESS',
+      payload: data.shopId,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'FOLLOW_SHOP_FAILED',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const unfollowShop = (shopId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'UNFOLLOW_SHOP_REQUEST',
+    });
+
+    const { data } = await axios.post(`${server}/user/unfollow/${shopId}`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: 'UNFOLLOW_SHOP_SUCCESS',
+      payload: data.shopId,
+    });
+  } catch (error) {
+    dispatch({
+      type: 'UNFOLLOW_SHOP_FAILED',
+      payload: error.response.data.message,
+    });
+  }
+};

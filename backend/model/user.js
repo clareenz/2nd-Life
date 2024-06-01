@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
-  avatar:{
+  avatar: {
     public_id: {
       type: String,
       required: true,
@@ -55,7 +55,13 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
- },
+  },
+  followingShops: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shop",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
