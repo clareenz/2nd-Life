@@ -106,16 +106,17 @@ const ShopSettings = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full min-h-screen">
-      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5 shadow-sm bg-white p-6 rounded-2xl">
+    <div className="pr-2 flex flex-col items-center w-full min-h-screen">
+      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5 shadow bg-white p-6 rounded-2xl">
         <div className="flex items-center justify-center w-full">
           <div className="relative p-3 mb-3">
             <img
               src={avatar ? URL.createObjectURL(avatar) : seller?.avatar?.url}
               alt="Shop Avatar"
+
               className="w-[200px] h-[200px] rounded-full cursor-pointer object-cover"
             />
-            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[10px] right-[15px]">
+            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[15px] right-[30px]">
               <input
                 type="file"
                 id="image"
@@ -190,12 +191,14 @@ const ShopSettings = () => {
                 <Input
                   type="number"
                   value={phoneNumber}
+                  min="0"
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   className={`${styles.input} px-4 custom-input`}
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
+
               <Form.Item
                 label="Zip Code"
                 name="zipCode"
@@ -203,6 +206,7 @@ const ShopSettings = () => {
               >
                 <Input
                   type="number"
+                  min="0"
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
                   className={`${styles.input} px-4 custom-input`}
@@ -221,6 +225,7 @@ const ShopSettings = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className={`${styles.input} px-4 custom-input`}
                 />
+
               </Form.Item>
             </Col>
             <Col span={12}>

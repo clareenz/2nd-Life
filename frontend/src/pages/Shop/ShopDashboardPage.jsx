@@ -5,15 +5,17 @@ import DashboardHero from "../../components/Shop/DashboardHero";
 
 const ShopDashboardPage = () => {
   return (
-        <>
-          <DashboardHeader />
-          <div className="xl:ml-[80px] lg:mx-[20px] sm:mx-10 flex bg-[#f5f5f5]">
-            <div className="w-[235px]">
-              <DashboardSideBar active={1} />
-            </div>
-            <DashboardHero />
-          </div>
-        </>
+    <>
+      <DashboardHeader />
+      <div className="flex justify-between w-full">
+        <div className="w-[80px] 800px:w-[330px]">
+          <DashboardSideBar active={1} />
+        </div>
+        <div className=" justify-center w-full">
+          <DashboardHero />
+        </div>
+      </div>
+    </>
   );
 };
 

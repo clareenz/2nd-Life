@@ -44,7 +44,7 @@ const DashboardMessages = () => {
       currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
-  
+
   useEffect(() => {
     const getConversation = async () => {
       try {
@@ -200,113 +200,115 @@ const DashboardMessages = () => {
 
   return (
     //inbox na walang open na chat
-    <div className="w-full 300px:w-[90%] bg-white m-5 shadow rounded-2xl h-[85vh]">
-      {!open && (
-        <div>
-          {" "}
-          <div className="flex flex-row items-center justify-between border-b">
-            <h1 className="w-1/2 px-10 py-6 text-3xl font-Poppins">
-              All Messages
-            </h1>
+    <div className="px-4 pl-[10px] xl:pl-[3px] lg:pl-[5px] md:pl-[10px]">
+      <div className=" bg-white my-5 shadow rounded-2xl h-[85vh]">
+        {!open && (
+          <div>
+            {" "}
+            <div className="flex flex-row items-center justify-between border-b">
+              <h1 className="w-1/2 px-10 py-6 text-3xl font-Poppins">
+                Chats
+              </h1>
 
-            <div className="flex justify-center w-1/2">
-              <div className="w-full px-6">
-                <Input
-                  placeholder="Search..."
-                  className="h-[30px] w-full border-gray-300 border-[1px] rounded-3xl text-sm custom-input"
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            className="h-[73vh]"
-            style={{ scrollbarWidth: "xs", overflowY: "auto" }}
-          >
-            {/* All messages list */}
-            <div>
-              {conversations && conversations.length > 0 ? (
-                conversations.map((item, index) => (
-                  <MessageList
-                    data={item}
-                    key={index}
-                    index={index}
-                    setOpen={setOpen}
-                    setCurrentChat={setCurrentChat}
-                    me={seller._id}
-                    setUserData={setUserData}
-                    userData={userData}
-                    online={onlineCheck(item)}
-                    setActiveStatus={setActiveStatus}
-                    isLoading={isLoading}
-                    setActiveKey={setActiveKey}
-                    activeKey={activeKey}
+              <div className="flex justify-center w-1/2">
+                <div className="w-full px-6">
+                  <Input
+                    placeholder="Search..."
+                    className="h-[30px] w-full border-gray-300 border-[1px] rounded-3xl text-sm custom-input"
                   />
-                ))
-              ) : (
-                <div className="flex items-center justify-center p-[20px] text-gray-400">
-                  <p>No Conversations Available!</p>
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-      {open && ( //message sidebar
-        <div className="flex flex-row">
-          <div className="hidden lg:flex flex-col w-[50%] pt-4 h-[85vh]">
-            <div className="flex flex-col rounded-2xl">
-              {" "}
-              <div>
-                <h1 className="text-center text-[30px] pt-4 font-Poppins">
-                  All Messages
-                </h1>
-              </div>
-              <div className="p-2 text-black rounded-2xl">
-                <Input
-                  placeholder="Search..."
-                  className="h-[30px] rounded-2xl text-sm custom-input"
-                />
               </div>
             </div>
-            <div className="bg-white h-[85vh] overflow-y-scroll ">
+            <div
+              className="h-[73vh]"
+              style={{ scrollbarWidth: "xs", overflowY: "auto" }}
+            >
               {/* All messages list */}
-              {conversations &&
-                conversations.map((item, index) => (
-                  <MessageList
-                    data={item}
-                    key={index}
-                    index={index}
-                    setOpen={setOpen}
-                    setCurrentChat={setCurrentChat}
-                    me={seller._id}
-                    setUserData={setUserData}
-                    userData={userData}
-                    online={onlineCheck(item)}
-                    setActiveStatus={setActiveStatus}
-                    isLoading={isLoading}
-                    setActiveKey={setActiveKey}
-                    activeKey={activeKey}
-                  />
-                ))}
+              <div>
+                {conversations && conversations.length > 0 ? (
+                  conversations.map((item, index) => (
+                    <MessageList
+                      data={item}
+                      key={index}
+                      index={index}
+                      setOpen={setOpen}
+                      setCurrentChat={setCurrentChat}
+                      me={seller._id}
+                      setUserData={setUserData}
+                      userData={userData}
+                      online={onlineCheck(item)}
+                      setActiveStatus={setActiveStatus}
+                      isLoading={isLoading}
+                      setActiveKey={setActiveKey}
+                      activeKey={activeKey}
+                    />
+                  ))
+                ) : (
+                  <div className="flex items-center justify-center p-[20px] text-gray-400">
+                    <p>No Conversations Available!</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="w-[100%]">
-            <SellerInbox
-              setOpen={setOpen}
-              newMessage={newMessage}
-              setNewMessage={setNewMessage}
-              sendMessageHandler={sendMessageHandler}
-              messages={messages}
-              sellerId={seller._id}
-              userData={userData}
-              activeStatus={activeStatus}
-              scrollRef={scrollRef}
-              setMessages={setMessages}
-              handleImageUpload={handleImageUpload}
-            />
+        )}
+        {open && ( //message sidebar
+          <div className="flex flex-row">
+            <div className="hidden lg:flex flex-col w-[50%] pt-4 h-[85vh]">
+              <div className="flex flex-col rounded-2xl">
+                {" "}
+                <div>
+                  <h1 className="text-center text-[30px] pt-4 font-Poppins">
+                    Chats
+                  </h1>
+                </div>
+                <div className="p-2 text-black rounded-2xl">
+                  <Input
+                    placeholder="Search..."
+                    className="h-[30px] rounded-2xl text-sm custom-input"
+                  />
+                </div>
+              </div>
+              <div className="bg-white h-[85vh] overflow-y-scroll ">
+                {/* All messages list */}
+                {conversations &&
+                  conversations.map((item, index) => (
+                    <MessageList
+                      data={item}
+                      key={index}
+                      index={index}
+                      setOpen={setOpen}
+                      setCurrentChat={setCurrentChat}
+                      me={seller._id}
+                      setUserData={setUserData}
+                      userData={userData}
+                      online={onlineCheck(item)}
+                      setActiveStatus={setActiveStatus}
+                      isLoading={isLoading}
+                      setActiveKey={setActiveKey}
+                      activeKey={activeKey}
+                    />
+                  ))}
+              </div>
+            </div>
+            <div className="w-[100%]">
+              <SellerInbox
+                setOpen={setOpen}
+                newMessage={newMessage}
+                setNewMessage={setNewMessage}
+                sendMessageHandler={sendMessageHandler}
+                messages={messages}
+                sellerId={seller._id}
+                userData={userData}
+                activeStatus={activeStatus}
+                scrollRef={scrollRef}
+                setMessages={setMessages}
+                handleImageUpload={handleImageUpload}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
@@ -330,7 +332,6 @@ const MessageList = ({
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
 
-
   const handleDotsClick = (event) => {
     event.stopPropagation();
     setShowModal(!showModal);
@@ -343,7 +344,7 @@ const MessageList = ({
   };
 
   const confirmDelete = async () => {
-    console.log(data._id)
+    console.log(data._id);
     axios
       .delete(`${server}/conversation/delete-conversation/${data._id}`)
       .then((res) => {
@@ -356,7 +357,6 @@ const MessageList = ({
     setShowConfirm(false);
   };
 
-  
   const handleClick = (id) => {
     navigate(`/dashboard-messages?${id}`);
     setOpen(true);
@@ -377,15 +377,15 @@ const MessageList = ({
 
   return (
     <div
-    className={`relative flex p-6 cursor-pointer rounded-2xl ${
-      activeKey === index ? "bg-[#FFEAE8] before:inset-0 " : "bg-white"
-    } hover:bg-[#F0F0F0]  before:absolute before:border-4 before:border-white before:rounded-2xl before:hover:inset-0 items-center justify-between`}
+      className={`relative flex p-6 cursor-pointer rounded-2xl ${
+        activeKey === index ? "bg-[#FFEAE8] before:inset-0 " : "bg-white"
+      } hover:bg-[#F0F0F0]  before:absolute before:border-4 before:border-white before:rounded-2xl before:hover:inset-0 items-center justify-between`}
       onClick={(e) =>
-        setActiveKey(index)||
+        setActiveKey(index) ||
         setCurrentChat(data) ||
         setUserData(user) || //name ng user
         setActiveStatus(online) ||
-        setOpen(true)||
+        setOpen(true) ||
         handleClick(data._id)
       }
     >
@@ -394,7 +394,7 @@ const MessageList = ({
           <img
             src={`${user?.avatar?.url}`}
             alt=""
-            className="w-[50px] h-[50px] rounded-full"
+            className="w-[50px] h-[50px] rounded-full object-cover"
           />
           {online ? (
             <div className="w-[12px] h-[12px] bg-green-400 rounded-full absolute top-[2px] right-[2px]" />
@@ -407,7 +407,6 @@ const MessageList = ({
           <h1 className="text-[18px] px-2">{user?.name}</h1>
           <p className="text-[16px] px-2 text-[#000c] ">
             {!isLoading && data?.lastMessageId !== userData?._id
-
               ? "You:"
               : userData?.name.split(" ")[0] + ": "}
             {data?.lastMessage &&
@@ -477,7 +476,7 @@ const SellerInbox = ({
               <img
                 src={`${userData?.avatar?.url}`}
                 alt=""
-                className="w-[55px] h-[55px] rounded-full"
+                className="w-[55px] h-[55px] rounded-full object-cover"
               />
               <div className="pl-3">
                 <h1 className="text-[18px] font-[600]">{userData?.name}</h1>
@@ -504,7 +503,7 @@ const SellerInbox = ({
                     {item.sender !== sellerId && (
                       <img
                         src={`${userData?.avatar?.url}`}
-                        className="w-[40px] h-[40px] rounded-full mr-3"
+                        className="w-[40px] h-[40px] rounded-full mr-3 object-cover"
                         alt=""
                       />
                     )}

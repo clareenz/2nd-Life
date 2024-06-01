@@ -52,7 +52,7 @@ const ProfileSideBar = ({ setActive, active }) => {
 
   return (
     <div className="pt-[90px]">
-      <div className="xl:w-[250px] lg:w-[250px] bg-white shadow rounded-2xl p-4 pt-8">
+      <div className="xl:w-[250px] lg:w-[350px] bg-white shadow rounded-2xl p-4 pt-8">
         <div
           className="flex items-center cursor-pointer w-full mb-8"
           onClick={() => setActive(1)}

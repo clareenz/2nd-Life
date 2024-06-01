@@ -250,7 +250,7 @@ const AllCoupons = () => {
       align: "center",
       render: visibleColumns.action
         ? (text, record) => (
-            <Button onClick={() => handleDelete(record.id)}>
+            <Button className="custom-button1" onClick={() => handleDelete(record.id)}>
               <AiOutlineDelete size={15} />
             </Button>
           )
@@ -287,15 +287,15 @@ const AllCoupons = () => {
   );
 
   return (
-    <>
+    <div className="px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[80px]">
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-xl shadow-md">
+        <div className="pt-1 mt-10 bg-white rounded-xl shadow-md">
           <div className="w-full flex justify-between">
-            <div className="flex flex-row px-[40px]">
-              <h1 className="text-2xl pl-4 py-3">Coupons</h1>
-              <div className="flex p-4 pr-[50px]">
+            <div className="flex flex-row px-3 sm:px-[40px]">
+              <h1 className="text-2xl py-3">Coupons</h1>
+              <div className="flex p-4">
                 <Dropdown overlay={menu} trigger={["click"]}>
                   <a
                     className="ant-dropdown-link"
@@ -310,7 +310,7 @@ const AllCoupons = () => {
               className={`w-[90px] border border-006665  h-[35px] my-3 flex items-center justify-center rounded-full cursor-pointer m-5 bg-[#FF8474] text-white hover:bg-[#FC9A8E]`}
               onClick={() => setOpen(true)}
             >
-              <span className="p-1 text-sm">Create</span>
+              <span className="p-1 px-2 text-sm">Create</span>
             </div>
           </div>
           <div style={{ overflowX: "auto" }}>
@@ -426,7 +426,7 @@ const AllCoupons = () => {
           </Modal>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
