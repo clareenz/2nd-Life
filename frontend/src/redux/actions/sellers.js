@@ -23,3 +23,40 @@ export const getAllSellers = () => async (dispatch) => {
     });
   }
 };
+
+// update seller's shop info
+export const updateShopInformation =
+  (name, description, address, phoneNumber, zipCode, password) => async (
+    dispatch
+  ) => {
+    try {
+      dispatch({
+        type: "UpdateShopInfoRequest",
+      });
+
+      const { data } = await axios.put(
+        `${server}/shop/update-seller-info`,
+        {
+          name,
+          description,
+          address,
+          phoneNumber,
+          zipCode,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: "UpdateShopInfoSuccess",
+        payload: data.shop,
+      });
+    } catch (error) {
+      dispatch({
+        type: "UpdateShopInfoFailed",
+        payload: error.response.data.message,
+      });
+    }
+  };

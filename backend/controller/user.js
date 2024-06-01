@@ -201,28 +201,32 @@ router.put(
     try {
       const { email, password, phoneNumber, name } = req.body;
 
-      const user = await User.findOne({ email }).select("+password");
+      // Find the user by the current email or user ID (better security)
+      const user = await User.findOne({ email: req.user.email }).select("+password");
 
       if (!user) {
         return next(new ErrorHandler("User not found", 400));
       }
 
+      // Verify the password
       const isPasswordValid = await user.comparePassword(password);
 
       if (!isPasswordValid) {
         return next(
-          new ErrorHandler("Please provide the correct information", 400)
+          new ErrorHandler("Incorrect password. Please provide the correct information", 400)
         );
       }
 
-      user.name = name;
-      user.email = email;
-      user.phoneNumber = phoneNumber;
+      // Update user information if provided
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (phoneNumber) user.phoneNumber = phoneNumber;
 
       await user.save();
 
-      res.status(201).json({
+      res.status(200).json({
         success: true,
+        message: "User information updated successfully",
         user,
       });
     } catch (error) {
@@ -230,6 +234,7 @@ router.put(
     }
   })
 );
+
 
 // update user avatar
 router.put(
