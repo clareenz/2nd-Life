@@ -484,6 +484,22 @@ input,select{
   }
 }
 
+/* customButton.css */
+.custom-button1 {
+  border-radius: 50px; /* Make the button round */
+}
+
+.custom-button1:hover {
+  border-color: #006665 !important;/* Set your custom hover background color */
+  color: #006665 !important;
+}
+
+
+
+
+
+
+
 
 
 

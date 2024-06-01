@@ -77,8 +77,8 @@ const ShopSettings = () => {
   
   
   return (
-    <div className="flex flex-col items-center w-full min-h-screen">
-      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5 shadow-sm bg-white p-6 rounded-2xl">
+    <div className="pr-2 flex flex-col items-center w-full min-h-screen">
+      <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5 shadow bg-white p-6 rounded-2xl">
         <div className="flex items-center justify-center w-full">
           <div className="relative p-3 mb-3">
             <img
@@ -88,9 +88,9 @@ const ShopSettings = () => {
                   : `${seller.avatar?.url}`
               }
               alt=""
-              className="w-[200px] h-[200px] rounded-full cursor-pointer"
+              className="w-[200px] h-[200px] rounded-full cursor-pointer object-cover"
             />
-            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[10px] right-[15px]">
+            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[15px] right-[30px]">
               <input
                 type="file"
                 id="image"
@@ -134,12 +134,12 @@ const ShopSettings = () => {
             </Col>
             <Col span={12}>
               <Form.Item label="Phone Number" name="phoneNumber" rules={[{ required: true, message: "Please enter phone number" }]}>
-                <Input type="number" className={`${styles.input} px-4 custom-input`} />
+                <Input type="number" className={`${styles.input} px-4 custom-input`} min="0" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Zip Code" name="zipCode" rules={[{ required: true, message: "Please enter zip code" }]}>
-                <Input type="number" className={`${styles.input} px-4 custom-input`} />
+                <Input type="number" min="0" className={`${styles.input} px-4 custom-input`} />
               </Form.Item>
             </Col>
             <Col span={12}>

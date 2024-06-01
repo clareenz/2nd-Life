@@ -664,7 +664,7 @@ const ChangePassword = () => {
               className="flex flex-col"
             >
               {/* Current Password Input */}
-              <div className="w-full 800px:w-[500px] relative">
+              <div className="sm:w-[60%] relative">
                 <label className="block pb-2">Current Password</label>
                 <div className="relative">
                   <Input
@@ -676,7 +676,7 @@ const ChangePassword = () => {
                   />
                   <button
                     type="button"
-                    className="absolute transform -translate-y-1/2 top-4 right-8"
+                    className="absolute transform -translate-y-1/2 top-4 right-4"
                     onClick={() => togglePasswordVisibility("oldPassword")}
                   >
                     {oldPasswordVisible ? (
@@ -689,7 +689,7 @@ const ChangePassword = () => {
               </div>
 
               {/* New Password Input */}
-              <div className="w-full 800px:w-[500px] relative">
+              <div className="sm:w-[60%] relative">
                 <label className="block pb-2">New Password</label>
                 <div className="relative">
                   <Input
@@ -701,7 +701,7 @@ const ChangePassword = () => {
                   />
                   <button
                     type="button"
-                    className="absolute transform -translate-y-1/2 top-4 right-8"
+                    className="absolute transform -translate-y-1/2 top-4 right-4"
                     onClick={() => togglePasswordVisibility("newPassword")}
                   >
                     {newPasswordVisible ? (
@@ -714,7 +714,7 @@ const ChangePassword = () => {
               </div>
 
               {/* Confirm New Password Input */}
-              <div className="w-full 800px:w-[500px] relative">
+              <div className="sm:w-[60%] relative">
                 <label className="block pb-2">Confirm New Password</label>
                 <div className="relative">
                   <Input
@@ -726,7 +726,7 @@ const ChangePassword = () => {
                   />
                   <button
                     type="button"
-                    className="absolute transform -translate-y-1/2 top-4 right-8"
+                    className="absolute transform -translate-y-1/2 top-4 right-4"
                     onClick={() => togglePasswordVisibility("confirmPassword")}
                   >
                     {confirmPasswordVisible ? (

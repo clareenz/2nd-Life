@@ -234,15 +234,15 @@ const AllEvents = () => {
         ? (text, record) => (
             <>
               <Link to={`/events/`} style={{ marginRight: 8 }}>
-                <Button icon={<AiOutlineEye />} size={15} />
+                <Button className="custom-button1" icon={<AiOutlineEye />} size={15} />
               </Link>
-              <Button
+              <Button className="custom-button1"
                 onClick={() => handleEdit(record)}
                 style={{ marginRight: 8 }}
               >
                 <AiOutlineEdit size={15} />
               </Button>
-              <Button onClick={() => handleDelete(record.id)}>
+              <Button className="custom-button1" onClick={() => handleDelete(record.id)}>
                 <AiOutlineDelete size={15} />
               </Button>
             </>
@@ -281,16 +281,16 @@ const AllEvents = () => {
   );
 
   return (
-    <>
+    <div className="px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[25px]">
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-xl shadow-md">
+        <div className="pt-1 mt-10 bg-white rounded-xl shadow-md">
           <div className="flex flex-row justify-between">
             <div className="w-full flex">
-              <h1 className="text-2xl  px-[50px] py-3">All Events</h1>
+              <h1 className="text-2xl  px-3 sm:px-[40px] py-3">All Events</h1>
             </div>
-            <div className="flex p-4 px-[50px]">
+            <div className="flex p-4 px-[20px]">
               <Dropdown overlay={menu} trigger={["click"]}>
                 <a
                   className="ant-dropdown-link"
@@ -372,7 +372,7 @@ const AllEvents = () => {
           </Modal>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

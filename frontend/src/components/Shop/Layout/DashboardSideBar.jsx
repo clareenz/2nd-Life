@@ -72,7 +72,7 @@ const DashboardSideBar = () => {
   }, [location]);
 
   return (
-    <div className="sidebar-container pt-[80px] z-10">
+    <div className="sidebar-container pt-[80px] z-10 ">
       <Menu
         mode="inline"
         selectedKeys={[activeKey.toString()]}

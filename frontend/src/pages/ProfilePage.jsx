@@ -18,15 +18,15 @@ const ProfilePage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <>
+        <div>
           <Header />
-          <div className={`xl:mx-10 lg:mx-10 md:mx-10 sm:mx-10 mx-10 flex bg-[#f5f5f5] py-10`}>
-            <div className=" 800px:w-[235px] 800px:mt-0 mt-[18%]">
+          <div className={`xl:mx-10 lg:mx-10 md:mx-10 sm:mx-10 flex bg-[#f5f5f5] py-10`}>
+            <div className="">
               <ProfileSideBar active={active} setActive={setActive} />
             </div>
             <ProfileContent active={active} />
           </div>
-        </>
+        </div>
       )}
     </div>
   );

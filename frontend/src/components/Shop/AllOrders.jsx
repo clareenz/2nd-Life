@@ -130,9 +130,11 @@ const AllOrders = () => {
       width: 150,
       ...getColumnSearchProps("status"),
       sorter: (a, b) => a.status.localeCompare(b.status),
-      render: visibleColumns.status ? (status) => (
-        <Tag color={status === "Delivered" ? "green" : "red"}>{status}</Tag>
-      ): null,
+      render: visibleColumns.status
+        ? (status) => (
+            <Tag color={status === "Delivered" ? "green" : "red"}>{status}</Tag>
+          )
+        : null,
     },
     {
       title: "Items Qty",
@@ -162,8 +164,8 @@ const AllOrders = () => {
       render: visibleColumns.action
         ? (text, record) => (
             <Link to={`/order/${record.id}`}>
-              <Button>
-                <AiOutlineArrowRight size={20} />
+              <Button className="custom-button1">
+                <span className="text-12px">View</span>
               </Button>
             </Link>
           )
@@ -197,38 +199,40 @@ const AllOrders = () => {
   );
 
   return (
-    <div className="w-[95%] pt-6">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="w-full min-h-[45vh] bg-white rounded-3xl shadow-md">
-          <div className="flex flex-row justify-between">
-            <div>
-              <h1 className="text-[25px] font-Poppins px-[50px] py-4">
-                All Orders
-              </h1>
+    <div className="w-full px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[25px]">
+      <div className=" pt-6">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="w-full min-h-[45vh] bg-white rounded-3xl shadow-md">
+            <div className="flex flex-row justify-between">
+              <div>
+                <h1 className="text-[25px] font-Poppins px-3 sm:px-[40px] py-4">
+                  All Orders
+                </h1>
+              </div>
+              <div className="flex p-4 px-[20px]">
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <EllipsisOutlined style={{ fontSize: "24px" }} />
+                  </a>
+                </Dropdown>
+              </div>
             </div>
-            <div className="flex p-4 px-[50px]">
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <a
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <EllipsisOutlined style={{ fontSize: "24px" }} />
-                </a>
-              </Dropdown>
+            <div style={{ overflowY: "auto" }}>
+              <Table
+                dataSource={data}
+                columns={columns.filter((column) => visibleColumns[column.key])}
+                pagination={{ pageSize: 10 }}
+                rowKey="id"
+              />
             </div>
           </div>
-          <div style={{ overflowY: "auto" }} >
-            <Table
-              dataSource={data}
-              columns={columns.filter((column) => visibleColumns[column.key])}
-              pagination={{ pageSize: 10 }}
-              rowKey="id"
-            />
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
