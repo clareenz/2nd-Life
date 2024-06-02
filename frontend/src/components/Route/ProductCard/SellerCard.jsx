@@ -132,7 +132,30 @@ export const SellerCard2 = ({ data }) => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { products } = useSelector((state) => state.products);
+  const [averageRating,setAverageRating] = useState()
 
+  useEffect(() => {
+    console.log('useEffect running with data:', data);
+
+    const fetchNotifications = async () => {
+      try {
+        if (data && data._id) {
+          console.log('Fetching reviews for product ID:', data._id);
+          const response = await axios.get(`${server}/product/reviews-shop/${data.shop?._id}`);
+          console.log('Response received:', response.data);
+          setAverageRating(response.data.overallAverageRating);
+          message.success(response.success);
+        } else {
+          console.log('Product ID not available');
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        message.error(error.message);
+      }
+    };
+
+    fetchNotifications();
+  }, [data]); // Add data to the dependency array
   const handleMessageSubmit = async () => {
     if (isAuthenticated) {
       const groupTitle = data._id + user._id;
@@ -167,7 +190,7 @@ export const SellerCard2 = ({ data }) => {
       0
     );
 
-  const averageRating = totalRatings / totalReviewsLength || 0;
+    
 
   return (
     <>
