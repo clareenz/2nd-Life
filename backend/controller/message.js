@@ -5,6 +5,8 @@ const express = require("express");
 const cloudinary = require("cloudinary");
 const router = express.Router();
 const { upload } = require("../multer");
+const Notification = require("../model/notification");
+const Conversation = require("../model/conversation");
 
 // create new message
 router.post(
@@ -33,21 +35,39 @@ router.post(
         conversationId: messageData.conversationId,
         text: messageData.text,
         sender: messageData.sender,
-        images: messageData.images ? messageData.images : undefined,
+        images: messageData.images || undefined,
       });
 
       await message.save();
+
+      //for Notifications
+      const conversation = await Conversation.findById(
+        messageData.conversationId
+      );
+      const receiverId = conversation.members.find(
+        (user) => user !== messageData.sender
+      );
+
+      console.log(receiverId); // Corrected typo
+
+      const notif = new Notification({
+        senderId: messageData.sender,
+        receiverId: receiverId, // Corrected variable name
+        type: "message", // Corrected type definition
+        message: "new chat message",
+        conversationId: messageData.conversationId,
+      });
+      await notif.save();
 
       res.status(201).json({
         success: true,
         message,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message), 500);
+      return next(new ErrorHandler(error.message, 500)); // Corrected error handling
     }
   })
 );
-
 // get all messages with conversation id
 router.get(
   "/get-all-messages/:id",
@@ -66,5 +86,7 @@ router.get(
     }
   })
 );
+
+
 
 module.exports = router;

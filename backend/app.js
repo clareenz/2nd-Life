@@ -55,6 +55,7 @@ const withdraw = require("./controller/withdraw");
 const cart = require("./controller/cart");
 const authFB = require("./controller/authfb");
 const report = require("./controller/report");
+const notification = require("./controller/notification");
 
 
 app.use("/api/v2/user", user);
@@ -70,6 +71,7 @@ app.use("/api/v2/withdraw", withdraw);
 app.use("/api/v2/cart", cart);
 app.use("/api/v2/FBlogin", authFB);
 app.use("/api/v2/report", report);
+app.use("/api/v2/notification", notification);
 
 
 // Error handling middleware
