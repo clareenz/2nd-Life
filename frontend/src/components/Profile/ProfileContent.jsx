@@ -491,7 +491,7 @@ const AllOrders = () => {
   );
 
   return (
-    <div className="pl-4 pt-[20px]">
+    <div className="px-4 pt-[20px]">
       <div className="w-full min-h-[45vh] bg-white rounded-2xl shadow-md">
         <div className="flex flex-row justify-between">
           <div>
@@ -581,7 +581,7 @@ const TrackOrder = () => {
   }));
 
   return (
-    <div className="pl-4 pt-[20px]">
+    <div className="px-4 pt-[20px]">
       <div className="w-full min-h-[45vh] bg-white rounded-2xl shadow-md">
         <div style={{ overflowY: "auto" }}>
           <Table
@@ -664,7 +664,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full px-2 min-h-screen pt-[20px]">
+    <div className="flex flex-col items-center w-full px-4 min-h-screen pt-[20px]">
       <div className="flex w-full 800px:w-[90%] flex-col justify-center shadow-sm bg-white p-6 rounded-2xl">
         <div className="w-full px-10 pt-6">
           <h1 className="block text-[25px] font-[600] text-[#000000ba] pb-2">
@@ -978,7 +978,7 @@ const Address = () => {
       {user &&
         user.addresses.map((item, index) => (
           <div
-            className="w-flex bg-white h-min 800px:h-[50px] rounded-[10px] flex items-center px-3 shadow justify-between pr-10 mb-5"
+            className="w-flex bg-white 800px:h-[50px] 400px:h-[50px] h-[50px] rounded-[10px] flex items-center pr-6 pl-1 shadow justify-between  mb-5"
             key={index}
           >
             <div className="flex items-center">
@@ -994,9 +994,9 @@ const Address = () => {
                 {user && user.phoneNumber}
               </h6>
             </div>
-            <div className="min-w-[10%] flex items-center justify-between pl-8">
+            <div className="flex items-center justify-between">
               <AiOutlineDelete
-                size={20}
+                size={17}
                 className="cursor-pointer hover:text-[#FE8373]"
                 onClick={() => handleDelete(item)}
               />
@@ -1035,18 +1035,17 @@ const DeleteUserAccount = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-full">
-        <p className="text-red-600 font-semibold mb-4 text-center">
+      <div className="flex flex-col items-center justify-center h-full pt-[20px]">
+        <p className="text-red-500 font-semibold mb-4 text-center">
           Warning: This action cannot be undone. Proceed with caution.
         </p>
-        <Button
-          type="primary"
+        <button
           danger
           onClick={showDeleteModal}
-          className="mb-4"
+          className={`mb-4 ${styles.button6} bg-[#006665] text-white hover:bg-[#FF8474]`}
         >
           Delete Account
-        </Button>
+        </button>
       </div>
       <Modal
         title="Delete Account"
@@ -1055,6 +1054,12 @@ const DeleteUserAccount = () => {
         onCancel={handleCancel}
         okText="Delete"
         cancelText="Cancel"
+        okButtonProps={{
+          className: "custom-ok-button-class rounded-2xl",
+        }}
+        cancelButtonProps={{
+          className: "custom-cancel-button-class rounded-2xl",
+        }}
       >
         <div className="flex flex-col items-center">
           <ExclamationCircleOutlined className="text-5xl text-red-500 mb-4" />

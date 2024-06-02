@@ -1,7 +1,7 @@
 /* The products detail page
  *  start time: 45:20 (2nd vid)
  */
-import { message } from "antd";
+import { Button, Modal, message } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -29,6 +29,8 @@ import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import CountDown from "../Events/CountDown.jsx";
 import Ratings from "./Ratings";
+import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
+import { MdReportGmailerrorred } from "react-icons/md";
 
 const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -42,6 +44,7 @@ const ProductDetails = ({ data }) => {
   const [value, setValue] = useState(data?.qty || 1);
   const [searchParams] = useSearchParams();
   const eventData = searchParams.get("isEvent");
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const buyNow = () => {
     navigate("/checkoutBuyNow");
@@ -145,7 +148,7 @@ const ProductDetails = ({ data }) => {
 
   return (
     <div className="pt-[60px]">
-      <div className="p-5 mx-6 my-6 bg-white rounded-lg shadow ">
+      <div className="p-5 mx-6 my-6 bg-white rounded-xl shadow ">
         {data ? (
           <div
             className={`${styles.section3} w-full md:w-[90%] lg:w-[70%] mx-auto px-4 py-5 `}
@@ -182,8 +185,33 @@ const ProductDetails = ({ data }) => {
                   </div>
                 </div>
                 <div className="w-full lg:w-[50%] lg:px-10">
-                  <div className="marquee">
-                    <h1 className={`${styles.productTitle}`}>{data.name}</h1>
+                  <div className="flex justify-between">
+                    <div className="marquee">
+                      <h1 className={`${styles.productTitle}`}>{data.name}</h1>
+                    </div>
+                    <div>
+                      <Button
+                        type="text"
+                        icon={
+                          <HiMiniEllipsisHorizontal size={30} title="Report" />
+                        }
+                        onClick={() => setIsModalVisible(true)}
+                      />
+                      <Modal
+                        title=""
+                        visible={isModalVisible}
+                        onCancel={() => setIsModalVisible(false)}
+                        footer={null}
+                      >
+                        {/* Your Report Product component goes here */}
+                        <Link to={`/report?productId=${data._id}`}>
+                          <div className="flex flex-row items-center">
+                            <MdReportGmailerrorred size={30} title="Report" />
+                            <div className="ml-2">Report this product</div>
+                          </div>
+                        </Link>
+                      </Modal>
+                    </div>
                   </div>
                   <div style={{ width: "100%" }}>
                     <Paragraph
@@ -287,18 +315,18 @@ const ProductDetails = ({ data }) => {
                           <img
                             src={`${data?.shop?.avatar?.url}`}
                             alt=""
-                            className="w-[50px] h-[50px] rounded-full mr-2"
+                            className="w-[50px] h-[50px] rounded-full mr-2 object-cover"
                           />
                         </Link>
                       </div>
                       <div>
                         <Link
                           to={`/shop/preview/${data.shop._id}`}
-                          className={`${styles.shop_name}`}
+                          className={`${styles.shop_name} marquee`}
                         >
                           {data.shop.name}
                         </Link>
-                        <h5 className="text-[13px] mt-1">
+                        <h5 className="text-[13px] mt-1 marquee">
                           ({averageRating}/5) Ratings
                         </h5>
                       </div>
@@ -312,10 +340,6 @@ const ProductDetails = ({ data }) => {
                       </span>
                       <AiOutlineMessage className="text-white" />
                     </div>
-                    {/* Report Icon */}
-                    <Link to={`/report?productId=${data._id}`}>
-                      <GoReport size={30} title="Report" />
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -393,79 +417,81 @@ const ProductDetailsInfo = ({
         </div>
 
         {active === 1 && (
-      <div className="justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
-        <div className="w-full">
-          <div className="flex flex-row">
-            <div>
-              <Link to={`/shop/preview/${data?.shop._id}`}>
-                <img
-                  src={`${backend_url}${data?.shop?.avatar}`}
-                  alt=""
-                  className="object-cover w-[50px] h-[50px] rounded-full mr-2"
-                />
-              </Link>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center">
-                <Link
-                  to={`/shop/preview/${data.shop._id}`}
-                  className={`${styles.shop_name}`}
-                >
-                  {data.shop.name}
-                </Link>
-                {isFollowing ? (
-                  <RiUserFollowFill
-                    className="ml-2 text-red-500 cursor-pointer"
-                    onClick={handleFollowToggle}
-                  />
-                ) : (
-                  <RiUserFollowLine
-                    className="ml-2 text-gray-500 cursor-pointer"
-                    onClick={handleFollowToggle}
-                  />
-                )}
-              </div>
-              <h5 className="text-[13px] mt-1">({averageRating}/5) Ratings</h5>
-            </div>
-          </div>
-          <div style={{ width: "100%" }} className="px-2 py-3">
-            <Paragraph
-              className="pt-2"
-              style={{ textAlign: "justify", wordWrap: "break-word" }}
-            >
-              {data.shop.description}
-            </Paragraph>
-          </div>
-        </div>
-        <div className="items-end">
-          <div className="w-full text-[14px]">
-            <div className="text-left flex flex-col">
-              <h5 className="font-[600]">
-                Joined on:{" "}
-                <span className="font-[500]">
-                  {data.shop?.createdAt?.slice(0, 10)}
-                </span>
-              </h5>
-              <h5 className="font-[600]">
-                Total Products:{" "}
-                <span className="font-[500]">
-                  {products && products.length}
-                </span>
-              </h5>
-              <h5 className="font-[600]">
-                Total Reviews:{" "}
-                <span className="font-[500]">{totalReviewsLength}</span>
-              </h5>
-              <div className="">
-                <div className="center-container">
+          <div className="justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
+            <div className="w-full">
+              <div className="flex flex-row">
+                <div>
                   <Link to={`/shop/preview/${data?.shop._id}`}>
-                    <div
-                      className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
-                    >
-                      Visit Shop
-                    </div>
+                    <img
+                      src={`${data?.shop?.avatar?.url}`}
+                      alt=""
+                      className="object-cover w-[50px] h-[50px] rounded-full mr-2"
+                    />
                   </Link>
                 </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center">
+                    <Link
+                      to={`/shop/preview/${data.shop._id}`}
+                      className={`${styles.shop_name}`}
+                    >
+                      {data.shop.name}
+                    </Link>
+                    {isFollowing ? (
+                      <RiUserFollowFill
+                        className="ml-2 text-red-500 cursor-pointer"
+                        onClick={handleFollowToggle}
+                      />
+                    ) : (
+                      <RiUserFollowLine
+                        className="ml-2 text-gray-500 cursor-pointer"
+                        onClick={handleFollowToggle}
+                      />
+                    )}
+                  </div>
+                  <h5 className="text-[13px] mt-1">
+                    ({averageRating}/5) Ratings
+                  </h5>
+                </div>
+              </div>
+              <div style={{ width: "100%" }} className="px-2 py-3">
+                <Paragraph
+                  className="pt-2"
+                  style={{ textAlign: "justify", wordWrap: "break-word" }}
+                >
+                  {data.shop.description}
+                </Paragraph>
+              </div>
+            </div>
+            <div className="items-end">
+              <div className="w-full text-[14px]">
+                <div className="text-left flex flex-col">
+                  <h5 className="font-[600]">
+                    Joined on:{" "}
+                    <span className="font-[500]">
+                      {data.shop?.createdAt?.slice(0, 10)}
+                    </span>
+                  </h5>
+                  <h5 className="font-[600]">
+                    Total Products:{" "}
+                    <span className="font-[500]">
+                      {products && products.length}
+                    </span>
+                  </h5>
+                  <h5 className="font-[600]">
+                    Total Reviews:{" "}
+                    <span className="font-[500]">{totalReviewsLength}</span>
+                  </h5>
+                  <div className="">
+                    <div className="center-container">
+                      <Link to={`/shop/preview/${data?.shop._id}`}>
+                        <div
+                          className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
+                        >
+                          Visit Shop
+                        </div>
+                      </Link>
+                    </div>
 
                     <style jsx>{`
                       .center-container {

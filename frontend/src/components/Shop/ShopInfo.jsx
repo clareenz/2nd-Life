@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { backend_url, server } from "../../server";
-import { Typography, Avatar, Spin, message } from "antd";
+import { Typography, Avatar, Spin, message, Button } from "antd";
 import {
   EnvironmentOutlined,
   PhoneOutlined,
@@ -17,6 +17,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
 import Paragraph from "antd/es/typography/Paragraph";
 import { SlUserFollow } from "react-icons/sl";
+import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
 
 const { Title, Text } = Typography;
 
@@ -138,9 +139,9 @@ const ShopInfo = ({ isOwner }) => {
           <div className="bg-white rounded-2xl shadow w-full mt-5 p-6">
             <div>
               {isOwner && (
-                <div className="absolute right-4 max-sm:top-5">
+                <div className="absolute right-4 max-sm:top-5 z-10">
                   <Link to="/dashboard">
-                    <div className="bg-[#006665] text-white rounded-3xl text-[14px] hover:bg-[#077773] px-4 py-2">
+                    <div className="bg-[#006665] text-white rounded-3xl text-[14px] hover:bg-[#077773] px-4 py-2 cursor-pointer">
                       Go Dashboard
                     </div>
                   </Link>
@@ -163,12 +164,11 @@ const ShopInfo = ({ isOwner }) => {
               )}
             </div>
             <div className="relative ">
-              <div className="">
-                <BsThreeDots
+                <Button
+                  type="text"
+                  icon={<HiMiniEllipsisHorizontal size={30} title="options" />}
                   onClick={handleDotsClick}
-                  className="cursor-pointer text-xl "
                 />
-              </div>
               {showModal && (
                 <div className="">
                   {isOwner ? (
@@ -190,15 +190,17 @@ const ShopInfo = ({ isOwner }) => {
                     </div>
                   ) : (
                     <div className=" z-10 absolute top-8 left-0 bg-white shadow-lg rounded-lg p-4">
-                      <div
-                        className={`border border-006665 h-7  flex items-center  cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
+                      <Link
+                        to={`/report-seller?sellerId=${data._id}`}
+                        className="ml-2"
                       >
-                        Report
-                      </div>
+                        Report this seller
+                      </Link>
                     </div>
                   )}
                 </div>
               )}
+
             </div>
 
             <div className="pt-[70px]">

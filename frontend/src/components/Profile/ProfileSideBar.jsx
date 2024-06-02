@@ -19,6 +19,8 @@ import { server } from "../../server";
 import { message } from "antd";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { AiOutlineUserDelete } from "react-icons/ai";
+
 
 const ProfileSideBar = ({ setActive, active }) => {
   const navigate = useNavigate();
@@ -52,7 +54,7 @@ const ProfileSideBar = ({ setActive, active }) => {
 
   return (
     <div className="pt-[90px]">
-      <div className="xl:w-[250px] lg:w-[350px] bg-white shadow rounded-2xl p-4 pt-8">
+      <div className="xl:w-[250px] lg:w-[250px] 800px:w-[200px] bg-white shadow rounded-2xl p-4 pt-8">
         <div
           className="flex items-center cursor-pointer w-full mb-8"
           onClick={() => setActive(1)}
@@ -179,7 +181,7 @@ const ProfileSideBar = ({ setActive, active }) => {
           className="flex items-center cursor-pointer w-full mb-8"
           onClick={() => setActive(10)}
         >
-          <AiOutlineDelete size={20} color={active === 10 ? "006665" : ""} />
+          <AiOutlineUserDelete size={20} color={active === 10 ? "006665" : ""} />
           <span
             className={`pl-3 ${
               active === 10 ? "text-[#FE8373]" : ""
