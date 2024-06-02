@@ -46,6 +46,7 @@ const withdraw = require("./controller/withdraw");
 const cart = require("./controller/cart");
 const fbLogin = require("./controller/authRoutes");
 const report = require("./controller/report");
+const notification = require("./controller/notification");
 
 
 app.use("/api/v2/user", user);
@@ -61,6 +62,7 @@ app.use("/api/v2/withdraw", withdraw);
 app.use("/api/v2/cart", cart);
 app.use("/api/v2/fbLogin", fbLogin);
 app.use("/api/v2/report", report);
+app.use("/api/v2/notification", notification);
 
 
 // Error handling middleware
