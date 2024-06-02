@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   LoginPage,
+  LoginAdminPage,
   SignupPage,
   ActivationPage,
   ForgotPasswordPage,
@@ -103,6 +104,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/login-admin" element={<LoginAdminPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route
           path="/activation/:activation_token"
