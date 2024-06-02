@@ -7,13 +7,14 @@ const AdminDashboardPage = () => {
   return (
     <div>
       <AdminHeader />
-        <div className="xl:ml-[70px] lg:ml-[80px] md:ml-[90px] sm:mx-[100px] ml-[70px] mr-3 flex bg-[#f5f5f5]">
-          <div className="w-[60px] 800px:w-[270px]">
-            <AdminSidebar active={1} />
-          </div>
+      <div className="flex w-full">
+        <div className="w-[80px] 800px:w-[330px]">
+          <AdminSidebar active={1} />
+        </div>
+        <div className=" justify-center w-full">
           <AdminDashboardMain />
         </div>
-      
+      </div>
     </div>
   );
 };

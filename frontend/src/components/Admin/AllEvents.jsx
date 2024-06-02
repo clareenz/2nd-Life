@@ -191,7 +191,7 @@ const AllEvents = () => {
         ? (text, record) => (
             <>
               <Link to={`/product/${record.id}`} style={{ marginRight: 8 }}>
-                <Button icon={<AiOutlineEye />} size={15} />
+                <Button className="custom-button1" icon={<AiOutlineEye />} size={15} />
               </Link>
             </>
           )
@@ -227,35 +227,41 @@ const AllEvents = () => {
   );
 
   return (
-    <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-2xl shadow-md">
-      {loading ? (
-        <Loader />
-      ) : (
-        <div>
-          <div className="flex flex-row">
-            <div className="w-full flex justify-between">
-              <h3 className="text-2xl px-[40px] py-3">All Events</h3>
+    <div className="w-full px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[25px]">
+      <div className="pt-6">
+        <div className=" pt-1 bg-white rounded-2xl shadow-md">
+          {loading ? (
+            <Loader />
+          ) : (
+            <div>
+              <div className="flex flex-row">
+                <div className="w-full flex justify-between">
+                  <h3 className="text-[25px] font-Poppins px-3 sm:px-[40px] py-4">All Events</h3>
+                </div>
+                <div className="flex p-4 px-[20px]">
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                    <a
+                      className="ant-dropdown-link"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <EllipsisOutlined style={{ fontSize: "24px" }} />
+                    </a>
+                  </Dropdown>
+                </div>
+              </div>
+              <div style={{ overflowX: "auto" }}>
+                <Table
+                  dataSource={dataSource}
+                  columns={columns.filter(
+                    (column) => visibleColumns[column.key]
+                  )}
+                  pagination={{ pageSize: 10 }}
+                />
+              </div>
             </div>
-            <div className="flex p-4 px-[50px]">
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <a
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <EllipsisOutlined style={{ fontSize: "24px" }} />
-                </a>
-              </Dropdown>
-            </div>
-          </div>
-          <div style={{ overflowX: "auto" }}>
-            <Table
-              dataSource={dataSource}
-              columns={columns.filter((column) => visibleColumns[column.key])}
-              pagination={{ pageSize: 10 }}
-            />
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
