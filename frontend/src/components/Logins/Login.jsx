@@ -157,7 +157,6 @@ const handleFacebookLogin = async () => {
       <div className="lg:w-flex md:w-1/3 sm:w-1/3 w-1/4">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" />
       </div>
-
       <div className="lg:w-1/2 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-3xl font-bold text-center text-gray-900">
