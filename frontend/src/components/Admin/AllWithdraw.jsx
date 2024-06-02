@@ -23,9 +23,12 @@ const AllWithdraw = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${server}/withdraw/get-all-withdraw-request`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${server}/withdraw/get-all-withdraw-request`,
+        {
+          withCredentials: true,
+        }
+      );
       setData(response.data.withdraws);
     } catch (error) {
       console.log(error.response.data.message);
@@ -110,40 +113,44 @@ const AllWithdraw = () => {
   ];
 
   return (
-    <div className="w-full flex items-center pt-5 justify-center">
-      <div className="w-[95%] bg-white">
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={{ pageSize: 10 }}
-          loading={loading}
-          scroll={{ x: "max-content" }}
-        />
-      </div>
-      <Modal
-        title="Update Withdraw status"
-        visible={open}
-        onCancel={() => setOpen(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleSubmit}>
-            Update
-          </Button>,
-        ]}
-      >
-        <div className="flex items-center justify-center">
-          <Select
-            style={{ width: 200, marginRight: 16 }}
-            value={withdrawStatus}
-            onChange={(value) => setWithdrawStatus(value)}
+    <div className="w-full px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[25px]">
+      <div className="pt-6">
+        <div className="w-full flex items-center pt-5 justify-center">
+          <div className="w-[95%] bg-white">
+            <Table
+              columns={columns}
+              dataSource={data}
+              pagination={{ pageSize: 10 }}
+              loading={loading}
+              scroll={{ x: "max-content" }}
+            />
+          </div>
+          <Modal
+            title="Update Withdraw status"
+            visible={open}
+            onCancel={() => setOpen(false)}
+            footer={[
+              <Button key="cancel" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>,
+              <Button key="submit" type="primary" onClick={handleSubmit}>
+                Update
+              </Button>,
+            ]}
           >
-            <Option value="Processing">Processing</Option>
-            <Option value="Succeed">Succeed</Option>
-          </Select>
+            <div className="flex items-center justify-center">
+              <Select
+                style={{ width: 200, marginRight: 16 }}
+                value={withdrawStatus}
+                onChange={(value) => setWithdrawStatus(value)}
+              >
+                <Option value="Processing">Processing</Option>
+                <Option value="Succeed">Succeed</Option>
+              </Select>
+            </div>
+          </Modal>
         </div>
-      </Modal>
+      </div>
     </div>
   );
 };

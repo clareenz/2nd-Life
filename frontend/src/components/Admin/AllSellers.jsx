@@ -136,36 +136,48 @@ const AllSellers = () => {
   });
 
   const columns = [
-    { title: "Seller ID", dataIndex: "id", key: "id", width: 150,
-    align: "center",
-    ...getColumnSearchProps("id"),
-    sorter: (a, b) => a.id.localeCompare(b.id),
-    render: visibleColumns.id ? (text) => text : null,
-     },
-    { title: "Name", dataIndex: "name", key: "name", width: 150,
-    align: "center",
-    ...getColumnSearchProps("name"),
-    filters: [
-      { text: "A", value: "A" },
-      { text: "B", value: "B" },
-      // Add more filters as needed
-    ],
-    onFilter: (value, record) => record.name.startsWith(value),
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    render: visibleColumns.name ? (text) => text : null,
-     },
+    {
+      title: "Seller ID",
+      dataIndex: "id",
+      key: "id",
+      width: 150,
+      align: "center",
+      ...getColumnSearchProps("id"),
+      sorter: (a, b) => a.id.localeCompare(b.id),
+      render: visibleColumns.id ? (text) => text : null,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: 150,
+      align: "center",
+      ...getColumnSearchProps("name"),
+      filters: [
+        { text: "A", value: "A" },
+        { text: "B", value: "B" },
+        // Add more filters as needed
+      ],
+      onFilter: (value, record) => record.name.startsWith(value),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: visibleColumns.name ? (text) => text : null,
+    },
 
-    { title: "Email", dataIndex: "email", key: "email", width: 150,
-    align: "center",
-    ...getColumnSearchProps("email"),
-    filters: [
-      { text: "A", value: "A" },
-      { text: "B", value: "B" },
-      // Add more filters as needed
-    ],
-    onFilter: (value, record) => record.email.startsWith(value),
-    sorter: (a, b) => a.name.localeCompare(b.email),
-    render: visibleColumns.email ? (text) => text : null,
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: 150,
+      align: "center",
+      ...getColumnSearchProps("email"),
+      filters: [
+        { text: "A", value: "A" },
+        { text: "B", value: "B" },
+        // Add more filters as needed
+      ],
+      onFilter: (value, record) => record.email.startsWith(value),
+      sorter: (a, b) => a.name.localeCompare(b.email),
+      render: visibleColumns.email ? (text) => text : null,
     },
     {
       title: "Seller Address",
@@ -177,31 +189,37 @@ const AllSellers = () => {
       sorter: (a, b) => a.address - b.address,
       render: visibleColumns.address ? (text) => text : null,
     },
-    { title: "Joined At", dataIndex: "joinedAt", key: "joinedAt", width: 150,
-    align: "center",
+    {
+      title: "Joined At",
+      dataIndex: "joinedAt",
+      key: "joinedAt",
+      width: 150,
+      align: "center",
       ...getColumnSearchProps("joinedAt"),
       sorter: (a, b) => a.joinedAt - b.joinedAt,
       render: visibleColumns.joinedAt ? (text) => text : null,
-     },
+    },
     {
       title: "Action",
       key: "action",
       width: 150,
       align: "center",
-      render: visibleColumns.action ? (text, record) => (
-        <div className="space-x-2">
-          <Link to={`/shop/preview/${record.id}`}>
-            <Button icon={<AiOutlineEye size={20} />} />
-          </Link>
-          <Button
-            icon={<AiOutlineDelete size={20} />}
-            onClick={() => {
-              setUserId(record.id);
-              setOpen(true);
-            }}
-          />
-        </div>
-      ) : null,
+      render: visibleColumns.action
+        ? (text, record) => (
+            <div className="space-x-2">
+              <Link to={`/shop/preview/${record.id}`}>
+                <Button icon={<AiOutlineEye size={15} />} className="custom-button1" />
+              </Link>
+              <Button className="custom-button1" 
+                icon={<AiOutlineDelete size={15} />}
+                onClick={() => {
+                  setUserId(record.id);
+                  setOpen(true);
+                }}
+              />
+            </div>
+          )
+        : null,
     },
   ];
 
@@ -234,57 +252,61 @@ const AllSellers = () => {
   );
 
   return (
-    <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-2xl shadow-md">
-      <div className="flex flex-row">
-        <div className="w-full flex justify-between">
-          <h3 className="text-2xl px-[40px] py-3">All Sellers</h3>
-        </div>
-        <div className="flex p-4 px-[50px]">
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <a
-              className="ant-dropdown-link"
-              onClick={(e) => e.preventDefault()}
-            >
-              <EllipsisOutlined style={{ fontSize: "24px" }} />
-            </a>
-          </Dropdown>
-        </div>
-      </div>
-      <div style={{ overflowX: "auto" }}>
-        <Table
-          columns={columns.filter((column) => visibleColumns[column.key])}
-          dataSource={data}
-          pagination={{ pageSize: 10 }}
-        />
-      </div>
+    <div className="w-full px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[25px]">
+      <div className="pt-6">
+        <div className=" pt-1 bg-white rounded-2xl shadow-md">
+          <div className="flex flex-row">
+            <div className="w-full flex justify-between">
+              <h3 className="text-[25px] font-Poppins px-3 sm:px-[40px] py-4">All Sellers</h3>
+            </div>
+            <div className="flex p-4 px-[20px]">
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <EllipsisOutlined style={{ fontSize: "24px" }} />
+                </a>
+              </Dropdown>
+            </div>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <Table
+              columns={columns.filter((column) => visibleColumns[column.key])}
+              dataSource={data}
+              pagination={{ pageSize: 10 }}
+            />
+          </div>
 
-      <Modal
-        title="Confirm Deletion"
-        visible={open}
-        onCancel={() => setOpen(false)}
-        footer={null}
-      >
-        <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
-          Are you sure you want to delete this seller?
-        </h3>
-        <div className="w-full flex items-center justify-center">
-          <Button
-            className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
-            onClick={() => setOpen(false)}
+          <Modal
+            title="Confirm Deletion"
+            visible={open}
+            onCancel={() => setOpen(false)}
+            footer={null}
           >
-            Cancel
-          </Button>
-          <Button
-            className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
-            onClick={() => {
-              setOpen(false);
-              handleDelete(userId);
-            }}
-          >
-            Confirm
-          </Button>
+            <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
+              Are you sure you want to delete this seller?
+            </h3>
+            <div className="w-full flex items-center justify-center">
+              <Button
+                className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
+                onClick={() => {
+                  setOpen(false);
+                  handleDelete(userId);
+                }}
+              >
+                Confirm
+              </Button>
+            </div>
+          </Modal>
         </div>
-      </Modal>
+      </div>
     </div>
   );
 };
