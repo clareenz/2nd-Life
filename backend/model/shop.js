@@ -2,6 +2,33 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const ReviewSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // Reference to the User model
+    required: true, // Ensure a user is always associated with a review
+  },
+  rating: {
+    type: Number,
+    required: true, // Ensure rating is always provided
+    min: 1, // Ensure the rating is at least 1
+    max: 5, // Ensure the rating does not exceed 5
+  },
+  comment: {
+    type: String,
+    required: true, // Ensure a comment is always provided
+  },
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product", // Reference to the Product model
+    required: true, // Ensure a product ID is always provided
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now, // Default to the current date and time
+  },
+});
+
 const shopSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -76,6 +103,8 @@ const shopSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  reviews: [ReviewSchema], //
+
   followers: [
     {
       type: mongoose.Schema.Types.ObjectId,

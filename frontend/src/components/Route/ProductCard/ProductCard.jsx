@@ -1,6 +1,3 @@
-/* The inside of Best Deals
-start: 5:20:57 (first vid) */
-
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,25 +13,29 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../../redux/actions/wishlist";
-import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
-import {ProductDetailsCard, ProductDetailsCard2} from "../ProductDetailsCard/ProductDetailsCard";
+import { ProductDetailsCard, ProductDetailsCard2 } from "../ProductDetailsCard/ProductDetailsCard";
 import { IoBagHandleOutline } from "react-icons/io5";
+import axios from "axios";
+import { server } from "../../../server";
 
 const ProductCard = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { cart } = useSelector((state) => state.cart);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [reviews,setReviews] = useState()
+  const [totalReview,setTotalReview] = useState()
+  const [averageRating,setAverageRating] = useState()
+  
+ 
   const buyNow = () => {
     setOpen(!open);
     navigate("/checkoutBuyNow", { state: { productData: data } });
   };
-
+  
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
       setClick(true);
@@ -42,6 +43,33 @@ const ProductCard = ({ data }) => {
       setClick(false);
     }
   }, [wishlist]);
+
+ 
+  useEffect(() => {
+    console.log('useEffect running with data:', data);
+
+    const fetchNotifications = async () => {
+      try {
+        if (data && data._id) {
+          console.log('Fetching reviews for product ID:', data.shop?._id);
+          const response = await axios.get(`${server}/product/reviews/${data?._id}`);
+          console.log('Response received:', response.data);
+          setTotalReview(response.data.totalReview);
+          setAverageRating(response.data.averageRating);
+          console.log(response.data.averageRating)
+          message.success(response.success);
+        } else {
+          console.log('Product ID not available');
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        message.error(error.message);
+      }
+    };
+
+    fetchNotifications();
+  }, [data]); // Add data to the dependency array
+
 
   const removeFromWishlistHandler = (data) => {
     setClick(!click);
@@ -82,7 +110,7 @@ const ProductCard = ({ data }) => {
         <div className="flex flex-row justify-between mt-2">
           <div className="marquee">
             <Link
-              to={`/shop/preview/${data?.shop._id}`}
+              to={`/shop/preview/${data?.shopId}`}
               className={`${styles.shop_name} text-[12px]`}
             >
               {data.shop.name}
@@ -90,7 +118,7 @@ const ProductCard = ({ data }) => {
           </div>
           <div>
             <h5 className="text-[12px] mt-1 marquee">
-              ({data.shop.ratings}) Ratings
+            ({averageRating}/5) Ratings
             </h5>
           </div>
         </div>
@@ -105,7 +133,7 @@ const ProductCard = ({ data }) => {
           {click ? (
             <AiFillHeart
               size={22}
-              className="absolute cursor-pointer right-4 top-5  bg-white rounded-full p-1 w-7 h-7 "
+              className="absolute p-1 bg-white rounded-full cursor-pointer right-4 top-5 w-7 h-7 "
               onClick={() => removeFromWishlistHandler(data)}
               color={click ? "#FF8474" : "#333"}
               title="Remove from wishlist"
@@ -113,7 +141,7 @@ const ProductCard = ({ data }) => {
           ) : (
             <AiOutlineHeart
               size={22}
-              className="absolute cursor-pointer right-4 top-5  bg-white rounded-full p-1 w-7 h-7"
+              className="absolute p-1 bg-white rounded-full cursor-pointer right-4 top-5 w-7 h-7"
               onClick={() => addToWishlistHandler(data)}
               color={click ? "#FF8474" : "#333"}
               title="Add to Wishlist"
@@ -121,21 +149,21 @@ const ProductCard = ({ data }) => {
           )}
           <AiOutlineEye
             size={22}
-            className="absolute cursor-pointer right-4 top-14 bg-white rounded-full p-1 w-7 h-7"
+            className="absolute p-1 bg-white rounded-full cursor-pointer right-4 top-14 w-7 h-7"
             onClick={() => setOpen(!open)}
             color="#333"
             title="Quick View"
           />
           <AiOutlineShoppingCart
             size={22}
-            className="absolute cursor-pointer right-4 top-24  bg-white rounded-full p-1 w-7 h-7"
+            className="absolute p-1 bg-white rounded-full cursor-pointer right-4 top-24 w-7 h-7"
             onClick={() => addToCartHandler(data._id)}
             color="#444"
             title="Add to Cart"
           />
           <IoBagHandleOutline
             size={22}
-            className="absolute cursor-pointer right-4 top-32 bg-white rounded-full p-1 w-7 h-7"
+            className="absolute p-1 bg-white rounded-full cursor-pointer right-4 top-32 w-7 h-7"
             onClick={buyNow}
             color="#333"
             title="Buy Now"
@@ -158,14 +186,6 @@ const ProductCard = ({ data }) => {
           <span className="font-[400] text-[17px] text-[#68d284]">
             {data?.sold_out} sold
           </span>
-          {/* <div> //buy now button
-            <div
-              className={`${styles.button5} flex items-center justify-center rounded-3xl`}
-              onClick={buyNow}
-            >
-              <span className="text-[12px]">Buy Now</span>
-            </div>
-          </div> */}
         </div>
       </div>
     </>
@@ -177,7 +197,6 @@ const ProductCard2 = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -222,8 +241,6 @@ const ProductCard2 = ({ data }) => {
     <>
       <div
         className="max-w-[220px] w-full max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
       >
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
@@ -243,7 +260,7 @@ const ProductCard2 = ({ data }) => {
             </Link>
           </div>
           <div>
-            <h5 className="text-[12px] mt-1">({data.shop.ratings}) Ratings</h5>
+            <h5 className="text-[12px] mt-1">({data.ratings}) Ratings</h5>
           </div>
         </div>
         <Link to={`/product/${data._id}`}>
@@ -253,16 +270,7 @@ const ProductCard2 = ({ data }) => {
         </Link>
 
         {/* side options */}
-        <div>
-          {/* <AiOutlineEye
-            size={22}
-            className="absolute cursor-pointer right-2 top-14"
-            onClick={() => setOpen(!open)}
-            color="#333"
-            title="Quick View"
-          />
-           */}
-        </div>
+        <div></div>
 
         <div className="flex items-center justify-between py-2">
           <div className="flex">
@@ -298,3 +306,4 @@ const ProductCard2 = ({ data }) => {
 };
 
 export { ProductCard, ProductCard2 };
+

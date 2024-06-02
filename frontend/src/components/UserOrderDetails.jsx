@@ -97,13 +97,13 @@ const UserOrderDetails = () => {
         <div className="flex items-center justify-between w-full mb-6 p-4 bg-gradient-to-r from-[#FFF1F0] to-[#FFF1F0] rounded-2xl shadow">
           <div className="flex items-center py-3">
             <BsFillBagFill size={30} color="#FF8474" />
-            <h1 className="pl-2 text-2xl sm:text-3xl text-black">
+            <h1 className="pl-2 text-2xl text-black sm:text-3xl">
               Order Details
             </h1>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full mb-6 border-b pb-4">
+        <div className="flex flex-col items-start justify-between w-full pb-4 mb-6 border-b sm:flex-row sm:items-center">
           <h5 className="text-gray-600">
             Order ID: <span>#{data?._id?.slice(0, 8)}</span>
           </h5>
@@ -116,7 +116,7 @@ const UserOrderDetails = () => {
           data?.cart.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col sm:flex-row items-start w-full mb-5 border p-3 rounded-lg shadow-sm"
+              className="flex flex-col items-start w-full p-3 mb-5 border rounded-lg shadow-sm sm:flex-row"
             >
               <img
                 src={`${item.images[0]?.url}`}
@@ -125,7 +125,7 @@ const UserOrderDetails = () => {
               />
               <div className="w-full sm:pl-3">
                 <h5 className="">{item.name}</h5>
-                <h5 className=" text-gray-700">
+                <h5 className="text-gray-700 ">
                   ₱{item.discountPrice} x {item.qty}
                 </h5>
               </div>
@@ -162,7 +162,7 @@ const UserOrderDetails = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <h5 className=" font-Poppins ">
+                <h5 className=" font-Poppins">
                   Give a Rating <span className="text-red-500">*</span>
                 </h5>
                 <Rate
@@ -207,18 +207,18 @@ const UserOrderDetails = () => {
           </>
         )}
 
-        <div className="w-full text-right border-t pt-3 mt-6">
+        <div className="w-full pt-3 mt-6 text-right border-t">
           <h5 className="">
             Total Price: ₱<strong>{data?.totalPrice}</strong>
           </h5>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between mt-6 border-t pt-4">
-          <div className="w-full sm:w-3/5 mb-6 sm:mb-0">
-            <h4 className="text-xl sm:text-2xl font-semibold">
+        <div className="flex flex-col justify-between pt-4 mt-6 border-t sm:flex-row">
+          <div className="w-full mb-6 sm:w-3/5 sm:mb-0">
+            <h4 className="text-xl font-semibold sm:text-2xl">
               Shipping Address:
             </h4>
-            <h4 className=" mt-2">
+            <h4 className="mt-2 ">
               {data?.shippingAddress.city + " " + data?.shippingAddress.zipCode}
             </h4>
             <h4 className="">
@@ -229,7 +229,7 @@ const UserOrderDetails = () => {
           </div>
           <div className="w-full sm:w-2/5">
             <h4 className="text-[20px]">Payment Info:</h4>
-            <h4 className=" mt-2">
+            <h4 className="mt-2 ">
               Status:{" "}
               {data?.paymentInfo?.status
                 ? data?.paymentInfo?.status

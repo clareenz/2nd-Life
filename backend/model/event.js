@@ -56,7 +56,8 @@ const eventSchema = new mongoose.Schema({
         required: true,
     },
     shop:{
-        type: Object,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Shop", // Reference to the Product model
         required: true,
     },
     sold_out:{

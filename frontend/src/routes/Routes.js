@@ -1,4 +1,5 @@
 import LoginPage from "../pages/LoginPage";
+import LoginAdminPage from "../pages/LoginAdminPage";
 import SignupPage from "../pages/SignupPage";
 import ActivationPage from "../pages/ActivationPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
@@ -25,6 +26,7 @@ import ReportPage from "../pages/ReportPage";
 
 export {
   LoginPage,
+  LoginAdminPage,
   SignupPage,
   ActivationPage,
   ForgotPasswordPage,

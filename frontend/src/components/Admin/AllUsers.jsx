@@ -206,8 +206,8 @@ const AllUsers = () => {
       align: "center",
       render: visibleColumns.action
         ? (text, record) => (
-            <Button
-              icon={<AiOutlineDelete size={20} />}
+            <Button className="custom-button1"
+              icon={<AiOutlineDelete size={15} />}
               onClick={() => {
                 setUserId(record.id);
                 setOpen(true);
@@ -218,14 +218,16 @@ const AllUsers = () => {
     },
   ];
 
-  const data = users ? users.map((user) => ({
-    key: user._id,
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    joinedAt: user.createdAt.slice(0, 10),
-  })) : [];
+  const data = users
+    ? users.map((user) => ({
+        key: user._id,
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        joinedAt: user.createdAt.slice(0, 10),
+      }))
+    : [];
 
   const handleColumnVisibilityChange = (key) => {
     setVisibleColumns((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -247,57 +249,61 @@ const AllUsers = () => {
   );
 
   return (
-    <div className="w-full mx-8 pt-1 mt-10 bg-white rounded-2xl shadow-md">
-      <div className="flex flex-row">
-        <div className="w-full flex justify-between">
-          <h3 className="text-2xl px-[40px] py-3">All Users</h3>
-        </div>
-        <div className="flex p-4 px-[50px]">
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <a
-              className="ant-dropdown-link"
-              onClick={(e) => e.preventDefault()}
-            >
-              <EllipsisOutlined style={{ fontSize: "24px" }} />
-            </a>
-          </Dropdown>
+    <div className="w-full px-4 pl-[70px] xl:pl-[3px] lg:pl-[5px] md:pl-[25px]">
+      <div className="pt-6">
+        <div className="pt-1 bg-white rounded-2xl shadow-md">
+          <div className="flex flex-row">
+            <div className="w-full flex justify-between">
+              <h3 className="text-[25px] font-Poppins px-3 sm:px-[40px] py-4">All Users</h3>
+            </div>
+            <div className="flex p-4 px-[20px]">
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <EllipsisOutlined style={{ fontSize: "24px" }} />
+                </a>
+              </Dropdown>
+            </div>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <Table
+              columns={columns.filter((column) => visibleColumns[column.key])}
+              dataSource={data}
+              pagination={{ pageSize: 10 }}
+            />
+          </div>
+          <Modal
+            title="Confirm Deletion"
+            visible={open}
+            onCancel={() => setOpen(false)}
+            footer={null}
+          >
+            <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
+              Are you sure you want to delete this user?
+            </h3>
+            <div className="w-full flex items-center justify-center">
+              <Button
+                className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
+                onClick={() => {
+                  setOpen(false);
+                  handleDelete(userId);
+                }}
+              >
+                Confirm
+              </Button>
+            </div>
+          </Modal>
         </div>
       </div>
-      <div style={{ overflowX: "auto" }}>
-        <Table
-          columns={columns.filter((column) => visibleColumns[column.key])}
-          dataSource={data}
-          pagination={{ pageSize: 10 }}
-        />
-      </div>
-      <Modal
-        title="Confirm Deletion"
-        visible={open}
-        onCancel={() => setOpen(false)}
-        footer={null}
-      >
-        <h3 className="text-[25px] text-center py-5 font-Poppins text-[#000000cb]">
-          Are you sure you want to delete this user?
-        </h3>
-        <div className="w-full flex items-center justify-center">
-          <Button
-            className={`${styles.button} text-white text-[18px] !h-[42px] mr-4`}
-            onClick={() => setOpen(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
-            onClick={() => {
-              setOpen(false);
-              handleDelete(userId);
-            }}
-          >
-            Confirm
-          </Button>
-        </div>
-      </Modal>
-    </div>  
+    </div>
   );
 };
 

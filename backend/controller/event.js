@@ -99,18 +99,26 @@ router.delete(
   "/delete-shop-event/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
+      console.log(`Received request to delete product with id: ${req.params.id}`);
+
       const event = await Event.findById(req.params.id);
       if (!event) {
+        console.log(`Product not found with id: ${req.params.id}`);
         return next(new ErrorHandler("Product is not found with this id", 404));
-      }    
+      }
 
-      for (let i = 0; 1 < event.images.length; i++) {
-        const result = await cloudinary.v2.uploader.destroy(
-          event.images[i].public_id
-        );
+      console.log("Product found:", event);
+
+      // Delete images from Cloudinary
+      for (let i = 0; i < event.images.length; i++) {
+        const image = event.images[i];
+        if (image && image.public_id) {
+          const result = await cloudinary.uploader.destroy(image.public_id);
+          console.log(`Deleted image ${image.public_id}:`, result);
+        }
       }
     
-      await event.remove();
+      await event.deleteOne();
 
       res.status(201).json({
         success: true,

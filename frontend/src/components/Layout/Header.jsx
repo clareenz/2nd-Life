@@ -27,6 +27,8 @@ import { Navbar, Navbar2 } from "./Navbar";
 import { Layout, Avatar, Badge } from "antd";
 import { RiCloseLine } from "react-icons/ri";
 import { AiOutlineBell } from "react-icons/ai";
+import { message } from "antd";
+import moment from 'moment';
 
 const Header = ({ activeHeading }) => {
   //header sa lahat except login sign up  page
@@ -46,15 +48,75 @@ const Header = ({ activeHeading }) => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
   const searchRef = useRef(null);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
 
+
+  useEffect(() => {
+    console.log(user?._id);
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(`${server}/notification/get-notifications/${user?._id}`);
+        setNotifications(response.data.notifications);
+        setUnreadNotifications(response.data.unreadNotifications);
+        console.log("not ig" + response.data.notifications)
+        message.success(response.data.success);
+      } catch (error) {
+        message.error(error.response.data.message);
+      }
+
+      console.log(notifications);
+    };
+
+    fetchNotifications();
+  }, [user]); // Add userId to the dependency array
+  
   const notificationMenu = (
     <Menu>
-      <Menu.Item key="1">
-        <Link to="/notifications">Notification 1</Link>
-      </Menu.Item>
-      {/* Add more notification items as needed */}
+      {notifications.map((notification) => (
+        <Menu.Item
+          key={notification?._id}
+          onClick={() => markAsRead(notification?._id)}
+          style={{ backgroundColor: notification.status === 'unread' ? '#e6f7ff' : 'white' }}
+        >
+          {notification?.type === 'message' ? (
+            <Link to={`/inbox?${notification?._id}`}>
+              <div>
+                <div>{notification?.message}</div>
+                <div style={{ fontSize: 'small', color: 'gray' }}>
+                  {moment(notification?.createdAt).fromNow()}
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div>
+              <div>{notification?.message}</div>
+              <div style={{ fontSize: 'small', color: 'gray' }}>
+                {moment(notification?.createdAt).fromNow()}
+              </div>
+            </div>
+          )}
+        </Menu.Item>
+      ))}
     </Menu>
   );
+
+  const markAsRead = async (notificationId) => {
+    try {
+      await axios.put(`${server}/notification/read/${notificationId}`);
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) =>
+          notification._id === notificationId
+            ? { ...notification, status: 'read' }
+            : notification
+        )
+      );
+      message.success('Notification marked as read');
+    } catch (error) {
+      message.error(error.response.data.message);
+    }
+  };
+
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -64,12 +126,12 @@ const Header = ({ activeHeading }) => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
         window.location.reload(true);
         navigate("/login");
       })
       .catch((error) => {
-        console.log(error.res.data.message);
+        message.error(error.response.data.message);
       });
   };
 
@@ -258,6 +320,9 @@ const Header = ({ activeHeading }) => {
               <Dropdown overlay={notificationMenu} placement="bottomRight">
                 <div className="relative cursor-pointer">
                   <AiOutlineBell color="#000" size={27} fill="text-black" />
+                  <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3.5 h-3.5 top right p-0 m-0 text-black font-mono text-[10.5px] leading-tight text-center">
+                  { unreadNotifications&& unreadNotifications.length}
+                </span>
                 </div>
               </Dropdown>
             </div>
@@ -282,7 +347,7 @@ const Header = ({ activeHeading }) => {
             </div>
 
             {/*menu*/}
-            <div className=" pr-2">
+            <div className="pr-2 ">
               <RxHamburgerMenu size={25} className="" onClick={toggleModal} />
             </div>
           </div>
@@ -408,7 +473,7 @@ const Header = ({ activeHeading }) => {
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
                     {/* become a seller button */}
-                    <div className="flex justify-center items-center">
+                    <div className="flex items-center justify-center">
                       <h1 className="text-black">Become a Seller?</h1>
                       <span className="mx-1"></span>
                       <span
@@ -607,7 +672,7 @@ const Header = ({ activeHeading }) => {
               </div>
 
               {/* become a seller button */}
-              <div className="flex justify-center items-center">
+              <div className="flex items-center justify-center">
                 <h1 className="text-black text-[13px]">Become a Seller?</h1>
                 <span className="mx-1"></span>
                 <span
@@ -905,7 +970,7 @@ const Header2 = ({ activeHeading }) => {
                         </button>
                       </div>
                       {/* become a seller button */}
-                      <div className="flex justify-center items-center">
+                      <div className="flex items-center justify-center">
                         <h1 className="text-black">Become a Seller?</h1>
                         <span className="mx-1"></span>
                         <span
@@ -951,7 +1016,7 @@ const Header2 = ({ activeHeading }) => {
                       <div className="flex-grow border-t border-gray"></div>
                     </div>
                     {/* become a seller button */}
-                    <div className="flex justify-center items-center">
+                    <div className="flex items-center justify-center">
                       <h1 className="text-black">Become a Seller?</h1>
                       <span className="mx-1"></span>
                       <span
@@ -1150,7 +1215,7 @@ const Header2 = ({ activeHeading }) => {
               </div>
 
               {/* become a seller button */}
-              <div className="flex justify-center items-center">
+              <div className="flex items-center justify-center">
                 <h1 className="text-black text-[13px]">Become a Seller?</h1>
                 <span className="mx-1"></span>
                 <span

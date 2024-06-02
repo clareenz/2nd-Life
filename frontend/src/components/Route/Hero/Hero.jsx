@@ -5,9 +5,10 @@ import styles from "../../../styles/styles";
 import banner1 from "./banner1.jpg";
 import banner02 from "./banner02.jpg";
 import banner03 from "./banner03.jpg";
+import Banner from "./Banner.png";
 
 const Hero = () => {
-  const images = [banner1 , banner02, banner03];
+  const images = [banner1 , banner02, banner03, Banner];
 
   return (
     <Carousel autoplay>

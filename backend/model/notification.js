@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema({
-  userId: {
+  senderId: {
     type: String,
     required: true,
   },
-  shopId: {
+  receiverId: {
     type: String,
     required: true,
   },
@@ -16,6 +16,9 @@ const notificationSchema = new mongoose.Schema({
   message: {
     type: String,
     required: true,
+  },
+  conversationId:{
+    type: String,
   },
   status: {
     type: String,
