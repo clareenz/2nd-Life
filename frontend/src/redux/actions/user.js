@@ -188,19 +188,20 @@ export const deleteUser = () => async (dispatch) => {
   }
 };
 
+// Action to follow a shop
 export const followShop = (shopId) => async (dispatch) => {
   try {
     dispatch({
       type: 'FOLLOW_SHOP_REQUEST',
     });
 
-    const { data } = await axios.post(`${server}/user/follow/${shopId}`, {
-      withCredentials: true,
+    const { data } = await axios.post(`${server}/user/follow/${shopId}`, null, {
+      withCredentials: true, // Ensure credentials are sent with the request
     });
 
     dispatch({
       type: 'FOLLOW_SHOP_SUCCESS',
-      payload: data.shopId,
+      payload: data, // Assuming backend sends data containing updated shop details
     });
   } catch (error) {
     dispatch({
@@ -210,19 +211,20 @@ export const followShop = (shopId) => async (dispatch) => {
   }
 };
 
+// Action to unfollow a shop
 export const unfollowShop = (shopId) => async (dispatch) => {
   try {
     dispatch({
       type: 'UNFOLLOW_SHOP_REQUEST',
     });
 
-    const { data } = await axios.post(`${server}/user/unfollow/${shopId}`, {
-      withCredentials: true,
+    const { data } = await axios.post(`${server}/user/unfollow/${shopId}`, null, {
+      withCredentials: true, // Ensure credentials are sent with the request
     });
 
     dispatch({
       type: 'UNFOLLOW_SHOP_SUCCESS',
-      payload: data.shopId,
+      payload: data, // Assuming backend sends data containing updated shop details
     });
   } catch (error) {
     dispatch({

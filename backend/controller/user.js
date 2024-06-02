@@ -535,15 +535,20 @@ router.delete("/delete-user-account", isAuthenticated, catchAsyncErrors(async (r
   }
 }));
 
-//follow a shop
+// Follow a shop
 router.post("/follow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
   try {
     const shopId = req.params.shopId;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const shop = await Shop.findById(shopId);
     if (!shop) {
       return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     // Check if the user is already following the shop
@@ -551,9 +556,13 @@ router.post("/follow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res
       return res.status(400).json({ success: false, message: "User is already following this shop" });
     }
 
-    // Add the user to the followers array
+    // Add the user to the shop's followers array
     shop.followers.push(userId);
     await shop.save();
+
+    // Add the shop to the user's followingShops array
+    user.followingShops.push(shopId);
+    await user.save();
 
     res.status(200).json({ success: true, message: "User followed the shop successfully" });
   } catch (error) {
@@ -562,15 +571,20 @@ router.post("/follow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res
   }
 }));
 
-// Route to unfollow a shop
+// Unfollow a shop
 router.post("/unfollow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
   try {
     const shopId = req.params.shopId;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const shop = await Shop.findById(shopId);
     if (!shop) {
       return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     // Check if the user is following the shop
@@ -578,9 +592,13 @@ router.post("/unfollow/:shopId", isAuthenticated, catchAsyncErrors(async (req, r
       return res.status(400).json({ success: false, message: "User is not following this shop" });
     }
 
-    // Remove the user from the followers array
-    shop.followers = shop.followers.filter(followerId => followerId !== userId);
+    // Remove the user from the shop's followers array
+    shop.followers = shop.followers.filter(followerId => followerId.toString() !== userId.toString());
     await shop.save();
+
+    // Remove the shop from the user's followingShops array
+    user.followingShops = user.followingShops.filter(followingShopId => followingShopId.toString() !== shopId.toString());
+    await user.save();
 
     res.status(200).json({ success: true, message: "User unfollowed the shop successfully" });
   } catch (error) {

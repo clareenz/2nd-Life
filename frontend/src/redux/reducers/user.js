@@ -93,27 +93,27 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.error = action.payload;
     })
-    .addCase(`FollowShopRequest`, (state) => {
+    .addCase("FollowShopRequest", (state) => {
       state.loading = true;
     })
-    .addCase(`FollowShopSuccess`, (state, action) => {
+    .addCase("FollowShopSuccess", (state, action) => {
       state.loading = false;
-      state.user.followedShops.push(action.payload.shopId);
+      state.user.followingShops.push(action.payload.shopId);
     })
-    .addCase(`FollowShopFail`, (state, action) => {
+    .addCase("FollowShopFail", (state, action) => {
       state.loading = false;
       state.error = action.payload;
     })
-    .addCase(`UnfollowShopRequest`, (state) => {
+    .addCase("UnfollowShopRequest", (state) => {
       state.loading = true;
     })
-    .addCase(`UnfollowShopSuccess`, (state, action) => {
+    .addCase("UnfollowShopSuccess", (state, action) => {
       state.loading = false;
-      state.user.followedShops = state.user.followedShops.filter(
+      state.user.followingShops = state.user.followingShops.filter(
         (shopId) => shopId !== action.payload.shopId
       );
     })
-    .addCase(`UnfollowShopFail`, (state, action) => {
+    .addCase("UnfollowShopFail", (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

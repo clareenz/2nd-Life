@@ -41,6 +41,7 @@ const ProductDetails = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const [value, setValue] = useState(data?.qty || 1);
   const [searchParams] = useSearchParams();
+  const [isFollowing, setIsFollowing] = useState(false);
   const eventData = searchParams.get("isEvent");
 
   const buyNow = () => {
@@ -98,6 +99,51 @@ const ProductDetails = ({ data }) => {
         dispatch(addToCart(cartData));
         message.success("Item added to cart successfully!");
       }
+    }
+  };
+
+  // Follow shop
+  useEffect(() => {
+    // Check if the user is already following the shop
+    if (
+      isAuthenticated &&
+      user &&
+      user.followingShops.includes(data?.shop?._id)
+    ) {
+      setIsFollowing(true);
+    } else {
+      setIsFollowing(false);
+    }
+  }, [isAuthenticated, user, data]);
+
+  // Function to handle follow/unfollow
+  const handleFollowToggle = () => {
+    // Only allow following if the user is authenticated
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    // Logic to toggle follow state
+    const newFollowingState = !isFollowing;
+
+    // Call follow/unfollow action based on current follow state
+    if (newFollowingState) {
+      // Call follow action
+      dispatch(followShop(data?.shop._id)) // Replace `followShop` with your actual follow action
+        .then(() => {
+          setIsFollowing(true);
+          window.location.reload(); // Reload the page after following
+        })
+        .catch(() => setIsFollowing(false)); // Revert state if follow action fails
+    } else {
+      // Call unfollow action
+      dispatch(unfollowShop(data?.shop._id)) // Replace `unfollowShop` with your actual unfollow action
+        .then(() => {
+          setIsFollowing(false);
+          window.location.reload(); // Reload the page after unfollowing
+        })
+        .catch(() => setIsFollowing(true)); // Revert state if unfollow action fails
     }
   };
 
@@ -292,12 +338,29 @@ const ProductDetails = ({ data }) => {
                         </Link>
                       </div>
                       <div>
-                        <Link
-                          to={`/shop/preview/${data.shop._id}`}
-                          className={`${styles.shop_name}`}
-                        >
-                          {data.shop.name}
-                        </Link>
+                        <div className="flex items-center">
+                          <Link
+                            to={`/shop/preview/${data.shop._id}`}
+                            className={`${styles.shop_name}`}
+                          >
+                            {data.shop.name}
+                          </Link>
+                          {isAuthenticated && (
+                            <>
+                              {isFollowing ? (
+                                <RiUserFollowFill
+                                  className="ml-2 text-red-500 cursor-pointer"
+                                  onClick={handleFollowToggle}
+                                />
+                              ) : (
+                                <RiUserFollowLine
+                                  className="ml-2 text-gray-500 cursor-pointer"
+                                  onClick={handleFollowToggle}
+                                />
+                              )}
+                            </>
+                          )}
+                        </div>
                         <h5 className="text-[13px] mt-1">
                           ({averageRating}/5) Ratings
                         </h5>
@@ -344,18 +407,51 @@ const ProductDetailsInfo = ({
   const [active, setActive] = useState(1);
   const [isFollowing, setIsFollowing] = useState(false);
   const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  // Follow shop
+  useEffect(() => {
+    // Check if the user is already following the shop
+    if (
+      isAuthenticated &&
+      user &&
+      user.followingShops.includes(data?.shop?._id)
+    ) {
+      setIsFollowing(true);
+    } else {
+      setIsFollowing(false);
+    }
+  }, [isAuthenticated, user, data]);
 
   // Function to handle follow/unfollow
   const handleFollowToggle = () => {
+    // Only allow following if the user is authenticated
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
     // Logic to toggle follow state
-    setIsFollowing((prev) => !prev);
+    const newFollowingState = !isFollowing;
+
     // Call follow/unfollow action based on current follow state
-    if (isFollowing) {
-      // Call unfollow action
-      dispatch(unfollowShop(data.shop._id)); // Replace `unfollowShop` with your actual unfollow action
-    } else {
+    if (newFollowingState) {
       // Call follow action
-      dispatch(followShop(data.shop._id)); // Replace `followShop` with your actual follow action
+      dispatch(followShop(data?.shop._id)) // Replace `followShop` with your actual follow action
+        .then(() => {
+          setIsFollowing(true);
+          window.location.reload(); // Reload the page after following
+        })
+        .catch(() => setIsFollowing(false)); // Revert state if follow action fails
+    } else {
+      // Call unfollow action
+      dispatch(unfollowShop(data?.shop._id)) // Replace `unfollowShop` with your actual unfollow action
+        .then(() => {
+          setIsFollowing(false);
+          window.location.reload(); // Reload the page after unfollowing
+        })
+        .catch(() => setIsFollowing(true)); // Revert state if unfollow action fails
     }
   };
 
@@ -370,208 +466,95 @@ const ProductDetailsInfo = ({
             >
               Seller Information
             </h5>
-            {active === 1}
           </div>
-          {/* <div className="relative"> di naman need neto.  no need reflect by products. nasa shop lang makita
-            <h5
-              className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
-              onClick={() => setActive(2)}
-            >
-              Product Reviews
-            </h5>
-            {active === 2 && <div className={`${styles.active_indicator}`} />}
-          </div> */}
-          {/* <div className="relative">
-            <h5
-              className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer md:text-[20px]"
-              onClick={() => setActive(3)}
-            >
-              Seller Information
-            </h5>
-            {active === 3 && <div className={`${styles.active_indicator}`} />}
-          </div> */}
         </div>
 
         {active === 1 && (
-      <div className="justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
-        <div className="w-full">
-          <div className="flex flex-row">
-            <div>
-              <Link to={`/shop/preview/${data?.shop._id}`}>
-                <img
-                  src={`${backend_url}${data?.shop?.avatar}`}
-                  alt=""
-                  className="object-cover w-[50px] h-[50px] rounded-full mr-2"
-                />
-              </Link>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center">
-                <Link
-                  to={`/shop/preview/${data.shop._id}`}
-                  className={`${styles.shop_name}`}
-                >
-                  {data.shop.name}
-                </Link>
-                {isFollowing ? (
-                  <RiUserFollowFill
-                    className="ml-2 text-red-500 cursor-pointer"
-                    onClick={handleFollowToggle}
-                  />
-                ) : (
-                  <RiUserFollowLine
-                    className="ml-2 text-gray-500 cursor-pointer"
-                    onClick={handleFollowToggle}
-                  />
-                )}
-              </div>
-              <h5 className="text-[13px] mt-1">({averageRating}/5) Ratings</h5>
-            </div>
-          </div>
-          <div style={{ width: "100%" }} className="px-2 py-3">
-            <Paragraph
-              className="pt-2"
-              style={{ textAlign: "justify", wordWrap: "break-word" }}
-            >
-              {data.shop.description}
-            </Paragraph>
-          </div>
-        </div>
-        <div className="items-end">
-          <div className="w-full text-[14px]">
-            <div className="text-left flex flex-col">
-              <h5 className="font-[600]">
-                Joined on:{" "}
-                <span className="font-[500]">
-                  {data.shop?.createdAt?.slice(0, 10)}
-                </span>
-              </h5>
-              <h5 className="font-[600]">
-                Total Products:{" "}
-                <span className="font-[500]">
-                  {products && products.length}
-                </span>
-              </h5>
-              <h5 className="font-[600]">
-                Total Reviews:{" "}
-                <span className="font-[500]">{totalReviewsLength}</span>
-              </h5>
-              <div className="">
-                <div className="center-container">
+          <div className="justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
+            <div className="w-full">
+              <div className="flex flex-row">
+                <div>
                   <Link to={`/shop/preview/${data?.shop._id}`}>
-                    <div
-                      className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
-                    >
-                      Visit Shop
-                    </div>
+                    <img
+                      src={`${backend_url}${data?.shop?.avatar}`}
+                      alt=""
+                      className="object-cover w-[50px] h-[50px] rounded-full mr-2"
+                    />
                   </Link>
                 </div>
-
-                    <style jsx>{`
-                      .center-container {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      }
-
-                      @media (max-width: 768px) {
-                        .center-container {
-                          width: 100%;
-                          display: flex;
-                          justify-content: center;
-                          align-items: center;
-                        }
-                      }
-                    `}</style>
+                <div className="flex flex-col">
+                  <div className="flex items-center">
+                    <Link
+                      to={`/shop/preview/${data.shop._id}`}
+                      className={`${styles.shop_name}`}
+                    >
+                      {data.shop.name}
+                    </Link>
+                    {isAuthenticated && (
+                      <>
+                        {isFollowing ? (
+                          <RiUserFollowFill
+                            className="ml-2 text-red-500 cursor-pointer"
+                            onClick={handleFollowToggle}
+                          />
+                        ) : (
+                          <RiUserFollowLine
+                            className="ml-2 text-gray-500 cursor-pointer"
+                            onClick={handleFollowToggle}
+                          />
+                        )}
+                      </>
+                    )}
+                  </div>
+                  <h5 className="text-[13px] mt-1">
+                    ({averageRating}/5) Ratings
+                  </h5>
+                </div>
+              </div>
+              <div style={{ width: "100%" }} className="px-2 py-3">
+                <Paragraph
+                  className="pt-2"
+                  style={{ textAlign: "justify", wordWrap: "break-word" }}
+                >
+                  {data.shop.description}
+                </Paragraph>
+              </div>
+            </div>
+            <div className="items-end">
+              <div className="w-full text-[14px]">
+                <div className="text-left flex flex-col">
+                  <h5 className="font-[600]">
+                    Joined on:{" "}
+                    <span className="font-[500]">
+                      {data.shop?.createdAt?.slice(0, 10)}
+                    </span>
+                  </h5>
+                  <h5 className="font-[600]">
+                    Total Products:{" "}
+                    <span className="font-[500]">
+                      {products && products.length}
+                    </span>
+                  </h5>
+                  <h5 className="font-[600]">
+                    Total Reviews:{" "}
+                    <span className="font-[500]">{totalReviewsLength}</span>
+                  </h5>
+                  <div className="">
+                    <div className="center-container">
+                      <Link to={`/shop/preview/${data?.shop._id}`}>
+                        <div
+                          className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
+                        >
+                          Visit Shop
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         )}
-        {/* {active === 2 && (
-          <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
-            {data &&
-              data.reviews.map((item, index) => (
-                <div className="flex w-full my-2">
-                  <img
-                    src={`${item.user.avatar?.url}`}
-                    alt=""
-                    className="w-[50px] h-[50px] rounded-full"
-                  />
-                  <div className="pl-2">
-                    <div className="flex items-center w-full">
-                      <h1 className=" font-[500] mr-3">{item.user.name}</h1>
-                      <Ratings rating={data?.ratings} />
-                    </div>
-                    <Paragraph>{item.comment}</Paragraph>
-                  </div>
-                </div>
-              ))}
-
-            <div className="flex justify-center w-full">
-              {data && data.reviews.length === 0 && (
-                <h5>No Reviews have for this product!</h5>
-              )}
-            </div>
-          </div>
-        )} */}
-        {/* {active === 3 && (
-          <div className="block w-full p-5 lg:flex">
-            <div className="w-full lg:w-[50%]">
-              <div className="flex flex-row">
-                <div>
-                  <Link to={`/shop/preview/${data?.shop._id}`}>
-                    <img
-                      src={`${data?.shop?.avatar?.url}`}
-                      alt=""
-                      className="w-[50px] h-[50px] rounded-full mr-2"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to={`/shop/preview/${data.shop._id}`}
-                    className={`${styles.shop_name}`}
-                  >
-                    {data.shop.name}
-                  </Link>
-                  <h5 className="text-[13px] mt-1">
-                    ({averageRating}/5) Ratings
-                  </h5>
-                </div>
-              </div>
-              <p className="pt-2">{data.shop.description}</p>
-            </div>
-            <div className="w-full lg:w-[50%] mt-5 lg:mt-0 lg:flex flex-col items-end">
-              <div className="text-left">
-                <h5 className="font-[600]">
-                  Joined on:{" "}
-                  <span className="font-[500]">
-                    {data.shop?.createdAt?.slice(0, 10)}
-                  </span>
-                </h5>
-                <h5 className="font-[600] pt-3">
-                  Total Products:{" "}
-                  <span className="font-[500]">
-                    {products && products.length}
-                  </span>
-                </h5>
-                <h5 className="font-[600] pt-3">
-                  Total Reviews:{" "}
-                  <span className="font-[500]">{totalReviewsLength}</span>
-                </h5>
-                <Link to={`/shop/preview/${data?.shop._id}`}>
-                  <div
-                    className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
-                  >
-                    Visit Shop
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )} */}
       </div>
     </div>
   );
