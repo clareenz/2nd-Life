@@ -18,6 +18,31 @@ export const SellerCard = ({ data }) => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { products } = useSelector((state) => state.products);
+  const [averageRating,setAverageRating] = useState()
+
+  useEffect(() => {
+    console.log('useEffect running with data:', data);
+
+    const fetchNotifications = async () => {
+      try {
+        if (data && data._id) {
+          console.log('Fetching reviews for product ID:', data._id);
+          const response = await axios.get(`${server}/product/reviews-shop/${data.shop?._id}`);
+          console.log('Response received:', response.data);
+          setAverageRating(response.data.overallAverageRating);
+          message.success(response.success);
+        } else {
+          console.log('Product ID not available');
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        message.error(error.message);
+      }
+    };
+
+    fetchNotifications();
+  }, [data]); // Add data to the dependency array
+
 
   const handleMessageSubmit = async () => {
     if (isAuthenticated) {
@@ -53,7 +78,6 @@ export const SellerCard = ({ data }) => {
       0
     );
 
-  const averageRating = totalRatings / totalReviewsLength || 0;
 
   return (
     <>
@@ -72,7 +96,7 @@ export const SellerCard = ({ data }) => {
                 />
               </Link>
             </div>
-            <div className="marquee text-black">
+            <div className="text-black marquee">
               <Link
                 to={`/shop/preview/${data.shop._id}`}
                 className={`${styles.shop_name}`}
@@ -82,7 +106,7 @@ export const SellerCard = ({ data }) => {
               <h5 className="text-[13px] mt-1">({averageRating}/5) Ratings</h5>
             </div>
           </div>
-          <div className="flex flex-row space-x-1 justify-center ">
+          <div className="flex flex-row justify-center space-x-1 ">
             <div
               className={`w-[80px] px-1  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-7 flex items-center`}
               onClick={handleMessageSubmit}
