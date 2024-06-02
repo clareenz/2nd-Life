@@ -18,12 +18,32 @@ import { BsTags } from "react-icons/bs";
 import { LuCalendarPlus } from "react-icons/lu";
 import { TbShoppingBagEdit } from "react-icons/tb";
 import { GiPadlock } from "react-icons/gi";
+import axios from "axios";
+import {  server } from "../../../server";
+import { useNavigate } from "react-router-dom";
+import { message } from "antd";
+import { IoIosLogOut } from "react-icons/io";
+
 
 const { SubMenu } = Menu;
 
 const DashboardSideBar = () => {
   const location = useLocation();
   const [activeKey, setActiveKey] = useState("1");
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    axios
+      .get(`${server}/shop/logout`, { withCredentials: true })
+      .then((res) => {
+        message.success(res.data.message);
+        window.location.reload(true);
+        navigate("/shop-login");
+      })
+      .catch((error) => {
+        console.log(error.res.data.message);
+      });
+  };
 
   useEffect(() => {
     switch (location.pathname) {
@@ -65,6 +85,9 @@ const DashboardSideBar = () => {
         break;
       case "/shop-password":
         setActiveKey("13");
+        break;
+      case "/shop-logout":
+        setActiveKey("14");
         break;
       default:
         setActiveKey("1");
@@ -221,6 +244,22 @@ const DashboardSideBar = () => {
             <Link to="/shop-password">Password</Link>
           </Menu.Item>
         </SubMenu>
+        <Menu.Item
+          key="14"
+          style={
+            activeKey === "14"
+              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+              : {}
+          }
+          icon={<IoIosLogOut />}
+        >
+          <div
+            className={` `}
+            onClick={logoutHandler}
+          >
+            Log Out
+          </div>
+        </Menu.Item>
       </Menu>
     </div>
   );

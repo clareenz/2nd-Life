@@ -1,9 +1,9 @@
 import React from 'react'
-import ReportProduct from "../components/Report/ReportProduct";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
+import ReportSeller from '../components/Report/ReportSeller';
 
-const ReportPage = () => {
+const ReportSellerPage = () => {
   return (
     <div className="w-full min-h-screen ">
       <Header />
@@ -11,7 +11,7 @@ const ReportPage = () => {
       <br />
       <br />
       <br />
-      <ReportProduct />
+      <ReportSeller />
       <br />
       <br />
       <Footer />
@@ -19,4 +19,4 @@ const ReportPage = () => {
   )
 }
 
-export default ReportPage;
+export default ReportSellerPage;
