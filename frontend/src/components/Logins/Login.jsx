@@ -64,59 +64,93 @@ const Login = () => {
   };
 
 
-  // Handle Facebook Login Flow
-  const handleFBLogin = () => {
-    window.FB.login(
-      function (response) {
-        statusChangeCallback(response);
-      },
-      { scope: "email" }
-    );
-  };
-
-  const statusChangeCallback = (response) => {
-    if (response.status === "connected") {
-      console.log("Welcome! Fetching your information....");
-      window.FB.api("/me", { fields: "id,name,email" }, function (response) {
-        const welcomeMessage = `Good to see you, ${response.name}. I see your email address is ${response.email}`;
-        message.success(welcomeMessage);
-        setUserName(response.name);
-        setUserEmail(response.email);
-      });
-    } else if (response.status === "not_authorized") {
-      console.log("Please log into this app.");
-    } else {
-      console.log("Please log into Facebook.");
-    }
-  };
-
-  useEffect(() => {
-    window.fbAsyncInit = function () {
-      window.FB.init({
-        appId: "448764437757486",
-        cookie: true,
-        xfbml: true,
-        version: "v20.0",
+// Function to handle Facebook login status change
+const statusChangeCallback = async (response) => {
+  if (response.status === "connected") {
+    console.log("Welcome! Fetching your information....");
+    // Fetch user information from Facebook
+    try {
+      const userData = await new Promise((resolve, reject) => {
+        window.FB.api('/me', { fields: 'id,name,email' }, resolve);
       });
 
-      window.FB.getLoginStatus(function (response) {
-        statusChangeCallback(response);
-      });
-    };
+      // Display a welcome message and set user data
+      const welcomeMessage = `Good to see you, ${userData.name}. I see your email address is ${userData.email}`;
+      message.success(welcomeMessage);
+      setUserName(userData.name);
+      setUserEmail(userData.email);
 
-    (function (d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
+      // Send the user data to the backend for authentication and login
+      const res = await axios.post(
+        `${server}/FBlogin/oauth/fblogin`,
+        {
+          name: userData.name,
+          email: userData.email
+        },
+        { withCredentials: true }
+      );
+
+      if (res.status === 200) {
+        console.log(res.data.message);
+        // Optionally, perform any additional actions after successful login
+      } else {
+        console.error('Failed to log in with Facebook');
       }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
-  }, []);
-  
+    } catch (error) {
+      console.error('Failed to fetch user information from Facebook', error);
+    }
+  } else if (response.status === "not_authorized") {
+    console.log("Please log into this app.");
+  } else {
+    console.log("Please log into Facebook.");
+  }
+};
+
+// Initialize Facebook SDK and check login status
+useEffect(() => {
+  window.fbAsyncInit = function () {
+    window.FB.init({
+      appId: "448764437757486",
+      cookie: true,
+      xfbml: true,
+      version: "v20.0",
+    });
+
+    // Get login status and trigger statusChangeCallback
+    window.FB.getLoginStatus(function (response) {
+      statusChangeCallback(response);
+    });
+  };
+
+  // Load Facebook SDK asynchronously
+  (function (d, s, id) {
+    var js,
+      fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, "script", "facebook-jssdk");
+}, []);
+
+// Function to trigger Facebook login
+const handleFacebookLogin = async () => {
+  try {
+    // Trigger Facebook login process
+    const response = await new Promise((resolve, reject) => {
+      window.FB.login(resolve, { scope: 'email' });
+    });
+
+    // Check the login status and handle accordingly
+    statusChangeCallback(response);
+  } catch (error) {
+    console.error('Failed to initiate Facebook login process', error);
+  }
+};
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
@@ -240,7 +274,7 @@ const Login = () => {
               <div className="flex mt-4 space-x-4">
                 <button
                   type="button"
-                  onClick={handleFBLogin}
+                  onClick={handleFacebookLogin}
                   className="group relative flex-1 h-[40px] flex items-center justify-center py-2 px-4 border border-gray-350 text-sm font-medium rounded-3xl text-black hover:bg-gray-100"
                 >
                   <FaFacebook className="mr-2" />

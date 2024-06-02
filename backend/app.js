@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const cloudinary = require("cloudinary");
+const session = require('express-session');
 
 // Load environment variables from .env file
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -14,6 +15,14 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
     //path: "config/.env",
   });
 }
+
+// Session configuration
+app.use(session({
+  secret: 'your-session-secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set secure to true if using HTTPS
+}));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -44,7 +53,7 @@ const payment = require("./controller/payment");
 const order = require("./controller/order");
 const withdraw = require("./controller/withdraw");
 const cart = require("./controller/cart");
-const fbLogin = require("./controller/authRoutes");
+const authFB = require("./controller/authfb");
 const report = require("./controller/report");
 
 
@@ -59,7 +68,7 @@ app.use("/api/v2/payment", payment);
 app.use("/api/v2/order", order);
 app.use("/api/v2/withdraw", withdraw);
 app.use("/api/v2/cart", cart);
-app.use("/api/v2/fbLogin", fbLogin);
+app.use("/api/v2/FBlogin", authFB);
 app.use("/api/v2/report", report);
 
 
