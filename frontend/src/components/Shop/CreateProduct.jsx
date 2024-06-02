@@ -37,6 +37,7 @@ const CreateProduct = () => {
 
   const onFinish = (values) => {
     const newForm = new FormData();
+    console.log(values);
     images.forEach((image) => {
       newForm.append("images", image.originFileObj);
     });

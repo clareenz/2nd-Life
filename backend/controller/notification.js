@@ -21,7 +21,6 @@ router.post('/create-notification', async (req, res, next) => {
 // Get notifications for a receiver
 router.get('/get-notifications/:id', async (req, res, next) => {
   const receiverId  = req.params.id;
-  console.log(req.params.id)
   try {
     const notifications = await Notification.find( {receiverId} );
     const unreadNotifications = await Notification.find({ receiverId, status: 'unread' });
