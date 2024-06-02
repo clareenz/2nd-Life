@@ -1,6 +1,3 @@
-/* The inside of Best Deals
-start: 5:20:57 (first vid) */
-
 import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import {
@@ -18,7 +15,7 @@ import {
 } from "../../../redux/actions/wishlist";
 import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
-import {ProductDetailsCard, ProductDetailsCard2} from "../ProductDetailsCard/ProductDetailsCard";
+import { ProductDetailsCard, ProductDetailsCard2 } from "../ProductDetailsCard/ProductDetailsCard";
 import { IoBagHandleOutline } from "react-icons/io5";
 
 const ProductCard = ({ data }) => {
@@ -26,7 +23,6 @@ const ProductCard = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -90,7 +86,7 @@ const ProductCard = ({ data }) => {
           </div>
           <div>
             <h5 className="text-[12px] mt-1 marquee">
-              ({data.shop.ratings}) Ratings
+              ({data.ratings}) Ratings
             </h5>
           </div>
         </div>
@@ -158,14 +154,6 @@ const ProductCard = ({ data }) => {
           <span className="font-[400] text-[17px] text-[#68d284]">
             {data?.sold_out} sold
           </span>
-          {/* <div> //buy now button
-            <div
-              className={`${styles.button5} flex items-center justify-center rounded-3xl`}
-              onClick={buyNow}
-            >
-              <span className="text-[12px]">Buy Now</span>
-            </div>
-          </div> */}
         </div>
       </div>
     </>
@@ -177,7 +165,6 @@ const ProductCard2 = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -222,8 +209,6 @@ const ProductCard2 = ({ data }) => {
     <>
       <div
         className="max-w-[220px] w-full max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
       >
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
@@ -243,7 +228,7 @@ const ProductCard2 = ({ data }) => {
             </Link>
           </div>
           <div>
-            <h5 className="text-[12px] mt-1">({data.shop.ratings}) Ratings</h5>
+            <h5 className="text-[12px] mt-1">({data.ratings}) Ratings</h5>
           </div>
         </div>
         <Link to={`/product/${data._id}`}>
@@ -253,16 +238,7 @@ const ProductCard2 = ({ data }) => {
         </Link>
 
         {/* side options */}
-        <div>
-          {/* <AiOutlineEye
-            size={22}
-            className="absolute cursor-pointer right-2 top-14"
-            onClick={() => setOpen(!open)}
-            color="#333"
-            title="Quick View"
-          />
-           */}
-        </div>
+        <div></div>
 
         <div className="flex items-center justify-between py-2">
           <div className="flex">
@@ -298,3 +274,4 @@ const ProductCard2 = ({ data }) => {
 };
 
 export { ProductCard, ProductCard2 };
+
