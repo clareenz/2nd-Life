@@ -521,7 +521,17 @@ router.get(
   "/get-shop-info/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const shop = await Shop.findById(req.params.id).populate('followers');
+      const shop = await Shop.findById(req.params.id)
+        .populate('followers')
+        .populate({
+          path: 'reviews.user', // Populate user info for each review
+          select: 'username email' // Select fields to include from user
+        });
+      
+      if (!shop) {
+        return next(new ErrorHandler("Shop not found", 404));
+      }
+
       res.status(200).json({
         success: true,
         shop,
