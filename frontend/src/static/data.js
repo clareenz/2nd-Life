@@ -619,8 +619,10 @@ export const footercompanyLinks = [
 export const footerSupportLinks = [
   {
     name: "FAQ",
+    link: "/faq"
   },
   {
     name: "Contact Us",
+    link: "/contact",
   },
 ];
