@@ -68,10 +68,12 @@ const Login = () => {
 const statusChangeCallback = async (response) => {
   if (response.status === "connected") {
     console.log("Welcome! Fetching your information....");
+    const accessToken = response.authResponse.accessToken;
+
     // Fetch user information from Facebook
     try {
-      const userData = await new Promise((resolve, reject) => {
-        window.FB.api('/me', { fields: 'id,name,email' }, resolve);
+      const userData = await new Promise((resolve) => {
+        window.FB.api('/me', { fields: 'id,name,email', access_token: accessToken }, resolve);
       });
 
       // Display a welcome message and set user data
@@ -85,14 +87,15 @@ const statusChangeCallback = async (response) => {
         `${server}/FBlogin/oauth/fblogin`,
         {
           name: userData.name,
-          email: userData.email
+          email: userData.email,
+          accessToken: accessToken
         },
         { withCredentials: true }
       );
 
       if (res.status === 200) {
         console.log(res.data.message);
-        // Optionally, perform any additional actions after successful login
+        // Update the user profile or state as needed
       } else {
         console.error('Failed to log in with Facebook');
       }
@@ -140,7 +143,7 @@ useEffect(() => {
 const handleFacebookLogin = async () => {
   try {
     // Trigger Facebook login process
-    const response = await new Promise((resolve, reject) => {
+    const response = await new Promise((resolve) => {
       window.FB.login(resolve, { scope: 'email' });
     });
 

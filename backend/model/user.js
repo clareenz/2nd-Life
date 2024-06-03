@@ -66,8 +66,17 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  isLoggedIn: {
+    type: Boolean,
+    default: false,
+  },
   resetPasswordToken: String,
   resetPasswordTime: Date,
+});
+
+// Virtual field to get the number of followed shops
+userSchema.virtual('followingShopsCount').get(function() {
+  return this.followingShops.length;
 });
 
 // Hash password
@@ -78,14 +87,14 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-// jwt token
+// JWT token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES,
   });
 };
 
-// compare password
+// Compare password
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
