@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { server } from "../../server";
 
 const ReportSeller = () => {
-  const [sellerId, setSellerId] = useState("");
+  const [shopId, setShopId] = useState("");
   const [reason, setReason] = useState("");
   const [otherReason, setOtherReason] = useState("");
   const [message, setMessage] = useState("");
@@ -13,8 +13,8 @@ const ReportSeller = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const sellerIdFromUrl = searchParams.get("sellerId");
-    setSellerId(sellerIdFromUrl);
+    const shopIdFromUrl = searchParams.get("shopId");
+    setShopId(shopIdFromUrl);
   }, [searchParams]);
 
   const handleSubmit = async (event) => {
@@ -27,21 +27,15 @@ const ReportSeller = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${server}/report-seller/${sellerId}`,
-        data
-      );
+      const response = await axios.post(`${server}/report/report-shop/${data?.shop._Id}`, data);
       setMessage(response.data.message);
-      setReason("");
-      setOtherReason("");
-
-      // Navigate to the report-seller route after successful submission
-      navigate("/report-seller", { replace: true }); // Use replace: true to replace the current entry in the history stack
+      setReason('');
+      setOtherReason('');
     } catch (error) {
       if (error.response && error.response.data && error.response.data.errors) {
         setErrors(error.response.data.errors);
       } else {
-        setMessage("An error occurred while reporting the seller.");
+        setMessage('An error occurred while reporting the Shop.');
       }
     }
   };
@@ -54,20 +48,20 @@ const ReportSeller = () => {
     <div className="flex justify-center p-6 bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full">
         <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-          Report Seller
+          Report Shop
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
-              htmlFor="sellerId"
+              htmlFor="shopId"
               className="block text-left font-semibold text-gray-700 mb-2"
             >
               Seller ID
             </label>
             <input
               type="text"
-              id="sellerId"
-              value={sellerId}
+              id="shopId"
+              value={shopId}
               readOnly
               className="w-full p-3 border border-gray-300 rounded-full h-11 text-sm bg-gray-100"
             />
