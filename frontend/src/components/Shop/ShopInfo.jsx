@@ -16,7 +16,6 @@ import axios from "axios";
 import Paragraph from "antd/es/typography/Paragraph";
 import { BsThreeDots } from "react-icons/bs";
 import { getAllProductsShop } from "../../redux/actions/product";
-import { server } from "../../server";
 import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
 
 const { Title, Text } = Typography;
