@@ -93,6 +93,7 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.error = action.payload;
     })
+    // follow shop
     .addCase("FollowShopRequest", (state) => {
       state.loading = true;
     })
@@ -104,6 +105,7 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.loading = false;
       state.error = action.payload;
     })
+    // unfollow shop
     .addCase("UnfollowShopRequest", (state) => {
       state.loading = true;
     })

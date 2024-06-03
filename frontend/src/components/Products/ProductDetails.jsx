@@ -101,52 +101,7 @@ const ProductDetails = ({ data }) => {
       }
     }
   };
-
-  // Follow shop
-  useEffect(() => {
-    // Check if the user is already following the shop
-    if (
-      isAuthenticated &&
-      user &&
-      user.followingShops.includes(data?.shop?._id)
-    ) {
-      setIsFollowing(true);
-    } else {
-      setIsFollowing(false);
-    }
-  }, [isAuthenticated, user, data]);
-
-  // Function to handle follow/unfollow
-  const handleFollowToggle = () => {
-    // Only allow following if the user is authenticated
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-
-    // Logic to toggle follow state
-    const newFollowingState = !isFollowing;
-
-    // Call follow/unfollow action based on current follow state
-    if (newFollowingState) {
-      // Call follow action
-      dispatch(followShop(data?.shop._id)) // Replace `followShop` with your actual follow action
-        .then(() => {
-          setIsFollowing(true);
-          window.location.reload(); // Reload the page after following
-        })
-        .catch(() => setIsFollowing(false)); // Revert state if follow action fails
-    } else {
-      // Call unfollow action
-      dispatch(unfollowShop(data?.shop._id)) // Replace `unfollowShop` with your actual unfollow action
-        .then(() => {
-          setIsFollowing(false);
-          window.location.reload(); // Reload the page after unfollowing
-        })
-        .catch(() => setIsFollowing(true)); // Revert state if unfollow action fails
-    }
-  };
-
+  
   const totalReviewsLength =
     products &&
     products.reduce((acc, product) => acc + product.reviews.length, 0);
@@ -345,21 +300,6 @@ const ProductDetails = ({ data }) => {
                           >
                             {data.shop.name}
                           </Link>
-                          {isAuthenticated && (
-                            <>
-                              {isFollowing ? (
-                                <RiUserFollowFill
-                                  className="ml-2 text-red-500 cursor-pointer"
-                                  onClick={handleFollowToggle}
-                                />
-                              ) : (
-                                <RiUserFollowLine
-                                  className="ml-2 text-gray-500 cursor-pointer"
-                                  onClick={handleFollowToggle}
-                                />
-                              )}
-                            </>
-                          )}
                         </div>
                         <h5 className="text-[13px] mt-1">
                           ({averageRating}/5) Ratings

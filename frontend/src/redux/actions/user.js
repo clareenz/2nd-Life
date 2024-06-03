@@ -233,3 +233,57 @@ export const unfollowShop = (shopId) => async (dispatch) => {
     });
   }
 };
+
+// Action to follow a shop by productId
+export const followShopByProductId = (productId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'FOLLOW_SHOP_REQUEST',
+    });
+
+    // Retrieve shopId using productId
+    const { data: { shopId } } = await axios.get(`${server}/shop/followers/${productId}`);
+
+    // Follow the shop using the retrieved shopId
+    const { data } = await axios.post(`${server}/user/follow/${shopId}`, null, {
+      withCredentials: true, // Ensure credentials are sent with the request
+    });
+
+    dispatch({
+      type: 'FOLLOW_SHOP_SUCCESS',
+      payload: data, // Assuming backend sends data containing updated shop details
+    });
+  } catch (error) {
+    dispatch({
+      type: 'FOLLOW_SHOP_FAILED',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Action to unfollow a shop by productId
+export const unfollowShopByProductId = (productId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'UNFOLLOW_SHOP_REQUEST',
+    });
+
+    // Retrieve shopId using productId
+    const { data: { shopId } } = await axios.get(`${server}/shop/followers/${productId}`);
+
+    // Unfollow the shop using the retrieved shopId
+    const { data } = await axios.post(`${server}/user/unfollow/${shopId}`, null, {
+      withCredentials: true, // Ensure credentials are sent with the request
+    });
+
+    dispatch({
+      type: 'UNFOLLOW_SHOP_SUCCESS',
+      payload: data, // Assuming backend sends data containing updated shop details
+    });
+  } catch (error) {
+    dispatch({
+      type: 'UNFOLLOW_SHOP_FAILED',
+      payload: error.response.data.message,
+    });
+  }
+};
