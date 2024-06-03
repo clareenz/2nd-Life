@@ -63,96 +63,85 @@ const Login = () => {
       });
   };
 
+  const statusChangeCallback = async (response) => {
+    if (response.status === "connected") {
+      console.log("Welcome! Fetching your information....");
 
-// Function to handle Facebook login status change
-const statusChangeCallback = async (response) => {
-  if (response.status === "connected") {
-    console.log("Welcome! Fetching your information....");
-    const accessToken = response.authResponse.accessToken;
+      try {
+        const userData = await new Promise((resolve, reject) => {
+          window.FB.api('/me', { fields: 'id,name,email' }, (res) => {
+            if (!res || res.error) {
+              reject(res.error);
+            } else {
+              resolve(res);
+            }
+          });
+        });
 
-    // Fetch user information from Facebook
-    try {
-      const userData = await new Promise((resolve) => {
-        window.FB.api('/me', { fields: 'id,name,email', access_token: accessToken }, resolve);
-      });
+        const welcomeMessage = `Good to see you, ${userData.name}.`;
+        message.success(welcomeMessage);
+        setUserName(userData.name);
 
-      // Display a welcome message and set user data
-      const welcomeMessage = `Good to see you, ${userData.name}. I see your email address is ${userData.email}`;
-      message.success(welcomeMessage);
-      setUserName(userData.name);
-      setUserEmail(userData.email);
+        const res = await axios.get(`${server}/FBlogin/oauth/fb_login?code=${response.authResponse.accessToken}`);
 
-      // Send the user data to the backend for authentication and login
-      const res = await axios.post(
-        `${server}/FBlogin/oauth/fblogin`,
-        {
-          name: userData.name,
-          email: userData.email,
-          accessToken: accessToken
-        },
-        { withCredentials: true }
-      );
+        if (res.status === 200) {
+          console.log("Successfully logged in with Facebook");
 
-      if (res.status === 200) {
-        console.log(res.data.message);
-        // Update the user profile or state as needed
-      } else {
-        console.error('Failed to log in with Facebook');
+          const token = res.data.token;
+          localStorage.setItem('token', token);
+
+          window.location.href = '/login-success';
+        } else {
+          console.error('Failed to log in with Facebook');
+        }
+      } catch (error) {
+        console.error('Failed to fetch user information from Facebook', error);
       }
-    } catch (error) {
-      console.error('Failed to fetch user information from Facebook', error);
+    } else if (response.status === "not_authorized") {
+      console.log("Please log into this app.");
+    } else {
+      console.log("Please log into Facebook.");
     }
-  } else if (response.status === "not_authorized") {
-    console.log("Please log into this app.");
-  } else {
-    console.log("Please log into Facebook.");
-  }
-};
-
-// Initialize Facebook SDK and check login status
-useEffect(() => {
-  window.fbAsyncInit = function () {
-    window.FB.init({
-      appId: "448764437757486",
-      cookie: true,
-      xfbml: true,
-      version: "v20.0",
-    });
-
-    // Get login status and trigger statusChangeCallback
-    window.FB.getLoginStatus(function (response) {
-      statusChangeCallback(response);
-    });
   };
 
-  // Load Facebook SDK asynchronously
-  (function (d, s, id) {
-    var js,
-      fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {
-      return;
+  useEffect(() => {
+    window.fbAsyncInit = function () {
+      window.FB.init({
+        appId: "448764437757486",
+        cookie: true,
+        xfbml: true,
+        version: "v13.0",
+      });
+
+      window.FB.getLoginStatus(function (response) {
+        statusChangeCallback(response);
+      });
+    };
+
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+  }, []);
+
+  const handleFacebookLogin = async () => {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        window.FB.login(resolve, { scope: 'email' });
+      });
+
+      statusChangeCallback(response);
+    } catch (error) {
+      console.error('Failed to initiate Facebook login process', error);
     }
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  })(document, "script", "facebook-jssdk");
-}, []);
-
-// Function to trigger Facebook login
-const handleFacebookLogin = async () => {
-  try {
-    // Trigger Facebook login process
-    const response = await new Promise((resolve) => {
-      window.FB.login(resolve, { scope: 'email' });
-    });
-
-    // Check the login status and handle accordingly
-    statusChangeCallback(response);
-  } catch (error) {
-    console.error('Failed to initiate Facebook login process', error);
-  }
-};
+  };
 
 
   return (

@@ -16,14 +16,6 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
-// Session configuration
-app.use(session({
-  secret: 'your-session-secret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // Set secure to true if using HTTPS
-}));
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -56,6 +48,7 @@ const cart = require("./controller/cart");
 const authFB = require("./controller/authfb");
 const report = require("./controller/report");
 const notification = require("./controller/notification");
+const webhook = require("./controller/webhook");
 
 
 app.use("/api/v2/user", user);
@@ -72,6 +65,7 @@ app.use("/api/v2/cart", cart);
 app.use("/api/v2/FBlogin", authFB);
 app.use("/api/v2/report", report);
 app.use("/api/v2/notification", notification);
+app.use("/api/v2/webhook", webhook);
 
 
 // Error handling middleware
