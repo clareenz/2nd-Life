@@ -110,7 +110,7 @@ const Login = () => {
         appId: "448764437757486",
         cookie: true,
         xfbml: true,
-        version: "v13.0",
+        version: "v20.0",
       });
 
       window.FB.getLoginStatus(function (response) {
