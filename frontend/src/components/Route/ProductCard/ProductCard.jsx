@@ -7,7 +7,7 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { addToCart } from "../../../redux/actions/cart";
 import {
   addToWishlist,
@@ -26,16 +26,33 @@ const ProductCard = ({ data }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [reviews,setReviews] = useState()
-  const [totalReview,setTotalReview] = useState()
-  const [averageRating,setAverageRating] = useState()
+  const [reviews,setReviews] = useState();
+  const [totalReview,setTotalReview] = useState();
+  const [averageRating,setAverageRating] = useState();
+  const [productId, setProductId] = useState();
+
+// buy now
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`${server}/product/get-product/${data._id}`);
+        const product = response.data.product;
+        if (product) {
+          setProductId(product._id);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+    fetchProduct();
+  }, [data._id]);
   
- 
   const buyNow = () => {
-    setOpen(!open);
-    navigate("/checkoutBuyNow", { state: { productData: data } });
+    if (productId) {
+      navigate(`/checkoutBuyNow/${productId}`);
+    }
   };
-  
+
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
       setClick(true);
@@ -95,6 +112,7 @@ const ProductCard = ({ data }) => {
       }
     }
   };
+   
 
   return (
     <>
@@ -200,10 +218,7 @@ const ProductCard2 = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const buyNow = () => {
-    navigate("/checkoutBuyNow");
-  };
-
+  
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
       setClick(true);

@@ -136,7 +136,7 @@ const App = () => {
           }
         />
         <Route
-          path="/checkoutBuyNow"
+          path='/checkoutBuyNow/:productId'
           element={
             <ProtectedRoute>
               <CheckoutBuyNowPage />
