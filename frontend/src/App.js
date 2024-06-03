@@ -46,6 +46,7 @@ import {
   ShopAllRefunds,
   ForgotSellerPasswordPage,
   ResetSellerPasswordPage,
+  ShopDeletePage,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -296,6 +297,14 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        <Route
+          path="/shop-delete"
+          element={
+            <SellerProtectedRoute>
+              <ShopDeletePage />
+            </SellerProtectedRoute>
+          }
+        />
 
         <Route path="/search-results" element={<SearchResult />} />
 
@@ -357,6 +366,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+
         <Route path="/report" element={<ReportPage />} />
         <Route path="/report-seller" element={<ReportSellerPage />} />
       </Routes>

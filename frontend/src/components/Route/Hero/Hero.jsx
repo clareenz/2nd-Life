@@ -2,13 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Carousel } from "antd";
 import styles from "../../../styles/styles";
-import banner1 from "./banner1.jpg";
-import banner02 from "./banner02.jpg";
-import banner03 from "./banner03.jpg";
-import Banner from "./Banner.png";
+import banner0 from "./banner0.png";
+import banner6 from "./banner6.png";
+
 
 const Hero = () => {
-  const images = [banner1 , banner02, banner03, Banner];
+  const images = [banner0 , banner6];
 
   return (
     <Carousel autoplay>
