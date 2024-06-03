@@ -9,7 +9,6 @@ import { HiOutlineReceiptRefund } from "react-icons/hi";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { RiDashboardLine } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
-import { BiShoppingBag } from "react-icons/bi";
 import { FaCartShopping } from "react-icons/fa6";
 import { BsInboxes } from "react-icons/bs";
 import "./sidebar.css";
@@ -96,11 +95,12 @@ const DashboardSideBar = () => {
         setActiveKey("1");
     }
   }, [location]);
+  
 
   return (
     <div className="sidebar-container pt-[80px] z-10 ">
       <Menu
-        mode="inline"
+        mode="inline" // Default to inline mode
         selectedKeys={[activeKey.toString()]}
         theme="light"
         style={{
@@ -116,7 +116,7 @@ const DashboardSideBar = () => {
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
               : {}
           }
-          icon={<RiDashboardLine />}
+          icon={<RiDashboardLine className="" />}
         >
           <Link to="/dashboard">Dashboard</Link>
         </Menu.Item>
@@ -268,7 +268,7 @@ const DashboardSideBar = () => {
             }
             icon={<AiOutlineUserDelete />}
           >
-            <Link to="/shop-delete">Edit Shop</Link>
+            <Link to="/shop-delete">Delete Shop</Link>
           </Menu.Item>
         </SubMenu>
       </Menu>
