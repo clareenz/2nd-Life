@@ -13,7 +13,12 @@ const reportSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  shop: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Shop',
+    required: true
+  },
 });
 
 module.exports = mongoose.model('Report', reportSchema);

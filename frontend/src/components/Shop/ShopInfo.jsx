@@ -190,10 +190,10 @@ const ShopInfo = ({ isOwner }) => {
                   ) : (
                     <div className=" z-10 absolute top-8 left-0 bg-white shadow-lg rounded-lg p-4">
                       <Link
-                        to={`/report-seller?sellerId=${data._id}`}
+                        to={`/report-shop?shopId=${data._id}`}
                         className="ml-2"
                       >
-                        Report this seller
+                        Report this shop
                       </Link>
                     </div>
                   )}

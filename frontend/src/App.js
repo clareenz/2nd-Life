@@ -372,7 +372,7 @@ const App = () => {
         />
 
         <Route path="/report" element={<ReportPage />} />
-        <Route path="/report-seller" element={<ReportSellerPage />} />
+        <Route path="/report-shop" element={<ReportSellerPage />} />
       </Routes>
       <ToastContainer
         position="bottom-center"
