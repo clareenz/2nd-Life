@@ -90,7 +90,7 @@ const Login = () => {
           const token = res.data.token;
           localStorage.setItem('token', token);
 
-          window.location.href = '/';
+          window.location.href = '/login-success';
         } else {
           console.error('Failed to log in with Facebook');
         }
@@ -142,6 +142,7 @@ const Login = () => {
       console.error('Failed to initiate Facebook login process', error);
     }
   };
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">

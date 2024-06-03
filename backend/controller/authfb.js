@@ -51,7 +51,6 @@ router.get('/oauth/fb_login', async (req, res) => {
   }
 });
 
-
 // Logout route
 router.get('/logout', (req, res) => {
   req.session.destroy();
