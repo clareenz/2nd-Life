@@ -30,4 +30,34 @@
       width: 250px; /* Width for larger screens */
     }
   }
+
+  .logout-text {
+    color: black; /* Ensure the text is visible */
+    padding-left: 24px; /* Align with other menu items */
+  }
+
+
+  /* Add space between icons and arrows in submenu titles */
+@media (max-width: 600px) {
+  .ant-menu-submenu-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Hide submenu arrow on small screens */
+@media (max-width: 768px) {
+  .ant-menu-submenu-arrow {
+    display: none;
+  }
+}
+
+/* Or adjust submenu arrow position */
+/* .ant-menu-submenu-arrow {
+  margin-right: 8px;
+} */
+
+
+  
   
