@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "ngrok": "ngrok http 3000"
   },
   "author": "Shaira, Mc",
   "license": "ISC",
@@ -41,6 +42,7 @@
     "mdb-react-ui-kit": "^7.2.0",
     "mongoose": "^8.1.1",
     "multer": "^1.4.5-lts.1",
+    "ngrok": "^5.0.0-beta.2",
     "nodemailer": "^6.9.9",
     "paypal": "^1.0.1",
     "react": "^18.2.0",

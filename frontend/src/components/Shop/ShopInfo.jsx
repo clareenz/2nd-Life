@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { backend_url, server } from "../../server";
+import { server } from "../../server";
 import { Typography, Avatar, Spin, message, Button } from "antd";
 import {
   EnvironmentOutlined,
@@ -13,7 +13,6 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
-import { BsThreeDots } from "react-icons/bs";
 import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
 import Paragraph from "antd/es/typography/Paragraph";
 import { SlUserFollow } from "react-icons/sl";

@@ -8,8 +8,8 @@ const connectDatabase = () => {
       autoIndex: true,
     })
     .then((data) => {
-      console.log(`mongod connected with server: http://localhost:8000`);
-      //console.log(`mongod connected with server: ${data.connection.host}`);
+      //console.log(`mongod connected with server: http://localhost:8000`);
+      console.log(`mongod connected with server: ${data.connection.host}`);
     });
 };
 
