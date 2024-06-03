@@ -11,8 +11,8 @@ const session = require('express-session');
 // Load environment variables from .env file
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
-    path: "backend/config/.env",
-    //path: "config/.env",
+    //path: "backend/config/.env",
+    path: "config/.env",
   });
 }
 
