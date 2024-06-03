@@ -56,6 +56,27 @@ router.post(
   })
 );
 
+// get product by id
+router.get(
+  "/get-product/:id",
+  catchAsyncErrors(async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id);
+
+      if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+      }
+
+      res.status(200).json({
+        success: true,
+        product,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error, 400));
+    }
+  })
+);
+
 // get all products of a shop
 router.get(
   "/get-all-products-shop/:id",
@@ -123,12 +144,12 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const products = await Product.find()
-      .populate({
-        path: 'reviews.user',
-        select: 'username email'
-      })
-      .populate("reviews.productId")
-      .populate("shop");
+        .populate({
+          path: "reviews.user",
+          select: "username email",
+        })
+        .populate("reviews.productId")
+        .populate("shop");
 
       res.status(201).json({
         success: true,
@@ -295,30 +316,32 @@ router.get(
   "/reviews/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log('Request received for product ID:', req.params.id);
+      console.log("Request received for product ID:", req.params.id);
 
       // Find the product by ID and populate the user details in the reviews
-      const product = await Product.findById(req.params.id)
-        .populate({
-          path: 'reviews.user',
-          select: 'username email'
-        });
+      const product = await Product.findById(req.params.id).populate({
+        path: "reviews.user",
+        select: "username email",
+      });
 
       if (!product) {
-        console.log('Product not found for ID:', req.params.id);
+        console.log("Product not found for ID:", req.params.id);
         return next(new ErrorHandler("Product not found", 404));
       }
 
-      console.log('Product found:', product);
+      console.log("Product found:", product);
 
       // Calculate the total number of reviews
       const totalReviews = product.reviews.length;
-      console.log('Total reviews:', totalReviews);
+      console.log("Total reviews:", totalReviews);
 
       // Calculate the average rating
-      const averageRating = totalReviews > 0 ? 
-        product.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews : 0;
-      console.log('Average rating:', averageRating);
+      const averageRating =
+        totalReviews > 0
+          ? product.reviews.reduce((sum, review) => sum + review.rating, 0) /
+            totalReviews
+          : 0;
+      console.log("Average rating:", averageRating);
 
       // Respond with the product's total reviews and average rating
       res.status(201).json({
@@ -327,42 +350,46 @@ router.get(
         averageRating,
       });
     } catch (error) {
-      console.error('Error during product reviews fetch:', error);
+      console.error("Error during product reviews fetch:", error);
       return next(new ErrorHandler(error.message, 500));
     }
   })
 );
-
 
 // Route to get average rating of all products of a shop
 router.get(
   "/reviews-shop/:shopId",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log('Request received for shop ID:', req.params.shopId);
+      console.log("Request received for shop ID:", req.params.shopId);
 
       // Find all products of the shop
       const products = await Product.find({ shop: req.params.shopId });
 
       if (!products || products.length === 0) {
-        console.log('No products found for shop ID:', req.params.shopId);
+        console.log("No products found for shop ID:", req.params.shopId);
         return next(new ErrorHandler("No products found for this shop", 404));
       }
 
-      console.log('Products found:', products.length);
+      console.log("Products found:", products.length);
 
       // Calculate the average rating for each product
-      const productRatings = products.map(product => {
+      const productRatings = products.map((product) => {
         const totalReviews = product.reviews.length;
-        const averageRating = totalReviews > 0 ? 
-          product.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews : 0;
+        const averageRating =
+          totalReviews > 0
+            ? product.reviews.reduce((sum, review) => sum + review.rating, 0) /
+              totalReviews
+            : 0;
         return averageRating;
       });
 
       // Calculate the overall average rating for all products
-      const overallAverageRating = productRatings.reduce((sum, rating) => sum + rating, 0) / productRatings.length;
+      const overallAverageRating =
+        productRatings.reduce((sum, rating) => sum + rating, 0) /
+        productRatings.length;
 
-      console.log('Overall average rating:', overallAverageRating);
+      console.log("Overall average rating:", overallAverageRating);
 
       // Respond with the overall average rating
       res.status(201).json({
@@ -370,12 +397,10 @@ router.get(
         overallAverageRating,
       });
     } catch (error) {
-      console.error('Error during average rating fetch:', error);
+      console.error("Error during average rating fetch:", error);
       return next(new ErrorHandler(error.message, 500));
     }
   })
 );
-
-
 
 module.exports = router;
