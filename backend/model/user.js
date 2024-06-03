@@ -70,6 +70,12 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  facebookId: {
+    type: String,
+  },
+  link: {
+    type: String,
+  },
   resetPasswordToken: String,
   resetPasswordTime: Date,
 });

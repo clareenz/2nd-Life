@@ -66,7 +66,7 @@ const Login = () => {
   const statusChangeCallback = async (response) => {
     if (response.status === "connected") {
       console.log("Welcome! Fetching your information....");
-
+  
       try {
         const userData = await new Promise((resolve, reject) => {
           window.FB.api('/me', { fields: 'id,name,email' }, (res) => {
@@ -77,22 +77,24 @@ const Login = () => {
             }
           });
         });
-
+  
+        console.log("User Data from Facebook:", userData);
+  
         const welcomeMessage = `Good to see you, ${userData.name}.`;
         message.success(welcomeMessage);
         setUserName(userData.name);
-
+  
         const res = await axios.get(`${server}/FBlogin/oauth/fb_login?code=${response.authResponse.accessToken}`);
-
+  
         if (res.status === 200) {
           console.log("Successfully logged in with Facebook");
-
+  
           const token = res.data.token;
           localStorage.setItem('token', token);
-
-          window.location.href = '/login-success';
+  
+          window.location.href = '/';
         } else {
-          console.error('Failed to log in with Facebook');
+          console.error('Failed to log in with Facebook', res);
         }
       } catch (error) {
         console.error('Failed to fetch user information from Facebook', error);
@@ -103,7 +105,7 @@ const Login = () => {
       console.log("Please log into Facebook.");
     }
   };
-
+  
   useEffect(() => {
     window.fbAsyncInit = function () {
       window.FB.init({
@@ -112,12 +114,12 @@ const Login = () => {
         xfbml: true,
         version: "v20.0",
       });
-
+  
       window.FB.getLoginStatus(function (response) {
         statusChangeCallback(response);
       });
     };
-
+  
     (function (d, s, id) {
       var js,
         fjs = d.getElementsByTagName(s)[0];
@@ -130,18 +132,22 @@ const Login = () => {
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "facebook-jssdk");
   }, []);
-
+  
   const handleFacebookLogin = async () => {
     try {
       const response = await new Promise((resolve, reject) => {
-        window.FB.login(resolve, { scope: 'email' });
+        window.FB.login(resolve, { scope: 'email,public_profile,user_link' });
       });
-
+  
+      console.log("Facebook Login Response:", response);
+  
       statusChangeCallback(response);
     } catch (error) {
       console.error('Failed to initiate Facebook login process', error);
     }
   };
+  
+  
 
 
   return (
