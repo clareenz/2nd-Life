@@ -14,6 +14,7 @@ import ShopAllRefunds from "../pages/Shop/ShopAllRefunds";
 import ShopWithDrawMoneyPage from "../pages/Shop/ShopWithdrawMoneyPage";
 import ForgotSellerPasswordPage from "../pages/Shop/ForgotSellerPasswordPage";
 import ResetSellerPasswordPage from "../pages/Shop/ResetSellerPasswordPage";
+import ShopDeletePage from "../pages/ShopDeletePage.jsx";
 
 
 export {
@@ -32,5 +33,6 @@ export {
   ShopWithDrawMoneyPage,
   ShopAllRefunds,
   ForgotSellerPasswordPage,
-  ResetSellerPasswordPage
+  ResetSellerPasswordPage,
+  ShopDeletePage,
 };

@@ -26,7 +26,8 @@ import {
   SearchResult,
   OrderDetailsPage,
   TrackOrderPage,
-  ReportPage
+  ReportPage,
+  ReportSellerPage,
 } from "./routes/Routes";
 import {
   ShopDashboardPage,
@@ -45,6 +46,7 @@ import {
   ShopAllRefunds,
   ForgotSellerPasswordPage,
   ResetSellerPasswordPage,
+  ShopDeletePage,
 } from "./routes/ShopRoutes";
 import {
   AdminDashboardPage,
@@ -110,14 +112,8 @@ const App = () => {
           path="/activation/:activation_token"
           element={<ActivationPage />}
         />
-         <Route
-          path="/forgot-password"
-          element={<ForgotPasswordPage />}
-        />
-        <Route
-          path="/reset-password/:token"
-          element={<ResetPasswordPage />}
-        />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route
           path="/seller/activation/:activation_token"
           element={<SellerActivationPage />}
@@ -301,6 +297,14 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        <Route
+          path="/shop-delete"
+          element={
+            <SellerProtectedRoute>
+              <ShopDeletePage />
+            </SellerProtectedRoute>
+          }
+        />
 
         <Route path="/search-results" element={<SearchResult />} />
 
@@ -362,7 +366,9 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+
         <Route path="/report" element={<ReportPage />} />
+        <Route path="/report-seller" element={<ReportSellerPage />} />
       </Routes>
       <ToastContainer
         position="bottom-center"

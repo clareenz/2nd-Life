@@ -60,3 +60,29 @@ export const updateShopInformation =
       });
     }
   };
+
+  // delete shop
+export const deleteShop = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "DeleteUserRequest",
+    });
+
+    const { data } = await axios.delete(`${server}/shop/delete-Shop-account`, {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: "DeleteUserSuccess",
+      payload: {
+        successMessage: "User deleted successfully!",
+        user: data.user,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "DeleteUserFailed",
+      payload: error.response.data.message,
+    });
+  }
+};
