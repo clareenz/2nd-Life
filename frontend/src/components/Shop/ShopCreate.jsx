@@ -391,7 +391,7 @@ const ShopCreate = () => {
               <div>
                 <button
                   type="submit"
-                  className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-[#006665] border border-transparent rounded-3xl shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white hover:bg-[#006665] border border-transparent rounded-3xl bg-[#FF8474] "
                 >
                   Sign up
                 </button>
