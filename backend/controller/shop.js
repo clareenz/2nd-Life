@@ -3,13 +3,10 @@ const path = require("path");
 const router = express.Router();
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const sendMail = require("../utils/sendMail");
 const {
-  sendActivationEmail,
   sendPasswordResetEmail,
   sendSellerActivationEmail,
 } = require("../utils/sendMail");
-const sendToken = require("../utils/jwtToken");
 const Shop = require("../model/shop");
 const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
 const { upload } = require("../multer");
@@ -17,7 +14,8 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendShopToken = require("../utils/shopToken");
 const cloudinary = require("cloudinary");
-const shop = require("../model/shop");
+const Product = require("../model/product");
+
 
 // Load environment variables
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -542,6 +540,48 @@ router.get(
   })
 );
 
+// Get follower count of a shop
+router.get("/followers/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
+  try {
+    const shopId = req.params.shopId;
+
+    const shop = await Shop.findById(shopId);
+    if (!shop) {
+      return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    // Return the follower count of the shop
+    res.status(200).json({ success: true, followersCount: shop.followersCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}));
+
+// Get follower count of the shop that owns the product
+router.get("/followers/:productId", isAuthenticated, catchAsyncErrors(async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    // Find the product by productId
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // Find the shop that owns the product
+    const shop = await Shop.findById(product.shop);
+    if (!shop) {
+      return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    // Return the follower count of the shop
+    res.status(200).json({ success: true, shopId: shop._id, followersCount: shop.followersCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}));
 
 
 module.exports = router;

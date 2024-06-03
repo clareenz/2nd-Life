@@ -76,7 +76,7 @@ const productSchema = new mongoose.Schema({
   },
   shop: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Shop", // Reference to the Product model
+    ref: "Shop", 
     required: true,
   },
   sold_out: {

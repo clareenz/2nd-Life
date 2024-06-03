@@ -16,6 +16,7 @@ const {
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
 const Shop = require("../model/shop");
+const Product = require("../model/product");
 
 // Load environment variables
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -535,59 +536,79 @@ router.delete("/delete-user-account", isAuthenticated, catchAsyncErrors(async (r
   }
 }));
 
-//follow a shop
+// Follow a shop
 router.post("/follow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
   try {
     const shopId = req.params.shopId;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const shop = await Shop.findById(shopId);
     if (!shop) {
       return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     // Check if the user is already following the shop
     if (shop.followers.includes(userId)) {
-      return res.status(400).json({ success: false, message: "User is already following this shop" });
+      return res.status(400).json({ success: false, message: "User is already following this shop", isFollowing: true });
     }
 
-    // Add the user to the followers array
+    // Add the user to the shop's followers array
     shop.followers.push(userId);
-    await shop.save();
+    shop.followersCount += 1; // Increment followers count
+    await shop.save(); // Save the updated shop to the database
 
-    res.status(200).json({ success: true, message: "User followed the shop successfully" });
+    // Add the shop to the user's followingShops array
+    user.followingShops.push(shopId);
+    await user.save();
+
+    res.status(200).json({ success: true, message: "User followed the shop successfully", isFollowing: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 }));
 
-// Route to unfollow a shop
+
+// Unfollow a shop
 router.post("/unfollow/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
   try {
     const shopId = req.params.shopId;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const shop = await Shop.findById(shopId);
     if (!shop) {
       return res.status(404).json({ success: false, message: "Shop not found" });
     }
 
-    // Check if the user is following the shop
-    if (!shop.followers.includes(userId)) {
-      return res.status(400).json({ success: false, message: "User is not following this shop" });
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    // Remove the user from the followers array
-    shop.followers = shop.followers.filter(followerId => followerId !== userId);
-    await shop.save();
+    // Check if the user is following the shop
+    if (!shop.followers.includes(userId)) {
+      return res.status(400).json({ success: false, message: "User is not following this shop", isFollowing: false });
+    }
 
-    res.status(200).json({ success: true, message: "User unfollowed the shop successfully" });
+    // Remove the user from the shop's followers array
+    shop.followers = shop.followers.filter(followerId => followerId.toString() !== userId.toString());
+    shop.followersCount -= 1; // Decrement followers count
+    await shop.save(); // Save the updated shop to the database
+
+    // Remove the shop from the user's followingShops array
+    user.followingShops = user.followingShops.filter(followingShopId => followingShopId.toString() !== shopId.toString());
+    await user.save();
+
+    res.status(200).json({ success: true, message: "User unfollowed the shop successfully", isFollowing: false });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 }));
-
 
 module.exports = router;
