@@ -1,11 +1,14 @@
+// routes/fbAuth.js
 const express = require('express');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
+const User = require('../model/user'); // Adjust the path to your User model
 const router = express.Router();
-const User = require('../model/user');
 
 const APP_ID = process.env.FB_APP_ID;
 const APP_SECRET = process.env.FB_APP_SECRET;
-const REDIRECT_URI = 'https://frontend-topaz-ten.vercel.app/oauth/fb_login';
+const REDIRECT_URI = process.env.FB_REDIRECT_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Initiates the Facebook Login flow
 router.get('/oauth', (req, res) => {
@@ -13,7 +16,6 @@ router.get('/oauth', (req, res) => {
   res.redirect(url);
 });
 
-// Callback URL for handling the Facebook Login response
 router.get('/oauth/fb_login', async (req, res) => {
   const { code } = req.query;
 
@@ -30,75 +32,29 @@ router.get('/oauth/fb_login', async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = new User({ name, email, isLoggedIn: true });
-      await user.save();
-    } else {
-      user.isLoggedIn = true; // Update the login status
+      // If user does not have an email, you can still create the user
+      user = new User({ name });
       await user.save();
     }
+
+    // Generate a JWT token for the user
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
     // Store user in session
     req.session.user = user;
 
-    res.redirect('/');
+    // Send token to the client
+    res.redirect(`/login-success?token=${token}`);
   } catch (error) {
     console.error('Error:', error.response?.data?.error || error.message);
     res.redirect('/login');
   }
 });
 
-// Route for handling Facebook login POST request
-router.post('/oauth/fblogin', async (req, res) => {
-  try {
-    const { name, email, accessToken } = req.body;
-
-    // Validate the access token with Facebook
-    const { data: profile } = await axios.get(`https://graph.facebook.com/v13.0/me?fields=id,name,email&access_token=${accessToken}`);
-    
-    if (profile.email !== email || profile.name !== name) {
-      return res.status(400).json({ error: 'Invalid Facebook data' });
-    }
-
-    // Find or create user in database
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      user = new User({ name, email, isLoggedIn: true });
-      await user.save();
-    } else {
-      user.isLoggedIn = true; // Update the login status
-      await user.save();
-    }
-
-    // Store user in session
-    req.session.user = user;
-
-    res.status(200).json({ message: 'Successfully logged in with Facebook', user });
-  } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 // Logout route
-router.get('/logout', async (req, res) => {
-  try {
-    if (req.session.user && req.session.user.email) {
-      // Update user's login status in the database
-      let user = await User.findOne({ email: req.session.user.email });
-      
-      if (user) {
-        user.isLoggedIn = false;
-        await user.save();
-      }
-    }
-
-    req.session.destroy();
-    res.redirect('/login');
-  } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+router.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/login');
 });
 
 module.exports = router;
