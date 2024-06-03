@@ -120,3 +120,23 @@ export const updateProduct = (id, updatedProductData) => async (dispatch) => {
     });
   }
 };
+
+// get product by ID
+export const getProductById = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "getProductByIdRequest",
+    });
+
+    const { data } = await axios.get(`${server}/product/get-product/${id}`);
+    dispatch({
+      type: "getProductByIdSuccess",
+      payload: data.product,
+    });
+  } catch (error) {
+    dispatch({
+      type: "getProductByIdFailed",
+      payload: error.response.data.message,
+    });
+  }
+};

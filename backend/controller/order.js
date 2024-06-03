@@ -7,36 +7,57 @@ const Order = require("../model/order");
 const Product = require("../model/product");
 const Shop = require("../model/shop");
 
-// create new order
+
+//create order
 router.post(
-  "/create-order",
+  '/create-order',
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
-
-      //   group cart items by shopId
-      const shopItemsMap = new Map();
-
-      for (const item of cart) {
-        const shopId = item.shopId;
-        if (!shopItemsMap.has(shopId)) {
-          shopItemsMap.set(shopId, []);
-        }
-        shopItemsMap.get(shopId).push(item);
-      }
-
-      // create an order for each shop
+      const { cart, shippingAddress, user, totalPrice, paymentInfo, productId } = req.body;
       const orders = [];
 
-      for (const [shopId, items] of shopItemsMap) {
+      if (productId) {
+        // Single product order logic
+        const product = await Product.findById(productId);
+        if (!product) {
+          return next(new ErrorHandler('Product not found', 404));
+        }
+
         const order = await Order.create({
-          cart: items,
+          cart: [{ productId, quantity: 1, price: product.discountPrice }], 
           shippingAddress,
           user,
-          totalPrice,
+          totalPrice: product.discountPrice,
           paymentInfo,
         });
+
         orders.push(order);
+      } else if (cart) {
+        // Existing cart order logic
+        // Group cart items by shopId
+        const shopItemsMap = new Map();
+
+        for (const item of cart) {
+          const shopId = item.shopId;
+          if (!shopItemsMap.has(shopId)) {
+            shopItemsMap.set(shopId, []);
+          }
+          shopItemsMap.get(shopId).push(item);
+        }
+
+        // Create an order for each shop
+        for (const [shopId, items] of shopItemsMap) {
+          const order = await Order.create({
+            cart: items.map(item => ({ ...item, price: item.discountPrice })), // Use discountPrice here
+            shippingAddress,
+            user,
+            totalPrice,
+            paymentInfo,
+          });
+          orders.push(order);
+        }
+      } else {
+        return next(new ErrorHandler('No cart or product information provided', 400));
       }
 
       res.status(201).json({
@@ -48,6 +69,8 @@ router.post(
     }
   })
 );
+
+
 
 // get all orders of user
 router.get(

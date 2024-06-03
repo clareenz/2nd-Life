@@ -16,7 +16,7 @@ import { IoBagHandleOutline } from "react-icons/io5";
 import { GoReport } from "react-icons/go";
 import { RiUserFollowLine, RiUserFollowFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addToCart } from "../../redux/actions/cart";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -46,9 +46,26 @@ const ProductDetails = ({ data }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const eventData = searchParams.get("isEvent");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`${server}/product/get-product/${id}`);
+        setProduct(response.data.product);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+    fetchProduct();
+  }, [id]);
 
   const buyNow = () => {
-    navigate("/checkoutBuyNow");
+    if (product) {
+      window.location.href = `/checkoutBuyNow/${product._id}`; // Navigate to checkoutBuyNow page with productId in the URL
+    }
   };
 
   useEffect(() => {
