@@ -43,7 +43,7 @@ const ShopProfileData = ({ isOwner }) => {
               md:grid-cols-4 md:gap-[13px]
               lg:grid-cols-5 lg:gap-[10px]
               xl:grid-cols-5 xl:gap-[10px]
-              2xl:grid-cols-7 2xl:gap-[20px] mb-12 border-0"
+              2xl:grid-cols-5 2xl:gap-[20px] mb-12 border-0"
           >
             {isOwner ? (
               <>

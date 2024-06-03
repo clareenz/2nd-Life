@@ -19,11 +19,11 @@ import { LuCalendarPlus } from "react-icons/lu";
 import { TbShoppingBagEdit } from "react-icons/tb";
 import { GiPadlock } from "react-icons/gi";
 import axios from "axios";
-import {  server } from "../../../server";
+import { server } from "../../../server";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { IoIosLogOut } from "react-icons/io";
-
+import { AiOutlineUserDelete } from "react-icons/ai";
 
 const { SubMenu } = Menu;
 
@@ -88,6 +88,9 @@ const DashboardSideBar = () => {
         break;
       case "/shop-logout":
         setActiveKey("14");
+        break;
+      case "/shop-delete":
+        setActiveKey("15");
         break;
       default:
         setActiveKey("1");
@@ -230,7 +233,7 @@ const DashboardSideBar = () => {
             }
             icon={<TbShoppingBagEdit />}
           >
-            <Link to="/settings">Shop</Link>
+            <Link to="/settings">Edit Shop</Link>
           </Menu.Item>
           <Menu.Item
             key="13"
@@ -243,23 +246,31 @@ const DashboardSideBar = () => {
           >
             <Link to="/shop-password">Password</Link>
           </Menu.Item>
-        </SubMenu>
-        <Menu.Item
-          key="14"
-          style={
-            activeKey === "14"
-              ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
-              : {}
-          }
-          icon={<IoIosLogOut />}
-        >
-          <div
-            className={` `}
-            onClick={logoutHandler}
+          <Menu.Item
+            key="14"
+            style={
+              activeKey === "14"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+            icon={<IoIosLogOut />}
           >
-            Log Out
-          </div>
-        </Menu.Item>
+            <div className={` `} onClick={logoutHandler}>
+              Log Out
+            </div>
+          </Menu.Item>
+          <Menu.Item
+            key="15"
+            style={
+              activeKey === "15"
+                ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
+                : {}
+            }
+            icon={<AiOutlineUserDelete />}
+          >
+            <Link to="/shop-delete">Edit Shop</Link>
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </div>
   );
