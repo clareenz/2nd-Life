@@ -12,7 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Initiates the Facebook Login flow
 router.get('/oauth', (req, res) => {
-  const url = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&scope=email`;
+  const url = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&scope=email`;
   res.redirect(url);
 });
 
@@ -21,11 +21,11 @@ router.get('/oauth/fb_login', async (req, res) => {
 
   try {
     // Exchange authorization code for access token
-    const { data } = await axios.get(`https://graph.facebook.com/v13.0/oauth/access_token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${code}&redirect_uri=${REDIRECT_URI}`);
+    const { data } = await axios.get(`https://graph.facebook.com/v20.0/oauth/access_token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${code}&redirect_uri=${REDIRECT_URI}`);
     const { access_token } = data;
 
     // Use access_token to fetch user profile
-    const { data: profile } = await axios.get(`https://graph.facebook.com/v13.0/me?fields=name,email&access_token=${access_token}`);
+    const { data: profile } = await axios.get(`https://graph.facebook.com/v20.0/me?fields=name,email&access_token=${access_token}`);
     const { name, email } = profile;
 
     // Find or create user in database
