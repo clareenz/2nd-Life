@@ -4,6 +4,7 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user'); // Adjust the path to your User model
 const router = express.Router();
+const User = require('../model/user');
 
 const APP_ID = process.env.FB_APP_ID;
 const APP_SECRET = process.env.FB_APP_SECRET;
@@ -51,11 +52,25 @@ router.get('/oauth/fb_login', async (req, res) => {
   }
 });
 
-
 // Logout route
-router.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/login');
+router.get('/logout', async (req, res) => {
+  try {
+    if (req.session.user && req.session.user.email) {
+      // Update user's login status in the database
+      let user = await User.findOne({ email: req.session.user.email });
+      
+      if (user) {
+        user.isLoggedIn = false;
+        await user.save();
+      }
+    }
+
+    req.session.destroy();
+    res.redirect('/login');
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 module.exports = router;

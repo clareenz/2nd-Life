@@ -66,7 +66,6 @@ const Login = () => {
   const statusChangeCallback = async (response) => {
     if (response.status === "connected") {
       console.log("Welcome! Fetching your information....");
-
       try {
         const userData = await new Promise((resolve, reject) => {
           window.FB.api('/me', { fields: 'id,name,email' }, (res) => {
@@ -117,7 +116,6 @@ const Login = () => {
         statusChangeCallback(response);
       });
     };
-
     (function (d, s, id) {
       var js,
         fjs = d.getElementsByTagName(s)[0];
@@ -131,17 +129,13 @@ const Login = () => {
     })(document, "script", "facebook-jssdk");
   }, []);
 
-  const handleFacebookLogin = async () => {
-    try {
-      const response = await new Promise((resolve, reject) => {
-        window.FB.login(resolve, { scope: 'email' });
-      });
-
-      statusChangeCallback(response);
-    } catch (error) {
-      console.error('Failed to initiate Facebook login process', error);
-    }
-  };
+// Function to trigger Facebook login
+const handleFacebookLogin = async () => {
+  try {
+    // Trigger Facebook login process
+    const response = await new Promise((resolve) => {
+      window.FB.login(resolve, { scope: 'email' });
+    });
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
