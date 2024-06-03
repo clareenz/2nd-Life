@@ -2,7 +2,7 @@ import React from "react";
 import ShopInfo from "../../components/Shop/ShopInfo";
 import ShopProfileData from "../../components/Shop/ShopProfileData";
 import { Header } from "../../components/Layout/Header";
-import { Footer2 } from "../../components/Layout/Footer";
+import { Footer } from "../../components/Layout/Footer";
 
 const ShopPreviewPage = (isOwner) => {
   return (
@@ -26,7 +26,7 @@ const ShopPreviewPage = (isOwner) => {
         </div>
       </div>
 
-      <Footer2 />
+      <Footer />
     </div>
   );
 };
