@@ -1,4 +1,5 @@
 import LoginPage from "../pages/LoginPage";
+import NamsTechPage from "../pages/NamsTechPage.jsx";
 import LoginAdminPage from "../pages/LoginAdminPage";
 import SignupPage from "../pages/SignupPage";
 import ActivationPage from "../pages/ActivationPage";
@@ -27,6 +28,7 @@ import ReportSellerPage from "../pages/ReportSellerPage.jsx";
 
 export {
   LoginPage,
+  NamsTechPage,
   LoginAdminPage,
   SignupPage,
   ActivationPage,

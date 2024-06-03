@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../components/Layout/Header";
 import CheckoutSteps from "../components/Checkout/CheckoutSteps.jsx";
 import Checkout from "../components/Checkout/Checkout.jsx";
-import {Footer2} from "../components/Layout/Footer";
+import {Footer} from "../components/Layout/Footer";
 
 const CheckoutPage = () => {
   return (
@@ -14,7 +14,7 @@ const CheckoutPage = () => {
       <Checkout />
       <br />
       <br />
-      <Footer2 />
+      <Footer />
     </div>
   );
 };
