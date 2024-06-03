@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { server } from "../../server";
-import { Typography, Avatar, Spin, message, Button } from "antd";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { Typography, Avatar, Spin, message } from "antd";
 import {
   EnvironmentOutlined,
   PhoneOutlined,
@@ -10,15 +9,13 @@ import {
   StarOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { getAllProductsShop } from "../../redux/actions/product";
 import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
+import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
+import axios from "axios";
 import Paragraph from "antd/es/typography/Paragraph";
-import { SlUserFollow } from "react-icons/sl";
-import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
-
-const { Title, Text } = Typography;
+import { BsThreeDots } from "react-icons/bs";
+import { getAllProductsShop } from "../../redux/actions/product";
+import { server } from "../../server";
 
 const ShopInfo = ({ isOwner }) => {
   const [data, setData] = useState({});
@@ -28,23 +25,30 @@ const ShopInfo = ({ isOwner }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-
+  const [followerCount, setFollowerCount] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false); // Track follow state
+  const { Title, Text } = Typography;
   const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getAllProductsShop(id));
+    // Fetch shop info
     setIsLoading(true);
     axios
       .get(`${server}/shop/get-shop-info/${id}`)
       .then((res) => {
         setData(res.data.shop);
         setIsLoading(false);
+        setFollowerCount(res.data.shop.followersCount);
+        setIsFollowing(res.data.shop.followers.includes(user?._id));
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
       });
-  }, [dispatch, id]);
+
+    // Fetch products
+    dispatch(getAllProductsShop(id));
+  }, [dispatch, id, user]);
 
   const logoutHandler = async () => {
     axios
@@ -55,7 +59,7 @@ const ShopInfo = ({ isOwner }) => {
         navigate("/shop-login");
       })
       .catch((error) => {
-        console.log(error.res.data.message);
+        console.log(error.response?.data?.message);
       });
   };
 
@@ -88,7 +92,7 @@ const ShopInfo = ({ isOwner }) => {
           navigate(`/inbox?${res.data.conversation._id}`);
         })
         .catch((error) => {
-          message.error(error.response.data.message);
+          message.error(error.response?.data?.message);
         });
     } else {
       message.error("Please login to create a conversation");
@@ -98,6 +102,35 @@ const ShopInfo = ({ isOwner }) => {
   const handleDotsClick = (event) => {
     event.stopPropagation();
     setShowModal(!showModal);
+  };
+
+  const handleFollowToggle = async () => {
+    try {
+      const action = isFollowing ? "unfollow" : "follow";
+      const response = await axios.post(
+        `${server}/user/${action}/${id}`,
+        null,
+        { withCredentials: true } // Include credentials in the request
+      );
+      if (response.data.success) {
+        // Update follow state
+        setIsFollowing(!isFollowing);
+        // Update follower count
+        setFollowerCount((prevCount) =>
+          isFollowing ? prevCount - 1 : prevCount + 1
+        );
+        message.success(response.data.message);
+      } else {
+        console.error("Error toggling follow:", response.data.message);
+        message.error("Failed to toggle follow");
+      }
+    } catch (error) {
+      console.error(
+        "Error toggling follow:",
+        error.response?.data?.message || error.message
+      );
+      message.error("Failed to toggle follow");
+    }
   };
 
   return (
@@ -112,12 +145,7 @@ const ShopInfo = ({ isOwner }) => {
             />
             {isOwner && (
               <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
-                <input
-                  type="file"
-                  id="image"
-                  className="hidden"
-                  // onChange={handleImage}
-                />
+                <input type="file" id="image" className="hidden" />
                 <label htmlFor="image">
                   <AiOutlineCamera />
                 </label>
@@ -138,9 +166,9 @@ const ShopInfo = ({ isOwner }) => {
           <div className="bg-white rounded-2xl shadow w-full mt-5 p-6">
             <div>
               {isOwner && (
-                <div className="absolute right-4 max-sm:top-5 z-10">
+                <div className="absolute right-4 max-sm:top-5">
                   <Link to="/dashboard">
-                    <div className="bg-[#006665] text-white rounded-3xl text-[14px] hover:bg-[#077773] px-4 py-2 cursor-pointer">
+                    <div className="bg-[#006665] text-white rounded-3xl text-[14px] hover:bg-[#077773] px-4 py-2">
                       Go Dashboard
                     </div>
                   </Link>
@@ -155,19 +183,31 @@ const ShopInfo = ({ isOwner }) => {
                     <span className="text-[13px] mr-1">Message</span>
                     <AiOutlineMessage size={15} className="text-white" />
                   </div>
-                  <div className="bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]">
-                    <span className="text-[13px] mr-1">Follow</span>
-                    <SlUserFollow size={15} className="text-white" />
+                  {/* Follow button logic */}
+                  <div
+                    className={`bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]`}
+                    onClick={handleFollowToggle}
+                  >
+                    {/* Display "Follow" or "Unfollow" based on follow state */}
+                    <span className="text-[13px] mr-1">
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </span>
+                    {isFollowing ? (
+                      <SlUserUnfollow size={15} className="text-white" />
+                    ) : (
+                      <SlUserFollow size={15} className="text-white" />
+                    )}
                   </div>
                 </div>
               )}
             </div>
             <div className="relative ">
-                <Button
-                  type="text"
-                  icon={<HiMiniEllipsisHorizontal size={30} title="options" />}
+              <div className="">
+                <BsThreeDots
                   onClick={handleDotsClick}
+                  className="cursor-pointer text-xl "
                 />
+              </div>
               {showModal && (
                 <div className="">
                   {isOwner ? (
@@ -181,6 +221,20 @@ const ShopInfo = ({ isOwner }) => {
                         </div>
                       </Link>
                       <div
+                        className={` border border-006665  h-7 items-center cursor-pointer px-3 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]`}
+                      >
+                        <Link to="/dashboard">
+                          <div>Dashboard</div>
+                        </Link>
+                      </div>
+                      <Link to={`/shop/preview/${id}`}>
+                        <div
+                          className={`border border-006665 h-7 flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
+                        >
+                          Shop
+                        </div>
+                      </Link>
+                      <div
                         className={` border border-006665  h-7 items-center   cursor-pointer  px-3 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]`}
                         onClick={logoutHandler}
                       >
@@ -189,17 +243,15 @@ const ShopInfo = ({ isOwner }) => {
                     </div>
                   ) : (
                     <div className=" z-10 absolute top-8 left-0 bg-white shadow-lg rounded-lg p-4">
-                      <Link
-                        to={`/report-shop?shopId=${data._id}`}
-                        className="ml-2"
+                      <div
+                        className={`border border-006665 h-7  flex items-center  cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
                       >
-                        Report this shop
-                      </Link>
+                        Report
+                      </div>
                     </div>
                   )}
                 </div>
               )}
-
             </div>
 
             <div className="pt-[70px]">
@@ -241,7 +293,9 @@ const ShopInfo = ({ isOwner }) => {
                     <Title level={5} className="ml-2 mb-0">
                       Shop Ratings:
                     </Title>
-                    <Text className="ml-2 mb-0">{averageRating}/5</Text>
+                    <Text className="ml-2 mb-0">
+                      {averageRating.toFixed(1)}/5
+                    </Text>
                   </div>
 
                   <div className="flex">
@@ -253,24 +307,19 @@ const ShopInfo = ({ isOwner }) => {
                       {data?.createdAt?.slice(0, 10)}
                     </Text>
                   </div>
+
+                  {/* Display follower count */}
+                  <div className="mt-2">
+                    <div className="flex">
+                      <StarOutlined className="mb-1" />
+                      <Title level={5} className="ml-2 mb-0">
+                        Followers:
+                      </Title>
+                      <Text className="ml-2 mb-0">{followerCount}</Text>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {!isOwner && (
-                <div className=" justify-center items-center flex flex-row space-x-2 sm:hidden">
-                  <div
-                    className="bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]"
-                    onClick={handleMessageSubmit}
-                  >
-                    <span className="text-[13px] mr-1">Message</span>
-                    <AiOutlineMessage size={15} className="text-white" />
-                  </div>
-                  <div className="bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]">
-                    <span className="text-[13px] mr-1">Follow</span>
-                    <SlUserFollow size={15} className="text-white" />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

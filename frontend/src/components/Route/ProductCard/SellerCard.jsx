@@ -34,7 +34,7 @@ export const SellerCard = ({ data }) => {
           );
           console.log("Response received:", response.data);
           setAverageRating(response.data.overallAverageRating);
-          // message.success(response.success);
+          message.success(response.success);
         } else {
           console.log("Product ID not available");
         }
