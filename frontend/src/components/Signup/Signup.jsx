@@ -109,7 +109,7 @@ const Signup = () => {
   }, [email, password, name, confirmPassword]); // Listen for changes in email and password fields
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-50 lg:flex-row login-div">
+    <div className="flex flex-col items-center justify-center min-h-screen py-12  lg:flex-row login-div">
       {/* Left side with the image */}
       <div className="w-1/4 lg:w-flex md:w-1/3 sm:w-1/3">
         <img src="/2ndLife_Logo.png" alt="2ndLife Logo" />

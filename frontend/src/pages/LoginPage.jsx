@@ -5,7 +5,7 @@ import Login from "../components/Logins/Login.jsx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {Header2 } from "../components/Layout/Header.jsx";
-import { Footer2 } from "../components/Layout/Footer.jsx";
+import { Footer } from "../components/Layout/Footer.jsx";
 
 const LoginPage= () => {
 
@@ -23,7 +23,7 @@ const LoginPage= () => {
     <div className="w-full h-screen bg-gray-50">
       <Header2 />
       <Login />
-      <Footer2 />
+      <Footer />
     </div>
   );
 }

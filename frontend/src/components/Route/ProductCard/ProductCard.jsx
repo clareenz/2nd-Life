@@ -57,7 +57,7 @@ const ProductCard = ({ data }) => {
           setTotalReview(response.data.totalReview);
           setAverageRating(response.data.averageRating);
           console.log(response.data.averageRating)
-          message.success(response.success);
+          // message.success(response.success);
         } else {
           console.log('Product ID not available');
         }

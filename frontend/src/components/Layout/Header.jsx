@@ -60,7 +60,7 @@ const Header = ({ activeHeading }) => {
         setNotifications(response.data.notifications);
         setUnreadNotifications(response.data.unreadNotifications);
         console.log("not ig" + response.data.notifications)
-        message.success(response.data.success);
+        // message.success(response.data.success);
       } catch (error) {
         message.error(error.response.data.message);
       }

@@ -13,42 +13,78 @@ const Categories = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 8,
+    slidesToShow: 9,
     slidesToScroll: 5,
     autoplay: true,
     centerMode: true,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1920, // Large desktop screens
         settings: {
-          slidesToShow: 6,
+          slidesToShow: 7.5,
           slidesToScroll: 4,
-          centerMode: true,
           infinite: true,
+          centerMode: true,
         },
       },
       {
-        breakpoint: 768,
+        breakpoint: 1440, // Medium desktop screens
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 6.5,
+          slidesToScroll: 4,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 1280, // Small desktop screens
+        settings: {
+          slidesToShow: 5.5,
+          slidesToScroll: 3,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 1024, // Tablets in landscape mode
+        settings: {
+          slidesToShow: 4.5,
+          slidesToScroll: 3,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 768, // Tablets in portrait mode
+        settings: {
+          slidesToShow: 3.5,
           slidesToScroll: 2,
           infinite: true,
           centerMode: true,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 640, // Large smartphones
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
+          slidesToScroll: 2,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 480, // Small smartphones
+        settings: {
+          slidesToShow: 1.5,
           slidesToScroll: 1,
           infinite: true,
           centerMode: true,
         },
       },
       {
-        breakpoint: 320,
+        breakpoint: 320, // Extra small smartphones
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           infinite: true,
           centerMode: true,
@@ -56,6 +92,7 @@ const Categories = () => {
       },
     ],
   };
+  
   
 
   return (
@@ -94,7 +131,7 @@ const Categories = () => {
               >
                 <img
                   src={category.image_Url}
-                  className="w-[130px] h-[100px] object-cover items-center"
+                  className="w-[90px] h-[100px] object-cover items-center"
                   alt=""
                 />
               </div>

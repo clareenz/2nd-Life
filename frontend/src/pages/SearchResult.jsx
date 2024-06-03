@@ -1,7 +1,7 @@
 import React from "react";
 import Searches from "../components/Route/Searches";
 import { SearchHeader, Header } from "../components/Layout/Header.jsx";
-import { Footer2 } from "../components/Layout/Footer.jsx";
+import { Footer } from "../components/Layout/Footer.jsx";
 
 const SearchResult = () => {
   return (
@@ -14,7 +14,7 @@ const SearchResult = () => {
       <br />
       <br />
       <br />
-      <Footer2 />
+      <Footer />
     </div>
   );
 };
