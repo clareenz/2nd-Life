@@ -65,7 +65,6 @@ const sendSellerActivationEmail = async (options) => {
   // Read the HTML template file
   const htmlTemplate = fs.readFileSync(path.join(__dirname, "emailTemplateSeller.html"), 'utf8');
 
-  console.log(options)
   // Replace placeholders with actual values
   const htmlContent = htmlTemplate
     .replace("{{name}}", options.name )

@@ -102,37 +102,29 @@ router.delete(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log(
-        `Received request to delete product with id: ${req.params.id}`
-      );
 
       const product = await Product.findById(req.params.id);
       if (!product) {
-        console.log(`Product not found with id: ${req.params.id}`);
         return next(new ErrorHandler("Product is not found with this id", 404));
       }
 
-      console.log("Product found:", product);
 
       // Delete images from Cloudinary
       for (let i = 0; i < product.images.length; i++) {
         const image = product.images[i];
         if (image && image.public_id) {
           const result = await cloudinary.uploader.destroy(image.public_id);
-          console.log(`Deleted image ${image.public_id}:`, result);
         }
       }
 
       // Delete the product from the database
       await product.deleteOne();
-      console.log("Product removed successfully");
 
       res.status(200).json({
         success: true,
         message: "Product Deleted successfully!",
       });
     } catch (error) {
-      console.error("Error during product deletion:", error);
       return next(new ErrorHandler(error.message, 400));
     }
   })
@@ -342,7 +334,6 @@ router.get(
             totalReviews
           : 0;
       console.log("Average rating:", averageRating);
-
       // Respond with the product's total reviews and average rating
       res.status(201).json({
         success: true,

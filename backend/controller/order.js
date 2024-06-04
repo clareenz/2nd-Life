@@ -6,6 +6,7 @@ const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
 const Order = require("../model/order");
 const Product = require("../model/product");
 const Shop = require("../model/shop");
+const axios = require("axios");
 
 
 //create order
@@ -76,8 +77,9 @@ router.post(
 router.get(
   "/get-all-orders/:userId",
   catchAsyncErrors(async (req, res, next) => {
+    console.log("hello")
     try {
-      const orders = await Order.find({ "user._id": req.params.userId }).sort({
+      const orders = await Order.find({ user: req.params.userId }).sort({
         createdAt: -1,
       });
 
@@ -253,4 +255,61 @@ router.get(
     }
   })
 );
+
+router.put(
+  "/update-orders-user/:userId",
+  catchAsyncErrors(async (req, res, next) => {
+    const { userId } = req.params;
+    console.log(userId);
+    try {
+      // Retrieve all orders of the user
+      const orders = await Order.find({ user: userId });
+
+      // Iterate through each order to get the paymentInfo.id and make a request to PayMongo
+      const updatedOrders = await Promise.all(
+        orders.map(async (order) => {
+          console.log(order.paymentInfo?.id)
+          const options = {
+            method: "GET",
+            url: `https://api.paymongo.com/v1/checkout_sessions/${order.paymentInfo?.id}`,
+            headers: {
+              accept: "application/json",
+              authorization:
+                "Basic c2tfdGVzdF9MeW9DQmhnUkJaQjVuelNvVnYxajVQeWg6",
+            },
+          };
+
+          try {
+            const response = await axios.request(options);
+            
+            // Update the order payment status based on the PayMongo response
+            if (
+              response.data &&
+              response.data.data &&
+              response.data.data.attributes.payments[0].attributes
+            ) {
+              console.log(response.data.data.attributes.payments[0].attributes.status);
+              order.paymentInfo.status =
+                response.data.data.attributes.payments[0].attributes.status
+              await order.save();
+            }
+          } catch (error) {
+            //console.error( `Failed to update order ${order._id}:`, error.message);
+          }
+
+          return order;
+        })
+      );
+
+      // Respond to the client with the updated orders
+      res.status(200).json({
+        success: true,
+        orders: updatedOrders,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
 module.exports = router;
