@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const router = express.Router();
-const fs = require("fs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {
   sendPasswordResetEmail,
@@ -15,7 +15,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const sendShopToken = require("../utils/shopToken");
 const cloudinary = require("cloudinary");
 const Product = require("../model/product");
-
+const ShopDeleteRequest = require("../model/shopDeleteRequest");
 
 // Load environment variables
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -261,7 +261,15 @@ router.put(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const { email, password, phoneNumber, name, description, address, zipCode } = req.body;
+      const {
+        email,
+        password,
+        phoneNumber,
+        name,
+        description,
+        address,
+        zipCode,
+      } = req.body;
 
       // Find the seller by their ID (better security)
       const seller = await Shop.findById(req.seller.id).select("+password");
@@ -275,7 +283,10 @@ router.put(
 
       if (!isPasswordValid) {
         return next(
-          new ErrorHandler("Incorrect password. Please provide the correct information", 400)
+          new ErrorHandler(
+            "Incorrect password. Please provide the correct information",
+            400
+          )
         );
       }
 
@@ -299,7 +310,6 @@ router.put(
     }
   })
 );
-
 
 // update shop password
 router.put(
@@ -500,7 +510,6 @@ router.post(
 
       // Send success response
       res.status(200).send({ message: "Password updated" });
-
     } catch (error) {
       // Handle specific JWT errors
       if (error.name === "TokenExpiredError") {
@@ -520,12 +529,12 @@ router.get(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const shop = await Shop.findById(req.params.id)
-        .populate('followers')
+        .populate("followers")
         .populate({
-          path: 'reviews.user', // Populate user info for each review
-          select: 'username email' // Select fields to include from user
+          path: "reviews.user", // Populate user info for each review
+          select: "username email", // Select fields to include from user
         });
-      
+
       if (!shop) {
         return next(new ErrorHandler("Shop not found", 404));
       }
@@ -541,47 +550,131 @@ router.get(
 );
 
 // Get follower count of a shop
-router.get("/followers/:shopId", isAuthenticated, catchAsyncErrors(async (req, res) => {
-  try {
-    const shopId = req.params.shopId;
+router.get(
+  "/followers/:shopId",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res) => {
+    try {
+      const shopId = req.params.shopId;
 
-    const shop = await Shop.findById(shopId);
-    if (!shop) {
-      return res.status(404).json({ success: false, message: "Shop not found" });
+      const shop = await Shop.findById(shopId);
+      if (!shop) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Shop not found" });
+      }
+
+      // Return the follower count of the shop
+      res
+        .status(200)
+        .json({ success: true, followersCount: shop.followersCount });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
     }
-
-    // Return the follower count of the shop
-    res.status(200).json({ success: true, followersCount: shop.followersCount });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
-}));
+  })
+);
 
 // Get follower count of the shop that owns the product
-router.get("/followers/:productId", isAuthenticated, catchAsyncErrors(async (req, res) => {
-  try {
-    const productId = req.params.productId;
+router.get(
+  "/followers/:productId",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res) => {
+    try {
+      const productId = req.params.productId;
 
-    // Find the product by productId
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+      // Find the product by productId
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Product not found" });
+      }
+
+      // Find the shop that owns the product
+      const shop = await Shop.findById(product.shop);
+      if (!shop) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Shop not found" });
+      }
+
+      // Return the follower count of the shop
+      res
+        .status(200)
+        .json({
+          success: true,
+          shopId: shop._id,
+          followersCount: shop.followersCount,
+        });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
     }
+  })
+);
 
-    // Find the shop that owns the product
-    const shop = await Shop.findById(product.shop);
-    if (!shop) {
-      return res.status(404).json({ success: false, message: "Shop not found" });
+// check if shop exists
+router.post(
+  "/check-shop-exists",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { email } = req.body;
+
+      // Find the shop by email
+      const shop = await Shop.findOne({ email });
+
+      if (!shop) {
+        return next(new ErrorHandler("Shop not found", 404));
+      }
+
+      res.status(200).json({
+        success: true,
+        shopId: shop._id,
+        shopName: shop.name,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
     }
+  })
+);
 
-    // Return the follower count of the shop
-    res.status(200).json({ success: true, shopId: shop._id, followersCount: shop.followersCount });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
-}));
+// request to delete shop
+router.post(
+  "/request-delete-shop",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { shopId, reason } = req.body;
+
+      // Find the shop by shopId
+      const shop = await Shop.findById(shopId);
+
+      if (!shop) {
+        return next(new ErrorHandler("Shop not found", 404));
+      }
+
+      // Create a new deletion request
+      const deletionRequest = new ShopDeleteRequest({
+        shop: shop._id,
+        reason: reason,
+      });
+      console.log(deletionRequest);
+      // Save the deletion request in the database
+      await deletionRequest.save();
+
+      res.status(201).json({
+        success: true,
+        message: "Request to delete shop has been sent.",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 // Get follower count of the shop that owns the product
 router.get("/followers/:productId", isAuthenticated, catchAsyncErrors(async (req, res) => {

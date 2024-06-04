@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import styles from "../../styles/styles";
-import { Country, State } from "country-state-city";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { server } from "../../server";
 import { message } from "antd";
+import axios from "axios";
+import { Country, State } from "country-state-city";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { server } from "../../server";
+import styles from "../../styles/styles";
 
 const Checkout = () => {
   const { user } = useSelector((state) => state.user);
@@ -84,7 +84,9 @@ const Checkout = () => {
         cancelUrl: "http://localhost:3000/checkout",
       };
 
+      console.log(checkoutData);
       try {
+        console.log("fuck")
         const response = await axios.post(
           `${server}/payment/create-checkout-session`,
           checkoutData
