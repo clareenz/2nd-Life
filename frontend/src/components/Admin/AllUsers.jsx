@@ -19,7 +19,6 @@ import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
 import styles from "../../styles/styles";
-import { toast } from "react-toastify";
 import { EllipsisOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
@@ -37,7 +36,7 @@ const AllUsers = () => {
     await axios
       .delete(`${server}/user/delete-user/${id}`, { withCredentials: true })
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
       })
       .catch((err) => {
         message.error("Failed to delete user.");

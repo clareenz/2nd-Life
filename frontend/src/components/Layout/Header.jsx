@@ -16,7 +16,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { backend_url, server } from "../../server";
 import { categoriesData } from "../../static/data";
 import styles from "../../styles/styles";
@@ -720,7 +719,7 @@ const Header2 = ({ activeHeading }) => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
         window.location.reload(true);
         navigate("/login");
       })
@@ -1261,7 +1260,7 @@ const SearchHeader = ({ activeHeading }) => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
         window.location.reload(true);
         navigate("/login");
       })

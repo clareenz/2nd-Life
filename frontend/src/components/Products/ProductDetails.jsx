@@ -16,8 +16,12 @@ import { IoBagHandleOutline } from "react-icons/io5";
 import { GoReport } from "react-icons/go";
 import { RiUserFollowLine, RiUserFollowFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { addToCart } from "../../redux/actions/cart";
 import { getAllProductsShop } from "../../redux/actions/product";
 import {
@@ -29,6 +33,7 @@ import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import CountDown from "../Events/CountDown.jsx";
 import Ratings from "./Ratings";
+import { BsThreeDots } from "react-icons/bs";
 
 const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -47,6 +52,29 @@ const ProductDetails = ({ data }) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleClickOutside = (event) => {
+    if (event.target.closest(".dropdown-menu") === null) {
+      setShowDropdown(false);
+    }
+  };
+
+  // Add event listener to handle clicks outside the dropdown
+  React.useEffect(() => {
+    if (showDropdown) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showDropdown]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -54,7 +82,7 @@ const ProductDetails = ({ data }) => {
         const response = await axios.get(`${server}/product/get-product/${id}`);
         setProduct(response.data.product);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       }
     };
     fetchProduct();
@@ -119,7 +147,7 @@ const ProductDetails = ({ data }) => {
       }
     }
   };
-  
+
   const totalReviewsLength =
     products &&
     products.reduce((acc, product) => acc + product.reviews.length, 0);
@@ -145,7 +173,6 @@ const ProductDetails = ({ data }) => {
   const quantityChangeHandler = (data) => {
     dispatch(addToCart(data));
   };
-
 
   return (
     <div className="pt-[60px]">
@@ -186,8 +213,27 @@ const ProductDetails = ({ data }) => {
                   </div>
                 </div>
                 <div className="w-full lg:w-[50%] lg:px-10">
-                  <div className="marquee">
-                    <h1 className={`${styles.productTitle}`}>{data.name}</h1>
+                  <div className="flex items-center justify-between">
+                    <div className="marquee">
+                      <h1 className={`${styles.productTitle}`}>{data.name}</h1>
+                    </div>
+                    <div className="app-container">
+                      <button onClick={toggleDropdown}>
+                        <BsThreeDots size={20} title="Report" />
+                      </button>
+
+                      {showDropdown && (
+                        <div className=" z-10 absolute top-8 left-0 bg-white shadow-lg rounded-lg p-4">
+                          <div
+                            className={` flex items-center text-black  cursor-pointer`}
+                          >
+                            <Link to={`/report?productId=${data._id}`}>
+                              Report
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div style={{ width: "100%" }}>
                     <Paragraph
@@ -291,36 +337,31 @@ const ProductDetails = ({ data }) => {
                           <img
                             src={`${data?.shop?.avatar?.url}`}
                             alt=""
-                            className="w-[50px] h-[50px] rounded-full mr-2"
+                            className="w-[50px] h-[50px] rounded-full mr-2 object-cover"
                           />
                         </Link>
                       </div>
                       <div>
-                        <div className="flex items-center">
-                          <Link
-                            to={`/shop/preview/${data.shop._id}`}
-                            className={`${styles.shop_name}`}
-                          >
-                            {data.shop.name}
-                          </Link>
-                        </div>
-                        <h5 className="text-[13px] mt-1">
+                        <Link
+                          to={`/shop/preview/${data.shop._id}`}
+                          className={`${styles.shop_name} marquee`}
+                        >
+                          {data.shop.name}
+                        </Link>
+
+                        <h5 className="text-[13px] mt-1 marquee">
                           ({averageRating}/5) Ratings
                         </h5>
                       </div>
                     </div>
                     <div
-                      className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                      className={`${styles.button6} ml-2 !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                       onClick={view}
                     >
                       <span className="text-white text-[13px] mr-1">
                         View Shop
                       </span>
                     </div>
-                    {/* Report Icon */}
-                    <Link to={`/report?productId=${data._id}`}>
-                      <GoReport size={30} title="Report" />
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -426,27 +467,31 @@ const ProductDetailsInfo = ({
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center">
-                    <Link
-                      to={`/shop/preview/${data.shop._id}`}
-                      className={`${styles.shop_name}`}
-                    >
-                      {data.shop.name}
-                    </Link>
-                    {isAuthenticated && (
-                      <>
-                        {isFollowing ? (
-                          <RiUserFollowFill
-                            className="ml-2 text-red-500 cursor-pointer"
-                            onClick={handleFollowToggle}
-                          />
-                        ) : (
-                          <RiUserFollowLine
-                            className="ml-2 text-gray-500 cursor-pointer"
-                            onClick={handleFollowToggle}
-                          />
-                        )}
-                      </>
-                    )}
+                    <div>
+                      <Link
+                        to={`/shop/preview/${data.shop._id}`}
+                        className={`${styles.shop_name}`}
+                      >
+                        {data.shop.name}
+                      </Link>
+                    </div>
+                    <div>
+                      {isAuthenticated && (
+                        <>
+                          {isFollowing ? (
+                            <RiUserFollowFill
+                              className="ml-2 text-red-500 cursor-pointer"
+                              onClick={handleFollowToggle}
+                            />
+                          ) : (
+                            <RiUserFollowLine
+                              className="ml-2 text-gray-500 cursor-pointer"
+                              onClick={handleFollowToggle}
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
                   <h5 className="text-[13px] mt-1">
                     ({averageRating}/5) Ratings
@@ -484,7 +529,7 @@ const ProductDetailsInfo = ({
                   <div className="flex justify-center mt-3">
                     <Link to={`/shop/preview/${data?.shop._id}`}>
                       <div
-                        className={`${styles.button6} rounded-full !h-[39.5px] bg-[#006665] hover:bg-[#FF8474] text-white`}
+                        className={`${styles.button6} rounded-full h-8 bg-[#006665] hover:bg-[#FF8474] text-white`}
                       >
                         Visit Shop
                       </div>

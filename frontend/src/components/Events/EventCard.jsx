@@ -11,7 +11,6 @@ import { server } from "../../server";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { AiOutlineMessage } from "react-icons/ai";
 
 const EventCard = ({ active, data = {}, shop }) => {
@@ -155,7 +154,7 @@ const EventCard = ({ active, data = {}, shop }) => {
               </div>
             </div>
             <div
-              className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+              className={`${styles.button6} ml-2 !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
               onClick={view}
             >
               <span className="text-white text-[13px] mr-1">View Shop</span>
