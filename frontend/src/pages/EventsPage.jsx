@@ -25,8 +25,8 @@ const EventsPage = () => {
         <div>
           <div>
             <Header activeHeading={4} />
-            <div className="flex justify-end mt-4 mr-9 mb-8 pt-[80px] xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
-              <div className="flex items-center mb-4 absolute left-10 xl:px-[10mm] lg:px-[10mm] md:px-[10mm] sm:px-[10mm]">
+            <div className="flex justify-end mt-4 mr-9 mb-8 pt-[80px] ">
+              <div className="flex items-center mb-4 absolute left-3 2xl:-left-20 xl:left-20 lg:left-20 md:left-10 sm:left-6">
                 <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
                   {/* Small box */}
                 </div>
@@ -34,43 +34,15 @@ const EventsPage = () => {
                   Events
                 </h1>
               </div>
-              <div className="">
-                <button
-                  className={`mr-2 text-[13px] ${
-                    viewType === "grid" ? "bg-[#FFEAE8]" : "bg-white"
-                  } px-3 py-1 rounded-md`}
-                  onClick={switchToGridView}
-                >
-                  Grid View
-                </button>
-                <button
-                  className={`mr-2 text-[13px] ${
-                    viewType === "list" ? "bg-[#FFEAE8]" : "bg-white"
-                  } px-3 py-1 rounded-md`}
-                  onClick={switchToListView}
-                >
-                  List View
-                </button>
-              </div>
             </div>
             {allEvents.length > 0 ? (
-              viewType === "grid" ? (
-                <div className={`pt-[15px]`}>
-                  <div className="grid gap-[20px] md:grid-cols-2 lg:grid-cols-2">
-                    {allEvents.map((event) => (
-                      <EventCard2 key={event.id} active={true} data={event} />
-                    ))}
-                  </div>
+              <div className="pt-[15px]">
+                <div className="gap-[20px] grid">
+                  {allEvents.map((event) => (
+                    <EventCard key={event.id} active={true} data={event} />
+                  ))}
                 </div>
-              ) : (
-                <div className="pt-[15px]">
-                  <div className="">
-                    {allEvents.map((event) => (
-                      <EventCard key={event.id} active={true} data={event} />
-                    ))}
-                  </div>
-                </div>
-              )
+              </div>
             ) : (
               <div className="w-full flex justify-center items-center text-md">
                 <p className="text-gray-500">No events</p>
