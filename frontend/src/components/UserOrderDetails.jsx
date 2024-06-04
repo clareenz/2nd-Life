@@ -69,28 +69,6 @@ const UserOrderDetails = () => {
       });
   };
 
-  const handleMessageSubmit = async () => {
-    if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
-      const userId = user._id;
-      const sellerId = data._id;
-      await axios
-        .post(`${server}/conversation/create-new-conversation`, {
-          groupTitle,
-          userId,
-          sellerId,
-        })
-        .then((res) => {
-          navigate(`/inbox?${res.data.conversation._id}`);
-        })
-        .catch((error) => {
-          message.error(error.response.data.message);
-        });
-    } else {
-      message.error("Please login to create a conversation");
-    }
-  };
-
   return (
     <div className="min-h-screen pt-[100px] pb-[50px] flex items-center justify-center">
       <div className="bg-white p-5 w-[75%] rounded-2xl shadow-lg">
@@ -221,9 +199,7 @@ const UserOrderDetails = () => {
             <h4 className="mt-2 ">
               {data?.shippingAddress.city + " " + data?.shippingAddress.zipCode}
             </h4>
-            <h4 className="">
-              {data?.shippingAddress.country}
-            </h4>
+            <h4 className="">{data?.shippingAddress.country}</h4>
             <h4 className="">{data?.shippingAddress.city}</h4>
             <h4 className="">{data?.user.phoneNumber}</h4>
           </div>
@@ -244,14 +220,6 @@ const UserOrderDetails = () => {
               // </div>
             )} */}
           </div>
-        </div>
-
-        <div
-          className={`w-[150px] border border-006665  my-3  justify-center  cursor-pointer ml-2 !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-          onClick={handleMessageSubmit}
-        >
-          <span className="text-white text-[13px] mr-1">Message</span>
-          <AiOutlineMessage className="text-white" />
         </div>
       </div>
     </div>
