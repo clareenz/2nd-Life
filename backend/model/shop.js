@@ -104,7 +104,6 @@ const shopSchema = new mongoose.Schema({
     default: Date.now(),
   },
   reviews: [ReviewSchema], //
-
   followers: [
     {
       type: mongoose.Schema.Types.ObjectId,

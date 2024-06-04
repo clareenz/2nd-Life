@@ -246,7 +246,11 @@ const ShopInfo = ({ isOwner }) => {
                       <div
                         className={`border border-006665 h-7  flex items-center  cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
                       >
-                        Report
+                        <Link
+                          to={`/report-shop?shopId=${id}`}
+                        >
+                          Report
+                        </Link>
                       </div>
                     </div>
                   )}
