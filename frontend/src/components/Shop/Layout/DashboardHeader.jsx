@@ -141,7 +141,7 @@ const DashboardHeader = () => {
                     <Link to="/">
                       <div
                         type="primary"
-                        className='border border-006665 text-[14px]  h-7 items-center   cursor-pointer  px-4 py-3 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]'
+                        className='border border-006665 text-[14px]  h-7 items-center   cursor-pointer  px-3 py-1 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]'
                       >
                         HomePage
                       </div>
@@ -149,7 +149,7 @@ const DashboardHeader = () => {
 
                   </div>
                 </div>
-              )};
+              )}
           </div>
         </div>
       </div>
