@@ -29,6 +29,8 @@ const DashboardMessages = () => {
   const scrollRef = useRef(null);
   const [activeKey, setActiveKey] = useState(null);
 
+  
+
   useEffect(() => {
     socketId.on("getMessage", (data) => {
       setArrivalMessage({
@@ -197,6 +199,7 @@ const DashboardMessages = () => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
+
 
   return (
     //inbox na walang open na chat
@@ -374,6 +377,8 @@ const MessageList = ({
     };
     getUser();
   }, [me, data]);
+
+
 
   return (
     <div

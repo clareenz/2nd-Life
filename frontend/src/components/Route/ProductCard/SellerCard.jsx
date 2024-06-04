@@ -47,25 +47,9 @@ export const SellerCard = ({ data }) => {
     fetchNotifications();
   }, [data]); // Add data to the dependency array
 
-  const handleMessageSubmit = async () => {
-    if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
-      const userId = user._id;
-      const sellerId = data.shop._id;
-      await axios
-        .post(`${server}/conversation/create-new-conversation`, {
-          groupTitle,
-          userId,
-          sellerId,
-        })
-        .then((res) => {
-          navigate(`/inbox?${res.data.conversation._id}`);
-        })
-        .catch((error) => {
-          message.error(error.response.data.message);
-        });
-    } else {
-      message.error("Please login to create a conversation");
+  const view = () => {
+    if (Event) {
+      window.location.href = `/shop/preview/${data?.shop._id}`;
     }
   };
 
@@ -156,10 +140,9 @@ export const SellerCard = ({ data }) => {
           <div className="flex flex-row justify-center space-x-1 ">
             <div
               className={`w-[80px] px-1  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
-              onClick={handleMessageSubmit}
+              onClick={view}
             >
-              <span className="text-white text-[12px] mr-1">Message</span>
-              <AiOutlineMessage size={13} className="text-white" />
+              <span className="text-white text-[12px] mr-1">View</span>
             </div>
             <div
               className={`w-[80px] px-1 bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
@@ -168,11 +151,11 @@ export const SellerCard = ({ data }) => {
               <span className="text-white text-[12px] mr-1">
                 {isFollowing ? "Unfollow" : "Follow"}
               </span>
-              {isFollowing ? (
+              {/* {isFollowing ? (
                 <SlUserUnfollow size={13} className="text-white" />
               ) : (
                 <SlUserFollow size={13} className="text-white" />
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -213,25 +196,10 @@ export const SellerCard2 = ({ data }) => {
 
     fetchNotifications();
   }, [data]); // Add data to the dependency array
-  const handleMessageSubmit = async () => {
-    if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
-      const userId = user._id;
-      const sellerId = data.shop._id;
-      await axios
-        .post(`${server}/conversation/create-new-conversation`, {
-          groupTitle,
-          userId,
-          sellerId,
-        })
-        .then((res) => {
-          navigate(`/inbox?${res.data.conversation._id}`);
-        })
-        .catch((error) => {
-          message.error(error.response.data.message);
-        });
-    } else {
-      message.error("Please login to create a conversation");
+
+  const view = () => {
+    if (Event) {
+      window.location.href = `/shop/preview/${data?.shop._id}`;
     }
   };
 
@@ -326,10 +294,9 @@ export const SellerCard2 = ({ data }) => {
           <div className="flex flex-col space-y-1">
             <div
               className={`w-[80px]  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
-              onClick={handleMessageSubmit}
+              onClick={view}
             >
-              <span className="text-white text-[12px] mr-1">Message</span>
-              <AiOutlineMessage size={13} className="text-white" />
+              <span className="text-white text-[12px] mr-1">view</span>
             </div>
             <div
               className={`w-[80px] px-1 bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
@@ -338,11 +305,11 @@ export const SellerCard2 = ({ data }) => {
               <span className="text-white text-[12px] mr-1">
                 {isFollowing ? "Unfollow" : "Follow"}
               </span>
-              {isFollowing ? (
+              {/* {isFollowing ? (
                 <SlUserUnfollow size={13} className="text-white" />
               ) : (
                 <SlUserFollow size={13} className="text-white" />
-              )}
+              )} */}
             </div>
           </div>
         </div>
