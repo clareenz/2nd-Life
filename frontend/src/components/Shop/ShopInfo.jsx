@@ -13,9 +13,17 @@ import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import axios from "axios";
 import Paragraph from "antd/es/typography/Paragraph";
+
 import { BsThreeDots } from "react-icons/bs";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { server } from "../../server";
+
+import { SlUserFollow } from "react-icons/sl";
+import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
+import styles from "../../styles/styles";
+
+const { Title, Text } = Typography;
+
 
 const ShopInfo = ({ isOwner }) => {
   const [data, setData] = useState({});
@@ -175,14 +183,15 @@ const ShopInfo = ({ isOwner }) => {
                 </div>
               )}
               {!isOwner && (
-                <div className="absolute right-7 flex flex-row space-x-2 max-sm:hidden">
+                <div className="absolute right-7 flex flex-row space-x-2 max-sm:hidden z-10">
                   <div
-                    className="bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]"
+                    className={`border border-006665 my-3 justify-center cursor-pointer px-4 py-2 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                     onClick={handleMessageSubmit}
                   >
-                    <span className="text-[13px] mr-1">Message</span>
-                    <AiOutlineMessage size={15} className="text-white" />
+                    <span className="text-white text-[13px] mr-1">Message</span>
+                    <AiOutlineMessage className="text-white" />
                   </div>
+
                   {/* Follow button logic */}
                   <div
                     className={`bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]`}
@@ -197,17 +206,20 @@ const ShopInfo = ({ isOwner }) => {
                     ) : (
                       <SlUserFollow size={15} className="text-white" />
                     )}
+
                   </div>
                 </div>
               )}
             </div>
             <div className="relative ">
+
               <div className="">
                 <BsThreeDots
                   onClick={handleDotsClick}
                   className="cursor-pointer text-xl "
                 />
               </div>
+
               {showModal && (
                 <div className="">
                   {isOwner ? (

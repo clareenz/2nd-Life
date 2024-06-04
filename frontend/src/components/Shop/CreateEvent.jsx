@@ -77,7 +77,7 @@ const CreateEvent = () => {
     newForm.append("description", description);
     newForm.append("category", category);
     newForm.append("tags", tags);
-    newForm.append("originalPrice", values.originalPrice || 0);
+    newForm.append("originalPrice", values.originalPrice);
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
@@ -133,27 +133,28 @@ const CreateEvent = () => {
               </Form.Item>
             </div>
             <div className="input-wrapper w-[50%]">
-              <label htmlFor="Category">
+              <label htmlFor="category">
                 <span className="text-red-500">*</span>Category:
               </label>
               <Form.Item
-                className="custom-input rounded-2xl"
                 name="category"
                 rules={[
                   { required: true, message: "Please select product category" },
                 ]}
               >
-                <Select
+                <select
+                  className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
                   id="category"
-                  placeholder="Choose a category"
-                  className="custom-select"
                 >
+                  <option value="" disabled selected>
+                    Choose a category
+                  </option>
                   {categoriesData.map((category) => (
-                    <Option key={category.title} value={category.title}>
+                    <option key={category.title} value={category.title}>
                       {category.title}
-                    </Option>
+                    </option>
                   ))}
-                </Select>
+                </select>
               </Form.Item>
             </div>
           </div>
@@ -171,21 +172,29 @@ const CreateEvent = () => {
             </div>
 
             <div className="input-wrapper w-[50%]">
-              <label htmlFor="Original Price">
-                <span className="text-red-500"></span>Original Price:{" "}
+              <label htmlFor="originalPrice">
+                <span className="text-red-500">*</span>Original Price:{" "}
+                <span className="text-gray-400 text-[12px]">
+                  (Original price boosts sales, encouraging purchases.)
+                </span>
               </label>
-              <Form.Item name="originalPrice">
+
+              <Form.Item
+                name="originalPrice"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input product price with discount",
+                  },
+                ]}
+              >
                 <Input
                   id="originalPrice"
                   type="number"
-                  placeholder="Enter your product price..."
+                  min="0"
+                  placeholder="Enter your product price with discount..."
                   className="custom-input rounded-2xl"
                 />
-                <span className="text-[12px] text-gray-400 flex items-center">
-                  <PiWarningCircleLight className="mb-5 mr-1" />
-                  Providing an original price (higher amount than the displayed
-                  price) can boost sales, just ensure accurate pricing input.
-                </span>
               </Form.Item>
             </div>
           </div>
@@ -193,7 +202,9 @@ const CreateEvent = () => {
             <div className="input-wrapper w-[50%]">
               <label htmlFor="discountPrice">
                 <span className="text-red-500">*</span>Price:{" "}
-                <span className="text-gray-400 text-[12px]">(to be displayed)</span>
+                <span className="text-gray-400 text-[12px]">
+                  (to be displayed/selling price)
+                </span>
               </label>
               <Form.Item
                 name="discountPrice"
@@ -207,6 +218,7 @@ const CreateEvent = () => {
                 <Input
                   id="discountPrice"
                   type="number"
+                  min="0"
                   placeholder="Enter your product price with discount..."
                   className="custom-input rounded-2xl"
                 />
@@ -226,6 +238,7 @@ const CreateEvent = () => {
                 <Input
                   id="stock"
                   type="number"
+                  min="0"
                   placeholder="Enter your product stock..."
                   className="custom-input rounded-2xl"
                 />

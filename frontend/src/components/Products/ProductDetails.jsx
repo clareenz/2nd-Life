@@ -136,31 +136,16 @@ const ProductDetails = ({ data }) => {
 
   const averageRating = avg.toFixed(2);
 
-  const handleMessageSubmit = async () => {
-    if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
-      const userId = user._id;
-      const sellerId = data.shop._id;
-      await axios
-        .post(`${server}/conversation/create-new-conversation`, {
-          groupTitle,
-          userId,
-          sellerId,
-        })
-        .then((res) => {
-          navigate(`/inbox?${res.data.conversation._id}`);
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
-    } else {
-      toast.error("Please login to create a conversation");
+  const view = () => {
+    if (Event) {
+      window.location.href = `/shop/preview/${data?.shop._id}`;
     }
   };
 
   const quantityChangeHandler = (data) => {
     dispatch(addToCart(data));
   };
+
 
   return (
     <div className="pt-[60px]">
@@ -326,12 +311,11 @@ const ProductDetails = ({ data }) => {
                     </div>
                     <div
                       className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-                      onClick={handleMessageSubmit}
+                      onClick={view}
                     >
                       <span className="text-white text-[13px] mr-1">
-                        Message
+                        View Shop
                       </span>
-                      <AiOutlineMessage className="text-white" />
                     </div>
                     {/* Report Icon */}
                     <Link to={`/report?productId=${data._id}`}>
@@ -414,10 +398,10 @@ const ProductDetailsInfo = ({
   };
 
   return (
-    <div className="pt-[150px]">
-      <div className="bg-[#F5F5F5]  px-5  sm:px-10 md:px-10 lg:px-10 py-2 shadow rounded-xl">
-        <div className="flex justify-between w-full pt-10 pb-2 border-b xs:center-container">
-          <div className="relative center-container">
+    <div className="pt-[150px] flex justify-center">
+      <div className="bg-[#F5F5F5] w-full max-w-3xl px-5 sm:px-10 py-2 shadow rounded-xl">
+        <div className="flex justify-center w-full pt-10 pb-2 border-b">
+          <div className="relative">
             <h5
               className="text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer md:text-[20px]"
               onClick={() => setActive(1)}
@@ -428,13 +412,13 @@ const ProductDetailsInfo = ({
         </div>
 
         {active === 1 && (
-          <div className="justify-between flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
+          <div className="flex flex-col xl:flex-row lg:flex-row md:flex-row sm:flex-row w-full py-5">
             <div className="w-full">
-              <div className="flex flex-row">
+              <div className="flex flex-row items-center">
                 <div>
                   <Link to={`/shop/preview/${data?.shop._id}`}>
                     <img
-                      src={`${backend_url}${data?.shop?.avatar}`}
+                      src={`${data?.shop?.avatar?.url}`}
                       alt=""
                       className="object-cover w-[50px] h-[50px] rounded-full mr-2"
                     />
@@ -469,7 +453,7 @@ const ProductDetailsInfo = ({
                   </h5>
                 </div>
               </div>
-              <div style={{ width: "100%" }} className="px-2 py-3">
+              <div className="px-2 py-3">
                 <Paragraph
                   className="pt-2"
                   style={{ textAlign: "justify", wordWrap: "break-word" }}
@@ -497,16 +481,14 @@ const ProductDetailsInfo = ({
                     Total Reviews:{" "}
                     <span className="font-[500]">{totalReviewsLength}</span>
                   </h5>
-                  <div className="">
-                    <div className="center-container">
-                      <Link to={`/shop/preview/${data?.shop._id}`}>
-                        <div
-                          className={`${styles.button6} rounded-full !h-[39.5px] mt-3 bg-[#006665] hover:bg-[#FF8474] text-white `}
-                        >
-                          Visit Shop
-                        </div>
-                      </Link>
-                    </div>
+                  <div className="flex justify-center mt-3">
+                    <Link to={`/shop/preview/${data?.shop._id}`}>
+                      <div
+                        className={`${styles.button6} rounded-full !h-[39.5px] bg-[#006665] hover:bg-[#FF8474] text-white`}
+                      >
+                        Visit Shop
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>

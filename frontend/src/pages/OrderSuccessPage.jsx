@@ -1,4 +1,3 @@
-import React from "react";
 import { Footer } from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
 import Lottie from "react-lottie";
@@ -6,8 +5,29 @@ import animationData from "../Assests/animations/lottieflow-success-01-000000-ea
 import { Link } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { server } from "../server";
 
 const OrderSuccessPage = () => {
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {
+    console.log(user);
+    updateOrders(user?._id);
+  }, []);
+
+  const updateOrders = async (userId) => {
+    try {
+      const response = await axios.put(
+        `${server}/order/update-orders-user/${userId}`
+      );
+      console.log(response.data.orders);
+    } catch (error) {
+      console.error(error.response.data.message);
+    }
+  };
+
   return (
     <div>
       <Header />

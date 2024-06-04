@@ -36,7 +36,7 @@ const Payment = () => {
           {
             description: "Sunflower",
             amount: {
-              currency_code: "USD",
+              currency_code: "PHP",
               value: orderData?.totalPrice,
             },
           },
@@ -173,6 +173,57 @@ const Payment = () => {
       localStorage.setItem("latestOrder", JSON.stringify([]));
       window.location.reload();
     });
+  };
+
+  const paymongoHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        `${server}/payment/process`,
+        paymentData,
+        config
+      );
+
+      const client_secret = data.client_secret;
+
+      if (!stripe || !elements) return;
+      const result = await stripe.confirmCardPayment(client_secret, {
+        payment_method: {
+          card: elements.getElement(CardNumberElement),
+        },
+      });
+
+      if (result.error) {
+        toast.error(result.error.message);
+      } else {
+        if (result.paymentIntent.status === "succeeded") {
+          order.paymnentInfo = {
+            id: result.paymentIntent.id,
+            status: result.paymentIntent.status,
+            type: "Credit Card",
+          };
+
+          await axios
+            .post(`${server}/order/create-order`, order, config)
+            .then((res) => {
+              setOpen(false);
+              navigate("/order/success");
+              toast.success("Order successful!");
+              localStorage.setItem("cartItems", JSON.stringify([]));
+              localStorage.setItem("latestOrder", JSON.stringify([]));
+              window.location.reload();
+            });
+        }
+      }
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (

@@ -285,7 +285,7 @@ const AllProducts = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className=" pt-1 my-10 bg-white rounded-2xl shadow-md">
+        <div className=" pt-1 my-6 bg-white rounded-2xl shadow-md">
           <div className="flex flex-row">
             <div className="w-full flex justify-between">
               <h1 className="text-2xl px-3 sm:px-[40px] py-3">All Products</h1>

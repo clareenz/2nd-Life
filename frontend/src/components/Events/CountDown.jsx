@@ -7,6 +7,8 @@ import { addToCart } from "../../redux/actions/cart";
 import styles from "../../styles/styles";
 import axios from "axios";
 import { server } from "../../server";
+import { IoBagHandleOutline } from "react-icons/io5";
+import Events from "./Events";
 
 const CountDown = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -73,6 +75,12 @@ const CountDown = ({ data }) => {
       </span>
     );
   });
+
+  const buyNow = () => {
+    if (Event) {
+      window.location.href = `/checkoutBuyNow/${Events._id}`; // Navigate to checkoutBuyNow page with productId in the URL
+    }
+  };
   return (
     <div>
       {timerComponents.length ? (
@@ -82,25 +90,24 @@ const CountDown = ({ data }) => {
               <span key={index}>{component}</span>
             ))}
           </span>
-          <div className=" flex flex-row space-x-3 px-[70px]">
-            <div
-              className={`${styles.button6} bg-[#006665] hover:bg-[#FF8474]`}
-            >
-              {" "}
-              <span className="flex flex-row text-white">
-                {" "}
-                Buy Now <LuShoppingBag className="mx-1 mt-1" />
-              </span>
-            </div>
-            <div
-              className={`${styles.button6}  bg-[#006665] hover:bg-[#FF8474]`}
-              onClick={() => addToCartHandler(data._id)}
-            >
-              <span className="flex items-center text-white">
-                Add to Cart <AiOutlineShoppingCart className="mr-1" />
-              </span>
-            </div>
-          </div>
+          <div className="flex flex-row justify-center">
+                      <div
+                        className={`${styles.button6}   !mt-6 rounded-3xl !h-9 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                        onClick={() => addToCartHandler(data._id)}
+                      >
+                        <span className="flex text-[13px] items-center text-white">
+                          Add to Cart <AiOutlineShoppingCart className="ml-1" />
+                        </span>
+                      </div>
+                      <div
+                        className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-9 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                        onClick={buyNow}
+                      >
+                        <span className="flex text-[13px] items-center text-white">
+                          Buy Now <IoBagHandleOutline className="ml-1" />
+                        </span>
+                      </div>
+                    </div>
         </div>
       ) : (
         <>

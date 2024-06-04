@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { getAllEventsShop } from "../../redux/actions/event"; // Import action to fetch events
 import { ProductCard, ProductCard2 } from "../Route/ProductCard/ProductCard";
-import { EventCard2 } from "../Events/EventCard";
+import { EventCard } from "../Events/EventCard";
 import "./color.css";
 import Ratings from "../Products/Ratings";
 
@@ -72,7 +72,7 @@ const ShopProfileData = ({ isOwner }) => {
           {/* Display running events */}
           {events &&
             events.map((event, index) => (
-              <EventCard2 data={event} key={index} />
+              <EventCard data={event} key={index} />
             ))}
           {events && events.length === 0 && (
             <div className="no-events-container">
