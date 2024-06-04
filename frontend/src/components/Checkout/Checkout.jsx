@@ -86,7 +86,6 @@ const Checkout = () => {
 
       console.log(checkoutData);
       try {
-        console.log("fuck")
         const response = await axios.post(
           `${server}/payment/create-checkout-session`,
           checkoutData

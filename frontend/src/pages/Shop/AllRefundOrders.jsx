@@ -90,15 +90,8 @@ const AllRefundOrders = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="w-full mx-8 pt-1 mt-10 bg-gray-100">
-          {/* <DataGrid
-            rows={row}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            autoHeight
-          /> */}
-          Coming soon!
+        <div className="w-full flex">
+          <img src="/cartmaintenance.png" alt="" />
         </div>
       )}
     </>

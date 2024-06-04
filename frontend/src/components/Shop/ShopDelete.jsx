@@ -81,7 +81,7 @@ const ShopDelete = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="flex flex-col items-center justify-center h-full pt-20">
         <p className="text-red-500 font-semibold mb-4 text-center">
           Warning: This action cannot be undone. Proceed with caution.
@@ -91,11 +91,11 @@ const ShopDelete = () => {
           placeholder="Your Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mb-4 p-2 border border-gray-300 rounded-md"
+          className="mb-4 p-2 px-4 h-10 border custom-input min-w-[35%] rounded-full"
         />
         <button
           onClick={handleEmailSubmit}
-          className="bg-[#006665] text-white hover:bg-[#FF8474] py-2 px-4 rounded-md"
+          className="bg-[#006665] text-white hover:bg-[#FF8474] py-2 px-4 rounded-full"
         >
           Request Account Deletion
         </button>
@@ -112,15 +112,18 @@ const ShopDelete = () => {
               Are you sure you want to request the deletion of your account, {shopName}?
             </p>
             <select
-              className="mt-4 p-2 border border-gray-300 rounded-md"
+              className="mt-4 p-2 borderpx-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
               value={reason}
               onChange={handleReasonChange}
             >
               <option value="" disabled>
                 Select Reason
               </option>
-              <option value="Reason 1">Reason 1</option>
-              <option value="Reason 2">Reason 2</option>
+              <option value="Reason 1">Retirement, career change, or other personal reasons</option>
+              <option value="Reason 2">financially viable</option>
+              <option value="Reason 3">Issues with the e-commerce platform</option>
+              <option value="Reason 5">Moving to another e-commerce platform</option>
+              <option value="Reason 6">Negative customer feedback</option>
               <option value="Other">Other</option>
             </select>
             {customReason && (
@@ -128,13 +131,13 @@ const ShopDelete = () => {
                 placeholder="Reason for deletion"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                className="mt-4 p-2 border border-gray-300 rounded-md resize-none"
+                className="mt-4 p-2 border hover:border-[#006665] focus:border-[#006665] rounded-md w-full"
                 rows={4}
               ></textarea>
             )}
             <button
               onClick={handleOk}
-              className="mt-4 bg-[#006665] text-white hover:bg-[#FF8474] py-2 px-4 rounded-md"
+              className="mt-4 bg-[#006665] text-white hover:bg-[#FF8474] py-2 px-4 rounded-full"
             >
               Confirm Deletion
             </button>
@@ -146,14 +149,14 @@ const ShopDelete = () => {
             </p>
             <button
               onClick={confirmShop}
-              className="mt-4 bg-[#006665] text-white hover:bg-[#FF8474] py-2 px-4 rounded-md"
+              className="mt-4 bg-[#006665] text-white hover:bg-[#FF8474] py-2 px-4 rounded-full"
             >
               Confirm Shop
             </button>
           </div>
         )}
       </Modal>
-    </>
+    </div>
   );
 };
 

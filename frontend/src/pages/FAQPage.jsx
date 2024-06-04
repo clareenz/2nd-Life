@@ -324,7 +324,7 @@ const Faq = () => {
           {activeTab === 7 && (
             <div className="mt-4">
               <p className="text-base text-gray-500">
-                At this time, we only accept gCash as a payment method. We
+                At this time, we only accept gcash and paymaya as a payment method. We
                 assure you that cash on delivery and other payment methods will
                 be made available soon.
               </p>
