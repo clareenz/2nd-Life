@@ -583,5 +583,30 @@ router.get("/followers/:productId", isAuthenticated, catchAsyncErrors(async (req
   }
 }));
 
+// Get follower count of the shop that owns the product
+router.get("/followers/:productId", isAuthenticated, catchAsyncErrors(async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    // Find the product by productId
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // Find the shop that owns the product
+    const shop = await Shop.findById(product.shop);
+    if (!shop) {
+      return res.status(404).json({ success: false, message: "Shop not found" });
+    }
+
+    // Return the follower count of the shop
+    res.status(200).json({ success: true, shopId: shop._id, followersCount: shop.followersCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}));
+
 
 module.exports = router;

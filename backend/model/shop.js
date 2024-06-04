@@ -104,13 +104,16 @@ const shopSchema = new mongoose.Schema({
     default: Date.now(),
   },
   reviews: [ReviewSchema], //
-
   followers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   ],
+  followersCount: {
+    type: Number,
+    default: 0,
+  },
   resetPasswordToken: String,
   resetPasswordTime: Date,
 });

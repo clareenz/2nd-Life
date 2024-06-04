@@ -27,7 +27,7 @@ const ReportSeller = () => {
     };
 
     try {
-      const response = await axios.post(`${server}/report/report-shop/${data?.shop._Id}`, data);
+      const response = await axios.post(`${server}/report/report-shop/${shopId}`, data);
       setMessage(response.data.message);
       setReason('');
       setOtherReason('');

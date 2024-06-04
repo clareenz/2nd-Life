@@ -1,7 +1,7 @@
 /* The products detail page
  *  start time: 45:20 (2nd vid)
  */
-import { Button, Modal, message } from "antd";
+import { message } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -29,8 +29,6 @@ import { backend_url, server } from "../../server";
 import styles from "../../styles/styles";
 import CountDown from "../Events/CountDown.jsx";
 import Ratings from "./Ratings";
-import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
-import { MdReportGmailerrorred } from "react-icons/md";
 
 const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
@@ -151,7 +149,7 @@ const ProductDetails = ({ data }) => {
 
   return (
     <div className="pt-[60px]">
-      <div className="p-5 mx-6 my-6 bg-white rounded-xl shadow ">
+      <div className="p-5 mx-6 my-6 bg-white rounded-lg shadow ">
         {data ? (
           <div
             className={`${styles.section3} w-full md:w-[90%] lg:w-[70%] mx-auto px-4 py-5 `}
@@ -188,33 +186,8 @@ const ProductDetails = ({ data }) => {
                   </div>
                 </div>
                 <div className="w-full lg:w-[50%] lg:px-10">
-                  <div className="flex justify-between">
-                    <div className="marquee">
-                      <h1 className={`${styles.productTitle}`}>{data.name}</h1>
-                    </div>
-                    <div>
-                      <Button
-                        type="text"
-                        icon={
-                          <HiMiniEllipsisHorizontal size={30} title="Report" />
-                        }
-                        onClick={() => setIsModalVisible(true)}
-                      />
-                      <Modal
-                        title=""
-                        visible={isModalVisible}
-                        onCancel={() => setIsModalVisible(false)}
-                        footer={null}
-                      >
-                        {/* Your Report Product component goes here */}
-                        <Link to={`/report?productId=${data._id}`}>
-                          <div className="flex flex-row items-center">
-                            <MdReportGmailerrorred size={30} title="Report" />
-                            <div className="ml-2">Report this product</div>
-                          </div>
-                        </Link>
-                      </Modal>
-                    </div>
+                  <div className="marquee">
+                    <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                   </div>
                   <div style={{ width: "100%" }}>
                     <Paragraph
@@ -318,18 +291,20 @@ const ProductDetails = ({ data }) => {
                           <img
                             src={`${data?.shop?.avatar?.url}`}
                             alt=""
-                            className="w-[50px] h-[50px] rounded-full mr-2 object-cover"
+                            className="w-[50px] h-[50px] rounded-full mr-2"
                           />
                         </Link>
                       </div>
                       <div>
-                        <Link
-                          to={`/shop/preview/${data.shop._id}`}
-                          className={`${styles.shop_name} marquee`}
-                        >
-                          {data.shop.name}
-                        </Link>
-                        <h5 className="text-[13px] mt-1 marquee">
+                        <div className="flex items-center">
+                          <Link
+                            to={`/shop/preview/${data.shop._id}`}
+                            className={`${styles.shop_name}`}
+                          >
+                            {data.shop.name}
+                          </Link>
+                        </div>
+                        <h5 className="text-[13px] mt-1">
                           ({averageRating}/5) Ratings
                         </h5>
                       </div>
@@ -342,6 +317,10 @@ const ProductDetails = ({ data }) => {
                         View Shop
                       </span>
                     </div>
+                    {/* Report Icon */}
+                    <Link to={`/report?productId=${data._id}`}>
+                      <GoReport size={30} title="Report" />
+                    </Link>
                   </div>
                 </div>
               </div>
