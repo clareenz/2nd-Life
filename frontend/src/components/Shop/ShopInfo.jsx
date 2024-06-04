@@ -10,7 +10,7 @@ import {
   CalendarOutlined,
 } from "@ant-design/icons";
 import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
-import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
+import { SlUserFollow } from "react-icons/sl";
 import axios from "axios";
 import Paragraph from "antd/es/typography/Paragraph";
 
