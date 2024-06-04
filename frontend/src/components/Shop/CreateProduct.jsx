@@ -45,7 +45,7 @@ const CreateProduct = () => {
     newForm.append("description", values.description);
     newForm.append("category", values.category);
     newForm.append("tags", values.tags);
-    newForm.append("originalPrice", values.originalPrice ?? 0);
+    newForm.append("originalPrice", values.originalPrice);
     console.log("Original Price:", values.originalPrice); // Debugging line
     newForm.append("discountPrice", values.discountPrice);
     console.log("Discount Price:", values.discountPrice); // Debugging line
@@ -104,10 +104,12 @@ const CreateProduct = () => {
                 ]}
               >
                 <select
-                   className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
+                  className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
                   id="category"
-                  placeholder="Choose a category"
                 >
+                  <option value="" disabled selected>
+                    Choose a category
+                  </option>
                   {categoriesData.map((category) => (
                     <option key={category.title} value={category.title}>
                       {category.title}
@@ -129,22 +131,29 @@ const CreateProduct = () => {
               </Form.Item>
             </div>
             <div className="input-wrapper w-[50%]">
-              <label htmlFor="originalPrice">
-                <span className="text-red-500"></span>Original Price:{" "}
+            <label htmlFor="originalPrice">
+                <span className="text-red-500">*</span>Original Price:{" "}
+                <span className="text-gray-400 text-[12px]">
+                  (Original price boosts sales, encouraging purchases.)
+                </span>
               </label>
-              <Form.Item name="originalPrice">
+
+              <Form.Item
+                name="originalPrice"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input product price with discount",
+                  },
+                ]}
+              >
                 <Input
                   id="originalPrice"
                   type="number"
                   min="0"
-                  placeholder="Enter your product price..."
+                  placeholder="Enter your product price with discount..."
                   className="custom-input rounded-2xl"
                 />
-                <span className="text-[12px] text-gray-400 flex items-center">
-                  <PiWarningCircleLight className="mb-5 mr-1" />
-                  Providing an original price (higher amount than the displayed
-                  price) can boost sales, just ensure accurate pricing input.
-                </span>
               </Form.Item>
             </div>
           </div>
@@ -152,7 +161,9 @@ const CreateProduct = () => {
             <div className="input-wrapper w-[50%]">
               <label htmlFor="discountPrice">
                 <span className="text-red-500">*</span>Price:{" "}
-                <span className="text-gray-400 text-[12px]">(to be displayed)</span>
+                <span className="text-gray-400 text-[12px]">
+                  (to be displayed/selling price)
+                </span>
               </label>
               <Form.Item
                 name="discountPrice"
@@ -185,7 +196,7 @@ const CreateProduct = () => {
                 <Input
                   id="stock"
                   type="number"
-                  min="0"
+                  min="1"
                   placeholder="Enter your product stock..."
                   className="custom-input rounded-2xl"
                 />

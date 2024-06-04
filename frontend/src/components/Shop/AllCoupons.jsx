@@ -291,7 +291,7 @@ const AllCoupons = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="pt-1 mt-10 bg-white rounded-xl shadow-md">
+        <div className="pt-1 mt-6 bg-white rounded-xl shadow-md">
           <div className="w-full flex justify-between">
             <div className="flex flex-row px-3 sm:px-[40px]">
               <h1 className="text-2xl py-3">Coupons</h1>

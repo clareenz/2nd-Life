@@ -133,21 +133,22 @@ const CreateEvent = () => {
               </Form.Item>
             </div>
             <div className="input-wrapper w-[50%]">
-              <label htmlFor="Category">
+              <label htmlFor="category">
                 <span className="text-red-500">*</span>Category:
               </label>
               <Form.Item
-                className="custom-input rounded-2xl"
                 name="category"
                 rules={[
                   { required: true, message: "Please select product category" },
                 ]}
               >
                 <select
-                  id="category"
-                  placeholder="Choose a category"
                   className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
+                  id="category"
                 >
+                  <option value="" disabled selected>
+                    Choose a category
+                  </option>
                   {categoriesData.map((category) => (
                     <option key={category.title} value={category.title}>
                       {category.title}
@@ -171,22 +172,29 @@ const CreateEvent = () => {
             </div>
 
             <div className="input-wrapper w-[50%]">
-              <label htmlFor="Original Price">
-                <span className="text-red-500"></span>Original Price:{" "}
+              <label htmlFor="originalPrice">
+                <span className="text-red-500">*</span>Original Price:{" "}
+                <span className="text-gray-400 text-[12px]">
+                  (Original price boosts sales, encouraging purchases.)
+                </span>
               </label>
-              <Form.Item name="originalPrice">
+
+              <Form.Item
+                name="originalPrice"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input product price with discount",
+                  },
+                ]}
+              >
                 <Input
                   id="originalPrice"
                   type="number"
                   min="0"
-                  placeholder="Enter your product price..."
+                  placeholder="Enter your product price with discount..."
                   className="custom-input rounded-2xl"
                 />
-                <span className="text-[12px] text-gray-400 flex items-center">
-                  <PiWarningCircleLight className="mb-5 mr-1" />
-                  Providing an original price (higher amount than the displayed
-                  price) can boost sales, just ensure accurate pricing input.
-                </span>
               </Form.Item>
             </div>
           </div>
@@ -194,7 +202,9 @@ const CreateEvent = () => {
             <div className="input-wrapper w-[50%]">
               <label htmlFor="discountPrice">
                 <span className="text-red-500">*</span>Price:{" "}
-                <span className="text-gray-400 text-[12px]">(to be displayed)</span>
+                <span className="text-gray-400 text-[12px]">
+                  (to be displayed/selling price)
+                </span>
               </label>
               <Form.Item
                 name="discountPrice"
