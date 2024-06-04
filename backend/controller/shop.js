@@ -349,8 +349,7 @@ router.put(
 // all sellers --- for admin
 router.get(
   "/admin-all-sellers",
-  isAuthenticated,
-  isAdmin("Admin"),
+  isAdmin,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const sellers = await Shop.find().sort({
@@ -369,8 +368,7 @@ router.get(
 // delete seller ---admin
 router.delete(
   "/delete-seller/:id",
-  isAuthenticated,
-  isAdmin("Admin"),
+  isAdmin,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const seller = await Shop.findById(req.params.id);

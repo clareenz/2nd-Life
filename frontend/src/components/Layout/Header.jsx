@@ -260,7 +260,7 @@ const Header = ({ activeHeading }) => {
                   <Link to={`/product/${product._id}`} key={index}>
                     <div className="flex items-start w-full p-1">
                       <img
-                        src={`${backend_url}${product.images[0]}`}
+                        src={`${product.images[0]?.url}`}
                         alt=""
                         className="w-[30px] h-[30px] mr-[5px]"
                       />
@@ -591,7 +591,7 @@ const Header = ({ activeHeading }) => {
                       <Link to={`/product/${product._id}`} key={index}>
                         <div className="flex items-start w-full p-1">
                           <img
-                            src={`${backend_url}${product.images[0]}`}
+                            src={`${product.images[0]?.url}`}
                             alt=""
                             className="w-[30px] h-[30px] mr-[5px]"
                           />
@@ -854,7 +854,7 @@ const Header2 = ({ activeHeading }) => {
                   <Link to={`/product/${product._id}`} key={index}>
                     <div className="flex items-start w-full p-1">
                       <img
-                        src={`${backend_url}${product.images[0]}`}
+                        src={`${product.images[0]?.url}`}
                         alt=""
                         className="w-[30px] h-[30px] mr-[5px]"
                       />
@@ -1134,7 +1134,7 @@ const Header2 = ({ activeHeading }) => {
                       <Link to={`/product/${product._id}`} key={index}>
                         <div className="flex items-start w-full p-1">
                           <img
-                            src={`${backend_url}${product.images[0]}`}
+                            src={`${product.images[0]?.url}`}
                             alt=""
                             className="w-[30px] h-[30px] mr-[5px]"
                           />
@@ -1362,7 +1362,7 @@ const SearchHeader = ({ activeHeading }) => {
                 <Link to={`/product/${product._id}`} key={index}>
                   <div className="flex items-start w-full p-1">
                     <img
-                      src={`${backend_url}${product.images[0]}`}
+                      src={`${product.images[0]?.url}`}
                       alt=""
                       className="w-[30px] h-[30px] mr-[5px]"
                     />
