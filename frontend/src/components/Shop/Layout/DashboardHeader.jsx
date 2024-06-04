@@ -7,12 +7,14 @@ import { BiMessageSquareDetail } from "react-icons/bi";
 import moment from "moment";
 import axios from "axios";
 import { message } from "antd";
+import { BsThreeDots } from "react-icons/bs";
 import { backend_url, server } from "../../../server";
 
 const DashboardHeader = () => {
   const { seller } = useSelector((state) => state.seller);
   const [notifications, setNotifications] = useState([]);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -83,6 +85,11 @@ const DashboardHeader = () => {
     }
   };
 
+  const handleDotsClick = (event) => {
+    event.stopPropagation();
+    setShowModal(!showModal);
+  };
+
   return (
     <div className="w-full h-[70px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
@@ -116,9 +123,34 @@ const DashboardHeader = () => {
             <img
               src={`${seller.avatar?.url}`}
               alt=""
-              className="ml-3 w-[34px] h-[35px] rounded-full object-cover"
+              className="ml-3 mr-3 w-[34px] h-[35px] rounded-full object-cover"
             />
           </Link>
+
+          <div className="absolute right-2">
+            <div className="">
+            <BsThreeDots
+                  onClick={handleDotsClick}
+                  className="cursor-pointer text-xl"
+                />
+              </div>
+              {showModal && (
+                <div className="">
+                  <div className="absolute z-10 right-5 bg-white shadow-lg rounded-lg p-4 space-y-1">
+                  
+                    <Link to="/">
+                      <div
+                        type="primary"
+                        className='border border-006665 text-[14px]  h-7 items-center   cursor-pointer  px-4 py-3 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]'
+                      >
+                        HomePage
+                      </div>
+                    </Link>
+
+                  </div>
+                </div>
+              )};
+          </div>
         </div>
       </div>
     </div>
