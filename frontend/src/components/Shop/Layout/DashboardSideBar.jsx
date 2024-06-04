@@ -111,6 +111,7 @@ const DashboardSideBar = () => {
       >
         <Menu.Item
           key="1"
+          title="Dashboard"
           style={
             activeKey === "1"
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -120,8 +121,10 @@ const DashboardSideBar = () => {
         >
           <Link to="/dashboard">Dashboard</Link>
         </Menu.Item>
+
         <Menu.Item
           key="2"
+          title="All Orders"
           style={
             activeKey === "2"
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -134,6 +137,7 @@ const DashboardSideBar = () => {
         <SubMenu key="sub1" icon={<FiPackage />} title="Products">
           <Menu.Item
             key="3"
+            title="All Products"
             style={
               activeKey === "3"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -145,6 +149,7 @@ const DashboardSideBar = () => {
           </Menu.Item>
           <Menu.Item
             key="4"
+            title="Add Product"
             style={
               activeKey === "4"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -158,6 +163,7 @@ const DashboardSideBar = () => {
         <SubMenu key="sub2" icon={<MdOutlineLocalOffer />} title="Events">
           <Menu.Item
             key="5"
+            title="All Events"
             style={
               activeKey === "5"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -169,6 +175,7 @@ const DashboardSideBar = () => {
           </Menu.Item>
           <Menu.Item
             key="6"
+            title="Create Event"
             style={
               activeKey === "6"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -181,6 +188,7 @@ const DashboardSideBar = () => {
         </SubMenu>
         <Menu.Item
           key="7"
+          title="Withdraw Money"
           style={
             activeKey === "7"
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -192,6 +200,7 @@ const DashboardSideBar = () => {
         </Menu.Item>
         <Menu.Item
           key="8"
+          title="Shop Inbox"
           style={
             activeKey === "8"
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -203,6 +212,7 @@ const DashboardSideBar = () => {
         </Menu.Item>
         <Menu.Item
           key="9"
+          title="Discount Codes"
           style={
             activeKey === "9"
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -214,6 +224,7 @@ const DashboardSideBar = () => {
         </Menu.Item>
         <Menu.Item
           key="11"
+          title="Refunds"
           style={
             activeKey === "11"
               ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -226,6 +237,7 @@ const DashboardSideBar = () => {
         <SubMenu key="sub3" icon={<CiSettings />} title="Settings">
           <Menu.Item
             key="12"
+            title="Edit Shop"
             style={
               activeKey === "12"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -237,6 +249,7 @@ const DashboardSideBar = () => {
           </Menu.Item>
           <Menu.Item
             key="13"
+            title="Password"
             style={
               activeKey === "13"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -248,6 +261,7 @@ const DashboardSideBar = () => {
           </Menu.Item>
           <Menu.Item
             key="14"
+            title="Log Out"
             style={
               activeKey === "14"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }
@@ -261,6 +275,7 @@ const DashboardSideBar = () => {
           </Menu.Item>
           <Menu.Item
             key="15"
+            title="Delete Shop"
             style={
               activeKey === "15"
                 ? { backgroundColor: "#FFEAE8", color: "#FF8474" }

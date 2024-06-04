@@ -39,25 +39,21 @@ const LoginAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await axios
-      .post(
+    try {
+      const response = await axios.post(
         `${server}/admin/login-admin`,
-        {
-          username,
-          password,
-        },
+        { username, password },
         { withCredentials: true }
-      )
-      .then((res) => {
-        message.success("Login Success!");
-        navigate("/admin/dashboard");
-        window.location.reload(true);
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-      });
+      );
+      message.success("Login Success!");
+      navigate("/admin/dashboard");
+      // Consider if you really need to reload the page here
+      // window.location.reload(true);
+    } catch (err) {
+      message.error(err.response.data.message);
+    }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gradient-to-r from-[#FFEAE8] to-[#E8F3F4] lg:flex-row login-div">
