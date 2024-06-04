@@ -48,7 +48,6 @@ router.post(
         (user) => user !== messageData.sender
       );
 
-      console.log(receiverId); // Corrected typo
 
       const notif = new Notification({
         senderId: messageData.sender,

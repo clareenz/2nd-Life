@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { message } from "antd";
 
 const Checkout = () => {
   const { user } = useSelector((state) => state.user);
@@ -23,6 +24,8 @@ const Checkout = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(cart);
+    console.log(user);
   }, []);
 
   // Calculate subtotal based on prices of products in cart
@@ -30,16 +33,15 @@ const Checkout = () => {
     .filter((item) => item.selected) // Filter selected items only
     .reduce((acc, item) => acc + item.qty * item.discountPrice, 0);
 
-  const shipping = subTotalPrice * 0.1;
-
   const discountPercentage = couponCodeData ? discountPrice : "";
 
+  const shipping = 0;
   const totalPrice = couponCodeData
     ? (subTotalPrice + shipping - discountPercentage).toFixed(2)
     : (subTotalPrice + shipping).toFixed(2);
 
   // Payment submission function
-  const paymentSubmit = () => {
+  const paymentSubmit = async (e) => {
     if (
       address === "" ||
       zipCode === null ||
@@ -67,9 +69,67 @@ const Checkout = () => {
         user,
       };
 
-      localStorage.setItem("latestOrder", JSON.stringify(orderData));
-      navigate("/payment");
+      const checkoutData = {
+        name: user?.name,
+        email: user?.email,
+        phone: user?.phoneNumber,
+        address: {
+          postalCode: zipCode,
+          state: province,
+          city: city,
+          line2: address,
+          country,
+        },
+        lineItems: cart,
+        successUrl: "http://localhost:3000/order/success",
+        cancelUrl: "http://localhost:3000/checkout",
+      };
+
+      try {
+        const response = await axios.post(
+          `${server}/payment/create-checkout-session`,
+          checkoutData
+        );
+        console.log(response.data);
+        // Handle the response, for example, redirect the user to the PayMongo checkout page
+        message.success(response.data.message);
+        const checkout_url =
+          response.data.response.data.attributes.checkout_url;
+        const checkoutId = response.data.response.data.id;
+        console.log(checkoutId);
+        createOrder(checkoutId, orderData, shippingAddress);
+        window.location.href = checkout_url;
+      } catch (error) {
+        console.error(error.response.data.message);
+      }
     }
+  };
+
+  const createOrder = async (checkoutID, orderData, shippingAddress) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const order = {
+      cart: orderData?.cart,
+      shippingAddress: shippingAddress,
+      user: user && user,
+      totalPrice: orderData?.totalPrice,
+      paymentInfo: {
+        id: checkoutID,
+        status: "not paid",
+        type: "Paymongo",
+      },
+    };
+
+    await axios
+      .post(`${server}/order/create-order`, order, config)
+      .then((res) => {
+        console.log(res.data.orders);
+        localStorage.setItem("cartItems", JSON.stringify([]));
+      });
   };
 
   // Function to handle coupon code submission
@@ -145,7 +205,6 @@ const Checkout = () => {
     </div>
   );
 };
-
 
 const ShippingInfo = ({
   user,
@@ -340,10 +399,11 @@ const CartData = ({
         <input
           type="text"
           className={`${styles.input} h-[40px] px-3`}
-          placeholder="Coupon code"
+          placeholder="Coupon code -For Future Works-"
           value={couponCode}
-          onChange={(e) => setCouponCode(e.target.value)}
+          readOnly
           required
+          title="Unavailable. For future works."
         />
         <input
           className={`${styles.button4} mt-8 w-full`}

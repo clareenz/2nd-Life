@@ -81,37 +81,29 @@ router.delete(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log(
-        `Received request to delete product with id: ${req.params.id}`
-      );
 
       const product = await Product.findById(req.params.id);
       if (!product) {
-        console.log(`Product not found with id: ${req.params.id}`);
         return next(new ErrorHandler("Product is not found with this id", 404));
       }
 
-      console.log("Product found:", product);
 
       // Delete images from Cloudinary
       for (let i = 0; i < product.images.length; i++) {
         const image = product.images[i];
         if (image && image.public_id) {
           const result = await cloudinary.uploader.destroy(image.public_id);
-          console.log(`Deleted image ${image.public_id}:`, result);
         }
       }
 
       // Delete the product from the database
       await product.deleteOne();
-      console.log("Product removed successfully");
 
       res.status(200).json({
         success: true,
         message: "Product Deleted successfully!",
       });
     } catch (error) {
-      console.error("Error during product deletion:", error);
       return next(new ErrorHandler(error.message, 400));
     }
   })
@@ -295,7 +287,6 @@ router.get(
   "/reviews/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log('Request received for product ID:', req.params.id);
 
       // Find the product by ID and populate the user details in the reviews
       const product = await Product.findById(req.params.id)
@@ -305,20 +296,15 @@ router.get(
         });
 
       if (!product) {
-        console.log('Product not found for ID:', req.params.id);
         return next(new ErrorHandler("Product not found", 404));
       }
 
-      console.log('Product found:', product);
-
       // Calculate the total number of reviews
       const totalReviews = product.reviews.length;
-      console.log('Total reviews:', totalReviews);
 
       // Calculate the average rating
       const averageRating = totalReviews > 0 ? 
         product.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews : 0;
-      console.log('Average rating:', averageRating);
 
       // Respond with the product's total reviews and average rating
       res.status(201).json({
@@ -327,7 +313,6 @@ router.get(
         averageRating,
       });
     } catch (error) {
-      console.error('Error during product reviews fetch:', error);
       return next(new ErrorHandler(error.message, 500));
     }
   })
@@ -339,17 +324,14 @@ router.get(
   "/reviews-shop/:shopId",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log('Request received for shop ID:', req.params.shopId);
 
       // Find all products of the shop
       const products = await Product.find({ shop: req.params.shopId });
 
       if (!products || products.length === 0) {
-        console.log('No products found for shop ID:', req.params.shopId);
         return next(new ErrorHandler("No products found for this shop", 404));
       }
 
-      console.log('Products found:', products.length);
 
       // Calculate the average rating for each product
       const productRatings = products.map(product => {
@@ -362,15 +344,12 @@ router.get(
       // Calculate the overall average rating for all products
       const overallAverageRating = productRatings.reduce((sum, rating) => sum + rating, 0) / productRatings.length;
 
-      console.log('Overall average rating:', overallAverageRating);
-
       // Respond with the overall average rating
       res.status(201).json({
         success: true,
         overallAverageRating,
       });
     } catch (error) {
-      console.error('Error during average rating fetch:', error);
       return next(new ErrorHandler(error.message, 500));
     }
   })
