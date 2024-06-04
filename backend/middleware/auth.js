@@ -3,7 +3,26 @@ const catchAsyncErrors = require("./catchAsyncErrors");
 const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 const Shop = require("../model/shop");
+const Admin = require("../model/admin");
 
+
+// Middleware to check if a admin is authenticated
+exports.isAdmin = catchAsyncErrors(async (req, res, next) => {
+    const { admin_token } = req.cookies;
+    if (!admin_token) {
+        return next(new ErrorHandler("Please login to continue", 401));
+    }
+
+    const decoded = jwt.verify(admin_token, process.env.JWT_SECRET_KEY);
+    console.log(decoded)
+    req.admin = await Admin.findById(decoded.id);
+
+    if (!req.admin) {
+        return next(new ErrorHandler("Admin not found", 404));
+    }
+
+    next();
+});
 
 // Middleware to check if a user is authenticated
 exports.isAuthenticated = catchAsyncErrors(async (req, res, next) => {
@@ -67,11 +86,11 @@ exports.verifyResetToken = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Middleware to check if a user has a specific role
-exports.isAdmin = (...roles) => {
-    return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
-            return next(new ErrorHandler(`${req.user.role} cannot access this resource!`, 403));
-        }
-        next();
-    };
-};
+// exports.isAdmin = (...roles) => {
+//     return (req, res, next) => {
+//         if (!roles.includes(req.user.role)) {
+//             return next(new ErrorHandler(`${req.user.role} cannot access this resource!`, 403));
+//         }
+//         next();
+//     };
+// };

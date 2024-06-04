@@ -62,7 +62,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Store from "./redux/store";
-import { loadSeller, loadUser } from "./redux/actions/user";
+import { loadSeller, loadUser,loadAdmin } from "./redux/actions/user";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { ShopHomePage } from "./ShopRoutes.js";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
@@ -82,6 +82,7 @@ const App = () => {
     setStripeApiKey(data.stripeApikey);
   }
   useEffect(() => {
+    Store.dispatch(loadAdmin())
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());

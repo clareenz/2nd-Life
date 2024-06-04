@@ -8,13 +8,15 @@ import LoginAdmin from "../components/Logins/LoginAdmin";
 const LoginPage= () => {
 
   const navigate = useNavigate();
-  const{ isAuthenticated } = useSelector((state) => state.user);
+  const{ isAdmin,loading } = useSelector((state) => state.admin);
 
   useEffect(() => {
-    if(isAuthenticated === true){
-      navigate("/");
+    if (isAdmin === true) {
+      navigate(`/admin/dashboard`);
     }
-  }, [])
+    console.log(isAdmin);
+  }, [loading,isAdmin]);
+  
   
 
   return (

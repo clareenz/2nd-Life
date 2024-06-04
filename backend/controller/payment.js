@@ -85,9 +85,6 @@ router.post("/create-checkout-session", async (req, res, next) => {
     }
   };
 
-  console.log(options);
-
-  console.log(options.data.data.attributes);
 
   try {
     const response = axios

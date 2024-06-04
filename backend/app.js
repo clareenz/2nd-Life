@@ -49,6 +49,7 @@ const authFB = require("./controller/authfb");
 const report = require("./controller/report");
 const notification = require("./controller/notification");
 const webhook = require("./controller/webhook");
+const admin = require("./controller/admin");
 
 
 app.use("/api/v2/user", user);
@@ -66,6 +67,7 @@ app.use("/api/v2/FBlogin", authFB);
 app.use("/api/v2/report", report);
 app.use("/api/v2/notification", notification);
 app.use("/api/v2/webhook", webhook);
+app.use("/api/v2/admin", admin);
 
 
 // Error handling middleware

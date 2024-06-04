@@ -20,6 +20,7 @@ const ActivationPage = () => {
           })
           .catch((err) => {
             setError(true);
+            console.log(err);
           });
       };
       sendRequest();
@@ -36,11 +37,11 @@ const ActivationPage = () => {
         alignItems: "center",
       }}
     >
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="p-8 text-center bg-white rounded-lg shadow-lg">
           {error ? (
             <div>
-              <p className="text-red-600 text-xl font-semibold">
+              <p className="text-xl font-semibold text-red-600">
                 Your token is expired!
               </p>
               <div>
@@ -56,7 +57,7 @@ const ActivationPage = () => {
             </div>
           ) : (
             <>
-              <p className=" font-semibold">
+              <p className="font-semibold ">
                 Your account has been created successfully!
               </p>
               <Link to="/login">

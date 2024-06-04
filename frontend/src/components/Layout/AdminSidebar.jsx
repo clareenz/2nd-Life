@@ -10,12 +10,26 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import { MdEventAvailable } from "react-icons/md";
 import { GrConfigure } from "react-icons/gr";
+import { message, Button } from "antd";
+import axios from "axios";
+import { server } from "../../server";
 
 const AdminSidebar = () => {
   const location = useLocation();
   const [activeKey, setActiveKey] = useState("1"); // Define setActiveKey
   const { SubMenu } = Menu;
 
+  const handleLogout = async () => {
+    axios
+    .get(`${server}/admin/logout`, { withCredentials: true })
+    .then((res) => {
+      message.success(res.data.message);
+      window.location.reload(true);
+    })
+    .catch((error) => {
+      message.error(error.response.data.message);
+    });
+  };
   useEffect(() => {
     switch (location.pathname) {
       case "/admin/dashboard":
@@ -154,7 +168,9 @@ const AdminSidebar = () => {
           }
           icon={<GrConfigure />}
         >
-          <Link to="/profile">Settings</Link>
+          <Button onClick={handleLogout}>
+            Logout
+          </Button>
         </Menu.Item>
       </Menu>
     </div>
