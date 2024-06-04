@@ -35,7 +35,6 @@ export const sellerReducer = createReducer(initialState, (builder) => {
       state.isLoading = false;
       state.error = action.payload;
     })
-    // Add case for updating shop information
     .addCase('UpdateShopInfoRequest', (state) => {
       state.isLoading = true;
     })

@@ -110,6 +110,10 @@ const shopSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  followersCount: {
+    type: Number,
+    default: 0,
+  },
   resetPasswordToken: String,
   resetPasswordTime: Date,
 });
