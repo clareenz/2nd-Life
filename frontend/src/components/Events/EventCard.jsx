@@ -44,25 +44,9 @@ const EventCard = ({ active, data = {}, shop }) => {
     }
   }, [data.images, hasEvents, shop]);
 
-  const handleMessageSubmit = async () => {
-    if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
-      const userId = user._id;
-      const sellerId = data.shop._id;
-      await axios
-        .post(`${server}/conversation/create-new-conversation`, {
-          groupTitle,
-          userId,
-          sellerId,
-        })
-        .then((res) => {
-          navigate(`/inbox?${res.data.conversation._id}`);
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
-    } else {
-      toast.error("Please login to create a conversation");
+  const view = () => {
+    if (Event) {
+      window.location.href = `/shop/preview/${data?.shop._id}`;
     }
   };
 
@@ -172,10 +156,9 @@ const EventCard = ({ active, data = {}, shop }) => {
             </div>
             <div
               className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-              onClick={handleMessageSubmit}
+              onClick={view}
             >
-              <span className="text-white text-[13px] mr-1">Message</span>
-              <AiOutlineMessage className="text-white" />
+              <span className="text-white text-[13px] mr-1">View Shop</span>
             </div>
           </div>
           {/* Display name */}
@@ -203,7 +186,5 @@ const EventCard = ({ active, data = {}, shop }) => {
     </div>
   );
 };
-
-
 
 export { EventCard };
