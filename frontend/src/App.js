@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   LoginPage,
   NamsTechPage,
+  ContactPage,
   LoginAdminPage,
   SignupPage,
   ActivationPage,
@@ -108,6 +109,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<NamsTechPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/login-admin" element={<LoginAdminPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route
@@ -134,7 +136,7 @@ const App = () => {
           }
         />
         <Route
-          path="/checkoutBuyNow"
+          path='/checkoutBuyNow/:productId'
           element={
             <ProtectedRoute>
               <CheckoutBuyNowPage />
@@ -377,7 +379,7 @@ const App = () => {
         />
 
         <Route path="/report" element={<ReportPage />} />
-        <Route path="/report-seller" element={<ReportSellerPage />} />
+        <Route path="/report-shop" element={<ReportSellerPage />} />
       </Routes>
       <ToastContainer
         position="bottom-center"

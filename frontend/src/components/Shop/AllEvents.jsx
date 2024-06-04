@@ -285,7 +285,7 @@ const AllEvents = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="pt-1 mt-10 bg-white rounded-xl shadow-md">
+        <div className="pt-1 mt-6 bg-white rounded-xl shadow-md">
           <div className="flex flex-row justify-between">
             <div className="w-full flex">
               <h1 className="text-2xl  px-3 sm:px-[40px] py-3">All Events</h1>

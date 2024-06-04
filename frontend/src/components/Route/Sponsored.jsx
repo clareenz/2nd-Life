@@ -8,6 +8,15 @@ import styles from "../../styles/styles";
 const Sponsored = () => {
   return (
     <div className="pt-12">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div
         className={`${styles.section} hidden sm:block bg-white py-10  mb-12 cursor-pointer rounded-xl`}
       >

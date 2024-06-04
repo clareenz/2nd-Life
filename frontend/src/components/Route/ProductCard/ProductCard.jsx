@@ -7,14 +7,17 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { addToCart } from "../../../redux/actions/cart";
 import {
   addToWishlist,
   removeFromWishlist,
 } from "../../../redux/actions/wishlist";
 import styles from "../../../styles/styles";
-import { ProductDetailsCard, ProductDetailsCard2 } from "../ProductDetailsCard/ProductDetailsCard";
+import {
+  ProductDetailsCard,
+  ProductDetailsCard2,
+} from "../ProductDetailsCard/ProductDetailsCard";
 import { IoBagHandleOutline } from "react-icons/io5";
 import axios from "axios";
 import { server } from "../../../server";
@@ -26,16 +29,35 @@ const ProductCard = ({ data }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [reviews,setReviews] = useState()
-  const [totalReview,setTotalReview] = useState()
-  const [averageRating,setAverageRating] = useState()
-  
- 
+  const [reviews, setReviews] = useState();
+  const [totalReview, setTotalReview] = useState();
+  const [averageRating, setAverageRating] = useState();
+  const [productId, setProductId] = useState();
+
+  // buy now
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `${server}/product/get-product/${data._id}`
+        );
+        const product = response.data.product;
+        if (product) {
+          setProductId(product._id);
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+    fetchProduct();
+  }, [data._id]);
+
   const buyNow = () => {
-    setOpen(!open);
-    navigate("/checkoutBuyNow", { state: { productData: data } });
+    if (productId) {
+      navigate(`/checkoutBuyNow/${productId}`);
+    }
   };
-  
+
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
       setClick(true);
@@ -44,32 +66,32 @@ const ProductCard = ({ data }) => {
     }
   }, [wishlist]);
 
- 
   useEffect(() => {
-    console.log('useEffect running with data:', data);
+    console.log("useEffect running with data:", data);
 
     const fetchNotifications = async () => {
       try {
         if (data && data._id) {
-          console.log('Fetching reviews for product ID:', data.shop?._id);
-          const response = await axios.get(`${server}/product/reviews/${data?._id}`);
-          console.log('Response received:', response.data);
+          console.log("Fetching reviews for product ID:", data.shop?._id);
+          const response = await axios.get(
+            `${server}/product/reviews/${data?._id}`
+          );
+          console.log("Response received:", response.data);
           setTotalReview(response.data.totalReview);
           setAverageRating(response.data.averageRating);
-          console.log(response.data.averageRating)
+          console.log(response.data.averageRating);
           // message.success(response.success);
         } else {
-          console.log('Product ID not available');
+          console.log("Product ID not available");
         }
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error("Error fetching reviews:", error);
         message.error(error.message);
       }
     };
 
     fetchNotifications();
   }, [data]); // Add data to the dependency array
-
 
   const removeFromWishlistHandler = (data) => {
     setClick(!click);
@@ -118,7 +140,7 @@ const ProductCard = ({ data }) => {
           </div>
           <div>
             <h5 className="text-[12px] mt-1 marquee">
-            ({averageRating}/5) Ratings
+              ({averageRating}/5) Ratings
             </h5>
           </div>
         </div>
@@ -200,10 +222,6 @@ const ProductCard2 = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const buyNow = () => {
-    navigate("/checkoutBuyNow");
-  };
-
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
       setClick(true);
@@ -239,9 +257,7 @@ const ProductCard2 = ({ data }) => {
 
   return (
     <>
-      <div
-        className="max-w-[220px] w-full max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer"
-      >
+      <div className="max-w-[220px] w-full max-h-[320px] bg-white rounded-lg shadow p-3 relative cursor-pointer">
         <div className="flex justify-end"></div>
         <Link to={`/product/${data._id}`}>
           <img
@@ -251,16 +267,8 @@ const ProductCard2 = ({ data }) => {
           />
         </Link>
         <div className="flex flex-row justify-between mt-2">
-          <div>
-            <Link
-              to={`/shop/preview/${data?.shop._id}`}
-              className={`${styles.shop_name} text-[12px]`}
-            >
-              {data.shop.name}
-            </Link>
-          </div>
-          <div>
-            <h5 className="text-[12px] mt-1">({data.ratings}) Ratings</h5>
+          <div className={` text-[15px]`}>
+            {data.shop.name}
           </div>
         </div>
         <Link to={`/product/${data._id}`}>
@@ -276,17 +284,17 @@ const ProductCard2 = ({ data }) => {
           <div className="flex">
             <h5 className={`${styles.productDiscountPrice}`}>
               ₱
-              {data.originalPrice === 0
-                ? data.originalPrice
-                : data.originalPrice}
+              {data.discountPrice === 0
+                ? data.discountPrice
+                : data.discountPrice}
             </h5>
             <h4 className={`${styles.price}`}>
               {data.originalPrice ? "₱" + data.originalPrice : null}
             </h4>
           </div>
-          <span className="font-[400] text-[17px] text-[#68d284]">
+          {/* <span className="font-[400] text-[17px] text-[#68d284]">
             {data?.sold_out} sold
-          </span>
+          </span> */}
           <div>
             {/* Buy Now button */}
             <div
@@ -306,4 +314,3 @@ const ProductCard2 = ({ data }) => {
 };
 
 export { ProductCard, ProductCard2 };
-

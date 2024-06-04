@@ -5,6 +5,9 @@ const orderSchema = new mongoose.Schema({
         type: Array,
         required: true,
     },
+    productId: {
+
+    },
     shippingAddress:{
         type: Object,
         required: true,

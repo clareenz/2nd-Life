@@ -17,6 +17,7 @@ import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
 import Paragraph from "antd/es/typography/Paragraph";
 import { SlUserFollow } from "react-icons/sl";
 import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
+import styles from "../../styles/styles";
 
 const { Title, Text } = Typography;
 
@@ -147,27 +148,29 @@ const ShopInfo = ({ isOwner }) => {
                 </div>
               )}
               {!isOwner && (
-                <div className="absolute right-7 flex flex-row space-x-2 max-sm:hidden">
+                <div className="absolute right-7 flex flex-row space-x-2 max-sm:hidden z-10">
                   <div
-                    className="bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]"
+                    className={`border border-006665 my-3 justify-center cursor-pointer px-4 py-2 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                     onClick={handleMessageSubmit}
                   >
-                    <span className="text-[13px] mr-1">Message</span>
-                    <AiOutlineMessage size={15} className="text-white" />
+                    <span className="text-white text-[13px] mr-1">Message</span>
+                    <AiOutlineMessage className="text-white" />
                   </div>
-                  <div className="bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]">
-                    <span className="text-[13px] mr-1">Follow</span>
+                  <div
+                    className={`border border-006665 my-3 justify-center cursor-pointer px-4 py-2 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                  >
+                    <span className="text-[13px] text-white mr-1">Follow</span>
                     <SlUserFollow size={15} className="text-white" />
                   </div>
                 </div>
               )}
             </div>
             <div className="relative ">
-                <Button
-                  type="text"
-                  icon={<HiMiniEllipsisHorizontal size={30} title="options" />}
-                  onClick={handleDotsClick}
-                />
+              <Button
+                type="text"
+                icon={<HiMiniEllipsisHorizontal size={30} title="options" />}
+                onClick={handleDotsClick}
+              />
               {showModal && (
                 <div className="">
                   {isOwner ? (
@@ -190,16 +193,15 @@ const ShopInfo = ({ isOwner }) => {
                   ) : (
                     <div className=" z-10 absolute top-8 left-0 bg-white shadow-lg rounded-lg p-4">
                       <Link
-                        to={`/report-seller?sellerId=${data._id}`}
+                        to={`/report-shop?shopId=${data._id}`}
                         className="ml-2"
                       >
-                        Report this seller
+                        Report this shop
                       </Link>
                     </div>
                   )}
                 </div>
               )}
-
             </div>
 
             <div className="pt-[70px]">

@@ -1,5 +1,3 @@
-/* The inside when you clicked Quick View(eye icon) on the right side of the product
-start: 5:44:53(first vid) */
 /**
  * * Use to Display the Product Details when Clicked
  *
@@ -18,7 +16,7 @@ import {
 } from "react-icons/ai";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import { addToCart } from "../../../redux/actions/cart";
 import {
@@ -35,30 +33,34 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   const [value, setValue] = useState(data?.qty || 1);
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.user);
+  const [productId, setProductId] = useState();
 
+// buy now
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`${server}/product/get-product/${data._id}`);
+        const product = response.data.product;
+        if (product) {
+          setProductId(product._id);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+    fetchProduct();
+  }, [data._id]);
+  
   const buyNow = () => {
-    navigate("/checkoutBuyNow");
+    if (productId) {
+      navigate(`/checkoutBuyNow/${productId}`);
+    }
   };
+  
 
-  const handleMessageSubmit = async () => {
-    if (isAuthenticated) {
-      const groupTitle = data._id + user._id;
-      const userId = user._id;
-      const sellerId = data.shop._id;
-      await axios
-        .post(`${server}/conversation/create-new-conversation`, {
-          groupTitle,
-          userId,
-          sellerId,
-        })
-        .then((res) => {
-          navigate(`/inbox?${res.data.conversation._id}`);
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
-    } else {
-      toast.error("Please login to create a conversation");
+  const view = () => {
+    if (Event) {
+      window.location.href = `/shop/preview/${data?.shop._id}`;
     }
   };
 
@@ -160,10 +162,9 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             </div>
             <div
               className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
-              onClick={handleMessageSubmit}
+              onClick={view}
             >
-              <span className="text-white text-[13px] mr-1">Message</span>
-              <AiOutlineMessage className="text-white" />
+              <span className="text-white text-[13px] mr-1">View Shop</span>
             </div>
           </div>
           <div className=" ">
@@ -278,7 +279,7 @@ const ProductDetailsCard2 = ({ setOpen, data }) => {
   const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const buyNow = () => {
-    navigate("/checkout");
+    navigate("/checkoutBuyNow/${data?._id}");
   };
 
   const handleMessageSubmit = async () => {

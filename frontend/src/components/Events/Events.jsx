@@ -14,7 +14,7 @@ const Events = () => {
   return (
     <div>
       {!isLoading && (
-        <div className={`2xl:px-20 xl:px-20 lg:px-20 md:px-20 sm:px-20 px-10`}>
+        <div className={`2xl:px-20 xl:px-20 lg:px-20 md:px-20 sm:px-20 px-10 pb-8`}>
           <div className="flex items-center mb-4">
             <div className="bg-[#006665] w-4 rounded-md h-9 flex items-center justify-center">
               {/* Small box */}
