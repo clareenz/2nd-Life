@@ -54,7 +54,7 @@ const StorePage = () => {
             {/* Buttons to toggle view */}
             <button
               className={`mr-2 text-[13px] ${
-                view === "grid" ? "bg-[#FFEAE8]" : "bg-white"
+                view === "grid" ? "bg-[#FF8474] text-white" : "bg-white"
               } px-3 py-1 rounded-md`}
               onClick={() => toggleView("grid")}
             >
@@ -62,7 +62,7 @@ const StorePage = () => {
             </button>
             <button
               className={`mr-2 text-[13px] ${
-                view === "list" ? "bg-[#FFEAE8]" : "bg-white"
+                view === "list" ? "bg-[#FF8474] text-white" : "bg-white"
               } px-3 py-1 rounded-md`}
               onClick={() => toggleView("list")}
             >

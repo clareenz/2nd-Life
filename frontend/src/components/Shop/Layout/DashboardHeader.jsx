@@ -106,8 +106,8 @@ const DashboardHeader = () => {
         <div className="flex items-center mr-4">
           <Dropdown overlay={notificationMenu} placement="bottomRight">
             <div className="relative cursor-pointer">
-              <AiOutlineBell color="#000" size={27} fill="text-black" />
-              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3.5 h-3.5 top right p-0 m-0 text-black font-mono text-[10.5px] leading-tight text-center">
+              <AiOutlineBell color="#000" size={23} fill="text-black" />
+              <span className="absolute right-0 top-0 rounded-full bg-[#FF8474] w-3 h-3 top right p-0 m-0 text-black font-mono text-[10px] leading-tight text-center">
                 {unreadNotifications && unreadNotifications.length}
               </span>
             </div>
@@ -141,7 +141,7 @@ const DashboardHeader = () => {
                     <Link to="/">
                       <div
                         type="primary"
-                        className='border border-006665 text-[14px]  h-7 items-center   cursor-pointer  px-3 py-1 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]'
+                        className='border justify-center border-006665 h-7 text-[12px] flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all'
                       >
                         HomePage
                       </div>

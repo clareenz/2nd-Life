@@ -172,7 +172,7 @@ const ShopInfo = ({ isOwner }) => {
               {isOwner && (
                 <div className="absolute right-4 max-sm:top-5">
                   <Link to="/dashboard">
-                    <div className="bg-[#006665] text-white rounded-3xl text-[14px] hover:bg-[#077773] px-4 py-2">
+                    <div className="bg-[#006665] text-white rounded-3xl text-[14px] hover:bg-[#077773] px-4 py-2 z-10">
                       Go Dashboard
                     </div>
                   </Link>

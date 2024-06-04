@@ -12,6 +12,7 @@ import {
   ProductCard,
   ProductCard2,
 } from "../components/Route/ProductCard/ProductCard";
+import { Footer } from "antd/es/layout/layout";
 
 const ProductsPage = () => {
   const [searchParams] = useSearchParams();
@@ -71,6 +72,7 @@ const ProductsPage = () => {
               ) : null}
             </div>
           </div>
+          <Footer />
         </div>
       )}
     </>

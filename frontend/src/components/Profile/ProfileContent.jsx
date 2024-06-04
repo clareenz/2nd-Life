@@ -32,6 +32,7 @@ import {
   Form,
   Select,
   Button,
+  Tag,
 } from "antd";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
 import { deleteUser } from "../../redux/actions/user";
@@ -427,7 +428,11 @@ const AllOrders = () => {
       width: 130,
       ...getColumnSearchProps("status"),
       sorter: (a, b) => a.status.localeCompare(b.status),
-      render: visibleColumns.status ? (text) => text : null,
+      render: visibleColumns.status
+        ? (status) => (
+            <Tag color={status === "Delivered" ? "green" : "orange"}>{status}</Tag>
+          )
+        : null,
     },
     {
       title: "Items Qty",
@@ -448,14 +453,14 @@ const AllOrders = () => {
       render: visibleColumns.total ? (text) => text : null,
     },
     {
-      title: "Actions",
+      title: "Details",
       key: "actions",
       width: 150,
       render: visibleColumns.actions
         ? (text, record) => (
             <Link to={`/user/order/${record.id}`}>
-              <Button>
-                <AiOutlineArrowRight size={20} />
+              <Button className="custom-button1">
+                <span className="text-12px">View</span>
               </Button>
             </Link>
           )

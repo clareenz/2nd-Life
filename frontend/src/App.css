@@ -524,6 +524,28 @@ input,select{
   background-color: #f0f0f0;
 }
 
+.text-dark-green {
+  color: #004d40;
+}
+.bg-orange {
+  background-color: #ff5722;
+}
+.hover\:bg-dark-orange:hover {
+  background-color: #e64a19;
+}
+.text-gray-700 {
+  color: #4a4a4a;
+}
+.text-gray-600 {
+  color: #737373;
+}
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
 
 
 

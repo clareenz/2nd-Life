@@ -10,7 +10,6 @@ import {
   AiOutlineShop,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { BiMenuAltLeft } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoIosArrowDown } from "react-icons/io";
 import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
@@ -23,8 +22,6 @@ import Wishlist from "../Wishlist/Wishlist";
 import Cart from "../cart/Cart";
 import DropDown from "./DropDown";
 import { Navbar, Navbar2 } from "./Navbar";
-import { Layout, Avatar, Badge } from "antd";
-import { RiCloseLine } from "react-icons/ri";
 import { AiOutlineBell } from "react-icons/ai";
 import { message } from "antd";
 import moment from 'moment';
@@ -178,8 +175,8 @@ const Header = ({ activeHeading }) => {
           <div>
             <Link to="/">
               <img
-                className="ml-[50px] lg:pt-9 md:pt-9 sm:pt-11 w-[120px] min-w-[120px]"
-                src="/2ndlife%20logo%20word.png" //logo
+                className="ml-[50px] lg:pt-6 md:pt-6 sm:pt-6 w-[120px] min-w-[120px]"
+                src="/2ndLifeBuy&Sell.png" //logo
                 alt="logo2"
                 style={{ width: "", height: "" }}
               />
@@ -516,7 +513,7 @@ const Header = ({ activeHeading }) => {
             <Link to="/">
               <img
                 className="cursor-pointer"
-                src="/2ndlife%20logo%20word.png" //logo
+                src="/2ndLifeBuy&Sell.png" //logo
                 alt="logo2"
                 style={{ width: "110px", height: "auto" }}
               />
@@ -772,8 +769,8 @@ const Header2 = ({ activeHeading }) => {
           <div>
             <Link to="/">
               <img
-                className="ml-[50px] lg:pt-9 md:pt-9 sm:pt-11 w-[120px] min-w-[120px]"
-                src="/2ndlife%20logo%20word.png" //logo
+                className="ml-[50px] lg:pt-6 md:pt-6 sm:pt-6 w-[120px] min-w-[120px]"
+                src="/2ndLifeBuy&Sell.png" //logo
                 alt="logo2"
                 style={{ width: "", height: "" }}
               />
@@ -1059,7 +1056,7 @@ const Header2 = ({ activeHeading }) => {
             <Link to="/">
               <img
                 className="cursor-pointer"
-                src="/2ndlife%20logo%20word.png" //logo
+                src="/2ndLifeBuy&Sell.png" //logo
                 alt="logo2"
                 style={{ width: "110px", height: "auto" }}
               />
