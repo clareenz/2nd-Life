@@ -308,7 +308,7 @@ router.get(
   "/reviews/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log("Request received for product ID:", req.params.id);
+    
 
       // Find the product by ID and populate the user details in the reviews
       const product = await Product.findById(req.params.id).populate({
@@ -317,23 +317,18 @@ router.get(
       });
 
       if (!product) {
-        console.log("Product not found for ID:", req.params.id);
         return next(new ErrorHandler("Product not found", 404));
       }
 
-      console.log("Product found:", product);
-
+  
       // Calculate the total number of reviews
       const totalReviews = product.reviews.length;
-      console.log("Total reviews:", totalReviews);
-
       // Calculate the average rating
       const averageRating =
         totalReviews > 0
           ? product.reviews.reduce((sum, review) => sum + review.rating, 0) /
             totalReviews
           : 0;
-      console.log("Average rating:", averageRating);
       // Respond with the product's total reviews and average rating
       res.status(201).json({
         success: true,
@@ -352,18 +347,13 @@ router.get(
   "/reviews-shop/:shopId",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log("Request received for shop ID:", req.params.shopId);
 
       // Find all products of the shop
       const products = await Product.find({ shop: req.params.shopId });
 
       if (!products || products.length === 0) {
-        console.log("No products found for shop ID:", req.params.shopId);
         return next(new ErrorHandler("No products found for this shop", 404));
       }
-
-      console.log("Products found:", products.length);
-
       // Calculate the average rating for each product
       const productRatings = products.map((product) => {
         const totalReviews = product.reviews.length;
@@ -380,7 +370,6 @@ router.get(
         productRatings.reduce((sum, rating) => sum + rating, 0) /
         productRatings.length;
 
-      console.log("Overall average rating:", overallAverageRating);
 
       // Respond with the overall average rating
       res.status(201).json({

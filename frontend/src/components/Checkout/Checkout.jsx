@@ -15,7 +15,7 @@ const Checkout = () => {
   const [city, setCity] = useState("");
   const [userInfo, setUserInfo] = useState(false);
   const [address, setAddress] = useState("");
-  const [zipCode, setZipCode] = useState(null);
+  const [zipCode, setZipCode] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(null);

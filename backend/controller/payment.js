@@ -41,7 +41,7 @@ router.get(
 router.post("/create-checkout-session", async (req, res, next) => {
   const { name, email, phone, address, lineItems, successUrl, cancelUrl } =
     req.body;
-
+  console.log(req.body.lineItems);
   const options = {
     method: 'POST',
     url: 'https://api.paymongo.com/v1/checkout_sessions',
@@ -83,7 +83,7 @@ router.post("/create-checkout-session", async (req, res, next) => {
       }
     }
   };
-  
+  console.log(options);
   try {
     const response = axios
 .request(options)
