@@ -1,24 +1,8 @@
 .container__slider {
   position: relative;
-  width: 100%;
+  width: 900px;
   height: auto;
-  max-height: 300px; /* Maximum height */
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  background-color: white;
-  margin: 0 80px; /* Add margin for both left and right sides */
-}
-
-.container__slider1 {
-  position: relative;
-  width: 100%;
-  height: auto;
-  max-height: 300px; /* Maximum height */
+  max-height: 500px; /* Maximum height */
   padding: 0;
   overflow: hidden;
   display: flex;

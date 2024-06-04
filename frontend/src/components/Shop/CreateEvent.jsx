@@ -77,7 +77,7 @@ const CreateEvent = () => {
     newForm.append("description", description);
     newForm.append("category", category);
     newForm.append("tags", tags);
-    newForm.append("originalPrice", values.originalPrice || 0);
+    newForm.append("originalPrice", values.originalPrice);
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
@@ -143,17 +143,17 @@ const CreateEvent = () => {
                   { required: true, message: "Please select product category" },
                 ]}
               >
-                <Select
+                <select
                   id="category"
                   placeholder="Choose a category"
-                  className="custom-select"
+                  className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
                 >
                   {categoriesData.map((category) => (
-                    <Option key={category.title} value={category.title}>
+                    <option key={category.title} value={category.title}>
                       {category.title}
-                    </Option>
+                    </option>
                   ))}
-                </Select>
+                </select>
               </Form.Item>
             </div>
           </div>
@@ -178,6 +178,7 @@ const CreateEvent = () => {
                 <Input
                   id="originalPrice"
                   type="number"
+                  min="0"
                   placeholder="Enter your product price..."
                   className="custom-input rounded-2xl"
                 />
@@ -207,6 +208,7 @@ const CreateEvent = () => {
                 <Input
                   id="discountPrice"
                   type="number"
+                  min="0"
                   placeholder="Enter your product price with discount..."
                   className="custom-input rounded-2xl"
                 />
@@ -226,6 +228,7 @@ const CreateEvent = () => {
                 <Input
                   id="stock"
                   type="number"
+                  min="0"
                   placeholder="Enter your product stock..."
                   className="custom-input rounded-2xl"
                 />

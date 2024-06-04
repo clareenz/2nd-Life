@@ -103,17 +103,17 @@ const CreateProduct = () => {
                   { required: true, message: "Please select product category" },
                 ]}
               >
-                <Select
-                  className="custom-select"
+                <select
+                   className="px-3 py-1 border w-full rounded-2xl custom-select1 hover:border-[#006665] focus:border-[#006665]"
                   id="category"
                   placeholder="Choose a category"
                 >
                   {categoriesData.map((category) => (
-                    <Option key={category.title} value={category.title}>
+                    <option key={category.title} value={category.title}>
                       {category.title}
-                    </Option>
+                    </option>
                   ))}
-                </Select>
+                </select>
               </Form.Item>
             </div>
           </div>
@@ -136,6 +136,7 @@ const CreateProduct = () => {
                 <Input
                   id="originalPrice"
                   type="number"
+                  min="0"
                   placeholder="Enter your product price..."
                   className="custom-input rounded-2xl"
                 />
@@ -165,6 +166,7 @@ const CreateProduct = () => {
                 <Input
                   id="discountPrice"
                   type="number"
+                  min="0"
                   placeholder="Enter your product price with discount..."
                   className="custom-input rounded-2xl"
                 />
@@ -183,6 +185,7 @@ const CreateProduct = () => {
                 <Input
                   id="stock"
                   type="number"
+                  min="0"
                   placeholder="Enter your product stock..."
                   className="custom-input rounded-2xl"
                 />
