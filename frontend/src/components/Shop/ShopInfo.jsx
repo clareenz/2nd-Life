@@ -22,7 +22,6 @@ import styles from "../../styles/styles";
 
 const { Title, Text } = Typography;
 
-
 const ShopInfo = ({ isOwner }) => {
   const [data, setData] = useState({});
   const { products } = useSelector((state) => state.products);
@@ -187,30 +186,28 @@ const ShopInfo = ({ isOwner }) => {
                     onClick={handleMessageSubmit}
                   >
                     <span className="text-white text-[13px] mr-1">Message</span>
-                    <AiOutlineMessage className="text-white" />
+                    {/* <AiOutlineMessage className="text-white" /> */}
                   </div>
 
                   {/* Follow button logic */}
                   <div
-                    className={`bg-[#006665] text-white rounded-3xl h-8 flex items-center justify-center cursor-pointer px-4 py-2 hover:bg-[#FF8474]`}
+                    className={`border border-006665 my-3 justify-center cursor-pointer px-4 py-2 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                     onClick={handleFollowToggle}
                   >
                     {/* Display "Follow" or "Unfollow" based on follow state */}
-                    <span className="text-[13px] mr-1">
+                    <span className="text-[13px] text-white mr-1">
                       {isFollowing ? "Unfollow" : "Follow"}
                     </span>
-                    {isFollowing ? (
+                    {/* {isFollowing ? (
                       <SlUserUnfollow size={15} className="text-white" />
                     ) : (
                       <SlUserFollow size={15} className="text-white" />
-                    )}
-
+                    )} */}
                   </div>
                 </div>
               )}
             </div>
             <div className="relative ">
-
               <div className="">
                 <BsThreeDots
                   onClick={handleDotsClick}
@@ -221,31 +218,28 @@ const ShopInfo = ({ isOwner }) => {
               {showModal && (
                 <div className="">
                   {isOwner ? (
-                    <div className="absolute z-10 top-8 left-0 bg-white shadow-lg rounded-lg p-4 space-y-1">
-                      <Link to="/settings">
-                        <div
-                          type="primary"
-                          className="border border-006665 h-7 flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all"
-                        >
-                          Edit Shop
-                        </div>
-                      </Link>
-                      <div
-                        className={` border border-006665  h-7 items-center cursor-pointer px-3 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]`}
-                      >
-                        <Link to="/dashboard">
-                          <div>Dashboard</div>
+                    <div className="absolute z-10 top-8 left-0 bg-white shadow-xl rounded-lg p-4 space-y-1">
+                      <div>
+                        <Link to="/settings">
+                          <div
+                            type="primary"
+                            className="border justify-center border-006665 h-7 text-[12px] flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all"
+                          >
+                            Edit Shop
+                          </div>
                         </Link>
                       </div>
-                      <Link to={`/shop/preview/${id}`}>
-                        <div
-                          className={`border border-006665 h-7 flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
-                        >
-                          Shop
-                        </div>
-                      </Link>
+                      <div>
+                        <Link to={`/shop/preview/${id}`}>
+                          <div
+                            className={`border border-006665 h-7 justify-center flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] text-[12px] transition-all`}
+                          >
+                            Preview Shop
+                          </div>
+                        </Link>
+                      </div>
                       <div
-                        className={` border border-006665  h-7 items-center   cursor-pointer  px-3 rounded-3xl hover:text-[#62B9B6] hover:border-[#62B9B6] border-[#077773] text-[#077773]`}
+                        className={` border border-006665 h-7 justify-center flex items-center cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] text-[12px] transition-all`}
                         onClick={logoutHandler}
                       >
                         Log Out
@@ -254,13 +248,9 @@ const ShopInfo = ({ isOwner }) => {
                   ) : (
                     <div className=" z-10 absolute top-8 left-0 bg-white shadow-lg rounded-lg p-4">
                       <div
-                        className={`border border-006665 h-7  flex items-center  cursor-pointer px-2 rounded-3xl text-white bg-[#006665] hover:bg-[#077773] transition-all`}
+                        className={` flex items-center text-black  cursor-pointer`}
                       >
-                        <Link
-                          to={`/report-shop?shopId=${id}`}
-                        >
-                          Report
-                        </Link>
+                        <Link to={`/report-shop?shopId=${id}`}>Report</Link>
                       </div>
                     </div>
                   )}
@@ -272,67 +262,98 @@ const ShopInfo = ({ isOwner }) => {
               <Paragraph className="text-justify">{data.description}</Paragraph>
             </div>
             <div>
-              <div className="flex flex-wrap mt-4">
-                <div className="flex flex-col mb-4">
-                  <div className="flex mb-2">
-                    <EnvironmentOutlined className="mb-1" />
-                    <Title level={5} className="ml-2 mb-0">
-                      Address:
-                    </Title>
-                    <Text className="ml-1 mb-0">{data.address}</Text>
-                  </div>
+              <div className="">
+                <div className="flex flex-wrap mt-4">
+                  <div className="flex flex-col mb-4">
+                    <div className="flex mb-2">
+                      <EnvironmentOutlined className="mb-1" />
+                      <Title level={5} className="ml-2 mb-0">
+                        Address:
+                      </Title>
+                      <Text className="ml-1 mb-0">{data.address}</Text>
+                    </div>
 
-                  <div className="flex mb-2">
-                    <PhoneOutlined className="mb-1" />
-                    <Title level={5} className="ml-2 mb-0">
-                      Phone Number:
-                    </Title>
-                    <Text className="ml-2 mb-0">{data.phoneNumber}</Text>
-                  </div>
+                    <div className="flex mb-2">
+                      <PhoneOutlined className="mb-1" />
+                      <Title level={5} className="ml-2 mb-0">
+                        Phone Number:
+                      </Title>
+                      <Text className="ml-2 mb-0">{data.phoneNumber}</Text>
+                    </div>
 
-                  <div className="flex">
-                    <ShoppingCartOutlined className="mb-1" />
-                    <Title level={5} className="ml-2 mb-0">
-                      Total Products:
-                    </Title>
-                    <Text className="ml-2 mb-0">
-                      {products && products.length}
-                    </Text>
-                  </div>
-                </div>
-
-                <div className="flex flex-col mb-4 xl:px-10 lg:px-10 md:px-10 sm:px-10">
-                  <div className="flex mb-2">
-                    <StarOutlined className="mb-1" />
-                    <Title level={5} className="ml-2 mb-0">
-                      Shop Ratings:
-                    </Title>
-                    <Text className="ml-2 mb-0">
-                      {averageRating.toFixed(1)}/5
-                    </Text>
-                  </div>
-
-                  <div className="flex">
-                    <CalendarOutlined className="mb-1" />
-                    <Title level={5} className="ml-2 mb-0">
-                      Joined On:
-                    </Title>
-                    <Text className="ml-2 mb-0">
-                      {data?.createdAt?.slice(0, 10)}
-                    </Text>
-                  </div>
-
-                  {/* Display follower count */}
-                  <div className="mt-2">
                     <div className="flex">
+                      <ShoppingCartOutlined className="mb-1" />
+                      <Title level={5} className="ml-2 mb-0">
+                        Total Products:
+                      </Title>
+                      <Text className="ml-2 mb-0">
+                        {products && products.length}
+                      </Text>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col mb-4 xl:px-10 lg:px-10 md:px-10 sm:px-10">
+                    <div className="flex mb-2">
                       <StarOutlined className="mb-1" />
                       <Title level={5} className="ml-2 mb-0">
-                        Followers:
+                        Shop Ratings:
                       </Title>
-                      <Text className="ml-2 mb-0">{followerCount}</Text>
+                      <Text className="ml-2 mb-0">
+                        {averageRating.toFixed(1)}/5
+                      </Text>
+                    </div>
+
+                    <div className="flex">
+                      <CalendarOutlined className="mb-1" />
+                      <Title level={5} className="ml-2 mb-0">
+                        Joined On:
+                      </Title>
+                      <Text className="ml-2 mb-0">
+                        {data?.createdAt?.slice(0, 10)}
+                      </Text>
+                    </div>
+
+                    {/* Display follower count */}
+                    <div className="mt-2">
+                      <div className="flex">
+                        <StarOutlined className="mb-1" />
+                        <Title level={5} className="ml-2 mb-0">
+                          Followers:
+                        </Title>
+                        <Text className="ml-2 mb-0">{followerCount}</Text>
+                      </div>
                     </div>
                   </div>
                 </div>
+                {!isOwner && ( //hindi to double, wag delete. para to sa mobile
+                  <div className="justify-center items-center flex flex-row space-x-2 sm:hidden">
+                    <div
+                      className={`border border-006665 my-3 justify-center cursor-pointer px-4 py-2 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                      onClick={handleMessageSubmit}
+                    >
+                      <span className="text-white text-[13px] mr-1">
+                        Message
+                      </span>
+                      {/* <AiOutlineMessage className="text-white" /> */}
+                    </div>
+
+                    {/* Follow button logic */}
+                    <div
+                      className={`border border-006665 my-3 justify-center cursor-pointer px-4 py-2 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                      onClick={handleFollowToggle}
+                    >
+                      {/* Display "Follow" or "Unfollow" based on follow state */}
+                      <span className="text-[13px] text-white mr-1">
+                        {isFollowing ? "Unfollow" : "Follow"}
+                      </span>
+                      {/* {isFollowing ? (
+                        <SlUserUnfollow size={15} className="text-white" />
+                      ) : (
+                        <SlUserFollow size={15} className="text-white" />
+                      )} */}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

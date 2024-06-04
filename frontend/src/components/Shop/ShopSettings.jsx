@@ -8,8 +8,7 @@ import {
 import axios from "axios";
 import { updateShopInformation } from "../../redux/actions/sellers";
 import { loadSeller } from "../../redux/actions/user";
-import { toast } from "react-toastify";
-import { Form, Input, Button, Row, Col } from "antd";
+import { Form, Input, Button, Row, Col, message } from "antd";
 import styles from "../../styles/styles";
 import { server } from "../../server";
 
@@ -52,9 +51,9 @@ const ShopSettings = () => {
         withCredentials: true,
       });
       dispatch(loadSeller());
-      toast.success("Avatar updated successfully!");
+      message.success("Avatar updated successfully!");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update avatar");
+      message.error(error.response?.data?.message || "Failed to update avatar");
     }
   };
 
@@ -74,7 +73,7 @@ const ShopSettings = () => {
 
   const handleSubmit = async () => {
     if (!password) {
-      toast.error("Please enter your password to update your information.");
+      message.error("Please enter your password to update your information.");
       return;
     }
 
@@ -96,10 +95,10 @@ const ShopSettings = () => {
       );
 
       dispatch(loadSeller());
-      toast.success("Shop information updated successfully!");
+      message.success("Shop information updated successfully!");
       setPassword("");
     } catch (error) {
-      toast.error(
+      message.error(
         error.response?.data?.message || "Failed to update shop information"
       );
     }

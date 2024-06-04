@@ -5,8 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import { getProductById } from "../../redux/actions/product";
+import { message } from "antd";
 
 const CheckoutBuyNow = () => {
   const { productId } = useParams();
@@ -30,7 +30,7 @@ const CheckoutBuyNow = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      message.error(error);
     }
   }, [error]);
 
@@ -40,7 +40,7 @@ const CheckoutBuyNow = () => {
 
   const paymentSubmit = async () => {
     if (!address || !zipCode || !country || !province || !city) {
-      toast.error("Please choose your delivery address!");
+      message.error("Please choose your delivery address!");
       return;
     }
 
@@ -66,7 +66,7 @@ const CheckoutBuyNow = () => {
         localStorage.setItem("latestOrder", JSON.stringify(orderData));
       }
     } catch (error) {
-      toast.error("Order creation failed. Please try again.");
+      message.error("Order creation failed. Please try again.");
     }
   };
 
@@ -84,11 +84,11 @@ const CheckoutBuyNow = () => {
         setCouponCodeData(data.couponCode);
         setCouponCode("");
       } else {
-        toast.error("Coupon code is not valid for this product.");
+        message.error("Coupon code is not valid for this product.");
         setCouponCode("");
       }
     } catch (error) {
-      toast.error("Invalid coupon code.");
+      message.error("Invalid coupon code.");
       setCouponCode("");
     }
   };

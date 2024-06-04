@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
+import { message } from "antd";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -69,12 +69,12 @@ const Signup = () => {
 
     // Validate that password and confirm password match
     if (password !== confirmPassword) {
-      toast.error("Password and confirm password do not match");
+      message.error("Password and confirm password do not match");
       return;
     }
     // Validate password strength
     if (!validatePassword()) {
-      toast.error(
+      message.error(
         "Password must be at least 6 characters and contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character."
       );
       return;
@@ -88,7 +88,7 @@ const Signup = () => {
     axios
       .post(`${server}/user/create-user`, newForm, config)
       .then((res) => {
-        toast.success(res.data.message);
+        message.success(res.data.message);
         setName("");
         setEmail("");
         setPassword("");
@@ -96,7 +96,7 @@ const Signup = () => {
         setAvatar("");
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 

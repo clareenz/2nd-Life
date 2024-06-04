@@ -13,8 +13,8 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import { RxCross1 } from "react-icons/rx";
+import { message } from "antd";
 
 const Payment = () => {
   const [orderData, setOrderData] = useState([]);
@@ -88,7 +88,7 @@ const Payment = () => {
       .then((res) => {
         setOpen(false);
         navigate("/order/success");
-        toast.success("Order successful!");
+        message.success("Order successful!");
         localStorage.setItem("cartItems", JSON.stringify([]));
         localStorage.setItem("latestOrder", JSON.stringify([]));
         window.location.reload();
@@ -124,7 +124,7 @@ const Payment = () => {
       });
 
       if (result.error) {
-        toast.error(result.error.message);
+        message.error(result.error.message);
       } else {
         if (result.paymentIntent.status === "succeeded") {
           order.paymnentInfo = {
@@ -138,7 +138,7 @@ const Payment = () => {
             .then((res) => {
               setOpen(false);
               navigate("/order/success");
-              toast.success("Order successful!");
+              message.success("Order successful!");
               localStorage.setItem("cartItems", JSON.stringify([]));
               localStorage.setItem("latestOrder", JSON.stringify([]));
               window.location.reload();
@@ -146,7 +146,7 @@ const Payment = () => {
         }
       }
     } catch (error) {
-      toast.error(error);
+      message.error(error);
     }
   };
 
@@ -168,7 +168,7 @@ const Payment = () => {
     .then((res) => {
       setOpen(false);
       navigate("/order/success");
-      toast.success("Order successful!");
+      message.success("Order successful!");
       localStorage.setItem("cartItems", JSON.stringify([]));
       localStorage.setItem("latestOrder", JSON.stringify([]));
       window.location.reload();
@@ -200,7 +200,7 @@ const Payment = () => {
       });
 
       if (result.error) {
-        toast.error(result.error.message);
+        message.error(result.error.message);
       } else {
         if (result.paymentIntent.status === "succeeded") {
           order.paymnentInfo = {
@@ -214,7 +214,7 @@ const Payment = () => {
             .then((res) => {
               setOpen(false);
               navigate("/order/success");
-              toast.success("Order successful!");
+              message.success("Order successful!");
               localStorage.setItem("cartItems", JSON.stringify([]));
               localStorage.setItem("latestOrder", JSON.stringify([]));
               window.location.reload();
@@ -222,7 +222,7 @@ const Payment = () => {
         }
       }
     } catch (error) {
-      toast.error(error);
+      message.error(error);
     }
   };
 

@@ -5,9 +5,9 @@ import styles from "../../styles/styles";
 import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import { loadSeller } from "../../redux/actions/user";
 import { AiOutlineDelete } from "react-icons/ai";
+import { message } from "antd";
 
 const WithdrawMoney = () => {
   const [open, setOpen] = useState(false);
@@ -51,7 +51,7 @@ const WithdrawMoney = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Withdraw method added successfully!");
+        message.success("Withdraw method added successfully!");
         dispatch(loadSeller());
         setBankInfo({
           bankName: "",
@@ -73,18 +73,18 @@ const WithdrawMoney = () => {
         withCredentials: true,
       })
       .then((res) => {
-        toast.success("Withdraw method deleted successfully!");
+        message.success("Withdraw method deleted successfully!");
         dispatch(loadSeller());
       });
   };
 
   const error = () => {
-    toast.error("You not have enough balance to withdraw!");
+    message.error("You not have enough balance to withdraw!");
   };
 
   const withdrawHandler = async () => {
     if (withdrawAmount < 50 || withdrawAmount > availableBalance) {
-      toast.error("You can't withdraw this amount!");
+      message.error("You can't withdraw this amount!");
     } else {
       const amount = withdrawAmount;
       await axios
@@ -94,7 +94,7 @@ const WithdrawMoney = () => {
           { withCredentials: true }
         )
         .then((res) => {
-          toast.success("Withdraw money request is successful!");
+          message.success("Withdraw money request is successful!");
         });
     }
   };

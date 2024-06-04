@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { BsFillBagFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
 import { server } from "../../server";
 import styles from "../../styles/styles";
+import { message } from "antd";
 
 const OrderDetails = () => {
   const { orders, isLoading } = useSelector((state) => state.order);
@@ -33,11 +33,11 @@ const OrderDetails = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Order updated!");
+        message.success("Order updated!");
         navigate("/dashboard-orders");
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 
@@ -51,11 +51,11 @@ const OrderDetails = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Order updated!");
+        message.success("Order updated!");
         dispatch(getAllOrdersOfShop(seller._id));
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 

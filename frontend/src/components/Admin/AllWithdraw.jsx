@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Table, Space, Modal, Button, Select } from "antd";
+import { Table, Space, Modal, Button, Select, message } from "antd";
 import { BsPencil } from "react-icons/bs";
-import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -53,7 +51,7 @@ const AllWithdraw = () => {
         },
         { withCredentials: true }
       );
-      toast.success("Withdraw request updated successfully!");
+      message.success("Withdraw request updated successfully!");
       setOpen(false);
       fetchData();
     } catch (error) {

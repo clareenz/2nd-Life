@@ -17,7 +17,6 @@ import {
 import { IoBagHandleOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate} from "react-router-dom";
-import { toast } from "react-toastify";
 import { addToCart } from "../../../redux/actions/cart";
 import {
   addToWishlist,
@@ -161,7 +160,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
               </div>
             </div>
             <div
-              className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+              className={`${styles.button6} ml-2 !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
               onClick={view}
             >
               <span className="text-white text-[13px] mr-1">View Shop</span>
@@ -245,7 +244,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
             <div className="flex flex-row justify-center">
               <div
-                className={`${styles.button6} !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                className={`${styles.button6} !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                 onClick={() => addToCartHandler(data._id)}
               >
                 <span className="flex items-center text-white">
@@ -254,7 +253,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
               </div>
               {/* Buy Now button */}
               <div
-                className={`${styles.button6} ml-2 !mt-6 rounded-3xl !h-11 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
+                className={`${styles.button6} ml-2 !mt-6 rounded-3xl h-8 flex items-center bg-[#006665] hover:bg-[#FF8474]`}
                 onClick={buyNow}
               >
                 <span className="flex items-center text-white">
@@ -297,10 +296,10 @@ const ProductDetailsCard2 = ({ setOpen, data }) => {
           navigate(`/inbox?${res.data.conversation._id}`);
         })
         .catch((error) => {
-          toast.error(error.response.data.message);
+          message.error(error.response.data.message);
         });
     } else {
-      toast.error("Please login to create a conversation");
+      message.error("Please login to create a conversation");
     }
   };
 

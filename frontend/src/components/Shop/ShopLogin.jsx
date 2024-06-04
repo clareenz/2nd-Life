@@ -8,7 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import { message } from "antd";
 
 const ShopLogin = () => {

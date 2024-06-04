@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../server";
-import { toast } from "react-toastify";
 import { message } from "antd";
 
 const Checkout = () => {
@@ -49,7 +48,7 @@ const Checkout = () => {
       province === "" ||
       city === ""
     ) {
-      toast.error("Please choose your delivery address!");
+      message.error("Please choose your delivery address!");
     } else {
       const shippingAddress = {
         address,
@@ -145,7 +144,7 @@ const Checkout = () => {
           cart && cart.filter((item) => item.shopId === shopId);
 
         if (isCouponValid.length === 0) {
-          toast.error("Coupon code is not valid for this shop");
+          message.error("Coupon code is not valid for this shop");
           setCouponCode("");
         } else {
           const eligiblePrice = isCouponValid.reduce(
@@ -158,7 +157,7 @@ const Checkout = () => {
           setCouponCode("");
         }
       } else {
-        toast.error("Coupon code doesn't exist!");
+        message.error("Coupon code doesn't exist!");
         setCouponCode("");
       }
     });

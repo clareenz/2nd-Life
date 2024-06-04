@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
-import { toast } from "react-toastify";
 import { createevent } from "../../redux/actions/event";
 import { Form, Input, Select, Button, DatePicker, message, Upload } from "antd";
 import { BorderOutlined, PlusOutlined } from "@ant-design/icons";

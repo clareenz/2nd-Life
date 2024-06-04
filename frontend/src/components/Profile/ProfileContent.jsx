@@ -19,7 +19,6 @@ import {
 } from "../../redux/actions/user";
 import { Country, State } from "country-state-city";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
 import axios from "axios";
 import {
   Space,
@@ -57,11 +56,11 @@ const ProfileContent = ({ active }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      message.error(error);
       dispatch({ type: "clearErrors" });
     }
     if (successMessage) {
-      toast.success(successMessage);
+      message.success(successMessage);
       dispatch({ type: "clearMessages" });
     }
   }, [error, successMessage]);
@@ -71,13 +70,13 @@ const ProfileContent = ({ active }) => {
 
     // Check if the password field is empty
     if (!password) {
-      toast.error("Please input your password to update your information.");
+      message.error("Please input your password to update your information.");
       return;
     }
 
     dispatch(updateUserInformation(name, email, phoneNumber, password));
     setDisplayName(name);
-    toast.success("Changed Successfully!");
+    message.success("Changed Successfully!");
   };
 
   const handleImage = async (e) => {
@@ -97,10 +96,10 @@ const ProfileContent = ({ active }) => {
       })
       .then((response) => {
         dispatch(loadUser());
-        toast.success("avatar updated successfully!");
+        message.success("avatar updated successfully!");
       })
       .catch((error) => {
-        toast.error(error);
+        message.error(error);
       });
   };
 
@@ -649,10 +648,10 @@ const ChangePassword = () => {
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
-        toast.success(res.data.success);
+        message.success(res.data.success);
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        message.error(error.response.data.message);
       });
   };
 
@@ -843,7 +842,7 @@ const Address = () => {
       province === "" ||
       city === ""
     ) {
-      toast.error("Please fill all the fields!");
+      message.error("Please fill all the fields!");
     } else {
       dispatch(
         updateUserAddress(
