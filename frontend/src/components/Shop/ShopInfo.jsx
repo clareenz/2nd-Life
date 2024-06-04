@@ -10,15 +10,13 @@ import {
   CalendarOutlined,
 } from "@ant-design/icons";
 import { AiOutlineCamera, AiOutlineMessage } from "react-icons/ai";
-import { SlUserFollow } from "react-icons/sl";
+import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import axios from "axios";
 import Paragraph from "antd/es/typography/Paragraph";
 
 import { BsThreeDots } from "react-icons/bs";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { server } from "../../server";
-
-import { SlUserFollow } from "react-icons/sl";
 import { HiMiniEllipsisHorizontal } from "react-icons/hi2";
 import styles from "../../styles/styles";
 
