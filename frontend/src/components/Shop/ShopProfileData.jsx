@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { getAllEventsShop } from "../../redux/actions/event"; // Import action to fetch events
-import { ProductCard } from "../Route/ProductCard/ProductCard";
+import { ProductCard, ProductCard2 } from "../Route/ProductCard/ProductCard";
 import { EventCard } from "../Events/EventCard";
 import "./color.css";
 import Ratings from "../Products/Ratings";
@@ -49,7 +49,7 @@ const ShopProfileData = ({ isOwner }) => {
               <>
                 {products &&
                   products.map((product, index) => (
-                    <ProductCard data={product} key={index} isShop={true} />
+                    <ProductCard2 data={product} key={index} isShop={true} />
                   ))}
               </>
             ) : (
