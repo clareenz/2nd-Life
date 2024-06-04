@@ -13,7 +13,7 @@ const CheckoutBuyNow = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { product, isLoading, error } = useSelector((state) => state.products);
+  const { isLoading, error, product } = useSelector((state) => state.products);
   const [country, setCountry] = useState("");
   const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
@@ -22,11 +22,20 @@ const CheckoutBuyNow = () => {
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(0);
-
+  const [cart,setCart] = useState([]);
   useEffect(() => {
+    // Dispatch action to get product by its ID
     dispatch(getProductById(productId));
-    window.scrollTo(0, 0);
   }, [dispatch, productId]);
+
+  // Update cart when product changes
+  useEffect(() => {
+    if (product) {
+      // Update cart with product information
+      setCart([{ ...product, qty: 1 }]);
+    }
+  }, [product]);
+  window.scrollTo(0, 0);
 
   useEffect(() => {
     if (error) {
@@ -34,9 +43,15 @@ const CheckoutBuyNow = () => {
     }
   }, [error]);
 
-  const subTotalPrice = product ? product.discountPrice : 0;
-  const shipping = subTotalPrice * 0.1;
-  const totalPrice = subTotalPrice + shipping - discountPrice;
+  // Calculate subtotal based on prices of products in cart
+  const subTotalPrice = product?.discountPrice
+
+  const discountPercentage = couponCodeData ? discountPrice : "";
+
+  const shipping = 0;
+  const totalPrice = couponCodeData
+    ? (subTotalPrice + shipping - discountPercentage).toFixed(2)
+    : (subTotalPrice + shipping).toFixed(2);
 
   const paymentSubmit = async () => {
     if (!address || !zipCode || !country || !province || !city) {
@@ -53,21 +68,76 @@ const CheckoutBuyNow = () => {
     };
 
     const orderData = {
-      cart: [{ productId: product._id, quantity: 1, price: product.discountPrice }],
       totalPrice,
+      subTotalPrice,
+      shipping,
+      discountPrice,
       shippingAddress,
       user,
+      cart,
     };
 
+    const checkoutData = {
+      name: user?.name,
+      email: user?.email,
+      phone: user?.phoneNumber,
+      address: {
+        postalCode: zipCode,
+        state: province,
+        city: city,
+        line2: address,
+        country,
+      },
+      lineItems: cart, // Add qty field to product
+      successUrl: "http://localhost:3000/order/success",
+      cancelUrl: "http://localhost:3000/checkout",
+    };
+    
+
+    console.log(checkoutData)
     try {
-      const { data } = await axios.post(`${server}/order/create-order`, orderData);
-      if (data.success) {
-        navigate("/payment");
-        localStorage.setItem("latestOrder", JSON.stringify(orderData));
-      }
+      const response = await axios.post(
+        `${server}/payment/create-checkout-session`,
+        checkoutData
+      );
+      console.log(response.data);
+      // Handle the response, for example, redirect the user to the PayMongo checkout page
+      message.success(response.data.message);
+      const checkout_url = response.data.response.data.attributes.checkout_url;
+      const checkoutId = response.data.response.data.id;
+      console.log(checkoutId);
+      createOrder(checkoutId, orderData, shippingAddress);
+      window.location.href = checkout_url;
     } catch (error) {
-      message.error("Order creation failed. Please try again.");
+      console.error(error.response.data.message);
     }
+  };
+
+  const createOrder = async (checkoutID, orderData, shippingAddress) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const order = {
+      cart: orderData?.cart,
+      shippingAddress: shippingAddress,
+      user: user && user,
+      totalPrice: orderData?.totalPrice,
+      paymentInfo: {
+        id: checkoutID,
+        status: "not paid",
+        type: "Paymongo",
+      },
+    };
+
+    await axios
+      .post(`${server}/order/create-order`, order, config)
+      .then((res) => {
+        console.log(res.data.orders);
+        localStorage.setItem("cartItems", JSON.stringify([]));
+      });
   };
 
   const handleSubmit = async (e) => {
@@ -75,7 +145,9 @@ const CheckoutBuyNow = () => {
     const name = couponCode;
 
     try {
-      const { data } = await axios.get(`${server}/coupon/get-coupon-value/${name}`);
+      const { data } = await axios.get(
+        `${server}/coupon/get-coupon-value/${name}`
+      );
       const shopId = data.couponCode?.shopId;
       const couponCodeValue = data.couponCode?.value;
       if (data.couponCode && product.shopId === shopId) {
@@ -123,14 +195,29 @@ const CheckoutBuyNow = () => {
           />
         </div>
       </div>
-      <div className={`${styles.button1} w-[150px] 800px:w-[280px] mt-10`} onClick={paymentSubmit}>
+      <div
+        className={`${styles.button1} w-[150px] 800px:w-[280px] mt-10`}
+        onClick={paymentSubmit}
+      >
         <h5 className="text-white">Go to Payment</h5>
       </div>
     </div>
   );
 };
 
-const ShippingInfo = ({ user, country, setCountry, province, setProvince, city, setCity, address, setAddress, zipCode, setZipCode }) => {
+const ShippingInfo = ({
+  user,
+  country,
+  setCountry,
+  province,
+  setProvince,
+  city,
+  setCity,
+  address,
+  setAddress,
+  zipCode,
+  setZipCode,
+}) => {
   return (
     <div className="w-full 800px:w-[95%] bg-white rounded-2xl p-5 pb-8 shadow">
       <h5 className="text-[18px] font-[500]">Shipping Address</h5>
@@ -139,30 +226,59 @@ const ShippingInfo = ({ user, country, setCountry, province, setProvince, city, 
         <div className="flex w-full pb-3">
           <div className="w-[50%]">
             <label className="block pb-2">Full Name</label>
-            <input type="text" value={user && user.name} required className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`} />
+            <input
+              type="text"
+              value={user && user.name}
+              required
+              className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`}
+            />
           </div>
           <div className="w-[50%]">
             <label className="block pb-2">Email Address</label>
-            <input type="email" value={user && user.email} required className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`} />
+            <input
+              type="email"
+              value={user && user.email}
+              required
+              className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`}
+            />
           </div>
         </div>
 
         <div className="flex w-full pb-3">
           <div className="w-[50%]">
             <label className="block pb-2">Phone Number</label>
-            <input type="number" required value={user && user.phoneNumber} className="px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]" min="0" />
+            <input
+              type="number"
+              required
+              value={user && user.phoneNumber}
+              className="px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]"
+              min="0"
+            />
           </div>
           <div className="w-[50%]">
             <label className="block pb-2">Zip Code</label>
-            <input type="number" value={zipCode} onChange={(e) => setZipCode(e.target.value)} required className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`} min="0" />
+            <input
+              type="number"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
+              required
+              className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`}
+              min="0"
+            />
           </div>
         </div>
 
         <div className="flex w-full pb-3">
           <div className="w-[50%]">
             <label className="block pb-2">Country</label>
-            <select className="w-[95%] px-3 border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]" value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option className="block pb-2" value="">Choose your country</option>
+            <select
+              className="w-[95%] px-3 border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            >
+              <option className="block pb-2" value="">
+                Choose your country
+              </option>
               {Country &&
                 Country.getAllCountries().map((item) => (
                   <option key={item.isoCode} value={item.isoCode}>
@@ -173,8 +289,14 @@ const ShippingInfo = ({ user, country, setCountry, province, setProvince, city, 
           </div>
           <div className="w-[50%]">
             <label className="block pb-2">Province</label>
-            <select className="w-[95%] px-3 border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]" value={province} onChange={(e) => setProvince(e.target.value)}>
-              <option className="block pb-2" value="">Choose your Province</option>
+            <select
+              className="w-[95%] px-3 border h-[30px] rounded-full custom-select1 hover:border-[#006665] focus:border-[#006665]"
+              value={province}
+              onChange={(e) => setProvince(e.target.value)}
+            >
+              <option className="block pb-2" value="">
+                Choose your Province
+              </option>
               {State &&
                 State.getStatesOfCountry(country).map((item) => (
                   <option key={item.isoCode} value={item.isoCode}>
@@ -188,21 +310,43 @@ const ShippingInfo = ({ user, country, setCountry, province, setProvince, city, 
         <div className="flex w-full pb-3">
           <div className="w-[50%]">
             <label className="block pb-2">City/Municipality</label>
-            <input type="city" value={city} onChange={(e) => setCity(e.target.value)} required className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`} />
+            <input
+              type="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              required
+              className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`}
+            />
           </div>
 
           <div className="w-[50%]">
             <label className="block pb-2">Barangay/Street/House Number</label>
-            <input type="address" required value={address} onChange={(e) => setAddress(e.target.value)} className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`} />
+            <input
+              type="address"
+              required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className={`px-3 !w-[95%] border h-[30px] rounded-full focus:border-[#006665]`}
+            />
           </div>
         </div>
       </form>
-      <h5 className="text-[15px] cursor-pointer inline-block pt-1">Choose From Saved Address</h5>
+      <h5 className="text-[15px] cursor-pointer inline-block pt-1">
+        Choose From Saved Address
+      </h5>
     </div>
   );
 };
 
-const CartData = ({ handleSubmit, totalPrice, shipping, subTotalPrice, couponCode, setCouponCode, discountPrice }) => {
+const CartData = ({
+  handleSubmit,
+  totalPrice,
+  shipping,
+  subTotalPrice,
+  couponCode,
+  setCouponCode,
+  discountPrice,
+}) => {
   return (
     <div className="w-full bg-[#fff] rounded-2xl p-5 pb-8 shadow">
       <div className="flex justify-between">
@@ -232,11 +376,15 @@ const CartData = ({ handleSubmit, totalPrice, shipping, subTotalPrice, couponCod
           onChange={(e) => setCouponCode(e.target.value)}
           required
         />
-        <input className={`${styles.button4} mt-8 w-full`} required value="Apply code" type="submit" />
+        <input
+          className={`${styles.button4} mt-8 w-full`}
+          required
+          value="Apply code"
+          type="submit"
+        />
       </form>
     </div>
   );
 };
 
 export default CheckoutBuyNow;
-
