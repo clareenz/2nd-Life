@@ -69,7 +69,7 @@ const EventCard = ({ active, data = {}, shop }) => {
   return (
     <div className="flex flex-row justify-center">
       <div
-        className={` h-[80%] bg-white shadow p-9 rounded-lg container__slider1 ${
+        className={` h-[80%] bg-white shadow p-9 rounded-lg container__slider ${
           active ? "unset" : "mb-12"
         } lg:flex p-9 mt-1`}
         onMouseEnter={() => clearInterval(interval)}

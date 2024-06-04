@@ -146,7 +146,7 @@ export const SellerCard = ({ data }) => {
             <div className="text-black marquee">
               <Link
                 to={`/shop/preview/${data.shop._id}`}
-                className={`${styles.shop_name}`}
+                className={`${styles.shop_name} marquee`}
               >
                 {data.shop.name}
               </Link>
@@ -155,17 +155,17 @@ export const SellerCard = ({ data }) => {
           </div>
           <div className="flex flex-row justify-center space-x-1 ">
             <div
-              className={`w-[80px] px-1  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-7 flex items-center`}
+              className={`w-[80px] px-1  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
               onClick={handleMessageSubmit}
             >
-              <span className="text-white text-[13px] mr-1">Message</span>
+              <span className="text-white text-[12px] mr-1">Message</span>
               <AiOutlineMessage size={13} className="text-white" />
             </div>
             <div
-              className={`w-[80px] px-1 bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-7 flex items-center`}
+              className={`w-[80px] px-1 bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
               onClick={handleFollowToggle}
             >
-              <span className="text-white text-[13px] mr-1">
+              <span className="text-white text-[12px] mr-1">
                 {isFollowing ? "Unfollow" : "Follow"}
               </span>
               {isFollowing ? (
@@ -201,7 +201,7 @@ export const SellerCard2 = ({ data }) => {
           );
           console.log("Response received:", response.data);
           setAverageRating(response.data.overallAverageRating);
-          message.success(response.success);
+          // message.success(response.success);
         } else {
           console.log("Product ID not available");
         }
@@ -304,7 +304,7 @@ export const SellerCard2 = ({ data }) => {
                   className="flex flex-row items-center"
                 >
                   <img
-                    src={`${backend_url}${data?.shop?.avatar}`}
+                    src={`${data?.shop?.avatar?.url}`}
                     alt=""
                     className="w-[50px] h-[50px] rounded-full object-cover mr-3"
                   />
@@ -313,11 +313,11 @@ export const SellerCard2 = ({ data }) => {
               <div className="marquee">
                 <Link
                   to={`/shop/preview/${data.shop._id}`}
-                  className={`${styles.shop_name}`}
+                  className={`${styles.shop_name} marquee`}
                 >
                   {data.shop.name}
                 </Link>
-                <h5 className="text-[13px] mt-1">
+                <h5 className="text-[13px] mt-1 marquee">
                   ({averageRating}/5) Ratings
                 </h5>
               </div>
@@ -328,14 +328,14 @@ export const SellerCard2 = ({ data }) => {
               className={`w-[80px]  bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
               onClick={handleMessageSubmit}
             >
-              <span className="text-white text-[13px] mr-1">Message</span>
+              <span className="text-white text-[12px] mr-1">Message</span>
               <AiOutlineMessage size={13} className="text-white" />
             </div>
             <div
-              className={`w-[80px] px-1 bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-7 flex items-center`}
+              className={`w-[80px] px-1 bg-006665 hover:bg-fe8373 justify-center cursor-pointer rounded-3xl !h-6 flex items-center`}
               onClick={handleFollowToggle}
             >
-              <span className="text-white text-[13px] mr-1">
+              <span className="text-white text-[12px] mr-1">
                 {isFollowing ? "Unfollow" : "Follow"}
               </span>
               {isFollowing ? (
