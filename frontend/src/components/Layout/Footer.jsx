@@ -23,7 +23,7 @@ const Footer = () => {
         <ul className="px-5 text-center sm:text-start flex sm:block flex-col items-center ">
           <img
             className=""
-            src="/2ndlifeBuy&Sell.png"
+            src="2ndLifeBuy&Sell.png"
             alt="logo2"
             style={{ width: "250px", height: "auto" }}
           />
