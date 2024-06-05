@@ -80,8 +80,8 @@ const Checkout = () => {
           country,
         },
         lineItems: cart,
-        successUrl: "http://localhost:3000/order/success",
-        cancelUrl: "http://localhost:3000/checkout",
+        successUrl: "https://2ndlife-namstech.vercel.app/order/success",
+        cancelUrl: "https://2ndlife-namstech.vercel.app/",
       };
 
       console.log(checkoutData);

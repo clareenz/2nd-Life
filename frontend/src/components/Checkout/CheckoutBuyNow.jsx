@@ -89,12 +89,11 @@ const CheckoutBuyNow = () => {
         country,
       },
       lineItems: cart, // Add qty field to product
-      successUrl: "http://localhost:3000/order/success",
-      cancelUrl: "http://localhost:3000/checkout",
+      successUrl: "https://2ndlife-namstech.vercel.app/order/success",
+      cancelUrl: "https://2ndlife-namstech.vercel.app/",
     };
     
 
-    console.log(checkoutData)
     try {
       const response = await axios.post(
         `${server}/payment/create-checkout-session`,
