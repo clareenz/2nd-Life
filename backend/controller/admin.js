@@ -57,7 +57,6 @@ router.get(
   "/getAdmin",
   isAdmin,
   catchAsyncErrors(async (req, res, next) => {
-    console.log("hello:");
     try {
       const admin = await Admin.findById(req.admin.id);
       if (!admin) {

@@ -14,7 +14,6 @@ exports.isAdmin = catchAsyncErrors(async (req, res, next) => {
     }
 
     const decoded = jwt.verify(admin_token, process.env.JWT_SECRET_KEY);
-    console.log(decoded)
     req.admin = await Admin.findById(decoded.id);
 
     if (!req.admin) {
